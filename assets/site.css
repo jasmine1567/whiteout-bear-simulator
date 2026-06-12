@@ -1,0 +1,58 @@
+/* ==== ホワサバ ツールラボ 共通スタイル ==== */
+:root{
+  --night:#0a141f; --panel:#101f2e; --panel2:#15293c; --line:#27425c;
+  --frost:#86d9ea; --frost-dim:#4f8aa0; --ember:#f2a23c; --ember-hi:#ffc473;
+  --text:#e6eff4; --muted:#8aa3b3;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:
+    radial-gradient(1200px 500px at 80% -10%, rgba(134,217,234,.10), transparent 60%),
+    radial-gradient(900px 400px at 0% 110%, rgba(242,162,60,.07), transparent 60%),
+    var(--night);
+  color:var(--text);
+  font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic UI","Noto Sans JP",system-ui,sans-serif;
+  line-height:1.8; padding-bottom:60px;
+}
+.sitenav{background:rgba(10,20,31,.92);border-bottom:1px solid var(--line);
+  position:sticky;top:0;z-index:30;backdrop-filter:blur(4px)}
+.sitenav .in{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:18px;
+  padding:10px 16px;flex-wrap:wrap}
+.sitenav .brand{font-weight:800;color:var(--frost);text-decoration:none;font-size:15px;letter-spacing:.06em}
+.sitenav a{color:var(--muted);text-decoration:none;font-size:12.5px}
+.sitenav a:hover{color:var(--frost)}
+.wrap{max-width:860px;margin:0 auto;padding:26px 16px}
+.wrap.wide{max-width:1100px}
+.crumb{font-size:11.5px;color:var(--muted);margin-bottom:14px}
+.crumb a{color:var(--frost-dim);text-decoration:none}
+h1{font-size:clamp(22px,4vw,32px);font-weight:800;line-height:1.3;margin-bottom:14px}
+h1 .acc{color:var(--ember)}
+h2{font-size:18px;color:var(--frost);margin:30px 0 10px;border-left:4px solid var(--ember);padding-left:10px}
+h3{font-size:15px;color:var(--ember-hi);margin:20px 0 8px}
+p{margin-bottom:14px;font-size:14px}
+ul,ol{margin:0 0 14px 1.5em;font-size:14px}
+li{margin-bottom:6px}
+a{color:var(--frost)}
+.lead{color:var(--muted);font-size:13px;margin-bottom:20px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:16px}
+.toolcard{display:block;background:var(--panel);border:1px solid var(--line);border-radius:12px;
+  padding:18px;margin-bottom:14px;text-decoration:none;color:var(--text);transition:border-color .15s}
+.toolcard:hover{border-color:var(--ember)}
+.toolcard .tname{font-size:16px;font-weight:800;color:var(--ember-hi);margin-bottom:6px}
+.toolcard .tdesc{font-size:12.5px;color:var(--muted)}
+.toolcard .tag{display:inline-block;font-size:10px;border:1px solid var(--frost-dim);color:var(--frost);
+  border-radius:5px;padding:1px 7px;margin-bottom:8px}
+.btn{display:inline-block;background:var(--ember);color:#1a1208;border-radius:8px;
+  padding:10px 20px;font-weight:700;text-decoration:none;font-size:14px}
+.btn:hover{background:var(--ember-hi)}
+table{border-collapse:collapse;width:100%;margin-bottom:16px;font-size:13px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left}
+th{background:var(--panel2);color:var(--frost)}
+.note{font-size:11.5px;color:var(--muted);line-height:1.7}
+.ad-slot{margin:22px auto;text-align:center;max-width:100%;overflow:hidden}
+footer.sitefoot{border-top:1px solid var(--line);margin-top:40px;padding:18px 16px;
+  color:var(--muted);font-size:11px;line-height:1.8}
+footer.sitefoot .in{max-width:1100px;margin:0 auto}
+footer.sitefoot nav{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:10px}
+footer.sitefoot a{color:var(--frost-dim);text-decoration:none}
+footer.sitefoot a:hover{color:var(--frost)}

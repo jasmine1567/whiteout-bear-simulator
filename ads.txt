@@ -1,0 +1,2 @@
+# Google AdSense承認後、以下の形式の1行に差し替えてください(pub-IDは自分のもの)
+# google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
