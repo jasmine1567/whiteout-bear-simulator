@@ -84,13 +84,13 @@ var KIND_LABEL={dmg:t('与ダメUP系','DMG-up'),atk:t('攻撃UP系','ATK-up'),l
 function buildPicker(){
   var g=gen(), html='';
   ['inf','lan','mks'].forEach(function(cls){
-    html+='<div style="grid-column:1/-1;font-size:11px;letter-spacing:.2em;color:'+C.CLS[cls].c+';border-bottom:1px solid var(--line);padding-bottom:4px;margin-top:6px">'+C.CLS[cls].n+'兵</div>';
+    html+='<div style="grid-column:1/-1;font-size:11px;letter-spacing:.2em;color:'+C.CLS[cls].c+';border-bottom:1px solid var(--line);padding-bottom:4px;margin-top:6px">'+WOS_clsFull(cls)+'</div>';
     H.filter(function(h){return h.cls===cls && h.gen<=g;}).forEach(function(h){
       var on=selected.indexOf(h.id)>=0;
       var eff = h.joiner ? '<span class="ok">'+WOS_skillLabel(h.joiner.label)+'</span>' : '<span class="na">'+t('熊で効果なし','No bear effect')+'</span>';
       html+='<div class="hcard" data-id="'+h.id+'" style="cursor:pointer;'+(on?'outline:2px solid var(--ember)':'')+'">'
         +'<img src="'+WOS_ICON(h)+'" style="border-color:'+C.RAR_HEX[h.rar]+'">'
-        +'<div class="hn">'+h.name+'</div><div class="hs">'+eff+'</div></div>';
+        +'<div class="hn">'+WOS_heroName(h)+'</div><div class="hs">'+eff+'</div></div>';
     });
   });
   var p=document.getElementById('picker'); p.innerHTML=html;

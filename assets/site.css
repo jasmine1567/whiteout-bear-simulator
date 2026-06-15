@@ -89,3 +89,58 @@ footer.sitefoot a:hover{color:var(--frost)}
 .diag-opts button.sel{outline:2px solid var(--ember);color:var(--ember-hi)}
 .faq dt{font-weight:700;color:var(--frost);margin-top:14px;font-size:14px}
 .faq dd{margin:4px 0 0;font-size:13px;color:var(--text)}
+
+/* ==== v4: 記事ビジュアル強化コンポーネント ==== */
+.callout{border-radius:10px;padding:13px 15px;margin:16px 0;font-size:13.5px;display:flex;gap:10px;align-items:flex-start}
+.callout .ico{font-size:20px;line-height:1;flex-shrink:0}
+.callout.tip{background:rgba(126,217,143,.09);border:1px solid var(--good)}
+.callout.warn{background:rgba(242,162,60,.09);border:1px solid var(--ember)}
+.callout.info{background:rgba(134,217,234,.08);border:1px solid var(--frost-dim)}
+.callout.point{background:rgba(176,124,232,.08);border:1px solid #b07ce8}
+.callout b{color:var(--ember-hi)}
+.statcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:16px 0}
+.statcard{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:12px;text-align:center}
+.statcard .big{font-size:24px;font-weight:800;color:var(--ember-hi);font-variant-numeric:tabular-nums}
+.statcard .lbl{font-size:11px;color:var(--muted);margin-top:4px}
+.steps{counter-reset:st;margin:16px 0;padding:0;list-style:none}
+.steps li{position:relative;padding:10px 0 10px 44px;border-bottom:1px dashed var(--line);font-size:13.5px}
+.steps li:last-child{border-bottom:none}
+.steps li::before{counter-increment:st;content:counter(st);position:absolute;left:0;top:9px;
+  width:30px;height:30px;border-radius:50%;background:var(--ember);color:#1a1208;
+  font-weight:800;display:flex;align-items:center;justify-content:center;font-size:14px}
+.vizbox{background:var(--night);border:1px solid var(--line);border-radius:10px;padding:14px;margin:16px 0;text-align:center}
+.vizbox svg{max-width:100%;height:auto}
+.vizbox .cap{font-size:11px;color:var(--muted);margin-top:8px}
+.ribbon{display:inline-block;background:var(--ember);color:#1a1208;font-size:11px;font-weight:700;
+  padding:2px 10px;border-radius:5px;margin-bottom:8px}
+.pros-cons{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+@media(max-width:560px){.pros-cons{grid-template-columns:1fr}}
+.pros-cons > div{border-radius:10px;padding:12px;font-size:13px}
+.pros{background:rgba(126,217,143,.08);border:1px solid var(--good)}
+.cons{background:rgba(233,105,95,.08);border:1px solid var(--bad)}
+.pros h4{color:var(--good);margin-bottom:6px;font-size:13px}
+.cons h4{color:var(--bad);margin-bottom:6px;font-size:13px}
+.tier-bar{display:flex;height:30px;border-radius:7px;overflow:hidden;margin:14px 0;border:1px solid var(--line)}
+.tier-bar span{display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#0a141f}
+
+/* ==== カテゴリ・アコーディオン(記事ハブ) ==== */
+.cat{margin-bottom:14px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--panel)}
+.cat-head{display:flex;align-items:center;gap:12px;padding:15px 18px;cursor:pointer;user-select:none;
+  background:linear-gradient(160deg,#16293b,#101f2e);transition:background .15s}
+.cat-head:hover{background:linear-gradient(160deg,#1a3045,#13243450)}
+.cat-head .cat-ico{font-size:24px;line-height:1}
+.cat-head .cat-meta{flex:1}
+.cat-head .cat-title{font-size:15px;font-weight:800;color:var(--frost)}
+.cat-head .cat-desc{font-size:11.5px;color:var(--muted);margin-top:2px}
+.cat-head .cat-arrow{font-size:13px;color:var(--muted);transition:transform .25s}
+.cat.open .cat-arrow{transform:rotate(180deg)}
+.cat-body{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.cat.open .cat-body{max-height:1500px}
+.cat-body-in{padding:6px 14px 14px}
+.cat-item{display:block;padding:11px 12px;border-radius:8px;text-decoration:none;color:var(--text);
+  border:1px solid transparent;transition:border-color .15s,background .15s}
+.cat-item:hover{border-color:var(--ember);background:var(--panel2)}
+.cat-item .ci-title{font-size:13.5px;font-weight:700;color:var(--ember-hi)}
+.cat-item .ci-desc{font-size:11.5px;color:var(--muted);margin-top:2px}
+.cat-item .ci-badge{display:inline-block;font-size:9.5px;border:1px solid var(--frost-dim);color:var(--frost);
+  border-radius:4px;padding:0 6px;margin-left:6px;vertical-align:middle}

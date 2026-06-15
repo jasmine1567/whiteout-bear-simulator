@@ -1,4 +1,5 @@
 /* ホワサバ熊狩 共通英雄マスタ(全ツール・記事で共有) 自動生成 */
+window.WOS_HERO_EN = {"smith": "Smith", "eugene": "Eugene", "charlie": "Charlie", "cloris": "Cloris", "sergey": "Sergey", "patrick": "Patrick", "jessie": "Jessie", "lingxue": "Ling Xue", "lumak": "Lumak Bokan", "gina": "Gina", "jasser": "Jasser", "seoyoon": "Seo-yoon", "bahiti": "Bahiti", "natalia": "Natalia", "jeronimo": "Jeronimo", "molly": "Molly", "zinman": "Zinman", "flint": "Flint", "philly": "Philly", "alonso": "Alonso", "logan": "Logan", "mia": "Mia", "greg": "Greg", "ahmose": "Ahmose", "reina": "Reina", "lynn": "Lynn", "hector": "Hector", "nora": "Nora", "gwen": "Gwen", "wuming": "Wu Ming", "renee": "Renee", "wayne": "Wayne", "edith": "Edith", "gordon": "Gordon", "bradley": "Bradley", "gatot": "Gatot", "sonya": "Sonya", "hendrik": "Hendrik", "magnus": "Magnus", "fred": "Fred", "xura": "Xura", "gregory": "Gregory", "freya": "Freya", "blanchette": "Blanchette", "eleonora": "Eleonora", "lloyd": "Lloyd", "rufus": "Rufus", "hervor": "Hervor", "karol": "Karol", "ligeia": "Ligeia", "gisela": "Gisela", "flora": "Flora", "vulcanus": "Vulcanus", "elif": "Elif", "dominic": "Dominic", "cara": "Cara", "hank": "Hank", "estrella": "Estrella", "viveca": "Viveca", "seigel": "Seigel", "ursar": "Ursar", "aisling": "Aisling"};
 window.WOS_HEROES = (function(){
 const HEROES = [
  /* ===== 常設 R ===== */
@@ -191,8 +192,11 @@ window.WOS_CONST = {
   MAX_GEN: 16
 };
 window.WOS_ICON = function(hero){
-  var C=window.WOS_CONST.CLS[hero.cls], c=C.c, g=hero.gen===0?"常":"G"+hero.gen;
-  var s="<svg xmlns='http://www.w3.org/2000/svg' width='96' height='96'><defs><radialGradient id='g' cx='50%' cy='32%'><stop offset='0%' stop-color='"+c+"'/><stop offset='100%' stop-color='#13202e'/></radialGradient></defs><rect width='96' height='96' rx='48' fill='url(#g)'/><text x='48' y='52' font-size='34' font-family='sans-serif' font-weight='bold' fill='#0a141f' text-anchor='middle'>"+C.n+"</text><rect x='26' y='60' width='44' height='20' rx='10' fill='#0a141f' opacity='.75'/><text x='48' y='75' font-size='14' font-family='sans-serif' font-weight='bold' fill='"+c+"' text-anchor='middle'>"+g+"</text></svg>";
+  var C=window.WOS_CONST.CLS[hero.cls], c=C.c;
+  var EN=(window.WOS_LANG||"ja")==="en";
+  var g=hero.gen===0?(EN?"P":"常"):"G"+hero.gen;
+  var glyph=EN?({inf:"I",lan:"L",mks:"M"})[hero.cls]:C.n;
+  var s="<svg xmlns='http://www.w3.org/2000/svg' width='96' height='96'><defs><radialGradient id='g' cx='50%' cy='32%'><stop offset='0%' stop-color='"+c+"'/><stop offset='100%' stop-color='#13202e'/></radialGradient></defs><rect width='96' height='96' rx='48' fill='url(#g)'/><text x='48' y='52' font-size='34' font-family='sans-serif' font-weight='bold' fill='#0a141f' text-anchor='middle'>"+glyph+"</text><rect x='26' y='60' width='44' height='20' rx='10' fill='#0a141f' opacity='.75'/><text x='48' y='75' font-size='14' font-family='sans-serif' font-weight='bold' fill='"+c+"' text-anchor='middle'>"+g+"</text></svg>";
   return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(s);
 };
 
@@ -210,4 +214,22 @@ window.WOS_skillLabel = function(label){
   var s=label;
   map.forEach(function(m){ s=s.replace(m[0],m[1]); });
   return s;
+};
+
+/* 言語対応ヘルパー(EN時は英語名・INF/LAN/MKS表記) */
+window.WOS_heroName = function(hero){
+  if((window.WOS_LANG||'ja')==='en') return (window.WOS_HERO_EN&&window.WOS_HERO_EN[hero.id])||hero.id;
+  return hero.name;
+};
+window.WOS_clsName = function(cls){
+  var en={inf:'INF',lan:'LAN',mks:'MKS'}, ja={inf:'盾',lan:'槍',mks:'弓'};
+  return (window.WOS_LANG||'ja')==='en'?en[cls]:ja[cls];
+};
+window.WOS_clsFull = function(cls){
+  var en={inf:'Infantry',lan:'Lancer',mks:'Marksman'}, ja={inf:'盾兵',lan:'槍兵',mks:'弓兵'};
+  return (window.WOS_LANG||'ja')==='en'?en[cls]:ja[cls];
+};
+window.WOS_genName = function(gen){
+  if((window.WOS_LANG||'ja')==='en') return gen===0?'Permanent':'Gen '+gen;
+  return gen===0?'常設':'第'+gen+'世代';
 };
