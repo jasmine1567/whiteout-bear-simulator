@@ -203,16 +203,25 @@ window.WOS_ICON = function(hero){
 /* スキルラベルの言語対応: 日本語ラベルを種類ベースで英訳 */
 window.WOS_skillLabel = function(label){
   if((window.WOS_LANG||'ja')!=='en' || !label) return label;
-  var map = [
-    [/与ダメ(ージ)?\s*\+?/g,'DMG +'],[/攻撃\s*\+?/g,'ATK +'],[/殺傷\s*\+?/g,'Lethality +'],
-    [/通常攻撃ダメ\s*\+?/g,'Normal-atk DMG +'],[/敵被ダメ\s*\+?/g,'Enemy DMG-taken +'],
-    [/追加攻撃/g,'extra attack'],[/追撃/g,'follow-up'],[/炎上/g,'burn'],[/呪い/g,'curse'],
-    [/被ダメ\s*\+?/g,'DMG-taken +'],[/盾弓/g,'Inf/Mks'],[/槍/g,'Lancer'],[/弓/g,'Mks'],[/盾/g,'Inf'],
-    [/期待\+?/g,'avg +'],[/で/g,' chance '],[/毎/g,' every '],[/保守的/g,'conservative'],
-    [/UP/g,''],[/T(?=[\s\)）/])/g,' turns']
-  ];
   var s=label;
+  // 1) 末尾の装飾スキル名(日本語の固有名)を除去: 「(決起集会)」など、日本語を含む丸括弧
+  s=s.replace(/[（(][^()（）]*[\u3041-\u3096\u30a1-\u30f6\u4e00-\u9faf][^()（）]*[）)]/g,'');
+  // 2) 用語を順に英訳(長い語から先に)
+  var map = [
+    [/通常攻撃ダメ\s*\+?/g,'Normal-atk DMG +'],[/敵被ダメ\s*\+?/g,'Enemy DMG-taken +'],
+    [/追加攻撃/g,'extra attack'],[/追加/g,'extra '],
+    [/全軍ダメ\s*\+?/g,'All-army DMG +'],[/与ダメ(ージ)?\s*\+?/g,'DMG +'],
+    [/攻撃\s*\+?/g,'ATK +'],[/殺傷\s*\+?/g,'Lethality +'],[/被ダメ\s*\+?/g,'DMG-taken +'],
+    [/追加攻撃/g,'extra attack'],[/追撃/g,'follow-up'],[/炎上/g,'burn'],[/呪い/g,'curse'],
+    [/減衰バフ/g,'decaying buff'],[/固定/g,'flat '],
+    [/盾弓/g,'Inf/Mks'],[/槍/g,'Lancer '],[/弓/g,'Mks '],[/盾兵/g,'Inf '],[/盾/g,'Inf '],
+    [/期待\s*\+?/g,'avg +'],[/で/g,' chance '],[/毎に?/g,' every '],[/保守的/g,'conservative'],
+    [/換算/g,'equiv.'],[/UP/g,''],[/T(?=[\s\)）/]|$)/g,'T'],
+    [/ダメ\s*\+?/g,'DMG +']
+  ];
   map.forEach(function(m){ s=s.replace(m[0],m[1]); });
+  // 3) 余分な空白整理
+  s=s.replace(/\s+/g,' ').replace(/\(\s*\)/g,'').trim();
   return s;
 };
 
