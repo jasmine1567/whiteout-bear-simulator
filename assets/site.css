@@ -56,3 +56,36 @@ footer.sitefoot .in{max-width:1100px;margin:0 auto}
 footer.sitefoot nav{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:10px}
 footer.sitefoot a{color:var(--frost-dim);text-decoration:none}
 footer.sitefoot a:hover{color:var(--frost)}
+
+/* ==== v2: 新ツール・更新ボックス共通 ==== */
+.updbox{display:flex;gap:8px;flex-wrap:wrap;font-size:11px;margin:0 0 16px}
+.updbox span{background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:3px 9px;color:var(--muted)}
+.updbox .u1{color:var(--frost)}
+.updbox .u2{color:var(--ember-hi)}
+.toolhead{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.relbar{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}
+.relbar a{font-size:12px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;
+  padding:7px 12px;text-decoration:none;color:var(--frost);transition:border-color .15s}
+.relbar a:hover{border-color:var(--ember)}
+.cta{background:linear-gradient(160deg,#16293b,#0e1d2c);border:1px solid var(--ember);border-radius:12px;
+  padding:16px;margin:20px 0;text-align:center}
+.cta p{margin-bottom:10px;font-size:13px}
+.gen-select{max-width:240px;margin-bottom:14px}
+.hgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.hcard{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center;position:relative}
+.hcard img{width:48px;height:48px;border-radius:50%;border:3px solid var(--line)}
+.hcard .hn{font-size:12px;font-weight:700;margin-top:4px}
+.hcard .hs{font-size:10px;line-height:1.4;margin-top:3px}
+.hcard .ok{color:var(--good)} .hcard .ng{color:var(--bad)} .hcard .na{color:var(--muted)}
+.verdict{border-radius:10px;padding:12px;margin:6px 0;font-size:13px;border:1px solid var(--line)}
+.verdict.good{border-color:var(--good);background:rgba(126,217,143,.08)}
+.verdict.warn{border-color:var(--ember);background:rgba(242,162,60,.08)}
+.verdict.bad{border-color:var(--bad);background:rgba(233,105,95,.08)}
+.diag-q{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:10px}
+.diag-q .ql{font-size:13px;margin-bottom:8px;font-weight:600}
+.diag-opts{display:flex;gap:8px;flex-wrap:wrap}
+.diag-opts button{background:var(--night);border:1px solid var(--line);color:var(--text);
+  border-radius:7px;padding:6px 12px;font-size:12px;cursor:pointer}
+.diag-opts button.sel{outline:2px solid var(--ember);color:var(--ember-hi)}
+.faq dt{font-weight:700;color:var(--frost);margin-top:14px;font-size:14px}
+.faq dd{margin:4px 0 0;font-size:13px;color:var(--text)}

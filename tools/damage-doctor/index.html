@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ja" id="htmlroot">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>熊狩り ダメージが伸びない原因診断｜なぜ今回は低かった? | ホワサバ ツールラボ</title>
+<meta name="description" content="ホワサバ熊狩り(Bear Hunt)でダメージが伸びない原因を質問に答えるだけで診断。左英雄ミス・兵士比率・集結主の選定・回転率・専用装備など、当てはまる原因と対処を提示します。">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
+<link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/tools/damage-doctor/index.html">
+<link rel="alternate" hreflang="en" href="https://whitesim-lab.com/tools/damage-doctor/index.html?lang=en">
+<link rel="stylesheet" href="../../assets/site.css">
+</head>
+<body>
+<div id="nav"></div>
+<div class="wrap wide">
+<div class="crumb"><a href="../../index.html">ホーム</a> &gt; ダメージが伸びない原因診断</div>
+
+<h1>熊狩り <span class="acc">ダメージが伸びない原因診断</span></h1>
+<div id="updbox"></div>
+<p class="lead">「なぜ今回だけダメージが低かったのか」を、質問に答えるだけで切り分けます。当てはまる原因と、改善のための具体的な次の一手を提示します。</p>
+
+<div id="quiz"></div>
+
+<div class="ad-slot"><!-- AdSense承認後 --></div>
+
+<h2>診断結果</h2>
+<div id="result"><p style="color:var(--muted)">すべての質問に答えると、原因と対処が表示されます。</p></div>
+
+<div class="relbar">
+  <a href="../left-hero/index.html">→ 左英雄チェッカー</a>
+  <a href="../troop-ratio/index.html">→ 兵士比率シミュレータ</a>
+  <a href="../bear-hunt/index.html">→ ダメージを数値で試算</a>
+</div>
+</div>
+<div id="foot"></div>
+
+<script src="../../assets/config.js"></script>
+<script src="../../assets/toolkit.js"></script>
+<script>
+document.getElementById('nav').innerHTML = WOS_NAV(2);
+document.getElementById('foot').innerHTML = WOS_FOOT(2);
+document.getElementById('updbox').innerHTML = WOS_UPDATEBOX({date:'2026-06-15',gen:16});
+
+var Q=[
+ {id:'role', q:t('あなたはどちらでしたか?','Which were you?'), o:[['lead',t('集結を立てた(集結主)','I led the rally')],['join',t('集結に乗った(参加者)','I joined a rally')]]},
+ {id:'left', q:t('(乗った人)左端の英雄の第1スキルは熊に効くものでしたか?','(Joiner) Did your leftmost hero\'s first skill work on the bear?'), o:[['yes',t('効くスキルだった','Yes, effective')],['no',t('効かない/わからない','No / not sure')],['na',t('集結主だった','I was the leader')]]},
+ {id:'full', q:t('兵士は満員まで乗せましたか?','Did you send full troops?'), o:[['yes',t('ほぼ満員','Nearly full')],['no',t('半分以下/少なめ','Half or less')]]},
+ {id:'ratio', q:t('兵種比率はどうでしたか?','What was your troop ratio?'), o:[['mix',t('弓多め+槍盾も混在','Marksman-heavy, mixed')],['allmks',t('ほぼ弓だけ','Almost all marksman')],['random',t('適当/盾が多かった','Random / infantry-heavy')]]},
+ {id:'lead2', q:t('(集結主)主催の英雄は熊向けの攻撃編成でしたか?','(Leader) Was your hero set offensive for the bear?'), o:[['good',t('与ダメ/攻撃系で固めた','Yes, DMG/ATK heroes')],['bad',t('適当だった','It was random')],['na',t('乗っただけ','I just joined')]]},
+ {id:'turns', q:t('罠強化・シリル天賦は活用していますか?','Using trap upgrades & Cyrille talent?'), o:[['yes',t('罠強化もシリルも進めている','Both progressed')],['partial',t('どちらか片方','One of them')],['no',t('どちらもまだ','Neither yet')]]}
+];
+var ans={};
+
+function renderQuiz(){
+  document.getElementById('quiz').innerHTML = Q.map(function(item){
+    return '<div class="diag-q"><div class="ql">'+item.q+'</div><div class="diag-opts">'
+      +item.o.map(function(o){return '<button data-q="'+item.id+'" data-v="'+o[0]+'"'+(ans[item.id]===o[0]?' class="sel"':'')+'>'+o[1]+'</button>';}).join('')
+      +'</div></div>';
+  }).join('');
+  document.querySelectorAll('.diag-opts button').forEach(function(b){
+    b.onclick=function(){ ans[b.dataset.q]=b.dataset.v; renderQuiz(); diagnose(); };
+  });
+}
+
+function diagnose(){
+  var answered=Object.keys(ans).length;
+  if(answered<3){ return; }
+  var causes=[];
+  if(ans.role==='join' && ans.left==='no')
+    causes.push(['high',t('左英雄の第1スキルが熊で無効','Left hero skill has no bear effect'),t('左端の英雄のスキルが効いていない可能性が高いです。乗り側で最も多い原因です。','Your leftmost hero\'s skill likely does nothing here — the most common joiner mistake.'),t('左英雄チェッカーで効く英雄を選び直しましょう。','Use the Left-Hero Checker to pick an effective hero.'),'../left-hero/index.html',t('左英雄チェッカーを開く','Open Left-Hero Checker')]);
+  if(ans.full==='no')
+    causes.push(['high',t('兵士が満員でない','Troops not at full'),t('兵士の数はダメージに直結します。満員でないと大きく損です。','Troop count directly drives damage; not being full costs a lot.'),t('訓練を増やし、集結前に兵舎を満たしましょう。','Train more and fill barracks before rallying.'),null,null]);
+  if(ans.ratio==='allmks')
+    causes.push(['mid',t('弓100%編成','100% marksman'),t('弓のみは盾・槍ゼロのペナルティと逓減で目減りします。','All-marksman loses output to the zero-troop penalty and diminishing returns.'),t('槍・盾を少量混ぜた比率を比較しましょう。','Compare ratios with a little lancer/infantry mixed in.'),'../troop-ratio/index.html',t('兵士比率シミュレータを開く','Open Troop Ratio Simulator')]);
+  if(ans.ratio==='random')
+    causes.push(['mid',t('盾偏重・無計画な比率','Infantry-heavy/random ratio'),t('盾過多はダメージ効率が落ちます。','Too much infantry lowers damage efficiency.'),t('弓寄せ(例:10:30:60)に調整しましょう。','Shift toward marksman, e.g. 10:30:60.'),'../troop-ratio/index.html',t('兵士比率シミュレータを開く','Open Troop Ratio Simulator')]);
+  if(ans.role==='lead' && ans.lead2==='bad')
+    causes.push(['high',t('集結主の編成が攻撃向きでない','Leader formation not offensive'),t('集結主の英雄とスキルはダメージの主因です。守備寄りだと伸びません。','The leader\'s heroes/skills are the main driver; defensive picks won\'t scale.'),t('与ダメ・攻撃系で固め、シミュレーターで比較を。','Use DMG/ATK heroes and compare in the simulator.'),'../bear-hunt/index.html',t('熊狩シミュレーターを開く','Open Bear Hunt Simulator')]);
+  if(ans.turns==='no')
+    causes.push(['mid',t('罠強化・シリル天賦が未活用','Trap upgrade / Cyrille unused'),t('罠強化は全体火力(最大+25%)、シリルは個人ポイント(最大+30%)に直結します。','Trap upgrade boosts team damage (up to +25%); Cyrille boosts personal points (up to +30%).'),t('同盟に罠強化を依頼し、シリル天賦を育てましょう。','Ask your alliance to upgrade the trap and level Cyrille\'s talent.'),null,null]);
+  else if(ans.turns==='partial')
+    causes.push(['low',t('罠強化・シリルが片方のみ','Only one of trap/Cyrille'),t('もう片方を進めると、編成を変えずに伸びます。','Progressing the other one raises damage without changing your formation.'),t('未着手の方を優先しましょう。','Prioritize whichever you haven\'t started.'),null,null]);
+
+  var html='';
+  if(causes.length===0){
+    html='<div class="verdict good">🎯 '+t('大きな取りこぼしは見当たりません。ここからは微差の世界です。シミュレーターの「つぎに強化すると伸びるもの」で伸びしろ順を確認しましょう。','No big leaks found — it\'s fine margins from here. Check the simulator\'s upgrade ranking.')+'</div>'+'<div class="cta"><a class="btn" href="../bear-hunt/index.html">'+t('🐻 伸びしろをランキング表示する','🐻 Show upgrade ranking')+'</a></div>';
+  }else{
+    var rank={high:t('最優先','Top'),mid:t('要改善','Improve'),low:t('微調整','Tweak')};
+    var cls={high:'bad',mid:'warn',low:'good'};
+    causes.sort(function(a,b){var o={high:0,mid:1,low:2};return o[a[0]]-o[b[0]];});
+    html=causes.map(function(c){
+      var link = c[4] ? '<div style="margin-top:8px"><a class="btn" style="padding:7px 14px;font-size:12px" href="'+c[4]+'">'+c[5]+'</a></div>' : '';
+      return '<div class="verdict '+cls[c[0]]+'"><b>['+rank[c[0]]+'] '+c[1]+'</b><br>'+c[2]+'<br><span style="color:var(--frost)">→ '+c[3]+'</span>'+link+'</div>';
+    }).join('');
+  }
+  document.getElementById('result').innerHTML=html;
+}
+renderQuiz();
+</script>
+<script>window.addEventListener('DOMContentLoaded',function(){
+  if((window.WOS_LANG||'ja')!=='en')return; var q=function(s){return document.querySelector(s);};
+  document.getElementById('htmlroot').lang='en';
+  document.title='Damage Doctor | Whiteout Tools Lab';
+  if(q('h1'))q('h1').innerHTML='Bear Hunt <span class="acc">Damage Doctor</span>';
+  if(q('.lead'))q('.lead').innerHTML='Figure out "why was my damage low this time" just by answering questions. We list the likely causes by priority with concrete next steps.';
+  var hs=document.querySelectorAll('h2'); if(hs[0])hs[0].textContent='Diagnosis';
+  var r=document.getElementById('result'); if(r&&/すべての質問/.test(r.textContent))r.innerHTML='<p style="color:var(--muted)">Answer all questions to see causes and fixes.</p>';
+});</script></body>
+</html>

@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://YOUR-NAME.github.io/YOUR-REPO/</loc></url>
-  <url><loc>https://YOUR-NAME.github.io/YOUR-REPO/tools/bear-hunt/</loc></url>
-  <url><loc>https://YOUR-NAME.github.io/YOUR-REPO/guides/bear-hunt-guide.html</loc></url>
-  <url><loc>https://YOUR-NAME.github.io/YOUR-REPO/guides/how-to-use.html</loc></url>
-  <url><loc>https://YOUR-NAME.github.io/YOUR-REPO/about.html</loc></url>
-  <url><loc>https://YOUR-NAME.github.io/YOUR-REPO/privacy.html</loc></url>
-  <url><loc>https://YOUR-NAME.github.io/YOUR-REPO/terms.html</loc></url>
-  <url><loc>https://YOUR-NAME.github.io/YOUR-REPO/contact.html</loc></url>
+  <url><loc>https://whitesim-lab.com/</loc></url>
+  <url><loc>https://whitesim-lab.com/tools/bear-hunt/</loc></url>
+  <url><loc>https://whitesim-lab.com/tools/left-hero/</loc></url>
+  <url><loc>https://whitesim-lab.com/tools/troop-ratio/</loc></url>
+  <url><loc>https://whitesim-lab.com/tools/damage-doctor/</loc></url>
+  <url><loc>https://whitesim-lab.com/guides/left-hero.html</loc></url>
+  <url><loc>https://whitesim-lab.com/guides/troop-ratio.html</loc></url>
+  <url><loc>https://whitesim-lab.com/guides/leader-formation.html</loc></url>
+  <url><loc>https://whitesim-lab.com/guides/damage-not-growing.html</loc></url>
+  <url><loc>https://whitesim-lab.com/guides/bear-hunt-guide.html</loc></url>
+  <url><loc>https://whitesim-lab.com/guides/how-to-use.html</loc></url>
+  <url><loc>https://whitesim-lab.com/about.html</loc></url>
+  <url><loc>https://whitesim-lab.com/privacy.html</loc></url>
+  <url><loc>https://whitesim-lab.com/terms.html</loc></url>
+  <url><loc>https://whitesim-lab.com/contact.html</loc></url>
 </urlset>

@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="../assets/site.css">
 <!-- ▼ AdSense承認後: ここにAdSenseコードスニペット(<script async src=...>)を貼り付け ▼ -->
 <!-- ▲ AdSenseコードここまで ▲ -->
+<script src="../assets/config.js"></script>
 </head>
 <body>
 <nav class="sitenav"><div class="in">
@@ -17,7 +18,7 @@
   <a href="../guides/how-to-use.html">使い方</a>
   <a href="../about.html">運営者情報</a>
   <a href="../contact.html">お問い合わせ</a>
-</div></nav>
+<a href="#" id="langtgl" style="margin-left:auto;color:var(--ember)"></a></div></nav>
 <div class="wrap">
 <div class="crumb"><a href="../index.html">ホーム</a> &gt; 熊狩攻略ガイド</div>
 
@@ -94,6 +95,7 @@
 Lv5のメンバー4人を最初に乗せるのが確実です。</p>
 
 </div>
+<div class="relbar"><a href="../tools/left-hero/index.html">→ 左英雄チェッカー</a><a href="../tools/troop-ratio/index.html">→ 兵士比率シミュレータ</a><a href="../tools/damage-doctor/index.html">→ ダメージ診断</a><a href="../tools/bear-hunt/index.html">→ 熊狩シミュレーター</a></div>
 <footer class="sitefoot"><div class="in">
   <nav>
     <a href="../index.html">ホーム</a>
@@ -108,5 +110,9 @@ Lv5のメンバー4人を最初に乗せるのが確実です。</p>
   本サイトはファンメイドの非公式攻略サイトです。Whiteout Survival は Century Games の商標であり、当サイトは開発元・運営元とは一切関係ありません。<br>
   &copy; ホワサバ ツールラボ
 </div></footer>
-</body>
+<script>(function(){var EN=(window.WOS_LANG==='en');var lt=document.getElementById('langtgl');
+      if(lt){lt.textContent=EN?'日本語':'English';lt.onclick=function(e){e.preventDefault();WOS_setLang(EN?'ja':'en');};}
+      if(EN){var b=document.createElement('div');b.style.cssText='background:#16293b;border:1px solid var(--ember);border-radius:10px;padding:12px;margin:14px 0;font-size:13px';
+      b.innerHTML='ℹ️ This in-depth guide is currently available in Japanese only. See the English <a href="../tools/left-hero/index.html?lang=en">tools</a> and homepage for English content.';
+      var w=document.querySelector('.wrap');var h1=document.querySelector('h1');if(h1)h1.parentNode.insertBefore(b,h1.nextSibling);else if(w)w.insertBefore(b,w.firstChild);}})();</script></body>
 </html>

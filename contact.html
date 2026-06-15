@@ -1,55 +1,66 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" id="htmlroot">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>お問い合わせ | ホワサバ ツールラボ</title>
-<meta name="description" content="ホワサバ ツールラボへのお問い合わせ方法。">
+<title id="pgtitle">お問い合わせ | ホワサバ ツールラボ</title>
+<meta name="description" id="pgdesc" content="ホワサバ ツールラボへのお問い合わせ方法。">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://docs.google.com; object-src 'none'; base-uri 'none'">
+<link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/contact.html">
+<link rel="alternate" hreflang="en" href="https://whitesim-lab.com/contact.html?lang=en">
 <link rel="stylesheet" href="assets/site.css">
-<!-- ▼ AdSense承認後: ここにAdSenseコードスニペット(<script async src=...>)を貼り付け ▼ -->
-<!-- ▲ AdSenseコードここまで ▲ -->
+
+<!-- ▼ AdSense承認後: コードスニペットを貼り付け ▼ -->
 </head>
 <body>
-<nav class="sitenav"><div class="in">
-  <a class="brand" href="index.html">🐻 ホワサバ ツールラボ</a>
-  <a href="tools/bear-hunt/index.html">熊狩シミュレーター</a>
-  <a href="guides/bear-hunt-guide.html">熊狩攻略ガイド</a>
-  <a href="guides/how-to-use.html">使い方</a>
-  <a href="about.html">運営者情報</a>
-  <a href="contact.html">お問い合わせ</a>
-</div></nav>
+<div id="nav"></div>
 <div class="wrap">
-<div class="crumb"><a href="index.html">ホーム</a> &gt; お問い合わせ</div>
-
-<h1>お問い合わせ</h1>
+<div class="crumb" id="crumb"></div>
+<div id="bodyja" style="display:none"><h1>お問い合わせ</h1>
 <p>当サイトへのご意見・ご要望・不具合報告・データ提供・権利に関するご連絡は、以下の方法で受け付けています。</p>
 <div class="card">
 <h3>X(旧Twitter)</h3>
-<p><a href="https://x.com/tegetege_m" target="_blank" rel="noopener noreferrer">X(旧Twitter)</a> へのDMまたはリプライが最も早く確認できます。</p>
+<p><a href="https://x.com/tegetege_m" target="_blank" rel="noopener noreferrer">@tegetege_m</a> へのDMまたはリプライが最も早く確認できます。</p>
 <h3>お問い合わせフォーム</h3>
-<p><a href="https://docs.google.com/forms/d/e/1FAIpQLSfgqgKKPsBBryezhwaJPBCPCqVBcZZnV48lk-xHru0bTspeKg/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer">お問い合わせフォーム(Googleフォーム)</a>
+<p><a href="https://docs.google.com/forms/d/e/1FAIpQLSfgqgKKPsBBryezhwaJPBCPCqVBcZZnV48lk-xHru0bTspeKg/viewform" target="_blank" rel="noopener noreferrer">お問い合わせフォーム(Googleフォーム)</a></p>
 </div>
 <h2>お問い合わせの際のお願い</h2>
 <ul>
 <li>不具合報告の場合は、お使いの端末・ブラウザと、発生時の入力内容をお知らせいただけると助かります。</li>
 <li>検証データ(実測ダメージとその時の編成)のご提供は、ツールの精度向上に直接役立ちます。</li>
 <li>返信には数日いただく場合があります。あらかじめご了承ください。</li>
-</ul>
-
+</ul></div>
+<div id="bodyen" style="display:none"><h1>Contact</h1>
+<p>For feedback, requests, bug reports, data contributions, or rights-related inquiries, please reach out via the following.</p>
+<div class="card">
+<h3>X (Twitter)</h3>
+<p>A DM or reply to <a href="https://x.com/tegetege_m" target="_blank" rel="noopener noreferrer">@tegetege_m</a> is checked fastest.</p>
+<h3>Contact form</h3>
+<p><a href="https://docs.google.com/forms/d/e/1FAIpQLSfgqgKKPsBBryezhwaJPBCPCqVBcZZnV48lk-xHru0bTspeKg/viewform" target="_blank" rel="noopener noreferrer">Contact form (Google Forms)</a></p>
 </div>
-<footer class="sitefoot"><div class="in">
-  <nav>
-    <a href="index.html">ホーム</a>
-    <a href="tools/bear-hunt/index.html">熊狩シミュレーター</a>
-    <a href="guides/bear-hunt-guide.html">熊狩攻略ガイド</a>
-    <a href="guides/how-to-use.html">使い方ガイド</a>
-    <a href="about.html">運営者情報</a>
-    <a href="privacy.html">プライバシーポリシー</a>
-    <a href="terms.html">利用規約・免責事項</a>
-    <a href="contact.html">お問い合わせ</a>
-  </nav>
-  本サイトはファンメイドの非公式攻略サイトです。Whiteout Survival は Century Games の商標であり、当サイトは開発元・運営元とは一切関係ありません。<br>
-  &copy; ホワサバ ツールラボ
-</div></footer>
+<h2>When contacting us</h2>
+<ul>
+<li>For bug reports, please include your device/browser and the inputs when it occurred.</li>
+<li>Verification data (measured damage and the formation used) directly improves tool accuracy.</li>
+<li>Replies may take a few days. Thank you for your understanding.</li>
+</ul></div>
+<div id="body"></div>
+</div>
+<div id="foot"></div>
+<script src="assets/config.js"></script>
+<script src="assets/toolkit.js"></script>
+<script>
+(function(){
+  var EN = (window.WOS_LANG==='en');
+  document.getElementById('htmlroot').lang = EN?'en':'ja';
+  document.getElementById('pgtitle').textContent = EN?'Contact | Whiteout Tools Lab':'お問い合わせ | ホワサバ ツールラボ';
+  document.getElementById('pgdesc').content = EN?'How to contact Whiteout Tools Lab.':'ホワサバ ツールラボへのお問い合わせ方法。';
+  document.getElementById('crumb').innerHTML = EN?'<a href="index.html?lang=en">Home</a> &gt; Contact':'<a href="index.html">ホーム</a> &gt; お問い合わせ';
+  document.getElementById('body').innerHTML = document.getElementById(EN?'bodyen':'bodyja').innerHTML;
+  document.getElementById('nav').innerHTML = WOS_NAV(0);
+  document.getElementById('foot').innerHTML = WOS_FOOT(0);
+})();
+
+</script>
 </body>
 </html>
