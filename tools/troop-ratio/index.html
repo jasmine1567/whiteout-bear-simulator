@@ -10,21 +10,8 @@
 <link rel="alternate" hreflang="en" href="https://whitesim-lab.com/tools/troop-ratio/index.html?lang=en">
 <link rel="stylesheet" href="../../assets/site.css">
 <style>
-  .barrow{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-  .barrow .rlabel{width:120px;font-size:12.5px;font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:5px}
-  .barrow .rlabel .crown{opacity:0;transition:opacity .3s;font-size:14px}
-  .barrow.best .rlabel .crown{opacity:1}
-  .barrow .track{flex:1;height:28px;background:var(--night);border:1px solid var(--line);border-radius:7px;overflow:hidden;position:relative}
-  .barrow .fill{height:100%;border-radius:6px;
-    transition:width .55s cubic-bezier(.22,1,.36,1),background .3s;
-    box-shadow:0 0 12px rgba(242,162,60,.0)}
-  .barrow.best .fill{box-shadow:0 0 16px rgba(126,217,143,.5)}
-  .barrow .val{position:absolute;right:8px;top:50%;transform:translateY(-50%);
-    font-size:12px;color:var(--text);font-weight:700;font-variant-numeric:tabular-nums;
-    text-shadow:0 1px 3px rgba(0,0,0,.6)}
-  .barrow.best .rlabel{color:var(--good);font-weight:800}
-  .pulse{animation:pulse .5s ease}
-  @keyframes pulse{0%{transform:scale(1)}40%{transform:scale(1.015)}100%{transform:scale(1)}}
+  #bars{background:var(--night);border:1px solid var(--line);border-radius:10px;padding:8px 4px;margin-bottom:6px}
+  #bars svg{max-width:100%}
   .seg{display:inline-block;height:8px;border-radius:2px}
   .mini-leg{display:flex;gap:12px;font-size:11px;color:var(--muted);margin:6px 0 14px}
 </style>
@@ -100,49 +87,41 @@ function score(r){
   return n;
 }
 
-var barEls=null, lastVals={};
-function buildBars(){
-  var html=LABELS.map(function(lbl,i){
-    return '<div class="barrow" data-i="'+i+'">'
-      +'<div class="rlabel"><span class="crown">👑</span>'+lbl+'</div>'
-      +'<div class="track"><div class="fill" style="width:0%"></div><span class="val">—</span></div></div>';
-  }).join('');
-  document.getElementById('bars').innerHTML=html;
-  barEls=Array.prototype.slice.call(document.querySelectorAll('.barrow'));
-}
-function animateVal(el, from, to){
-  var start=performance.now(), dur=550;
-  function step(now){
-    var p=Math.min(1,(now-start)/dur);
-    var e=1-Math.pow(1-p,3);
-    el.textContent=Math.round(from+(to-from)*e).toLocaleString('en-US');
-    if(p<1) requestAnimationFrame(step);
-  }
-  requestAnimationFrame(step);
-}
+var lastPct={};
 function render(){
-  if(!barEls) buildBars();
   var rows=RATIOS.slice(0,5).map(function(r,i){return {label:LABELS[i],r:r,s:score(r)};});
   var max=Math.max.apply(null,rows.map(function(x){return x.s;}))||1;
   var best=rows.reduce(function(a,b){return b.s>a.s?b:a;});
+  var minv=Math.min.apply(null,rows.map(function(x){return x.s;}));
+
+  // SVG横棒グラフ(確実に描画される。色・高さ・幅はすべて属性で明示)
+  var W=640, rowH=46, padL=96, padR=70, top=10;
+  var Hh=top+rows.length*rowH+6;
+  var maxBarW=W-padL-padR;
+  var svg='<svg viewBox="0 0 '+W+' '+Hh+'" width="100%" xmlns="http://www.w3.org/2000/svg" style="display:block">';
   rows.forEach(function(x,i){
-    var bar=barEls[i]; if(!bar) return;
-    var pct=(x.s/max*100);
-    var fill=bar.querySelector('.fill'), val=bar.querySelector('.val');
-    fill.style.width=pct.toFixed(1)+'%';
-    fill.style.background = x===best
-      ? 'linear-gradient(90deg,#5aa77e,var(--good))'
-      : 'linear-gradient(90deg,var(--frost-dim),var(--mks))';
-    bar.classList.toggle('best', x===best);
-    // 数値をカウントアップ表示(実ダメージ相対指数=最大1000スケール)
-    var disp=Math.round(x.s/max*1000);
-    var prev=lastVals[i]!=null?lastVals[i]:0;
-    animateVal(val, prev, disp);
-    lastVals[i]=disp;
+    var y=top+i*rowH;
+    var pct=x.s/max;                 // 0..1
+    var barW=Math.max(2, pct*maxBarW);
+    var isBest=(x===best);
+    var col=isBest?'#7ed98f':'#5fa8d3';
+    var col2=isBest?'#56b06a':'#3a78a8';
+    // ラベル(比率名)
+    svg+='<text x="'+(padL-10)+'" y="'+(y+rowH/2+1)+'" text-anchor="end" font-size="14" font-weight="'+(isBest?'800':'600')+'" fill="'+(isBest?'#7ed98f':'#cfe0ea')+'" font-family="sans-serif">'+(isBest?'\uD83D\uDC51 ':'')+x.label+'</text>';
+    // トラック(背景)
+    svg+='<rect x="'+padL+'" y="'+(y+9)+'" width="'+maxBarW+'" height="'+(rowH-20)+'" rx="6" fill="#0e1d2c" stroke="#27425c"/>';
+    // 値バー(グラデ + アニメ用 width をJSで遷移)
+    var gid='g'+i;
+    svg+='<defs><linearGradient id="'+gid+'" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="'+col2+'"/><stop offset="1" stop-color="'+col+'"/></linearGradient></defs>';
+    svg+='<rect class="vbar" data-i="'+i+'" x="'+padL+'" y="'+(y+9)+'" width="'+barW.toFixed(1)+'" height="'+(rowH-20)+'" rx="6" fill="url(#'+gid+')">'
+        +'<animate attributeName="width" from="'+(lastPct[i]!=null?(lastPct[i]*maxBarW).toFixed(1):0)+'" to="'+barW.toFixed(1)+'" dur="0.55s" fill="freeze" calcMode="spline" keySplines="0.22 1 0.36 1" keyTimes="0;1"/></rect>';
+    // 数値(相対指数 0-1000)
+    var disp=Math.round(pct*1000);
+    svg+='<text x="'+(W-padR+8)+'" y="'+(y+rowH/2+1)+'" font-size="14" font-weight="800" fill="'+(isBest?'#7ed98f':'#e6eff4')+'" font-family="sans-serif" font-variant-numeric="tabular-nums">'+disp+'</text>';
+    lastPct[i]=pct;
   });
-  // 入力反応のパルス
-  var box=document.getElementById('bars');
-  box.classList.remove('pulse'); void box.offsetWidth; box.classList.add('pulse');
+  svg+='</svg>';
+  document.getElementById('bars').innerHTML=svg;
   var diff=((best.s/rows[0].s-1)*100);
   var v;
   if(best.label===rows[0].label) v='<div class="verdict good">🎯 '+t('あなたの数値では','For your numbers,')+' <b>'+best.label+'</b> '+t('が最良です。定番が正解のパターン。','is best — the classic ratio wins.')+'</div>';
