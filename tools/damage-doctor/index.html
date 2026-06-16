@@ -97,13 +97,17 @@ function diagnose(){
 }
 renderQuiz();
 </script>
-<script>window.addEventListener('DOMContentLoaded',function(){
-  if((window.WOS_LANG||'ja')!=='en')return; var q=function(s){return document.querySelector(s);};
-  document.getElementById('htmlroot').lang='en';
-  document.title='Damage Doctor | Whiteout Tools Lab';
-  if(q('h1'))q('h1').innerHTML='Bear Hunt <span class="acc">Damage Doctor</span>';
-  if(q('.lead'))q('.lead').innerHTML='Figure out "why was my damage low this time" just by answering questions. We list the likely causes by priority with concrete next steps.';
-  var hs=document.querySelectorAll('h2'); if(hs[0])hs[0].textContent='Diagnosis';
-  var r=document.getElementById('result'); if(r&&/すべての質問/.test(r.textContent))r.innerHTML='<p style="color:var(--muted)">Answer all questions to see causes and fixes.</p>';
+<script>window.addEventListener("DOMContentLoaded",function(){
+if((window.WOS_LANG||"ja")!=="en")return;var q=function(s){return document.querySelector(s);};
+document.getElementById("htmlroot").lang="en";document.title="Damage Doctor | Whiteout Tools Lab";
+if(q("h1"))q("h1").innerHTML='Bear Hunt <span class="acc">Damage Doctor</span>';
+if(q(".lead"))q(".lead").innerHTML='Figure out "why was my damage low this time" just by answering questions. We list the likely causes by priority with concrete next steps.';
+var TR={"ホーム": "Home", "ダメージが伸びない原因診断": "Damage Doctor", "診断結果": "Diagnosis", "すべての質問に答えると、原因と対処が表示されます。": "Answer all questions to see causes and fixes.", "→ 左英雄チェッカー": "→ Left-Hero Checker", "→ 兵士比率シミュレータ": "→ Troop Ratio Simulator", "→ ダメージを数値で試算": "→ Estimate damage in numbers"};
+function tr(s){var k=s.replace(/\s+/g," ").trim();return TR[k]!=null?s.replace(k,TR[k]):s;}
+var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,null);var nodes=[],n;
+while(n=w.nextNode())nodes.push(n);
+nodes.forEach(function(node){var v=node.nodeValue;if(!v||!v.trim())return;
+if(!/[\u3041-\u3096\u30a1-\u30f6\u4e00-\u9faf]/.test(v))return;node.nodeValue=tr(v);});
+var crumb=document.querySelector(".crumb");if(crumb)crumb.innerHTML='<a href="../../index.html?lang=en">Home</a> &gt; Damage Doctor';
 });</script></body>
 </html>

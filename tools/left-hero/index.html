@@ -112,9 +112,9 @@ function buildResult(){
   // 各枠の有効/無効
   chosen.forEach(function(h){
     if(h.joiner){
-      html+='<div class="verdict good">✅ <b>'+h.name+'</b> — '+WOS_skillLabel(h.joiner.label)+t(' が乗りで反映されます。',' applies as a joiner buff.')+'</div>';
+      html+='<div class="verdict good">✅ <b>'+WOS_heroName(h)+'</b> — '+WOS_skillLabel(h.joiner.label)+t(' が乗りで反映されます。',' applies as a joiner buff.')+'</div>';
     }else{
-      html+='<div class="verdict bad">⚠ <b>'+h.name+'</b> — '+t('第1遠征スキルが熊で効きません。他の英雄に替えるのがおすすめです。','First expedition skill has no bear effect. Consider swapping this slot.')+'</div>';
+      html+='<div class="verdict bad">⚠ <b>'+WOS_heroName(h)+'</b> — '+t('第1遠征スキルが熊で効きません。他の英雄に替えるのがおすすめです。','First expedition skill has no bear effect. Consider swapping this slot.')+'</div>';
     }
   });
 

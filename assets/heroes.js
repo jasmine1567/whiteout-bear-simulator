@@ -215,7 +215,7 @@ window.WOS_skillLabel = function(label){
     [/追加攻撃/g,'extra attack'],[/追撃/g,'follow-up'],[/炎上/g,'burn'],[/呪い/g,'curse'],
     [/減衰バフ/g,'decaying buff'],[/固定/g,'flat '],
     [/盾弓/g,'Inf/Mks'],[/槍/g,'Lancer '],[/弓/g,'Mks '],[/盾兵/g,'Inf '],[/盾/g,'Inf '],
-    [/期待\s*\+?/g,'avg +'],[/で/g,' chance '],[/毎に?/g,' every '],[/保守的/g,'conservative'],
+    [/(\d+)回毎に?/g,'every $1x'],[/(\d+)回/g,'$1x'],[/期待\s*\+?/g,'avg +'],[/で/g,' chance '],[/毎に?/g,' every '],[/保守的/g,'conservative'],
     [/換算/g,'equiv.'],[/UP/g,''],[/T(?=[\s\)）/]|$)/g,'T'],
     [/ダメ\s*\+?/g,'DMG +']
   ];

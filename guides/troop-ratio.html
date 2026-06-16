@@ -74,5 +74,11 @@ document.getElementById('nav').innerHTML=WOS_NAV(1);
 document.getElementById('foot').innerHTML=WOS_FOOT(1);
 document.getElementById('updbox').innerHTML=WOS_UPDATEBOX({date:'2026-06-15',gen:16,note:'兵士比率シミュレータ連動'});
 </script>
-<script>(function(){var EN=(window.WOS_LANG==="en");if(EN){var ja=document.getElementById("bodyja"),en=document.getElementById("bodyen");if(ja)ja.style.display="none";if(en)en.style.display="block";var h1=document.getElementById("art-h1");if(h1)h1.innerHTML='Best troop ratio? 10:30:60 vs 10:10:80 vs 1:1:8';document.documentElement.lang="en";}})();</script></body>
+<script>(function(){var EN=(window.WOS_LANG==="en");if(EN){var ja=document.getElementById("bodyja"),en=document.getElementById("bodyen");if(ja)ja.style.display="none";if(en)en.style.display="block";var h1=document.getElementById("art-h1");if(h1)h1.innerHTML='Best troop ratio? 10:30:60 vs 10:10:80 vs 1:1:8';document.documentElement.lang="en";}})();</script><script>(function(){if((window.WOS_LANG||"ja")!=="en")return;
+window.crumbRelbarEN=1;
+var c=document.querySelector(".crumb");
+if(c)c.innerHTML='<a href="../index.html?lang=en">Home</a> &gt; '+'Best troop ratio? 10:30:60 vs 10:10:80 vs 1:1:8';
+var rb=document.querySelector(".relbar");
+if(rb)rb.innerHTML='<a href="../tools/left-hero/index.html?lang=en">→ Left-Hero Checker</a>'+'<a href="../tools/troop-ratio/index.html?lang=en">→ Troop Ratio Simulator</a>'+'<a href="../tools/damage-doctor/index.html?lang=en">→ Damage Doctor</a>'+'<a href="../tools/bear-hunt/index.html?lang=en">→ Damage Simulator</a>';
+})();</script></body>
 </html>
