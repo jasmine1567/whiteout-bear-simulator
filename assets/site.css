@@ -1,14 +1,14 @@
 /* ==== ホワサバ ツールラボ 共通スタイル ==== */
 :root{
-  --night:#0a141f; --panel:#101f2e; --panel2:#15293c; --line:#27425c;
+  --night:#0e1c2b; --panel:#152838; --panel2:#1b3349; --line:#2f4d68;
   --frost:#86d9ea; --frost-dim:#4f8aa0; --ember:#f2a23c; --ember-hi:#ffc473;
   --text:#e6eff4; --muted:#8aa3b3;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{
   background:
-    radial-gradient(1200px 500px at 80% -10%, rgba(134,217,234,.10), transparent 60%),
-    radial-gradient(900px 400px at 0% 110%, rgba(242,162,60,.07), transparent 60%),
+    radial-gradient(1200px 560px at 80% -8%, rgba(134,217,234,.16), transparent 62%),
+    radial-gradient(950px 450px at 0% 112%, rgba(242,162,60,.11), transparent 62%),
     var(--night);
   color:var(--text);
   font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic UI","Noto Sans JP",system-ui,sans-serif;
@@ -175,8 +175,8 @@ footer.sitefoot a:hover{color:var(--frost)}
 
 /* ==== v6: トップページ刷新(花形シミュ + 華やかツール) ==== */
 /* 花形ヒーロー */
-.hero-flag{position:relative;border-radius:20px;overflow:hidden;margin:18px 0 30px;
-  background:linear-gradient(135deg,#16314a 0%,#0e1d2c 55%,#1a2436 100%);
+.hero-flag{position:relative;border-radius:20px;overflow:hidden;margin:18px 0 30px;text-decoration:none;
+  background:linear-gradient(135deg,#1f4a6e 0%,#16334d 55%,#1d3a52 100%);
   border:1px solid var(--ember);box-shadow:0 8px 40px rgba(242,162,60,.18)}
 .hero-flag::before{content:"";position:absolute;inset:0;
   background:radial-gradient(circle at 80% 20%,rgba(242,162,60,.22),transparent 55%);pointer-events:none}
@@ -184,7 +184,7 @@ footer.sitefoot a:hover{color:var(--frost)}
 .hero-flag .hf-text{flex:1;min-width:260px}
 .hf-badge{display:inline-flex;align-items:center;gap:6px;background:var(--ember);color:#1a1208;
   font-size:11.5px;font-weight:800;letter-spacing:.08em;padding:4px 12px;border-radius:20px;margin-bottom:12px}
-.hf-title{font-size:30px;font-weight:900;line-height:1.18;margin-bottom:10px}
+.hf-title{font-size:30px;font-weight:900;line-height:1.18;margin-bottom:10px;text-decoration:none}
 .hf-title .acc{color:var(--ember-hi)}
 .hf-desc{font-size:14px;color:var(--text);line-height:1.7;margin-bottom:18px}
 .hf-feats{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
@@ -222,11 +222,11 @@ footer.sitefoot a:hover{color:var(--frost)}
   background:rgba(0,0,0,.35);color:#fff;border-radius:6px;padding:2px 8px}
 .tool-tile .tt-go{margin-top:10px;font-size:11px;font-weight:700;color:rgba(255,255,255,.9)}
 /* カラーバリエーション */
-.tt-c1{background:linear-gradient(150deg,#2e6b8f,#1a4259)}
-.tt-c2{background:linear-gradient(150deg,#8f5a2e,#593619)}
-.tt-c3{background:linear-gradient(150deg,#5a8f3a,#34591f)}
-.tt-c4{background:linear-gradient(150deg,#8f2e5a,#591934)}
-.tt-c5{background:linear-gradient(150deg,#6b4f9e,#3a2e59)}
+.tt-c1{background:linear-gradient(150deg,#3d9bc7,#2c6f96)}
+.tt-c2{background:linear-gradient(150deg,#e89a4d,#c47428)}
+.tt-c3{background:linear-gradient(150deg,#6fb83f,#4a8f2a)}
+.tt-c4{background:linear-gradient(150deg,#d44d83,#a8345f)}
+.tt-c5{background:linear-gradient(150deg,#9b78d8,#6f4faf)}
 .tool-tile:hover{border-color:rgba(255,255,255,.4)}
 
 /* 読み物アコーディオン見出し(控えめ) */
