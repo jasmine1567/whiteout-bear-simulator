@@ -243,22 +243,27 @@ window.WOS_genName = function(gen){
   return gen===0?'常設':'第'+gen+'世代';
 };
 
-/* 専用装備のステータス上昇(世代別・推定値) gearを持つ英雄に付与 */
+/* 専用装備(Exclusive Gear)のステータス上昇(世代別・推定値)
+   公式: 専用装備は金(SSR/神話)英雄が装備でき、英雄攻撃/防御/HPに加え
+   指揮(Command)で兵科HP・兵科殺傷を強化する。熊狩で効くのは兵科殺傷(と一部攻撃)。
+   公開の正確な数値表は無いため「制約付き推定」: 世代が上がるほど強く、殺傷主体で配分。 */
 (function(){
   if(!window.WOS_HEROES) return;
   window.WOS_HEROES.forEach(function(hh){
-    if(!hh.gear) return;
-    // Lv10到達時に与える兵科ステ%(推定)。世代が上がるほど強い専用装備。
-    // 第1世代 ≈ 攻撃/致命+8%、以降 世代ごとに +0.8%ずつ逓増(上限20%程度)
+    // 専用装備はSSR(金)英雄のみ。R/SRは対象外。
+    if(hh.rar!=='SSR') return;
     var g = hh.gen===0 ? 1 : hh.gen;
-    var base = Math.min(0.20, 0.08 + (g-1)*0.008);  // 8%→約20%
-    // gear.type(集結specialの種類)に合わせて、ステ上昇も攻撃寄り/致命寄りに配分
-    if(hh.gear.type==='atk'){
-      hh.gearStat = {a: base, l: base*0.4};       // 攻撃型: 攻撃主体
-    }else if(hh.gear.type==='leth'){
-      hh.gearStat = {a: base*0.4, l: base};       // 致命型: 致命主体
+    // Lv10(最大)到達時に与える兵科ステ%(推定)。第1世代≈8% → 後期世代≈最大20%。
+    var base = Math.min(0.20, 0.08 + (g-1)*0.008);
+    if(hh.gear && hh.gear.type==='atk'){
+      // 集結攻撃specialを持つ英雄: 攻撃主体
+      hh.gearStat = {a: base, l: base*0.5};
+    }else if(hh.gear && hh.gear.type==='leth'){
+      // 集結殺傷specialを持つ英雄: 殺傷主体
+      hh.gearStat = {a: base*0.5, l: base};
     }else{
-      hh.gearStat = {a: base*0.7, l: base*0.7};
+      // 通常SSR: 指揮ボーナスは兵科殺傷が主(熊狩で有効)
+      hh.gearStat = {a: base*0.5, l: base};
     }
   });
 })();
