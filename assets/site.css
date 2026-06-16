@@ -164,3 +164,11 @@ footer.sitefoot a:hover{color:var(--frost)}
 .join-card .jc-ico{font-size:26px;line-height:1;margin-bottom:6px}
 .join-card .jc-t{font-size:14px;font-weight:800;color:var(--text);margin-bottom:5px}
 .join-card .jc-d{font-size:12.5px;color:var(--muted);line-height:1.7}
+
+/* ==== 運営者ミニカード(お問い合わせ等) ==== */
+.owner-mini{display:flex;align-items:center;gap:14px;background:var(--panel2);border:1px solid var(--line);
+  border-radius:12px;padding:12px 14px;margin:14px 0 18px;text-decoration:none;transition:border-color .15s}
+.owner-mini:hover{border-color:var(--ember)}
+.owner-mini img{width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid var(--ember);flex-shrink:0}
+.owner-mini .om-name{font-size:15px;font-weight:800;color:var(--text)}
+.owner-mini .om-sub{font-size:12px;color:var(--ember-hi);margin-top:3px}
