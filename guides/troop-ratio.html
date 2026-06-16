@@ -8,6 +8,16 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
 <link rel="stylesheet" href="../assets/site.css">
 <!-- ▼ AdSense承認後: コードスニペットを貼り付け ▼ -->
+<link rel="icon" type="image/png" href="../favicon.png">
+<link rel="shortcut icon" href="../favicon.ico">
+<link rel="apple-touch-icon" href="../favicon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ホワサバ ツールラボ">
+<meta property="og:title" content="【ホワサバ】熊狩りの兵士比率は何が正解?10:30:60・10:10:80・1:1:8を比較 | ホワサバ ツールラボ">
+<meta property="og:description" content="ホワサバ熊狩りの兵士比率を比較解説。10:30:60・10:10:80・1:1:8・弓100%の違いと、弓全振りが損な理由。あなたの兵数で最適比率を出すシミュレータ付き。">
+<meta property="og:url" content="https://whitesim-lab.com/guides/troop-ratio.html">
+<meta property="og:image" content="https://whitesim-lab.com/favicon.png">
+<meta name="twitter:card" content="summary">
 </head>
 <body>
 <div id="nav"></div>
@@ -44,6 +54,14 @@
 <h2>集結主と乗り側で考え方が違う</h2>
 <p>集結主(主催)は、3英雄の遠征スキルを全発動させるために<b>各兵種を最低1体は入れる</b>必要があります。一方、乗り側は兵種の縛りが緩いため、より自由に弓へ寄せられます。同じ「比率」でも立場で最適が少し変わる点は覚えておきましょう。</p>
 
+<h2>世代で最適比率が変わる「Gen8の壁」</h2>
+<p>比率に唯一の正解がない最大の理由が、世代によって兵種の殺傷力バランスが変わることです。海外コミュニティでは <b>第8世代を境に、弓(マークスマン)の殺傷力が槍(ランサー)を大きく上回る</b>と指摘されています。具体的な目安として、Gen8以降で「弓の殺傷が槍より358以上高い」状態になったら、槍を10〜15%まで減らし、弓を85%以上に寄せるのが推奨されています。</p>
+<p>逆にGen8より前は、槍と弓の殺傷が近いため、槍をそれなりに残した10:30:60前後がバランス良好です。つまり、自分のサーバーの世代と、プロフィールで見られる兵種別の殺傷力を見て調整するのが正解です。</p>
+<div class="callout"><b>📊 数値で見る兵種の素の火力</b><br>コミュニティの「真空(他の補正なし)」検証では、弓を100%としたとき槍は約80〜90%、盾は約20〜30%の火力とされています。盾の火力が極端に低いのは、盾が本来「壁」役で攻撃ステータスが低いためです。だからこそ熊狩り(反撃なし)では盾を最小限にするのが合理的です。</div>
+
+<h2>具体例:比率を変えると合計はどう動くか</h2>
+<p>たとえば総兵18万を「0:0:100(弓のみ)」で送る場合と「10:30:60」で送る場合を比べてみましょう。弓のみは一見火力が最大に思えますが、①弓1兵種に集中することで過密度の逓減(平方根効果)が強く働き、②盾・槍ゼロのペナルティも乗ります。結果として、適度に散らした10:30:60の方が合計ダメージが高くなるケースが多く報告されています。</p>
+<p>これはあくまで「多くの人に当てはまる傾向」であり、あなたの正確な最適比率は殺傷ステータス次第です。1%〜5%刻みで微調整して自分のピークを探すのが上級者の手法。兵士比率シミュレータなら、あなたの数字で複数の比率を一度に比較できます。</p>
 <h2>結局どうすればいい?</h2>
 <p>迷ったら10:30:60で問題ありません。ただし、兵種ごとの攻撃力ボーナスに偏りがある人(弓だけ極端に高い等)は、最適比率がずれます。下のシミュレータに自分の兵数とボーナスを入れれば、主要比率を横並びで比較して最良を判定できます。</p>
 <div class="cta">
@@ -64,6 +82,14 @@
 <div class="ad-slot"></div>
 <h2>Leader vs joiner differ</h2>
 <p>The rally leader needs at least one of each troop type to trigger all 3 heroes' skills. Joiners are freer to lean marksman.</p>
+<h2>The "Gen 8 wall": optimal ratio changes by generation</h2>
+<p>The biggest reason there's no single correct ratio is that lethality balance between troop types shifts by generation. The overseas community notes that <b>after Generation 8, marksman lethality far exceeds lancer</b>. As a guide, once marksman lethality is 358+ higher than lancer in Gen8+, cut lancers to 10-15% and push marksman above 85%.</p>
+<p>Before Gen8, lancer and marksman lethality are close, so a balanced ~10:30:60 keeping some lancers works well. The right move is to adjust based on your server's generation and the per-type lethality shown in your profile.</p>
+<div class="callout"><b>📊 Raw troop damage by the numbers</b><br>Community "vacuum" tests (no other buffs) put lancers at ~80-90% and infantry at ~20-30% with marksman at 100%. Infantry damage is so low because infantry are meant as a "wall" with low attack stats. That's exactly why minimizing infantry is rational in Bear Hunt (no counterattack).</div>
+
+<h2>Example: how total damage moves when you change ratio</h2>
+<p>Compare sending 180k total as "0:0:100 (marksman only)" vs "10:30:60." Marksman-only looks like max damage, but (1) concentrating in one type triggers strong crowding decay (square-root effect), and (2) the zero-infantry/lancer penalty applies. As a result, a moderately spread 10:30:60 often gives higher total damage.</p>
+<p>This is a "tendency that fits most people"; your exact optimum depends on your lethality stats. Advanced players fine-tune in 1-5% steps to find their peak. The Troop Ratio Simulator compares multiple ratios with your numbers at once.</p>
 <div class="cta"><a class="btn" href="../tools/troop-ratio/index.html?lang=en">Compare your optimum</a></div></div><div class="relbar"><a href="../tools/left-hero/index.html">→ 左英雄チェッカー</a><a href="../tools/troop-ratio/index.html">→ 兵士比率シミュレータ</a><a href="../tools/damage-doctor/index.html">→ ダメージ診断</a><a href="../tools/bear-hunt/index.html">→ 熊狩シミュレーター</a></div>
 </div>
 <div id="foot"></div>

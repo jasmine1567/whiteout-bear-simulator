@@ -231,3 +231,7 @@ footer.sitefoot a:hover{color:var(--frost)}
 
 /* 読み物アコーディオン見出し(控えめ) */
 .read-sec{margin-top:30px}
+
+/* 記事内のコード/数式表記 */
+code{background:var(--night);border:1px solid var(--line);border-radius:5px;
+  padding:2px 7px;font-size:13px;color:var(--frost-hi,var(--ember-hi));font-family:"SF Mono",Menlo,Consolas,monospace}

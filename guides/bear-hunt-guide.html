@@ -4,7 +4,17 @@
 <title id="pgtitle">熊狩行動のダメージの仕組みを徹底解説 | ホワサバ ツールラボ</title><meta name="description" id="pgdesc" content="ホワサバ熊狩行動のダメージの仕組みを徹底解説。兵力・集結主・参加者4枠・兵種比率・シリル・専用装備までの総合ガイド。">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://docs.google.com; object-src 'none'; base-uri 'none'">
 <link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/guides/bear-hunt-guide.html"><link rel="alternate" hreflang="en" href="https://whitesim-lab.com/guides/bear-hunt-guide.html?lang=en">
-<link rel="stylesheet" href="../assets/site.css"></head><body>
+<link rel="stylesheet" href="../assets/site.css"><link rel="icon" type="image/png" href="../favicon.png">
+<link rel="shortcut icon" href="../favicon.ico">
+<link rel="apple-touch-icon" href="../favicon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ホワサバ ツールラボ">
+<meta property="og:title" content="熊狩行動のダメージの仕組みを徹底解説 | ホワサバ ツールラボ">
+<meta property="og:description" content="ホワサバ熊狩行動のダメージの仕組みを徹底解説。兵力・集結主・参加者4枠・兵種比率・シリル・専用装備までの総合ガイド。">
+<meta property="og:url" content="https://whitesim-lab.com/guides/bear-hunt-guide.html">
+<meta property="og:image" content="https://whitesim-lab.com/favicon.png">
+<meta name="twitter:card" content="summary">
+</head><body>
 <div id="nav"></div><div class="wrap"><div class="crumb" id="crumb"></div>
 <div id="updbox"></div>
 <div id="bodyja"><h1 id="art-h1">熊狩行動のダメージの仕組みを徹底解説</h1>
@@ -19,6 +29,22 @@
 <li><b>イベント固有の補正</b> — 罠の強化レベル(対熊攻撃ボーナス)</li>
 <li><b>ポイント補正</b> — 専門家シリルの天賦「狩人の心得」(自分の獲得ポイントが最大+30%)</li>
 </ul>
+<h2>ダメージ計算式を深掘り(コミュニティ仮説)</h2>
+<p>ここからは少し踏み込んだ「読み物」として、海外コミュニティで提唱されている熊狩りのダメージ計算式の考え方を紹介します。公式が正確な式を公開していないため、以下はあくまで有志による検証・推定ですが、実際のダメージ傾向をよく説明できるとして広く支持されています。</p>
+
+<h3>基本構造:攻撃 × 殺傷 ÷ 防御</h3>
+<p>コミュニティの解説(Kingshot系の計算解説など。WoSと同系統のエンジンとされる)では、1兵あたりの攻撃力はおおむね次の形で表されます。</p>
+<p><code>1兵あたりの攻撃 = 基礎攻撃 × (1 + 攻撃バフ) × 基礎殺傷 ÷ 100</code></p>
+<p>これに兵数を掛け、最後に熊の防御で割ってダメージが出ます。<code>ダメージ ≈ 有効兵力 × 1兵あたりの攻撃 ÷ 熊の防御</code> という構造です。攻撃と殺傷が掛け算で入っているため、<b>どちらか一方が低いと全体が伸びない</b>——これが「攻撃と殺傷をバランスよく上げるべき」と言われる理論的根拠です。</p>
+
+<h3>最重要:有効兵力は「平方根」で効く</h3>
+<p>このモデルで最も重要なのが、兵数がそのまま掛かるのではなく<b>平方根的に圧縮される</b>という点です。コミュニティの式では、有効兵力がおおよそ <code>有効兵力 = √(兵数 × 基準値)</code> の形で表現されます。これにより「兵数を2倍にしてもダメージは約1.4倍(√2)」という、実プレイでよく観測される現象が説明できます。</p>
+<p>この「過密度の逓減」があるため、1兵種に全部を詰め込むと効率が悪化します。弓に全振りするより、火力の高い弓を主体に槍も混ぜた方が合計が伸びる——兵種比率の議論はすべてこの仮説に行き着きます。当サイトのシミュレーターでは、この逓減の強さを「過密度減衰ρ」という調整項目として実装しており、自分の実測に合わせて微調整できます。</p>
+
+<h3>表示ステータスは「本当の数字ではない」説</h3>
+<p>もう一つコミュニティで有名なのが、<b>訓練所に表示される兵の攻撃・殺傷の数字は、内部計算の実数値そのままではない</b>という指摘です。たとえば「T6弓 攻撃10/殺傷11」と表示されていても、内部ではまったく別スケールの値(例:攻撃974/殺傷相当)が使われている、という検証報告があります。このため、表示値だけで「弓は攻撃10しかないから弱い」と判断するのは誤りで、内部スケールを推定したツールで比較する方が実態に近い、とされています。</p>
+
+<div class="callout"><b>⚠ これらはあくまで「仮説」です</b><br>上記はコミュニティの検証に基づく推定であり、公式の内部式の完全な再現ではありません。当サイトのシミュレーターも同じく「制約付き推定」です。だからこそ、最後は自分の実測ポイントでキャリブレーション(補正係数Cの調整)を行い、自分の環境に合わせるのが最も正確になります。仮説を鵜呑みにせず、自分の数字で検証する——それが熊狩り攻略の最短ルートです。</div>
 <h2>参加者スキル「4枠」の正しい理解</h2>
 <p>もっとも誤解が多いのがここです。集結に参加する側は、編成の左端(1人目)に置いた英雄の「第1遠征スキル」だけが集結全体へのバフ候補になります。英雄のレベルや星は関係なく、見られるのはスキルレベルのみです。採用枠は4つで、基本は先着順、ただし後から参加した人のスキルレベルが採用済みのものより高い場合のみ入れ替わります。</p>
 <p>もう一つ重要なのは合成のされ方です。同じ種類のスキルは「足し算」、違う種類のスキルは「かけ算」で効きます。たとえば「全軍与ダメ+25%」を4人並べると合計+100%(2.0倍)ですが、「与ダメ+25%×2人」と「攻撃+25%×2人」に分けると1.5×1.5=2.25倍となり、同じスキルレベルでも約12%高くなります。与ダメ系・攻撃系・殺傷系・敵被ダメ系・確率系をバラけさせるのが理論上の最適です。</p>
@@ -56,6 +82,22 @@
 <li><b>Event-specific bonus</b> — trap upgrade level (anti-bear attack bonus)</li>
 <li><b>Point bonus</b> — expert Cyrille's "Hunter's Insight" talent (up to +30% to your earned points)</li>
 </ul>
+<h2>A deeper look at the damage formula (community hypotheses)</h2>
+<p>As a bit of deeper "reading," here are the community-proposed ideas about the Bear Hunt damage formula. Since the official exact formula isn't published, the below is fan verification/estimation — but it's widely supported for explaining real damage trends well.</p>
+
+<h3>Basic structure: Attack × Lethality ÷ Defense</h3>
+<p>Community breakdowns (e.g. Kingshot-family, considered the same engine family as WoS) express per-troop attack roughly as:</p>
+<p><code>attack per troop = base attack × (1 + attack bonus) × base lethality ÷ 100</code></p>
+<p>Multiply by troop count and divide by bear defense for damage: <code>damage ≈ effective force × attack-per-troop ÷ bear defense</code>. Because attack and lethality multiply, <b>a low value on either side caps the whole</b> — the theoretical basis for "raise attack and lethality in balance."</p>
+
+<h3>Most important: effective force scales by square root</h3>
+<p>The crucial point: troop count isn't applied linearly but <b>compressed by square root</b>. The community formula expresses effective force roughly as <code>effective force = √(troops × baseline)</code>. This explains the commonly-observed "double the troops, only ~1.4× damage (√2)."</p>
+<p>Because of this crowding decay, cramming one type loses efficiency. Leading with high-damage marksman but mixing lancers beats pure marksman — every ratio debate traces back to this hypothesis. Our simulator implements the decay strength as an adjustable "crowding decay ρ" you can fine-tune to your measurements.</p>
+
+<h3>The "displayed stats aren't the real numbers" claim</h3>
+<p>Another famous community point: <b>the troop attack/lethality shown in the training camp aren't the actual internal values</b>. Even if "T6 marksman attack 10 / lethality 11" shows, tests report the internal calc uses a totally different scale (e.g. attack ~974). So judging "marksman is weak, only attack 10" from displayed values is wrong; comparing via a tool that estimates the internal scale is closer to reality.</p>
+
+<div class="callout"><b>⚠ These are "hypotheses"</b><br>The above is estimation from community verification, not a full reconstruction of the official internal formula. Our simulator is likewise a "constraint-based estimate." That's exactly why calibrating with your own measured points (adjusting factor C) to fit your environment is most accurate. Don't take hypotheses at face value — verify with your own numbers. That's the fastest route to mastering Bear Hunt.</div>
 <h2>Understanding the joiner "4 slots" correctly</h2>
 <p>This is the most misunderstood part. On the joiner side, only the "first expedition skill" of the hero placed at the far left (slot 1) becomes a buff candidate for the whole rally. Hero level and stars don't matter; only skill level is read. There are 4 slots, first-come by default, but a later joiner replaces a slot only if their skill level is higher than one already taken.</p>
 <p>Another key point is how buffs combine. Same-type skills add; different types multiply. Four "+25% all-army DMG" sum to +100% (2.0x), but splitting into two "+25% DMG" and two "+25% ATK" gives 1.5x1.5 = 2.25x — about 12% more at the same skill level. Spreading DMG / ATK / Lethality / enemy-DMG-taken / proc types is the theoretical optimum.</p>
