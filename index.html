@@ -2,63 +2,117 @@
 <html lang="ja" id="htmlroot"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title id="pgtitle">ホワサバ熊狩り攻略 計算ツール&データ解析 | ホワサバ ツールラボ</title>
-<meta name="description" id="pgdesc" content="ホワイトアウト・サバイバルの熊狩り(Bear Hunt)攻略。ダメージシミュレーター・左英雄チェッカー・兵士比率比較・原因診断など無料ツールと11本の攻略記事と診断コンテンツ。">
+<meta name="description" id="pgdesc" content="ホワイトアウト・サバイバルの熊狩り(Bear Hunt)攻略。ダメージシミュレーターを中心に、左英雄チェッカー・兵士比率比較・指揮官タイプ診断など遊べる無料ツールと11本の攻略記事。">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://docs.google.com; object-src 'none'; base-uri 'none'">
 <link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/"><link rel="alternate" hreflang="en" href="https://whitesim-lab.com/?lang=en">
 <link rel="stylesheet" href="assets/site.css">
 </head><body>
 <div id="nav"></div>
 <div class="wrap wide">
-<h1 id="hero-h1"></h1>
-<p class="lead" id="hero-lead"></p>
+<h1 id="hero-h1" style="font-size:22px;margin-bottom:4px"></h1>
+<p class="lead" id="hero-lead" style="margin-bottom:8px"></p>
+
+<!-- 花形:熊狩シミュレーター -->
+<a class="hero-flag" id="flagLink" href="tools/bear-hunt/index.html">
+  <div class="hf-in">
+    <div class="hf-text">
+      <span class="hf-badge" id="hfBadge"></span>
+      <div class="hf-title" id="hfTitle"></div>
+      <div class="hf-desc" id="hfDesc"></div>
+      <div class="hf-feats" id="hfFeats"></div>
+      <span class="hf-cta" id="hfCta"></span>
+    </div>
+    <div class="hf-visual">
+      <div class="hf-bear">🐻</div>
+      <div class="hf-minibars">
+        <div class="hf-mb" style="width:90%;animation-delay:0s"></div>
+        <div class="hf-mb" style="width:70%;animation-delay:.3s"></div>
+        <div class="hf-mb" style="width:80%;animation-delay:.6s"></div>
+      </div>
+    </div>
+  </div>
+</a>
+
 <div class="ad-slot"></div>
-<div id="cats"></div>
+
+<!-- 華やかツール -->
+<div class="sec-head"><span class="sh-ico">🎮</span><span class="sh-t" id="playT"></span><span class="sh-line"></span></div>
+<div class="tool-grid" id="playGrid"></div>
+
+<!-- 読み物(アコーディオン・閉) -->
+<div class="read-sec">
+<div class="sec-head"><span class="sh-ico">📖</span><span class="sh-t" id="readT"></span><span class="sh-line"></span></div>
+<p style="font-size:12.5px;color:var(--muted);margin:-6px 0 12px" id="readNote"></p>
+<div id="readCats"></div>
+</div>
+
 <div id="about-sec"></div>
 </div>
 <div id="foot"></div>
 <script src="assets/config.js"></script><script src="assets/toolkit.js"></script>
 <script>
-var CATS=[{"ico": "🔧", "tj": "計算ツール", "te": "Calculators", "dj": "数字で編成を判断する4つのツール", "de": "4 tools to decide formations by the numbers", "items": [["tools/bear-hunt/index.html", "熊狩ダメージ・シミュレーター", "Bear Hunt Damage Simulator", "集結1回のダメージを試算。全62英雄・強化アドバイス付き", "Estimate one rally's damage. 62 heroes, upgrade advice", "看板", "Flagship"], ["tools/left-hero/index.html", "左英雄チェッカー", "Left-Hero Checker", "乗りで使う左端英雄が熊に効くか一発判定", "Instantly check if your left hero works", null, null], ["tools/troop-ratio/index.html", "兵士比率シミュレータ", "Troop Ratio Simulator", "10:30:60など主要比率をあなたの兵数で比較", "Compare major ratios for your troop count", null, null], ["tools/damage-doctor/index.html", "ダメージが伸びない原因診断", "Damage Doctor", "質問に答えて原因を優先度順に特定", "Answer questions, pinpoint causes by priority", null, null]], "open": true}, {"ico": "🎉", "tj": "お楽しみ・診断", "te": "Fun & Quiz", "dj": "遊んで楽しむコンテンツ", "de": "Content to play and enjoy", "items": [["tools/commander-type/index.html", "🐻 熊狩り指揮官タイプ診断", "🐻 Bear Hunt Commander Type Quiz", "6つの質問であなたの熊狩りスタイルを6タイプ診断。結果はXでシェア!", "6 questions reveal your Bear Hunt style. Share on X!", "新", "New"]], "open": false}, {"ico": "🔰", "tj": "はじめての方へ", "te": "Getting Started", "dj": "熊狩りの基礎と使い方", "de": "Bear Hunt basics and how-to", "items": [["guides/beginner-faq.html", "熊狩り初心者FAQ", "Bear Hunt beginner FAQ", "参加条件・兵士・報酬などQ&Aで", "Join, troops, rewards in Q&A", "新", "New"], ["guides/how-to-use.html", "シミュレーターの使い方", "How to use the simulator", "どの画面の数値を入れるか解説", "Which screen values to enter", null, null], ["guides/bear-hunt-guide.html", "ダメージの仕組みを徹底解説", "How damage works (full guide)", "スキル反映・4枠・比率の総合ガイド", "Skills, 4 slots, ratios — full guide", null, null]], "open": false}, {"ico": "⚔️", "tj": "編成・戦術", "te": "Formation & Tactics", "dj": "左英雄・兵士比率・集結主の最適化", "de": "Optimize left hero, ratio, leader", "items": [["guides/left-hero.html", "左英雄とは?4枠ルール完全解説", "What is the left hero? 4-slot rule", "乗りで効く英雄と採用ルール", "Effective joiner heroes and slot rules", null, null], ["guides/troop-ratio.html", "兵士比率は何が正解?", "What troop ratio is best?", "10:30:60・弓100%を比較", "Compare 10:30:60 and 100% marksman", null, null], ["guides/leader-formation.html", "集結主におすすめの編成", "Best rally-leader formations", "主催の英雄選びと世代の考え方", "Leader hero picks and generations", null, null], ["guides/common-myths.html", "よくある勘違い7選", "7 common myths", "弓100%最強などの誤解を解消", "Debunk 100%-marksman and more", "新", "New"]], "open": false}, {"ico": "💰", "tj": "育成・課金", "te": "Progression & Spending", "dj": "無課金・微課金の伸ばし方", "de": "F2P and light-spender growth", "items": [["guides/f2p-damage.html", "無課金でダメージを伸ばす方法", "Grow damage free-to-play", "満員兵・左英雄・シリルの優先度", "Full troops, left hero, Cyrille priority", "新", "New"], ["guides/light-spender.html", "微課金の投資先ランキング", "Light-spender investment ranking", "ROIで見る課金の優先順位", "Spending priority by ROI", "新", "New"], ["guides/cyril-talent.html", "シリルはどこまで強い?天賦検証", "How strong is Cyrille? Talent verified", "狩人の心得を数字で検証", "Hunter's Insight verified by numbers", "新", "New"], ["guides/damage-not-growing.html", "ダメージが伸びない原因まとめ", "Why damage isn't growing", "6大原因と対処", "6 causes and fixes", null, null]], "open": false}];
+var PLAY=[["tools/left-hero/index.html", "左英雄チェッカー", "Left-Hero Checker", "乗りで効く英雄を一発判定", "Instantly check your left hero", "🔍", "tt-c1", null, null], ["tools/troop-ratio/index.html", "兵士比率シミュレータ", "Troop Ratio Simulator", "比率を変えるとバーが動く!", "Bars move as you tweak ratios!", "📊", "tt-c3", null, null], ["tools/damage-doctor/index.html", "ダメージ原因診断", "Damage Doctor", "低い原因を質問で特定", "Find why your damage is low", "🩺", "tt-c4", null, null], ["tools/commander-type/index.html", "指揮官タイプ診断", "Commander Type Quiz", "あなたは何タイプ?Xでシェア", "Your type? Share on X", "🎉", "tt-c5", "人気", "Popular"]];
+var READ=[{"ico": "🔰", "tj": "はじめての方へ", "te": "Getting Started", "items": [["guides/beginner-faq.html", "熊狩り初心者FAQ", "Bear Hunt beginner FAQ", "新", "New"], ["guides/how-to-use.html", "シミュレーターの使い方", "How to use the simulator", null, null], ["guides/bear-hunt-guide.html", "ダメージの仕組みを徹底解説", "How damage works (full guide)", null, null]]}, {"ico": "⚔️", "tj": "編成・戦術", "te": "Formation & Tactics", "items": [["guides/left-hero.html", "左英雄とは?4枠ルール完全解説", "What is the left hero? 4-slot rule", null, null], ["guides/troop-ratio.html", "兵士比率は何が正解?", "What troop ratio is best?", null, null], ["guides/leader-formation.html", "集結主におすすめの編成", "Best rally-leader formations", null, null], ["guides/common-myths.html", "よくある勘違い7選", "7 common myths", "新", "New"]]}, {"ico": "💰", "tj": "育成・課金", "te": "Progression & Spending", "items": [["guides/f2p-damage.html", "無課金でダメージを伸ばす方法", "Grow damage free-to-play", "新", "New"], ["guides/light-spender.html", "微課金の投資先ランキング", "Light-spender investment ranking", "新", "New"], ["guides/cyril-talent.html", "シリルはどこまで強い?天賦検証", "How strong is Cyrille? Talent verified", "新", "New"], ["guides/damage-not-growing.html", "ダメージが伸びない原因まとめ", "Why damage isn't growing", null, null]]}];
 (function(){
   var EN=(window.WOS_LANG==='en');
   document.getElementById('htmlroot').lang=EN?'en':'ja';
   if(EN){
     document.getElementById('pgtitle').textContent='Whiteout Survival Bear Hunt Tools & Guides | Whiteout Tools Lab';
-    document.getElementById('pgdesc').content='Whiteout Survival Bear Hunt tools and 11 guides: damage simulator, left-hero checker, troop-ratio compare, damage diagnosis. Free.';
+    document.getElementById('pgdesc').content='Whiteout Survival Bear Hunt: a damage simulator plus left-hero checker, troop-ratio compare, a commander-type quiz, and 11 guides. Free.';
   }
-  document.getElementById('hero-h1').innerHTML = EN
-    ? 'Whiteout Survival<br>Bear Hunt <span class="acc">Tools & Guides</span>'
-    : 'ホワイトアウト・サバイバル<br>熊狩り<span class="acc">攻略ツール&データ解析</span>';
-  document.getElementById('hero-lead').textContent = EN
-    ? 'Tackle Whiteout Survival\'s Bear Hunt with data analysis and calculators. Decide your formation by the numbers, not guesswork. Free, unofficial.'
-    : '『ホワイトアウト・サバイバル』の熊狩り(Bear Hunt)を、データ解析と計算ツールで攻略。「なんとなく」ではなく「数字で納得して」編成を決められます。';
-  // カテゴリ・アコーディオン描画
-  var html='';
-  CATS.forEach(function(c,ci){
+  document.getElementById('hero-h1').innerHTML=EN?'Whiteout Survival — Bear Hunt':'ホワイトアウト・サバイバル 熊狩り攻略';
+  document.getElementById('hero-lead').textContent=EN
+    ?'Free tools and guides to crush the Bear Hunt event — decide by the numbers, and have fun doing it.'
+    :'熊狩り(Bear Hunt)を攻略する無料ツール&攻略集。数字で納得して、楽しく強くなろう。';
+
+  // 花形
+  document.getElementById('hfBadge').textContent=EN?'★ FLAGSHIP TOOL':'★ 看板ツール';
+  document.getElementById('hfTitle').innerHTML=EN
+    ?'🐻 Bear Hunt<br><span class="acc">Damage Simulator</span>'
+    :'🐻 熊狩ダメージ<br><span class="acc">シミュレーター</span>';
+  document.getElementById('hfDesc').textContent=EN
+    ?'Set your heroes, troops, gear and the Cyrille talent to estimate one rally\'s damage. 62 heroes, probability-skill ranges, and a ranked "what to upgrade next".'
+    :'英雄・兵士・専用装備・シリル天賦を設定して、集結1回のダメージを試算。全62英雄収録、確率スキルのダメージ幅、「次に強化すべき順」ランキングまで。';
+  var feats=EN?['62 heroes','Upgrade ranking','Calibration','Damage range']:['全62英雄','強化ランキング','実測補正','ダメージ幅'];
+  document.getElementById('hfFeats').innerHTML=feats.map(function(f){return '<span class="hf-feat">✓ '+f+'</span>';}).join('');
+  document.getElementById('hfCta').innerHTML=(EN?'Open the Simulator':'シミュレーターを使う')+' →';
+  if(EN) document.getElementById('flagLink').href='tools/bear-hunt/index.html?lang=en';
+
+  // 華やかツール
+  document.getElementById('playT').textContent=EN?'Play with the tools':'遊べるツール';
+  document.getElementById('playGrid').innerHTML=PLAY.map(function(p){
+    var href=p[0]+(EN?'?lang=en':'');
+    var name=EN?p[2]:p[1], desc=EN?p[4]:p[3], badge=EN?p[8]:p[7];
+    return '<a class="tool-tile '+p[6]+'" href="'+href+'">'
+      +(badge?'<span class="tt-badge">'+badge+'</span>':'')
+      +'<span class="tt-ico">'+p[5]+'</span>'
+      +'<div class="tt-name">'+name+'</div>'
+      +'<div class="tt-desc">'+desc+'</div>'
+      +'<div class="tt-go">'+(EN?'TRY IT →':'あそぶ →')+'</div></a>';
+  }).join('');
+
+  // 読み物アコーディオン
+  document.getElementById('readT').textContent=EN?'Reading material':'じっくり読む攻略記事';
+  document.getElementById('readNote').textContent=EN?'Optional deep-dives — open a category when you have time.':'時間のあるときにどうぞ。気になるカテゴリだけ開けます。';
+  document.getElementById('readCats').innerHTML=READ.map(function(c){
     var items=c.items.map(function(it){
       var href=it[0]+(EN?'?lang=en':'');
-      var title=EN?it[2]:it[1], desc=EN?it[4]:it[3];
-      var badge=EN?it[6]:it[5];
+      var title=EN?it[2]:it[1], badge=EN?it[4]:it[3];
       return '<a class="cat-item" href="'+href+'"><div class="ci-title">'+title
-        +(badge?'<span class="ci-badge">'+badge+'</span>':'')+'</div>'
-        +'<div class="ci-desc">'+desc+'</div></a>';
+        +(badge?'<span class="ci-badge">'+badge+'</span>':'')+'</div></a>';
     }).join('');
-    html+='<div class="cat'+(c.open?' open':'')+'" data-ci="'+ci+'">'
-      +'<div class="cat-head"><span class="cat-ico">'+c.ico+'</span>'
-      +'<div class="cat-meta"><div class="cat-title">'+(EN?c.te:c.tj)+'</div>'
-      +'<div class="cat-desc">'+(EN?c.de:c.dj)+'</div></div>'
+    return '<div class="cat"><div class="cat-head"><span class="cat-ico">'+c.ico+'</span>'
+      +'<div class="cat-meta"><div class="cat-title">'+(EN?c.te:c.tj)+'</div></div>'
       +'<span class="cat-arrow">▼</span></div>'
       +'<div class="cat-body"><div class="cat-body-in">'+items+'</div></div></div>';
-  });
-  document.getElementById('cats').innerHTML=html;
-  // アコーディオン開閉
+  }).join('');
   document.querySelectorAll('.cat-head').forEach(function(head){
     head.onclick=function(){ head.parentNode.classList.toggle('open'); };
   });
-  // About
-  document.getElementById('about-sec').innerHTML = EN
-    ? '<h2>About this site</h2><p>Our tools run on an estimation model based on public specs and community verification. The internal formula is undisclosed, so absolute values have error, but the calibration feature adjusts to your account. See <a href="about.html?lang=en">About</a> and <a href="terms.html?lang=en">Terms</a>.</p>'
-    : '<h2>このサイトについて</h2><p>当サイトのツールは、公式の公開仕様とコミュニティの検証結果をもとにした「推定モデル」で動作します。絶対値には誤差がありますが、実測キャリブレーションで自分の環境に補正できます。詳しくは<a href="about.html">運営者情報</a>と<a href="terms.html">利用規約</a>をご覧ください。</p>';
+
+  document.getElementById('about-sec').innerHTML=EN
+    ?'<h2>About this site</h2><p>Our tools run on an estimation model from public specs and community verification. Absolute values have error, but the calibration feature fits them to your account. See <a href="about.html?lang=en">About</a> and <a href="terms.html?lang=en">Terms</a>.</p>'
+    :'<h2>このサイトについて</h2><p>当サイトのツールは、公開仕様とコミュニティ検証に基づく推定モデルで動作します。絶対値には誤差がありますが、実測キャリブレーションで自分の環境に合わせられます。詳しくは<a href="about.html">運営者情報</a>と<a href="terms.html">利用規約</a>を。</p>';
   document.getElementById('nav').innerHTML=WOS_NAV(0);
   document.getElementById('foot').innerHTML=WOS_FOOT(0);
 })();
