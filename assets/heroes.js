@@ -242,3 +242,23 @@ window.WOS_genName = function(gen){
   if((window.WOS_LANG||'ja')==='en') return gen===0?'Permanent':'Gen '+gen;
   return gen===0?'常設':'第'+gen+'世代';
 };
+
+/* 専用装備のステータス上昇(世代別・推定値) gearを持つ英雄に付与 */
+(function(){
+  if(!window.WOS_HEROES) return;
+  window.WOS_HEROES.forEach(function(hh){
+    if(!hh.gear) return;
+    // Lv10到達時に与える兵科ステ%(推定)。世代が上がるほど強い専用装備。
+    // 第1世代 ≈ 攻撃/致命+8%、以降 世代ごとに +0.8%ずつ逓増(上限20%程度)
+    var g = hh.gen===0 ? 1 : hh.gen;
+    var base = Math.min(0.20, 0.08 + (g-1)*0.008);  // 8%→約20%
+    // gear.type(集結specialの種類)に合わせて、ステ上昇も攻撃寄り/致命寄りに配分
+    if(hh.gear.type==='atk'){
+      hh.gearStat = {a: base, l: base*0.4};       // 攻撃型: 攻撃主体
+    }else if(hh.gear.type==='leth'){
+      hh.gearStat = {a: base*0.4, l: base};       // 致命型: 致命主体
+    }else{
+      hh.gearStat = {a: base*0.7, l: base*0.7};
+    }
+  });
+})();
