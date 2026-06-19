@@ -33,13 +33,13 @@ function cellAngle(r,c){
 const EDIT=[];
 for(let r=0;r<N;r++)for(let c=0;c<N;c++) if(!isCastle(r,c)) EDIT.push([r,c]);
 
-const PALETTE=['#e0484d','#3d7ff0','#52c47a','#f2b03c','#b072e8','#2bc4c4','#e8748a','#9fbd3a'];
+const PALETTE=['#52c47a','#f2b03c','#b072e8','#2bc4c4','#e8748a','#9fbd3a','#e0484d','#3d7ff0'];
 const GREY='#5d6a82';
 
 const state={
   mode:'server', zoom:1,
   server:{}, blueName:T('自サーバー','My Server'), redName:T('敵サーバー','Enemy Server'),
-  allianceCount:2, alliances:[], allianceCell:{}, alliancePicking:-1,
+  allianceCount:6, alliances:[], allianceCell:{}, alliancePicking:-1,
   cities:[], cityCounter:0, showUnderlay:true, underlaySource:'none',
   pendingCity:null,
 };
@@ -78,36 +78,39 @@ function recomputeAlliances(){
   const ratios=al.map(a=>Math.max(1,a.ratio));
   const total=ratios.reduce((a,b)=>a+b,0);
   const map={};
-  const CG=N-1; // c+r の中心線
 
-  if(n===4 && ratios.every(r=>r===ratios[0])){
-    // 4同盟・均等: 王城の上下左右頂点に向けた十字(直線)分割
-    EDIT.forEach(([r,c])=>{
-      const u=c-r, v=(c+r)-CG;
-      let q;
-      if(Math.abs(v)>=Math.abs(u)) q = v<0?0:2;  // 0=北(上), 2=南(下)
-      else q = u>0?1:3;                           // 1=東(右), 3=西(左)
-      map[r+','+c]=q;
-    });
-    state.allianceCell=map;
-    return;
-  }
   if(n===2){
-    // 2同盟: 王城に垂直な1本の直線(c+r 一定線)で南北に分割。境界は完全直線。
-    // 比率に従って境界(c+r のしきい値)を決める
+    // 2同盟: 王城を貫く1本の直線で分割(完全な直線境界)
     const sorted=[...EDIT].sort((a,b)=>((a[0]+a[1])-(b[0]+b[1])) || ((a[1]-a[0])-(b[1]-b[0])));
     const cut=Math.round(ratios[0]/total*EDIT.length);
     sorted.forEach((cell,i)=>{ map[cell[0]+','+cell[1]] = i<cut?0:1; });
     state.allianceCell=map;
     return;
   }
-  // 一般(3,5,6,7,8 または 4で非均等): 王城に垂直な直線帯(c-r 軸)で比率分割
-  const axis=([r,c])=>(c-r);
-  const sorted=[...EDIT].sort((a,b)=>axis(a)-axis(b) || ((a[0]+a[1])-(b[0]+b[1])));
-  let idx=0, cum=ratios[0]/total*EDIT.length;
-  sorted.forEach((cell,i)=>{
-    while(idx<n-1 && i>=cum){ idx++; cum+=ratios[idx]/total*EDIT.length; }
-    map[cell[0]+','+cell[1]]=idx;
+
+  // 3同盟以上: 王城中心まわりにシードを環状配置し、最近傍割当(ひし形に近いコンパクト領域)
+  const CC=cellCenter((LO+HI)/2,(LO+HI)/2); // 王城中心の画面座標
+  // 配置半径: 編集リングの中ほど。画面アスペクト(TW:TH)に合わせた楕円。
+  const Rx=TW*3.0, Ry=TH*3.0;
+  // 各同盟の中心角(比率で角度幅を配分)。1つ目を上(270°)中心に。
+  let acc=0; const seeds=[];
+  const firstW=ratios[0]/total*360;
+  let startDeg=270 - firstW/2; // 1つ目の同盟が上頂点方向の中心
+  for(let i=0;i<n;i++){
+    const w=ratios[i]/total*360;
+    const mid=(startDeg + acc + w/2) * Math.PI/180; acc+=w;
+    seeds.push([CC[0]+Rx*Math.cos(mid), CC[1]+Ry*Math.sin(mid), ratios[i]]);
+  }
+  EDIT.forEach(([r,c])=>{
+    const p=cellCenter(r,c); let best=0, bd=Infinity;
+    for(let i=0;i<seeds.length;i++){
+      const dx=p[0]-seeds[i][0];
+      const dy=(p[1]-seeds[i][1])*(TW/TH); // 縦方向を正規化して等方距離に
+      // 比率の平方根で割って、大きい同盟ほど広く取る
+      const d=Math.sqrt(dx*dx+dy*dy)/Math.sqrt(seeds[i][2]);
+      if(d<bd){ bd=d; best=i; }
+    }
+    map[r+','+c]=best;
   });
   state.allianceCell=map;
 }
@@ -504,7 +507,7 @@ function bind(){
   document.getElementById('allianceCount').onchange=e=>{ let v=parseInt(e.target.value)||2; v=Math.max(2,Math.min(8,v)); e.target.value=v; state.allianceCount=v; };
   document.getElementById('applyAlliance').onclick=()=>{ let v=parseInt(document.getElementById('allianceCount').value)||2; v=Math.max(2,Math.min(8,v)); state.allianceCount=v; initAlliances(true); buildAllianceList(); render(false); };
   document.getElementById('balanceAlliance').onclick=()=>{ state.alliances.forEach(a=>a.ratio=1); recomputeAlliances(); buildAllianceList(); render(false); };
-  document.getElementById('resetAlliance').onclick=()=>{ document.getElementById('allianceCount').value=2; state.allianceCount=2; initAlliances(false); buildAllianceList(); render(false); };
+  document.getElementById('resetAlliance').onclick=()=>{ document.getElementById('allianceCount').value=6; state.allianceCount=6; initAlliances(false); buildAllianceList(); render(false); };
 
   document.getElementById('showUnderlay').onchange=e=>{ state.showUnderlay=e.target.checked; render(false); };
   document.getElementById('underlaySource').onchange=e=>{ state.underlaySource=e.target.value; render(false); };
