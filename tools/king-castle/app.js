@@ -33,7 +33,7 @@ function cellAngle(r,c){
 const EDIT=[];
 for(let r=0;r<N;r++)for(let c=0;c<N;c++) if(!isCastle(r,c)) EDIT.push([r,c]);
 
-const PALETTE=['#52c47a','#f2b03c','#b072e8','#2bc4c4','#e8748a','#9fbd3a','#e0484d','#3d7ff0'];
+const PALETTE=['#52c47a','#f2b03c','#b072e8','#2bc4c4','#e8748a','#9fbd3a','#ff9f40','#7ec8e3','#e0484d','#3d7ff0'];
 const GREY='#5d6a82';
 
 const state={
@@ -72,49 +72,51 @@ function initAlliances(keep){
   }
   state.alliances=arr; recomputeAlliances();
 }
-// 8つの整然パーツ(各象限を軸で2分)。すべて王城の辺・対角に平行な直線境界。
-// 時計回り順: 0=N西,1=N東,2=E北,3=E南,4=S東,5=S西,6=W南,7=W北
-function part8(r,c){
+// 12の整然パーツ(各象限を直線で3分割)。すべて王城の辺・対角に平行な直線境界。
+// 時計回り: N=0,1,2 / E=3,4,5 / S=6,7,8 / W=9,10,11
+function part12(r,c){
   const a=(r-c), b=(r+c)-2*((LO+HI)/2);
   const du=(c-r), dv=(c+r)-2*((LO+HI)/2);
-  if(Math.abs(b)>=Math.abs(a)){          // 南北の象限
-    if(b<0) return du<=0?0:1;             // 北: 西/東
-    return du>=0?4:5;                      // 南: 東/西
-  } else {                                // 東西の象限
-    if(a<0) return dv<=0?2:3;             // 東: 北/南
-    return dv>=0?6:7;                      // 西: 南/北
+  if(Math.abs(b)>=Math.abs(a)){            // 南北の象限(N/S)
+    const seg = du<=-2?0 : du>=2?2 : 1;    // 西/中/東(画面x=du で3分割)
+    if(b<0) return 0 + seg;                 // 北: 0,1,2
+    return 6 + (2-seg);                      // 南: 6,7,8(時計回り反転)
+  } else {                                  // 東西の象限(E/W)
+    const seg = dv<=-2?0 : dv>=2?2 : 1;    // 北/中/南(画面y=dv で3分割)
+    if(a<0) return 3 + seg;                 // 東: 3,4,5
+    return 9 + (2-seg);                      // 西: 9,10,11
   }
 }
 // n同盟へのグループ化(連続パーツをまとめる。整然=直線優先、マス数差は許容)
 const KC_GROUPS={
-  3:[[7,0,1],[2,3,4],[5,6]],
-  4:[[0,1],[2,3],[4,5],[6,7]],
-  5:[[0,1],[2,3],[4,5],[6],[7]],
-  6:[[0,1],[2],[3],[4,5],[6],[7]],
-  7:[[0,1],[2],[3],[4],[5],[6],[7]],
-  8:[[0],[1],[2],[3],[4],[5],[6],[7]],
+  3:[[11,0,1,2],[3,4,5,6],[7,8,9,10]],
+  4:[[0,1,2],[3,4,5],[6,7,8],[9,10,11]],
+  5:[[0,1,2],[3,4,5],[6,7,8],[9,10],[11]],
+  6:[[0,1],[2,3],[4,5],[6,7],[8,9],[10,11]],
+  7:[[0,1],[2,3],[4,5],[6,7],[8,9],[10],[11]],
+  8:[[0,1],[2,3],[4,5],[6,7],[8],[9],[10],[11]],
+  9:[[0,1],[2,3],[4,5],[6],[7],[8],[9],[10],[11]],
+  10:[[0,1],[2,3],[4],[5],[6],[7],[8],[9],[10],[11]],
 };
 
 function recomputeAlliances(){
   const al=state.alliances;
   const n=al.length;
-  const ratios=al.map(a=>Math.max(1,a.ratio));
-  const total=ratios.reduce((a,b)=>a+b,0);
   const map={};
 
   if(n===2){
-    // 2同盟: 王城を貫く1本の直線で分割(比率でスライド)。完全な直線境界。
+    // 2同盟: 王城を貫く1本の直線で南北2分割。完全な直線境界。
     const sorted=[...EDIT].sort((a,b)=>((a[0]+a[1])-(b[0]+b[1])) || ((a[1]-a[0])-(b[1]-b[0])));
-    const cut=Math.round(ratios[0]/total*EDIT.length);
+    const cut=Math.round(EDIT.length/2);
     sorted.forEach((cell,i)=>{ map[cell[0]+','+cell[1]] = i<cut?0:1; });
     state.allianceCell=map;
     return;
   }
 
-  // 3〜8同盟: 8つの直線パーツを連続グループ化。境界はすべて王城の辺・対角に平行な直線。
-  const groups=KC_GROUPS[n] || KC_GROUPS[8];
+  // 3〜10同盟: 12の直線パーツを連続グループ化。境界はすべて王城の辺・対角に平行な直線。
+  const groups=KC_GROUPS[n] || KC_GROUPS[10];
   const w2a={}; groups.forEach((g,ai)=>g.forEach(w=>w2a[w]=ai));
-  EDIT.forEach(([r,c])=>{ map[r+','+c]=w2a[part8(r,c)]; });
+  EDIT.forEach(([r,c])=>{ map[r+','+c]=w2a[part12(r,c)]; });
   state.allianceCell=map;
 }
 
@@ -336,18 +338,18 @@ function buildAllianceList(){
     const row=document.createElement('div');
     row.className='kc-li kc-ali'+(state.alliancePicking===i?' picking':'');
     row.innerHTML=`<span class="tag" style="background:${a.grey?GREY:a.color}">${i+1}</span>
-      <input type="text" value="${escapeHtml(a.name)}" data-i="${i}" class="aname" maxlength="16">
+      <input type="text" value="${escapeHtml(a.name)}" data-i="${i}" class="aname" maxlength="16" placeholder="${T('同盟名','Alliance name')}">
       <span class="kc-acount" title="${T('保有マス数','Cells')}">${counts[i]||0}${T('マス','')}</span>
-      <div class="row2">
+      <label class="kc-colorlbl" title="${T('同盟カラー','Alliance color')}">
         <input type="color" value="${a.color}" data-i="${i}" class="acolor">
-        <input type="number" min="1" value="${a.ratio}" data-i="${i}" class="ratio aratio">
-      </div>`;
+        <span>${T('色','Color')}</span>
+      </label>`;
     const btns=document.createElement('div'); btns.className='row2';
     const pk=document.createElement('button'); pk.className='kc-btn sm'+(state.alliancePicking===i?' primary':'');
     pk.textContent=state.alliancePicking===i?T('塗替中','Painting'):T('個別塗替','Repaint');
     pk.onclick=()=>{ state.alliancePicking=state.alliancePicking===i?-1:i; buildAllianceList(); render(false); };
     const gy=document.createElement('button'); gy.className='kc-btn sm';
-    gy.textContent=a.grey?T('色戻す','Color'):T('灰','Grey');
+    gy.textContent=a.grey?T('表示','Show'):T('非表示','Hide');
     gy.onclick=()=>{ a.grey=!a.grey; buildAllianceList(); render(false); };
     btns.appendChild(pk); btns.appendChild(gy); row.appendChild(btns);
     box.appendChild(row);
@@ -360,10 +362,6 @@ function buildAllianceList(){
       e.target.value=state.alliances[i].color; return;
     }
     state.alliances[i].color=v; buildAllianceList(); render(false);
-  });
-  box.querySelectorAll('.aratio').forEach(inp=>inp.onchange=e=>{
-    const i=+e.target.dataset.i; let v=parseInt(e.target.value)||1; if(v<1)v=1;
-    state.alliances[i].ratio=v; e.target.value=v; recomputeAlliances(); render(false);
   });
 }
 
@@ -478,9 +476,9 @@ function applyI18n(){
     't-blue':'Blue server name (yours)','t-red':'Red server name (enemy)','t-brush':'Brush','t-sw-grey':'Grey',
     't-snote':'Tap or drag to paint. Default is a near-even left/right split (south 4 cells of the center column are red).',
     't-sreset':'Reset server',
-    't-ah':'Alliance area settings','t-ah2':'Auto-divide by count and ratio, hugging the castle vertices.',
-    't-acount':'Number of alliances (2–8)',
-    't-anote':'Repaint: press “Repaint”, then tap a cell to set it to that alliance. Grey: press “Grey” to hide an alliance.',
+    't-ah':'Alliance area settings','t-ah2':'Enter a count and apply — it auto-divides along the castle edges with straight lines.',
+    't-acount':'Number of alliances (2–10)',
+    't-anote':'Repaint: press “Repaint”, then tap a cell to set it to that alliance. Hide: press “Hide” to grey out (hide) an alliance.',
     't-ch':'City placement','t-ch2':'Tap an empty cell → confirm in the popup. 1 cell = 1 city.',
     't-cguide':'Tap a cell to place. It lights up and a confirm popup appears. Press “Register” to add a numbered city.',
     't-underlay':'Show server/alliance colors underneath',
@@ -490,7 +488,6 @@ function applyI18n(){
   // ボタンテキスト
   setBtn('exportBtn','Save image'); setBtn('shareXBtn','𝕏 Share');
   document.getElementById('applyAlliance').textContent='Apply';
-  document.getElementById('balanceAlliance').textContent='Balance';
   document.getElementById('resetAlliance').textContent='Reset alliances';
   document.getElementById('resetCity').textContent='Reset cities';
   document.getElementById('blueName').value='My Server';
@@ -515,9 +512,8 @@ function bind(){
     document.querySelectorAll('#serverBrush .kc-sw').forEach(x=>x.classList.toggle('on',x===s)); });
   document.getElementById('resetServer').onclick=()=>{ initServer(); render(false); updateServerCount(); };
 
-  document.getElementById('allianceCount').onchange=e=>{ let v=parseInt(e.target.value)||2; v=Math.max(2,Math.min(8,v)); e.target.value=v; state.allianceCount=v; };
-  document.getElementById('applyAlliance').onclick=()=>{ let v=parseInt(document.getElementById('allianceCount').value)||2; v=Math.max(2,Math.min(8,v)); state.allianceCount=v; initAlliances(true); buildAllianceList(); render(false); };
-  document.getElementById('balanceAlliance').onclick=()=>{ state.alliances.forEach(a=>a.ratio=1); recomputeAlliances(); buildAllianceList(); render(false); };
+  document.getElementById('allianceCount').onchange=e=>{ let v=parseInt(e.target.value)||2; v=Math.max(2,Math.min(10,v)); e.target.value=v; state.allianceCount=v; };
+  document.getElementById('applyAlliance').onclick=()=>{ let v=parseInt(document.getElementById('allianceCount').value)||2; v=Math.max(2,Math.min(10,v)); state.allianceCount=v; initAlliances(true); buildAllianceList(); render(false); };
   document.getElementById('resetAlliance').onclick=()=>{ document.getElementById('allianceCount').value=6; state.allianceCount=6; initAlliances(false); buildAllianceList(); render(false); };
 
   document.getElementById('showUnderlay').onchange=e=>{ state.showUnderlay=e.target.checked; render(false); };
