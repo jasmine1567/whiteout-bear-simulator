@@ -74,16 +74,40 @@ function initAlliances(keep){
 }
 function recomputeAlliances(){
   const al=state.alliances;
-  const total=al.reduce((s,a)=>s+Math.max(1,a.ratio),0);
-  const firstW=Math.max(1,al[0].ratio)/total*360;
-  let start=(270-firstW/2+360)%360, acc=0;
-  const bounds=[];
-  for(let i=0;i<al.length;i++){ const w=Math.max(1,al[i].ratio)/total*360; bounds.push([(start+acc)%360,w]); acc+=w; }
+  const n=al.length;
+  const ratios=al.map(a=>Math.max(1,a.ratio));
+  const total=ratios.reduce((a,b)=>a+b,0);
   const map={};
-  EDIT.forEach(([r,c])=>{
-    const a=cellAngle(r,c); let idx=0;
-    for(let i=0;i<bounds.length;i++){ const [s,w]=bounds[i]; if((a-s+360)%360<w){idx=i;break;} }
-    map[r+','+c]=idx;
+  const CG=N-1; // c+r の中心線
+
+  if(n===4 && ratios.every(r=>r===ratios[0])){
+    // 4同盟・均等: 王城の上下左右頂点に向けた十字(直線)分割
+    EDIT.forEach(([r,c])=>{
+      const u=c-r, v=(c+r)-CG;
+      let q;
+      if(Math.abs(v)>=Math.abs(u)) q = v<0?0:2;  // 0=北(上), 2=南(下)
+      else q = u>0?1:3;                           // 1=東(右), 3=西(左)
+      map[r+','+c]=q;
+    });
+    state.allianceCell=map;
+    return;
+  }
+  if(n===2){
+    // 2同盟: 王城に垂直な1本の直線(c+r 一定線)で南北に分割。境界は完全直線。
+    // 比率に従って境界(c+r のしきい値)を決める
+    const sorted=[...EDIT].sort((a,b)=>((a[0]+a[1])-(b[0]+b[1])) || ((a[1]-a[0])-(b[1]-b[0])));
+    const cut=Math.round(ratios[0]/total*EDIT.length);
+    sorted.forEach((cell,i)=>{ map[cell[0]+','+cell[1]] = i<cut?0:1; });
+    state.allianceCell=map;
+    return;
+  }
+  // 一般(3,5,6,7,8 または 4で非均等): 王城に垂直な直線帯(c-r 軸)で比率分割
+  const axis=([r,c])=>(c-r);
+  const sorted=[...EDIT].sort((a,b)=>axis(a)-axis(b) || ((a[0]+a[1])-(b[0]+b[1])));
+  let idx=0, cum=ratios[0]/total*EDIT.length;
+  sorted.forEach((cell,i)=>{
+    while(idx<n-1 && i>=cum){ idx++; cum+=ratios[idx]/total*EDIT.length; }
+    map[cell[0]+','+cell[1]]=idx;
   });
   state.allianceCell=map;
 }
@@ -180,7 +204,7 @@ function lblStyle(size,fill){ return `font-size:${size}px;font-weight:800;fill:$
 function drawCompass(svg){
   const g=el('g',{},svg);
   const top=projCorner(0,0),right=projCorner(0,N),bottom=projCorner(N,N),left=projCorner(N,0);
-  [['北 N',top,0,-12],['東 E',right,30,4],['南 S',bottom,0,24],['西 W',left,-30,4]].forEach(([t,p,dx,dy])=>{
+  [[T('北 N','N'),top,0,-12],[T('東 E','E'),right,30,4],[T('南 S','S'),bottom,0,24],[T('西 W','W'),left,-30,4]].forEach(([t,p,dx,dy])=>{
     el('text',{x:p[0]+dx,y:p[1]+dy,'text-anchor':'middle',style:lblStyle(14,'#fff')},g).textContent=t;
   });
 }
@@ -240,14 +264,15 @@ function attachEvents(svg){
   };
   svg.addEventListener('pointerdown',e=>{
     const t=e.target;
-    if(t.classList&&t.classList.contains('kc-cell')){ painting=true; onCell(t); }
+    if(t.classList&&t.classList.contains('kc-cell')){ painting=true; e.preventDefault(); onCell(t); }
   });
   svg.addEventListener('pointermove',e=>{
     if(!painting)return;
+    e.preventDefault();
     const t=document.elementFromPoint(e.clientX,e.clientY);
     if(t&&t.classList&&t.classList.contains('kc-cell')) onCell(t);
   });
-  window.addEventListener('pointerup',()=>{ if(painting){painting=false; render(false); if(state.mode==='server')updateServerCount();} });
+  window.addEventListener('pointerup',()=>{ if(painting){painting=false; render(false); if(state.mode==='server')updateServerCount(); if(state.mode==='alliance')buildAllianceList();} });
 }
 
 function openCityPop(r,c){
@@ -287,11 +312,15 @@ function updateServerCount(){
 
 function buildAllianceList(){
   const box=document.getElementById('allianceList'); box.innerHTML='';
+  // 各同盟の保有マス数を集計
+  const counts={};
+  Object.values(state.allianceCell).forEach(i=>counts[i]=(counts[i]||0)+1);
   state.alliances.forEach((a,i)=>{
     const row=document.createElement('div');
     row.className='kc-li kc-ali'+(state.alliancePicking===i?' picking':'');
     row.innerHTML=`<span class="tag" style="background:${a.grey?GREY:a.color}">${i+1}</span>
       <input type="text" value="${escapeHtml(a.name)}" data-i="${i}" class="aname" maxlength="16">
+      <span class="kc-acount" title="${T('保有マス数','Cells')}">${counts[i]||0}${T('マス','')}</span>
       <div class="row2">
         <input type="color" value="${a.color}" data-i="${i}" class="acolor">
         <input type="number" min="1" value="${a.ratio}" data-i="${i}" class="ratio aratio">
@@ -343,7 +372,6 @@ function buildExportSVG(){
   const svg=render(true);                 // forExport描画
   const clone=svg.cloneNode(true);
   render(false);                          // 表示を戻す
-  if(!clone.getAttribute('xmlns')) clone.setAttribute('xmlns',NS);
   const W=BOARD_W,H=BOARD_H,extra=52;
   clone.setAttribute('viewBox',`0 ${-extra} ${W} ${H+extra}`);
   clone.setAttribute('width',W); clone.setAttribute('height',H+extra);
