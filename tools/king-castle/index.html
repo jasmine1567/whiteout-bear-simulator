@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ja" id="htmlroot">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://adservice.google.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://*.adtrafficquality.google; connect-src https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://*.adtrafficquality.google; object-src 'none'; base-uri 'none'">
+<title id="pgtitle">王城戦エリア配置管理ツール | ホワサバ ツールラボ</title>
+<meta name="description" id="pgdesc" content="ホワイトアウト・サバイバル王城戦(SvS)のエリア配置を計画する無料ツール。サーバー2分割・同盟エリア分割・都市配置を作って画像やXで共有できます。">
+<link rel="icon" type="image/png" href="../../favicon.png">
+<link rel="shortcut icon" href="../../favicon.ico">
+<link rel="apple-touch-icon" href="../../favicon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ホワサバ ツールラボ">
+<meta property="og:title" content="王城戦エリア配置管理ツール | ホワサバ ツールラボ">
+<meta property="og:description" content="王城戦(SvS)のエリア配置を計画してXや画像で共有できる無料ツール。">
+<meta property="og:url" content="https://whitesim-lab.com/tools/king-castle/">
+<meta property="og:image" content="https://whitesim-lab.com/favicon.png">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../../assets/site.css">
+<style>
+  :root{
+    --kc-red:#e0484d; --kc-blue:#3d7ff0; --kc-grey:#5d6a82;
+  }
+  .kc-wrap{max-width:1180px;margin:0 auto;padding:14px 14px 80px}
+  .kc-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+  .kc-head h1{font-size:clamp(18px,4.4vw,24px);margin:0;letter-spacing:.02em;font-weight:800}
+  .kc-head h1 .ico{color:var(--ember)}
+  .kc-sub{color:var(--muted);font-size:12px}
+  .kc-intro{color:var(--muted);font-size:13px;margin:4px 0 14px;line-height:1.6}
+
+  .kc-modes{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+  .kc-mode{appearance:none;border:1px solid var(--line);background:var(--panel);color:var(--muted);
+    padding:10px 14px;border-radius:11px;cursor:pointer;font-size:13.5px;font-weight:700;transition:.15s;
+    display:flex;align-items:center;gap:7px;flex:1;justify-content:center;min-width:120px}
+  .kc-mode .n{width:19px;height:19px;border-radius:6px;background:var(--panel2);color:var(--muted);
+    display:grid;place-items:center;font-size:11px;font-weight:800}
+  .kc-mode:hover{border-color:var(--frost);color:var(--text)}
+  .kc-mode.on{background:var(--ember);color:#1a1206;border-color:var(--ember)}
+  .kc-mode.on .n{background:rgba(0,0,0,.25);color:#1a1206}
+
+  .kc-layout{display:grid;grid-template-columns:330px 1fr;gap:16px;align-items:start}
+  @media(max-width:860px){ .kc-layout{grid-template-columns:1fr} }
+
+  .kc-panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:15px}
+  .kc-panel h2{font-size:12.5px;margin:0 0 11px;color:var(--frost);letter-spacing:.05em;text-transform:uppercase}
+  .kc-panel h2 .hint{display:block;color:var(--muted);font-size:11px;text-transform:none;letter-spacing:0;margin-top:3px;font-weight:400;line-height:1.5}
+
+  .kc-field{margin-bottom:12px}
+  .kc-field label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px;font-weight:600}
+  .kc-wrap input[type=text],.kc-wrap input[type=number],.kc-wrap select{
+    width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--text);
+    border-radius:9px;padding:10px 11px;font-size:15px;font-family:inherit}
+  .kc-wrap input:focus,.kc-wrap select:focus{outline:none;border-color:var(--frost)}
+  .kc-wrap input[type=color]{width:42px;height:38px;padding:0;border:1px solid var(--line);border-radius:8px;background:var(--panel2);cursor:pointer;flex:none}
+
+  .kc-btn{appearance:none;border:1px solid var(--line);background:var(--panel2);color:var(--text);
+    padding:10px 14px;border-radius:10px;cursor:pointer;font-size:13.5px;font-weight:700;font-family:inherit;transition:.15s}
+  .kc-btn:hover{border-color:var(--frost)}
+  .kc-btn.primary{background:var(--ember);color:#1a1206;border-color:var(--ember)}
+  .kc-btn.x{background:#000;color:#fff;border-color:#333}
+  .kc-btn.danger{color:#ffb4b4}
+  .kc-btn.sm{padding:8px 11px;font-size:12.5px;border-radius:9px}
+  .kc-btnrow{display:flex;gap:8px;flex-wrap:wrap}
+
+  .kc-swatches{display:flex;gap:8px;margin:10px 0}
+  .kc-sw{flex:1;border:2px solid transparent;border-radius:10px;padding:11px 6px;cursor:pointer;text-align:center;
+    font-weight:800;font-size:13px;color:#fff;transition:.12s;user-select:none}
+  .kc-sw.on{border-color:#fff;box-shadow:0 0 0 2px rgba(255,255,255,.16)}
+  .kc-sw.red{background:var(--kc-red)} .kc-sw.blue{background:var(--kc-blue)} .kc-sw.grey{background:var(--kc-grey)}
+
+  .kc-count{display:flex;gap:8px;margin:10px 0}
+  .kc-count .cnt{flex:1;text-align:center;border-radius:10px;padding:9px 6px;font-weight:800;font-size:13px;color:#fff}
+  .kc-count .cnt small{display:block;font-size:10.5px;font-weight:600;opacity:.85}
+  .kc-count .cnt.blue{background:var(--kc-blue)} .kc-count .cnt.red{background:var(--kc-red)} .kc-count .cnt.grey{background:var(--kc-grey)}
+
+  .kc-hr{height:1px;background:var(--line);margin:13px 0;border:0}
+
+  .kc-stage{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px;overflow:hidden}
+  .kc-toolbar{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+  .kc-toolbar .sp{flex:1}
+  .kc-stagehint{color:var(--muted);font-size:12px;font-weight:600}
+  #kcScroll{width:100%;overflow:auto;border-radius:10px;-webkit-overflow-scrolling:touch}
+  svg.kc-board{display:block;margin:0 auto;touch-action:manipulation;user-select:none;max-width:100%;height:auto}
+
+  .kc-cell{cursor:pointer;transition:fill .08s}
+  @media(hover:hover){ .kc-cell:hover{filter:brightness(1.18)} }
+
+  .kc-list{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+  .kc-li{display:flex;align-items:center;gap:8px;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:8px 9px;flex-wrap:wrap}
+  .kc-li .tag{width:24px;height:24px;border-radius:7px;display:grid;place-items:center;font-size:12px;font-weight:800;color:#fff;flex:none}
+  .kc-li input[type=text]{flex:1;min-width:90px;padding:8px 9px;font-size:14px}
+  .kc-li .ratio{width:62px;flex:none}
+  .kc-ali.picking{border-color:var(--ember);box-shadow:0 0 0 2px rgba(242,162,60,.28)}
+  .kc-li .row2{display:flex;gap:6px;flex:none;flex-wrap:wrap}
+
+  .kc-note{font-size:11.5px;color:var(--muted);margin-top:9px;line-height:1.65}
+  .kc-toggle{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+  .kc-toggle label{font-size:13px;color:var(--text);font-weight:600;cursor:pointer;user-select:none}
+  .kc-wrap input[type=checkbox]{width:18px;height:18px;accent-color:var(--ember);cursor:pointer;flex:none}
+  .kc-err{color:#ffb4b4;font-size:12px;margin-top:7px;min-height:15px}
+  .kc-ok{color:#7fe0a0;font-size:12px;margin-top:7px;min-height:15px}
+  .kc-pill{display:inline-block;background:var(--panel2);border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:11px;color:var(--muted);margin:0 5px 5px 0}
+
+  /* popup */
+  .kc-pop{position:fixed;inset:0;background:rgba(4,9,16,.66);display:none;align-items:center;justify-content:center;z-index:60;padding:18px}
+  .kc-pop.show{display:flex}
+  .kc-pop .box{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px;max-width:340px;width:100%;text-align:center}
+  .kc-pop .box h3{margin:0 0 8px;font-size:17px}
+  .kc-pop .box p{margin:0 0 16px;font-size:13.5px;color:var(--muted);line-height:1.6}
+  .kc-pop .box .chip{display:inline-block;padding:4px 12px;border-radius:8px;font-weight:800;color:#fff;font-size:13px;margin:0 4px}
+  .kc-pop .box .row{display:flex;gap:10px}
+  .kc-pop .box .row .kc-btn{flex:1}
+
+  /* nav/foot inherit */
+  #nav{margin-bottom:8px}
+</style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4593324513914979" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="nav"></div>
+<div class="kc-wrap">
+  <header class="kc-head">
+    <h1><span class="ico">◆</span> <span id="t-title">王城戦エリア配置管理ツール</span></h1>
+    <span class="kc-sub">King Castle War — Area Planner</span>
+  </header>
+  <p class="kc-intro" id="t-intro">サーバー(SvS)の2分割、同盟エリアの分割、都市配置を計画して、画像やXで共有できます。中心の太陽城(6×6)は設置不可エリアです。</p>
+
+  <div class="kc-modes" id="kcModes">
+    <button class="kc-mode on" data-mode="server"><span class="n">1</span><span id="t-m1">サーバーエリア</span></button>
+    <button class="kc-mode" data-mode="alliance"><span class="n">2</span><span id="t-m2">同盟エリア</span></button>
+    <button class="kc-mode" data-mode="city"><span class="n">3</span><span id="t-m3">都市配置</span></button>
+  </div>
+
+  <div class="kc-layout">
+    <div>
+      <!-- SERVER -->
+      <div class="kc-panel kc-mode-panel" id="panel-server">
+        <h2 id="t-sh">サーバーエリア設定<span class="hint" id="t-sh2">青=自サーバー / 赤=敵サーバー。マスをタップで塗替え</span></h2>
+        <div class="kc-field">
+          <label id="t-blue">青サーバー名（自陣）</label>
+          <input type="text" id="blueName" value="自サーバー" maxlength="18">
+        </div>
+        <div class="kc-field">
+          <label id="t-red">赤サーバー名（敵陣）</label>
+          <input type="text" id="redName" value="敵サーバー" maxlength="18">
+        </div>
+        <label style="font-size:12px;color:var(--muted);font-weight:600" id="t-brush">塗るブラシ</label>
+        <div class="kc-swatches" id="serverBrush">
+          <div class="kc-sw blue on" data-brush="blue">青</div>
+          <div class="kc-sw red" data-brush="red">赤</div>
+          <div class="kc-sw grey" data-brush="grey" id="t-sw-grey">グレー</div>
+        </div>
+        <div class="kc-count" id="serverCount"></div>
+        <div class="kc-note" id="t-snote">タップまたはドラッグで連続して塗れます。デフォルトは左右ほぼ2分割（中央縦ラインの南側4マスは赤）です。</div>
+        <hr class="kc-hr">
+        <button class="kc-btn danger" id="resetServer" style="width:100%"><span id="t-sreset">サーバーをリセット</span></button>
+      </div>
+
+      <!-- ALLIANCE -->
+      <div class="kc-panel kc-mode-panel hide" id="panel-alliance">
+        <h2 id="t-ah">同盟エリア設定<span class="hint" id="t-ah2">分割数と比率で自動配分。王城の上下左右に寄せて配置</span></h2>
+        <div class="kc-field">
+          <label id="t-acount">分割する同盟数（2〜8）</label>
+          <input type="number" id="allianceCount" min="2" max="8" value="2">
+        </div>
+        <div class="kc-btnrow" style="margin-bottom:10px">
+          <button class="kc-btn primary sm" id="applyAlliance">分割を適用</button>
+          <button class="kc-btn sm" id="balanceAlliance">比率を均等に</button>
+        </div>
+        <div class="kc-list" id="allianceList"></div>
+        <div class="kc-err" id="allianceErr"></div>
+        <hr class="kc-hr">
+        <div class="kc-note" id="t-anote">
+          <b>個別塗替え：</b>「個別塗替」を押してから盤面のマスをタップすると、その同盟の色に変わります。<br>
+          <b>グレー表示：</b>「灰」でその同盟を非表示扱い（グレー）にできます。
+        </div>
+        <button class="kc-btn danger" id="resetAlliance" style="width:100%;margin-top:10px">同盟をリセット</button>
+      </div>
+
+      <!-- CITY -->
+      <div class="kc-panel kc-mode-panel hide" id="panel-city">
+        <h2 id="t-ch">都市配置<span class="hint" id="t-ch2">空きマスをタップ→確認ポップアップで都市を登録。1マス=1都市</span></h2>
+        <div class="kc-note" id="t-cguide">配置したいマスをタップすると、そのマスが光って登録確認が出ます。「登録」で都市が追加され、番号が振られます。</div>
+        <div class="kc-err" id="cityErr"></div>
+        <hr class="kc-hr">
+        <div class="kc-toggle">
+          <input type="checkbox" id="showUnderlay" checked>
+          <label for="showUnderlay" id="t-underlay">サーバー／同盟の色を下地に表示</label>
+        </div>
+        <div class="kc-field">
+          <label id="t-ulayer">下地レイヤー</label>
+          <select id="underlaySource">
+            <option value="auto" id="t-ul-auto">自動（設定済みを優先）</option>
+            <option value="server" id="t-ul-server">サーバーエリア</option>
+            <option value="alliance" id="t-ul-alliance">同盟エリア</option>
+            <option value="none" id="t-ul-none">なし</option>
+          </select>
+        </div>
+        <div class="kc-list" id="cityList"></div>
+        <hr class="kc-hr">
+        <button class="kc-btn danger" id="resetCity" style="width:100%">都市をリセット</button>
+      </div>
+    </div>
+
+    <!-- STAGE -->
+    <div class="kc-stage">
+      <div class="kc-toolbar">
+        <span class="kc-stagehint" id="stageHint">サーバーエリア編集モード</span>
+        <span class="sp"></span>
+        <button class="kc-btn sm" id="zoomOut" aria-label="zoom out">－</button>
+        <button class="kc-btn sm" id="zoomIn" aria-label="zoom in">＋</button>
+      </div>
+      <div id="kcScroll"><div id="svgHost"></div></div>
+      <div class="kc-btnrow" style="margin-top:11px">
+        <button class="kc-btn primary sm" id="exportBtn">画像を保存</button>
+        <button class="kc-btn x sm" id="shareXBtn">𝕏 で共有</button>
+      </div>
+      <div class="kc-ok" id="exportMsg"></div>
+    </div>
+  </div>
+
+  <div class="ad-slot" style="margin-top:22px"></div>
+</div>
+
+<!-- popup -->
+<div class="kc-pop" id="cityPop">
+  <div class="box">
+    <h3 id="pop-title">この場所に都市を登録しますか？</h3>
+    <p id="pop-body">選択中のマスに都市を追加します。</p>
+    <div class="row">
+      <button class="kc-btn" id="popCancel">キャンセル</button>
+      <button class="kc-btn primary" id="popConfirm">登録する</button>
+    </div>
+  </div>
+</div>
+
+<div id="foot"></div>
+<script src="../../assets/config.js"></script>
+<script src="../../assets/toolkit.js"></script>
+<script>
+  // nav/footer 注入(深さ2 = tools/king-castle/)
+  try{
+    document.getElementById('nav').innerHTML = window.WOS_NAV(2);
+    document.getElementById('foot').innerHTML = window.WOS_FOOT(2);
+  }catch(e){}
+</script>
+<script src="app.js"></script>
+</body>
+</html>

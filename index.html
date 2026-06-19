@@ -53,6 +53,27 @@
 <div class="sec-head"><span class="sh-ico">🎮</span><span class="sh-t" id="playT"></span><span class="sh-line"></span></div>
 <div class="tool-grid" id="playGrid"></div>
 
+<!-- 王城戦ツール -->
+<div class="sec-head" style="margin-top:30px"><span class="sh-ico">◆</span><span class="sh-t" id="kcT"></span><span class="sh-line"></span></div>
+<a class="hero-flag kc-flag" id="kcLink" href="tools/king-castle/index.html">
+  <div class="hf-in">
+    <div class="hf-text">
+      <span class="hf-badge" id="kcBadge"></span>
+      <div class="hf-title" id="kcTitle"></div>
+      <div class="hf-desc" id="kcDesc"></div>
+      <div class="hf-feats" id="kcFeats"></div>
+      <span class="hf-cta" id="kcCta"></span>
+    </div>
+    <div class="hf-visual">
+      <div class="kc-diamond" aria-hidden="true">
+        <span class="kc-d kc-d-n"></span><span class="kc-d kc-d-e"></span>
+        <span class="kc-d kc-d-s"></span><span class="kc-d kc-d-w"></span>
+        <span class="kc-d kc-d-c"></span>
+      </div>
+    </div>
+  </div>
+</a>
+
 <!-- 読み物(アコーディオン・閉) -->
 <div class="read-sec">
 <div class="sec-head"><span class="sh-ico">📖</span><span class="sh-t" id="readT"></span><span class="sh-line"></span></div>
@@ -104,6 +125,21 @@ var READ=[{"ico": "🔰", "tj": "はじめての方へ", "te": "Getting Started"
       +'<div class="tt-desc">'+desc+'</div>'
       +'<div class="tt-go">'+(EN?'TRY IT →':'あそぶ →')+'</div></a>';
   }).join('');
+
+  // 王城戦ツール
+  document.getElementById('kcT').textContent=EN?'King Castle War':'王城戦（SvS）ツール';
+  document.getElementById('kcBadge').textContent=EN?'◆ STRATEGY TOOL':'◆ 戦略ツール';
+  document.getElementById('kcTitle').innerHTML=EN
+    ?'◆ King Castle War<br><span class="acc">Area Planner</span>'
+    :'◆ 王城戦<br><span class="acc">エリア配置管理</span>';
+  document.getElementById('kcDesc').textContent=EN
+    ?'Plan your SvS server split, divide alliance areas by ratio, and place cities on the isometric castle map. Share as an image or on X.'
+    :'王城戦(SvS)のサーバー2分割、比率での同盟エリア分割、都市配置をひし形マップ上で計画。画像やXで共有できます。';
+  var kcFeats=EN?['Server split','Alliance areas','City placement','Image & X share']
+    :['サーバー分割','同盟エリア','都市配置','画像/X共有'];
+  document.getElementById('kcFeats').innerHTML=kcFeats.map(function(f){return '<span class="hf-feat">✓ '+f+'</span>';}).join('');
+  document.getElementById('kcCta').innerHTML=(EN?'Open the Planner':'ツールを使う')+' →';
+  if(EN) document.getElementById('kcLink').href='tools/king-castle/index.html?lang=en';
 
   // 読み物アコーディオン
   document.getElementById('readT').textContent=EN?'Reading material':'じっくり読む攻略記事';
