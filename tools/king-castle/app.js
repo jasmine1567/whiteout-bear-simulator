@@ -40,7 +40,7 @@ const state={
   mode:'server', zoom:1,
   server:{}, blueName:T('自サーバー','My Server'), redName:T('敵サーバー','Enemy Server'),
   allianceCount:2, alliances:[], allianceCell:{}, alliancePicking:-1,
-  cities:[], cityCounter:0, showUnderlay:true, underlaySource:'auto',
+  cities:[], cityCounter:0, showUnderlay:true, underlaySource:'none',
   pendingCity:null,
 };
 
@@ -150,7 +150,6 @@ function render(forExport){
     const s=state.underlaySource;
     if(s==='server')underlay='server';
     else if(s==='alliance')underlay='alliance';
-    else if(s==='auto')underlay = state.alliances.length?'alliance':'server';
   }
 
   const cells=el('g',{},svg);
@@ -164,8 +163,12 @@ function render(forExport){
     const poly=el('polygon',{points:polyStr(cellPoly(r,c)),fill,stroke:'rgba(0,0,0,.28)','stroke-width':0.5,'data-r':r,'data-c':c},cells);
     if(!forExport) poly.setAttribute('class','kc-cell');
     if(highlightKey===k && !forExport){
-      poly.setAttribute('stroke','#fff'); poly.setAttribute('stroke-width','3');
-      el('polygon',{points:polyStr(cellPoly(r,c)),fill:'rgba(255,255,255,.35)','pointer-events':'none'},cells);
+      // 選択中マスを派手に強調: 明るい黄緑+太い枠+脈動
+      poly.setAttribute('fill','#ffe14d');
+      poly.setAttribute('stroke','#ff4df0');
+      poly.setAttribute('stroke-width','4');
+      const hl=el('polygon',{points:polyStr(cellPoly(r,c)),fill:'#ffe14d','fill-opacity':0.9,stroke:'#ff4df0','stroke-width':4,'pointer-events':'none'},cells);
+      const an=el('animate',{attributeName:'fill-opacity',values:'0.95;0.45;0.95',dur:'0.9s',repeatCount:'indefinite'},hl);
     }
   }
 
@@ -397,22 +400,31 @@ function renderToCanvas(cb){
     let first=true;
     xml=xml.replace(/\sxmlns="http:\/\/www\.w3\.org\/2000\/svg"/g, ()=>{ if(first){first=false; return ' xmlns="http://www.w3.org/2000/svg"';} return ''; });
   }
-  // 黒画像対策: data URIではなくBlob URLを使い、onload完了を待ってからdrawImage
-  const blob=new Blob([xml],{type:'image/svg+xml;charset=utf-8'});
-  const url=URL.createObjectURL(blob);
-  const img=new Image();
-  img.onload=()=>{
+  if(xml.indexOf('xmlns=')<0){ xml=xml.replace('<svg','<svg xmlns="http://www.w3.org/2000/svg"'); }
+  const draw=(img)=>{
     const scale=2;
     const canvas=document.createElement('canvas');
     canvas.width=W*scale; canvas.height=H*scale;
     const ctx=canvas.getContext('2d');
     ctx.fillStyle='#0c1119'; ctx.fillRect(0,0,canvas.width,canvas.height);
     ctx.drawImage(img,0,0,canvas.width,canvas.height);
-    URL.revokeObjectURL(url);
     canvas.toBlob(b=>cb(b,canvas),'image/png');
   };
-  img.onerror=()=>{ URL.revokeObjectURL(url); cb(null,null); };
-  img.src=url;
+  // data URI(UTF-8安全エンコード)でSVGを画像化。CSP img-src data: で許可済み。
+  const img=new Image();
+  img.onload=()=>{ try{ draw(img); }catch(e){ cb(null,null); } };
+  img.onerror=()=>{
+    // フォールバック: Blob URL を試す
+    try{
+      const blob=new Blob([xml],{type:'image/svg+xml;charset=utf-8'});
+      const url=URL.createObjectURL(blob);
+      const img2=new Image();
+      img2.onload=()=>{ try{ draw(img2); }catch(e){ cb(null,null);} URL.revokeObjectURL(url); };
+      img2.onerror=()=>{ URL.revokeObjectURL(url); cb(null,null); };
+      img2.src=url;
+    }catch(e){ cb(null,null); }
+  };
+  img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(xml);
 }
 function exportImage(){
   renderToCanvas((blob)=>{
@@ -458,7 +470,7 @@ function applyI18n(){
     't-ch':'City placement','t-ch2':'Tap an empty cell → confirm in the popup. 1 cell = 1 city.',
     't-cguide':'Tap a cell to place. It lights up and a confirm popup appears. Press “Register” to add a numbered city.',
     't-underlay':'Show server/alliance colors underneath',
-    't-ulayer':'Underlay layer','t-ul-auto':'Auto (prefer what is set)','t-ul-server':'Server areas','t-ul-alliance':'Alliance areas','t-ul-none':'None',
+    't-ulayer':'Underlay layer','t-ul-server':'Server areas','t-ul-alliance':'Alliance areas','t-ul-none':'None',
   };
   for(const id in map){ const e=document.getElementById(id); if(e){ if(id==='pgtitle')document.title=map[id]; else e.textContent=map[id]; } }
   // ボタンテキスト
