@@ -72,6 +72,29 @@ function initAlliances(keep){
   }
   state.alliances=arr; recomputeAlliances();
 }
+// 8つの整然パーツ(各象限を軸で2分)。すべて王城の辺・対角に平行な直線境界。
+// 時計回り順: 0=N西,1=N東,2=E北,3=E南,4=S東,5=S西,6=W南,7=W北
+function part8(r,c){
+  const a=(r-c), b=(r+c)-2*((LO+HI)/2);
+  const du=(c-r), dv=(c+r)-2*((LO+HI)/2);
+  if(Math.abs(b)>=Math.abs(a)){          // 南北の象限
+    if(b<0) return du<=0?0:1;             // 北: 西/東
+    return du>=0?4:5;                      // 南: 東/西
+  } else {                                // 東西の象限
+    if(a<0) return dv<=0?2:3;             // 東: 北/南
+    return dv>=0?6:7;                      // 西: 南/北
+  }
+}
+// n同盟へのグループ化(連続パーツをまとめる。整然=直線優先、マス数差は許容)
+const KC_GROUPS={
+  3:[[7,0,1],[2,3,4],[5,6]],
+  4:[[0,1],[2,3],[4,5],[6,7]],
+  5:[[0,1],[2,3],[4,5],[6],[7]],
+  6:[[0,1],[2],[3],[4,5],[6],[7]],
+  7:[[0,1],[2],[3],[4],[5],[6],[7]],
+  8:[[0],[1],[2],[3],[4],[5],[6],[7]],
+};
+
 function recomputeAlliances(){
   const al=state.alliances;
   const n=al.length;
@@ -80,7 +103,7 @@ function recomputeAlliances(){
   const map={};
 
   if(n===2){
-    // 2同盟: 王城を貫く1本の直線で分割(完全な直線境界)
+    // 2同盟: 王城を貫く1本の直線で分割(比率でスライド)。完全な直線境界。
     const sorted=[...EDIT].sort((a,b)=>((a[0]+a[1])-(b[0]+b[1])) || ((a[1]-a[0])-(b[1]-b[0])));
     const cut=Math.round(ratios[0]/total*EDIT.length);
     sorted.forEach((cell,i)=>{ map[cell[0]+','+cell[1]] = i<cut?0:1; });
@@ -88,32 +111,10 @@ function recomputeAlliances(){
     return;
   }
 
-  // 3同盟以上: 王城外周に沿った周回パラメータでセルを並べ、比率で連続配分。
-  // 周回パラメータは正方形リング(王城の辺に平行)を時計回りに辿るので、
-  // 区切り線が王城の辺・対角に沿った直線になり、ギザギザになりにくい。
-  const cu=(LO+HI)/2, cv=(LO+HI)/2; // 王城中心(r,c)
-  const ringParam=(r,c)=>{
-    const du=c-cv, dv=r-cu;
-    const adu=Math.abs(du), adv=Math.abs(dv), m=Math.max(adu,adv)||1;
-    let t;
-    if(dv<=-adu && dv<0)       t=(du/m)*0.5+0.5;       // 北辺(上): 左→右  [0,1)
-    else if(du>=adv && du>0)   t=(dv/m)*0.5+0.5+1;     // 東辺(右): 上→下  [1,2)
-    else if(dv>=adu && dv>0)   t=(-du/m)*0.5+0.5+2;    // 南辺(下): 右→左  [2,3)
-    else                       t=(-dv/m)*0.5+0.5+3;    // 西辺(左): 下→上  [3,4)
-    return t;
-  };
-  // 1つ目の同盟が北(上頂点)中心に来るよう、起点を北辺の中央に合わせてオフセット
-  const firstW=ratios[0]/total; // 周回全体(4)に対する割合
-  const offset=(firstW*4)/2;    // 1つ目の半分だけ手前にずらす
-  const sorted=[...EDIT].map(([r,c])=>{
-    let t=(ringParam(r,c)+offset)%4;
-    return {r,c,t};
-  }).sort((a,b)=>a.t-b.t);
-  let idx=0, cum=ratios[0]/total*EDIT.length;
-  sorted.forEach((cell,i)=>{
-    while(idx<n-1 && i>=cum){ idx++; cum+=ratios[idx]/total*EDIT.length; }
-    map[cell.r+','+cell.c]=idx;
-  });
+  // 3〜8同盟: 8つの直線パーツを連続グループ化。境界はすべて王城の辺・対角に平行な直線。
+  const groups=KC_GROUPS[n] || KC_GROUPS[8];
+  const w2a={}; groups.forEach((g,ai)=>g.forEach(w=>w2a[w]=ai));
+  EDIT.forEach(([r,c])=>{ map[r+','+c]=w2a[part8(r,c)]; });
   state.allianceCell=map;
 }
 
@@ -238,13 +239,21 @@ function drawAllianceLabels(svg){
 }
 function drawCities(svg){
   const g=el('g',{},svg);
+  // ①まず全ての都市タイルを描画(下層)
   state.cities.forEach(ct=>{
-    const poly=cellPoly(ct.r,ct.c);
-    const cg=el('g',{},g);
-    el('polygon',{points:polyStr(poly),fill:'#ffd36b','fill-opacity':0.95,stroke:'#1a1206','stroke-width':1.4},cg);
+    el('polygon',{points:polyStr(cellPoly(ct.r,ct.c)),fill:'#ffd36b','fill-opacity':0.95,stroke:'#1a1206','stroke-width':1.4},g);
+  });
+  // ②次に全てのラベルを上層に描画(タイルに上書きされない)
+  const labelLayer=el('g',{},svg);
+  state.cities.forEach(ct=>{
     const cx=cellCenter(ct.r,ct.c)[0], cy=cellCenter(ct.r,ct.c)[1];
-    el('text',{x:cx,y:cy-1,'text-anchor':'middle',style:'font-size:11px;font-weight:800;fill:#1a1206;font-family:sans-serif'},cg).textContent='#'+ct.id;
-    if(ct.name) el('text',{x:cx,y:cy+13,'text-anchor':'middle',style:lblStyle(11,'#fff')},cg).textContent=ct.name;
+    if(ct.name){
+      // 番号は小さくタイル上部、担当者名はタイル中央に読みやすく(縁取り付き)
+      el('text',{x:cx,y:cy-4,'text-anchor':'middle',style:'font-size:9px;font-weight:800;fill:#1a1206;font-family:sans-serif'},labelLayer).textContent='#'+ct.id;
+      el('text',{x:cx,y:cy+9,'text-anchor':'middle',style:lblStyle(11,'#fff')},labelLayer).textContent=ct.name;
+    } else {
+      el('text',{x:cx,y:cy+3,'text-anchor':'middle',style:'font-size:12px;font-weight:800;fill:#1a1206;font-family:sans-serif'},labelLayer).textContent='#'+ct.id;
+    }
   });
 }
 
