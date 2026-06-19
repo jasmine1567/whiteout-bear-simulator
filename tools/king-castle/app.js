@@ -88,29 +88,31 @@ function recomputeAlliances(){
     return;
   }
 
-  // 3同盟以上: 王城中心まわりにシードを環状配置し、最近傍割当(ひし形に近いコンパクト領域)
-  const CC=cellCenter((LO+HI)/2,(LO+HI)/2); // 王城中心の画面座標
-  // 配置半径: 編集リングの中ほど。画面アスペクト(TW:TH)に合わせた楕円。
-  const Rx=TW*3.0, Ry=TH*3.0;
-  // 各同盟の中心角(比率で角度幅を配分)。1つ目を上(270°)中心に。
-  let acc=0; const seeds=[];
-  const firstW=ratios[0]/total*360;
-  let startDeg=270 - firstW/2; // 1つ目の同盟が上頂点方向の中心
-  for(let i=0;i<n;i++){
-    const w=ratios[i]/total*360;
-    const mid=(startDeg + acc + w/2) * Math.PI/180; acc+=w;
-    seeds.push([CC[0]+Rx*Math.cos(mid), CC[1]+Ry*Math.sin(mid), ratios[i]]);
-  }
-  EDIT.forEach(([r,c])=>{
-    const p=cellCenter(r,c); let best=0, bd=Infinity;
-    for(let i=0;i<seeds.length;i++){
-      const dx=p[0]-seeds[i][0];
-      const dy=(p[1]-seeds[i][1])*(TW/TH); // 縦方向を正規化して等方距離に
-      // 比率の平方根で割って、大きい同盟ほど広く取る
-      const d=Math.sqrt(dx*dx+dy*dy)/Math.sqrt(seeds[i][2]);
-      if(d<bd){ bd=d; best=i; }
-    }
-    map[r+','+c]=best;
+  // 3同盟以上: 王城外周に沿った周回パラメータでセルを並べ、比率で連続配分。
+  // 周回パラメータは正方形リング(王城の辺に平行)を時計回りに辿るので、
+  // 区切り線が王城の辺・対角に沿った直線になり、ギザギザになりにくい。
+  const cu=(LO+HI)/2, cv=(LO+HI)/2; // 王城中心(r,c)
+  const ringParam=(r,c)=>{
+    const du=c-cv, dv=r-cu;
+    const adu=Math.abs(du), adv=Math.abs(dv), m=Math.max(adu,adv)||1;
+    let t;
+    if(dv<=-adu && dv<0)       t=(du/m)*0.5+0.5;       // 北辺(上): 左→右  [0,1)
+    else if(du>=adv && du>0)   t=(dv/m)*0.5+0.5+1;     // 東辺(右): 上→下  [1,2)
+    else if(dv>=adu && dv>0)   t=(-du/m)*0.5+0.5+2;    // 南辺(下): 右→左  [2,3)
+    else                       t=(-dv/m)*0.5+0.5+3;    // 西辺(左): 下→上  [3,4)
+    return t;
+  };
+  // 1つ目の同盟が北(上頂点)中心に来るよう、起点を北辺の中央に合わせてオフセット
+  const firstW=ratios[0]/total; // 周回全体(4)に対する割合
+  const offset=(firstW*4)/2;    // 1つ目の半分だけ手前にずらす
+  const sorted=[...EDIT].map(([r,c])=>{
+    let t=(ringParam(r,c)+offset)%4;
+    return {r,c,t};
+  }).sort((a,b)=>a.t-b.t);
+  let idx=0, cum=ratios[0]/total*EDIT.length;
+  sorted.forEach((cell,i)=>{
+    while(idx<n-1 && i>=cum){ idx++; cum+=ratios[idx]/total*EDIT.length; }
+    map[cell.r+','+cell.c]=idx;
   });
   state.allianceCell=map;
 }
