@@ -401,6 +401,12 @@ function buildExportSVG(){
   ttl.setAttribute('x',W/2); ttl.setAttribute('y',-16); ttl.setAttribute('text-anchor','middle');
   ttl.setAttribute('style','font-size:25px;font-weight:800;fill:#ffe8a8;font-family:sans-serif;paint-order:stroke;stroke:rgba(0,0,0,.5);stroke-width:3px');
   ttl.textContent=titleText; clone.appendChild(ttl);
+  // サイトURL(左下に控えめに表示)
+  const url=document.createElementNS(NS,'text');
+  url.setAttribute('x',14); url.setAttribute('y',BOARD_H-12); url.setAttribute('text-anchor','start');
+  url.setAttribute('style','font-size:17px;font-weight:700;fill:#86d9ea;font-family:sans-serif;paint-order:stroke;stroke:rgba(0,0,0,.6);stroke-width:3px;opacity:0.9');
+  url.textContent='whitesim-lab.com';
+  clone.appendChild(url);
   return {clone, W, H:H+extra};
 }
 function renderToCanvas(cb){
@@ -544,6 +550,9 @@ function fitZoom(){
 }
 function boot(){
   applyI18n();
+  // 念のため上限を10に強制(古いHTMLキャッシュ対策)
+  var acInput=document.getElementById('allianceCount');
+  if(acInput){ acInput.max='10'; acInput.setAttribute('max','10'); }
   initServer(); initAlliances(false); bind();
   fitZoom();
   setMode('server');
