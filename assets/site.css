@@ -250,3 +250,13 @@ code{background:var(--night);border:1px solid var(--line);border-radius:5px;
 .kc-diamond .kc-d-s{top:108px;left:57px;background:linear-gradient(135deg,#52c47a,#3a9159)}
 .kc-diamond .kc-d-w{top:57px;left:6px;background:linear-gradient(135deg,#f2b03c,#c88a26)}
 @media(max-width:640px){ .kc-diamond{width:120px;height:120px;transform:scale(.8)} }
+
+/* ===== 記事下部の関連記事 ===== */
+.relposts{margin:32px 0 8px;padding:18px 18px 8px;background:var(--panel);border:1px solid var(--line);border-radius:14px}
+.relposts-h{font-size:15px;margin:0 0 12px;color:var(--frost);font-weight:800}
+.relposts ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.relposts li{margin:0}
+.relposts a{display:block;padding:11px 13px;background:var(--panel2);border:1px solid var(--line);border-radius:10px;color:var(--text);text-decoration:none;font-size:13.5px;font-weight:600;line-height:1.5;transition:.15s}
+.relposts a:hover{border-color:var(--frost);background:var(--night);transform:translateX(3px)}
+.relposts a::before{content:"📄 ";opacity:.7}
+@media(min-width:560px){ .relposts ul{grid-template-columns:1fr 1fr} }
