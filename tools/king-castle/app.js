@@ -1,4 +1,5 @@
 'use strict';
+function kcTrack(action,params){try{if(window.gtag)gtag('event',action,Object.assign({tool:'king_castle'},params||{}));}catch(e){}}
 /* ====================================================================
    王城戦エリア配置管理ツール (統合版)
    14x14 アイソメtrックひし形 / 中心6x6 王城は設置不可
@@ -304,7 +305,7 @@ function closeCityPop(){ document.getElementById('cityPop').classList.remove('sh
 /* ============ UI ============ */
 let currentBrush='blue';
 function setMode(m){
-  state.mode=m;
+  state.mode=m;kcTrack("kc_set_mode",{mode:m});
   document.querySelectorAll('.kc-mode').forEach(b=>b.classList.toggle('on',b.getAttribute('data-mode')===m));
   document.querySelectorAll('.kc-mode-panel').forEach(p=>p.classList.add('hide'));
   document.getElementById('panel-'+m).classList.remove('hide');
@@ -445,6 +446,7 @@ function renderToCanvas(cb){
   img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(xml);
 }
 function exportImage(){
+  kcTrack("kc_export_image",{mode:state.mode});
   renderToCanvas((blob)=>{
     if(!blob){ flash('exportMsg',T('画像の生成に失敗しました。','Image generation failed.')); return; }
     const url=URL.createObjectURL(blob);
@@ -458,6 +460,7 @@ function exportImage(){
   });
 }
 function shareX(){
+  kcTrack("kc_share",{mode:state.mode});
   // 画像は自動添付できないため、テキスト+URLでX投稿画面を開く
   const txt = state.mode==='server'?T(`王城戦SvS: ${state.blueName} vs ${state.redName} のエリア配置を作成！`,`King Castle War: ${state.blueName} vs ${state.redName} area plan!`)
     : state.mode==='alliance'?T('王城戦の同盟エリア配置を作成！','Made an alliance area plan for King Castle War!')
