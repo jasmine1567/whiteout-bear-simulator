@@ -4,10 +4,10 @@
   var EN = L==='en';
   var NAV = EN ? {
     brand:"🐻 Whiteout Tools Lab", home:"Home", sim:"Bear Sim", left:"Left-Hero",
-    ratio:"Troop Ratio", doctor:"Damage Doctor", guide:"Guides"
+    ratio:"Troop Ratio", doctor:"Damage Doctor", castle:"King Castle", cmd:"Commander", guide:"Guides"
   } : {
     brand:"🐻 ホワサバ ツールラボ", home:"ホーム", sim:"熊狩シミュ", left:"左英雄チェッカー",
-    ratio:"兵士比率", doctor:"ダメージ診断", guide:"攻略ガイド"
+    ratio:"兵士比率", doctor:"ダメージ診断", castle:"王城戦", cmd:"指揮官診断", guide:"攻略ガイド"
   };
   function langLink(){
     return EN
@@ -22,6 +22,8 @@
       +'<a href="'+d+'tools/left-hero/index.html">'+NAV.left+'</a>'
       +'<a href="'+d+'tools/troop-ratio/index.html">'+NAV.ratio+'</a>'
       +'<a href="'+d+'tools/damage-doctor/index.html">'+NAV.doctor+'</a>'
+      +'<a href="'+d+'tools/king-castle/index.html">'+NAV.castle+'</a>'
+      +'<a href="'+d+'tools/commander-type/index.html">'+NAV.cmd+'</a>'
       +'<a href="'+d+'guides/bear-hunt-guide.html">'+NAV.guide+'</a>'
       +langLink()
       +'</div></nav>';
@@ -55,4 +57,14 @@
     return '<div class="updbox"><span class="u1">最終検証日 '+d+'</span>'
       +'<span class="u2">対応世代 〜第'+g+'世代</span>'+(opt.note?'<span class="u3">直近の仕様: '+opt.note+'</span>':'')+'</div>';
   };
+  /* 共通イベント計測ヘルパー */
+  window.WOS_TRACK = function(action, params){ try{ if(window.gtag) gtag('event', action, params||{}); }catch(e){} };
+  /* ツールページの初回操作を1回だけ計測(used/not-used 判定用) */
+  (function(){
+    if((location.pathname||'').indexOf('/tools/')<0) return;
+    var sent=false, m=(location.pathname.match(/\/tools\/([^\/]+)/)||[])[1]||'unknown';
+    function fire(){ if(sent)return; sent=true; window.WOS_TRACK('tool_engaged',{tool:m});
+      document.removeEventListener('click',fire,true); document.removeEventListener('input',fire,true); }
+    document.addEventListener('click',fire,true); document.addEventListener('input',fire,true);
+  })();
 })();

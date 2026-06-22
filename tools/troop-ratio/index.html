@@ -8,6 +8,9 @@
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
+  // Consent Mode v2: 既定は許可、EEA/英国/スイスのみ同意取得まで拒否(CMPがupdateで上書き)
+  gtag('consent','default',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'});
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',region:['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH'],wait_for_update:500});
   gtag('js', new Date());
   gtag('config', 'G-Y8YMCVQDMG');
 </script>
@@ -157,18 +160,31 @@ function render(){
 ['total','aMks','aLan','aInf'].forEach(function(id){document.getElementById(id).addEventListener('input',render);});
 render();
 </script>
-<script>window.addEventListener("DOMContentLoaded",function(){
-if((window.WOS_LANG||"ja")!=="en")return;var q=function(s){return document.querySelector(s);};
-document.getElementById("htmlroot").lang="en";document.title="Troop Ratio Simulator | Whiteout Tools Lab";
-if(q("h1"))q("h1").innerHTML='Bear Hunt <span class="acc">Troop Ratio Simulator</span>';
-if(q(".lead"))q(".lead").innerHTML='Is 10:30:60 right, or 100% marksman? The best ratio <b>depends on your troop count and stats</b>. Compare the major ratios with your own numbers and see which deals the most damage.';
-var hs=document.querySelectorAll("h2");if(hs[0])hs[0].textContent="Predicted damage by ratio (relative)";
-var TR={"ホーム": "Home", "兵士比率シミュレータ": "Troop Ratio Simulator", "兵士の合計数": "Total troops", "盾兵 攻撃力ボーナス%": "Infantry attack bonus %", "槍兵 攻撃力ボーナス%": "Lancer attack bonus %", "弓兵 攻撃力ボーナス%": "Marksman attack bonus %", "※ 攻撃力はゲーム内「ステータス」画面の兵種別の値。殺傷力は本ツールでは攻撃力に比例とみなして簡易計算します(厳密な数値は熊狩シミュレーター本体をご利用ください)。": "* Attack values are the per-type figures from the in-game Stats screen. Lethality is approximated as proportional to attack here (for exact numbers, use the main Bear Hunt simulator).", "盾": "Inf", "槍": "Lan", "弓": "Mks", "⬆ 上の数値を変えると、バーがリアルタイムで伸び縮みします。自分のステータスでどの比率が伸びるか動かして確かめてください。": "⬆ Change the values above and the bars grow/shrink in real time. See which ratio wins for your stats.", "なぜ弓100%が最適にならないのか": "Why 100% marksman is not optimal", "兵士の量はダメージに対して逓減(平方根的)に効くため、1兵種に全振りすると伸びしろが頭打ちになります。さらに公開検証では、盾・槍がゼロの編成にはダメージの目減り(ペナルティ)が確認されています。弓は対歩兵の特性で効率が高い一方、槍・盾を少量混ぜて分散させた方が合計で勝つケースが多い――これが「弓寄せだが全振りはしない」が定番になる理由です。": "Troop count has diminishing (square-root-like) returns on damage, so all-in on one type plateaus. Public tests also show a penalty when infantry/lancer are zero. Marksman is efficient against infantry, but mixing in some lancer/infantry usually wins on total — which is why \"marksman-favored but not all-in\" is standard.", "→ 左英雄チェッカー": "→ Left-Hero Checker", "→ ダメージが伸びない原因診断": "→ Damage Doctor", "→ 兵士比率の考え方を記事で読む": "→ Read the troop-ratio guide", "英雄スキルや専用装備まで含めた正確なダメージは、本体シミュレーターで。": "For exact damage including hero skills and exclusive gear, use the main simulator.", "🐻 熊狩ダメージ・シミュレーターで詳細計算": "🐻 Detailed calculation in the Bear Hunt Simulator"};
-function tr(s){var k=s.replace(/\s+/g," ").trim();return TR[k]!=null?s.replace(k,TR[k]):s;}
-var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,null);var nodes=[],n;
-while(n=w.nextNode())nodes.push(n);
-nodes.forEach(function(node){var v=node.nodeValue;if(!v||!v.trim())return;
-if(!/[\u3041-\u3096\u30a1-\u30f6\u4e00-\u9faf]/.test(v))return;node.nodeValue=tr(v);});
-var crumb=document.querySelector(".crumb");if(crumb)crumb.innerHTML='<a href="../../index.html?lang=en">Home</a> &gt; Troop Ratio Simulator';
-});</script></body>
+<script>
+window.addEventListener("DOMContentLoaded", function() {
+  if ((window.WOS_LANG || "ja") !== "en") return;
+  var q = function(s) { return document.querySelector(s); };
+  document.getElementById("htmlroot").lang = "en";
+  document.title = "Troop Ratio Simulator | Whiteout Tools Lab";
+  if (q("h1")) q("h1").innerHTML = 'Bear Hunt <span class="acc">Troop Ratio Simulator</span>';
+  if (q(".lead")) q(".lead").innerHTML = 'Is 10:30:60 right, or 100% marksman? The best ratio <b>depends on your troop count and stats</b>. Compare the major ratios with your own numbers and see which deals the most damage.';
+  var hs = document.querySelectorAll("h2");
+  if (hs[0]) hs[0].textContent = "Predicted damage by ratio (relative)";
+  var TR = { "ホーム": "Home", "兵士比率シミュレータ": "Troop Ratio Simulator", "兵士の合計数": "Total troops", "盾兵 攻撃力ボーナス%": "Infantry attack bonus %", "槍兵 攻撃力ボーナス%": "Lancer attack bonus %", "弓兵 攻撃力ボーナス%": "Marksman attack bonus %", "※ 攻撃力はゲーム内「ステータス」画面の兵種別の値。殺傷力は本ツールでは攻撃力に比例とみなして簡易計算します(厳密な数値は熊狩シミュレーター本体をご利用ください)。": "* Attack values are the per-type figures from the in-game Stats screen. Lethality is approximated as proportional to attack here (for exact numbers, use the main Bear Hunt simulator).", "盾": "Inf", "槍": "Lan", "弓": "Mks", "⬆ 上の数値を変えると、バーがリアルタイムで伸び縮みします。自分のステータスでどの比率が伸びるか動かして確かめてください。": "⬆ Change the values above and the bars grow/shrink in real time. See which ratio wins for your stats.", "なぜ弓100%が最適にならないのか": "Why 100% marksman is not optimal", "兵士の量はダメージに対して逓減(平方根的)に効くため、1兵種に全振りすると伸びしろが頭打ちになります。さらに公開検証では、盾・槍がゼロの編成にはダメージの目減り(ペナルティ)が確認されています。弓は対歩兵の特性で効率が高い一方、槍・盾を少量混ぜて分散させた方が合計で勝つケースが多い――これが「弓寄せだが全振りはしない」が定番になる理由です。": "Troop count has diminishing (square-root-like) returns on damage, so all-in on one type plateaus. Public tests also show a penalty when infantry/lancer are zero. Marksman is efficient against infantry, but mixing in some lancer/infantry usually wins on total — which is why \"marksman-favored but not all-in\" is standard.", "→ 左英雄チェッカー": "→ Left-Hero Checker", "→ ダメージが伸びない原因診断": "→ Damage Doctor", "→ 兵士比率の考え方を記事で読む": "→ Read the troop-ratio guide", "英雄スキルや専用装備まで含めた正確なダメージは、本体シミュレーターで。": "For exact damage including hero skills and exclusive gear, use the main simulator.", "🐻 熊狩ダメージ・シミュレーターで詳細計算": "🐻 Detailed calculation in the Bear Hunt Simulator" };
+
+  function tr(s) { var k = s.replace(/\s+/g, " ").trim(); return TR[k] != null ? s.replace(k, TR[k]) : s; }
+  var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+  var nodes = [],
+    n;
+  while (n = w.nextNode()) nodes.push(n);
+  nodes.forEach(function(node) {
+    var v = node.nodeValue;
+    if (!v || !v.trim()) return;
+    if (!/[\u3041-\u3096\u30a1-\u30f6\u4e00-\u9faf]/.test(v)) return;
+    node.nodeValue = tr(v);
+  });
+  var crumb = document.querySelector(".crumb");
+  if (crumb) crumb.innerHTML = '<a href="../../index.html?lang=en">Home</a> &gt; Troop Ratio Simulator';
+});
+</script></body>
 </html>

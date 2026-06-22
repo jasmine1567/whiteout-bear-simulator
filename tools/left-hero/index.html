@@ -8,6 +8,9 @@
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
+  // Consent Mode v2: 既定は許可、EEA/英国/スイスのみ同意取得まで拒否(CMPがupdateで上書き)
+  gtag('consent','default',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'});
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',region:['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH'],wait_for_update:500});
   gtag('js', new Date());
   gtag('config', 'G-Y8YMCVQDMG');
 </script>
@@ -110,7 +113,7 @@ function buildPicker(){
       var on=selected.indexOf(h.id)>=0;
       var eff = h.joiner ? '<span class="ok">'+WOS_skillLabel(h.joiner.label)+'</span>' : '<span class="na">'+t('熊で効果なし','No bear effect')+'</span>';
       html+='<div class="hcard" data-id="'+h.id+'" style="cursor:pointer;'+(on?'outline:2px solid var(--ember)':'')+'">'
-        +'<img src="'+WOS_ICON(h)+'" style="border-color:'+C.RAR_HEX[h.rar]+'">'
+        +'<img src="'+WOS_ICON(h)+'" alt="'+(h.name||'')+'" style="border-color:'+C.RAR_HEX[h.rar]+'">'
         +'<div class="hn">'+WOS_heroName(h)+'</div><div class="hs">'+eff+'</div></div>';
     });
   });
@@ -168,22 +171,29 @@ function buildResult(){
 </script>
 
 <script>
-window.LH_TR = {"現在の世代(これ以降の英雄は表示しません)": "Current generation (heroes newer than this are hidden)", "下の一覧から、参加者4人が左端に置く英雄を選んでください(タップでON/OFF)。": "From the list below, pick the 4 heroes your joiners place on the left (tap to toggle).", "判定結果(選択中の4枠)": "Result (selected 4 slots)", "英雄を選ぶと判定が表示されます。": "Pick heroes to see the result.", "枠が決まったら、実際に与えるダメージを数値で試算してみましょう。": "Once the slots are set, estimate the actual damage you deal.", "🐻 熊狩ダメージ・シミュレーターで計算する": "🐻 Open the Bear Hunt Damage Simulator", "→ 兵士比率シミュレータ": "→ Troop Ratio Simulator", "→ ダメージが伸びない原因診断": "→ Damage Doctor", "→ 左英雄の仕組みを記事で読む": "→ Read the left-hero guide", "左英雄のルール早わかり": "Left-hero rules at a glance", "Q. 左端以外の英雄は効きますか?": "Q. Do heroes other than the leftmost work?", "乗り側では効きません。見られるのは左端の英雄の「第1遠征スキル」のみで、2人目・3人目の英雄や、英雄レベル・装備・星は熊へのダメージに影響しません(兵士はダメージに寄与します)。": "On the joiner side, no. Only the leftmost hero's first expedition skill is read; the 2nd/3rd heroes and hero level/gear/stars don't affect bear damage (troops do contribute).", "Q. 4枠はどう選ばれますか?": "Q. How are the 4 slots chosen?", "集結全体で採用されるバフは、参加者の中から最大4枠です。基本は先着順ですが、後からより高いスキルレベルの同種スキルが来ると上書きされます。Lv5を4人最初に乗せると枠が安定します。": "Up to 4 buff slots are taken from joiners. First-come by default, but a later same-type skill of higher level overwrites it. Sending four Lv5 members first stabilizes the slots.", "Q. なぜ種類をバラけさせると強いの?": "Q. Why is spreading skill types stronger?", "同じ種類のスキルは足し算、違う種類は掛け算で効くためです。与ダメ・攻撃・殺傷・確率系を散らすと、同じスキルレベルでも合計倍率が高くなります。": "Same-type skills add, different types multiply. Spreading DMG/ATK/Lethality/proc raises the total multiplier at the same skill level.", "ホーム": "Home", "> 左英雄チェッカー": "> Left-Hero Checker", "左英雄チェッカー": "Left-Hero Checker"};
-window.addEventListener('DOMContentLoaded',function(){
-  if((window.WOS_LANG||'ja')!=='en') return;
-  document.getElementById('htmlroot').lang='en';
-  document.title='Left-Hero Checker | Whiteout Tools Lab';
-  var TR=window.LH_TR;
-  function tr(s){var k=s.replace(/\s+/g,' ').trim();return TR[k]!=null?s.replace(k,TR[k]):s;}
-  var h1=document.querySelector('h1'); if(h1) h1.innerHTML='Bear Hunt <span class="acc">Left-Hero Checker</span>';
-  var lead=document.querySelector('.lead'); if(lead) lead.innerHTML='On the joiner side, only the <b>first expedition skill of your leftmost hero</b> counts. This checks whether the hero you place on the left works against the bear, and analyzes 4-slot synergy.';
-  var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,null);
-  var nodes=[],n; while(n=w.nextNode()) nodes.push(n);
-  nodes.forEach(function(node){
-    var v=node.nodeValue; if(!v||!v.trim())return;
-    if(!/[\u3041-\u3096\u30a1-\u30f6\u4e00-\u9faf]/.test(v))return;
-    node.nodeValue=tr(v);
+window.LH_TR = { "現在の世代(これ以降の英雄は表示しません)": "Current generation (heroes newer than this are hidden)", "下の一覧から、参加者4人が左端に置く英雄を選んでください(タップでON/OFF)。": "From the list below, pick the 4 heroes your joiners place on the left (tap to toggle).", "判定結果(選択中の4枠)": "Result (selected 4 slots)", "英雄を選ぶと判定が表示されます。": "Pick heroes to see the result.", "枠が決まったら、実際に与えるダメージを数値で試算してみましょう。": "Once the slots are set, estimate the actual damage you deal.", "🐻 熊狩ダメージ・シミュレーターで計算する": "🐻 Open the Bear Hunt Damage Simulator", "→ 兵士比率シミュレータ": "→ Troop Ratio Simulator", "→ ダメージが伸びない原因診断": "→ Damage Doctor", "→ 左英雄の仕組みを記事で読む": "→ Read the left-hero guide", "左英雄のルール早わかり": "Left-hero rules at a glance", "Q. 左端以外の英雄は効きますか?": "Q. Do heroes other than the leftmost work?", "乗り側では効きません。見られるのは左端の英雄の「第1遠征スキル」のみで、2人目・3人目の英雄や、英雄レベル・装備・星は熊へのダメージに影響しません(兵士はダメージに寄与します)。": "On the joiner side, no. Only the leftmost hero's first expedition skill is read; the 2nd/3rd heroes and hero level/gear/stars don't affect bear damage (troops do contribute).", "Q. 4枠はどう選ばれますか?": "Q. How are the 4 slots chosen?", "集結全体で採用されるバフは、参加者の中から最大4枠です。基本は先着順ですが、後からより高いスキルレベルの同種スキルが来ると上書きされます。Lv5を4人最初に乗せると枠が安定します。": "Up to 4 buff slots are taken from joiners. First-come by default, but a later same-type skill of higher level overwrites it. Sending four Lv5 members first stabilizes the slots.", "Q. なぜ種類をバラけさせると強いの?": "Q. Why is spreading skill types stronger?", "同じ種類のスキルは足し算、違う種類は掛け算で効くためです。与ダメ・攻撃・殺傷・確率系を散らすと、同じスキルレベルでも合計倍率が高くなります。": "Same-type skills add, different types multiply. Spreading DMG/ATK/Lethality/proc raises the total multiplier at the same skill level.", "ホーム": "Home", "> 左英雄チェッカー": "> Left-Hero Checker", "左英雄チェッカー": "Left-Hero Checker" };
+window.addEventListener('DOMContentLoaded', function() {
+  if ((window.WOS_LANG || 'ja') !== 'en') return;
+  document.getElementById('htmlroot').lang = 'en';
+  document.title = 'Left-Hero Checker | Whiteout Tools Lab';
+  var TR = window.LH_TR;
+
+  function tr(s) { var k = s.replace(/\s+/g, ' ').trim(); return TR[k] != null ? s.replace(k, TR[k]) : s; }
+  var h1 = document.querySelector('h1');
+  if (h1) h1.innerHTML = 'Bear Hunt <span class="acc">Left-Hero Checker</span>';
+  var lead = document.querySelector('.lead');
+  if (lead) lead.innerHTML = 'On the joiner side, only the <b>first expedition skill of your leftmost hero</b> counts. This checks whether the hero you place on the left works against the bear, and analyzes 4-slot synergy.';
+  var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+  var nodes = [],
+    n;
+  while (n = w.nextNode()) nodes.push(n);
+  nodes.forEach(function(node) {
+    var v = node.nodeValue;
+    if (!v || !v.trim()) return;
+    if (!/[\u3041-\u3096\u30a1-\u30f6\u4e00-\u9faf]/.test(v)) return;
+    node.nodeValue = tr(v);
   });
-});</script>
+});
+</script>
 </body>
 </html>

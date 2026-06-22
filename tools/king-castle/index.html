@@ -8,6 +8,9 @@
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
+  // Consent Mode v2: 既定は許可、EEA/英国/スイスのみ同意取得まで拒否(CMPがupdateで上書き)
+  gtag('consent','default',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'});
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',region:['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH'],wait_for_update:500});
   gtag('js', new Date());
   gtag('config', 'G-Y8YMCVQDMG');
 </script>
@@ -23,8 +26,9 @@
 <meta property="og:title" content="王城戦エリア配置管理ツール | ホワサバ ツールラボ">
 <meta property="og:description" content="王城戦(SvS)のエリア配置を計画してXや画像で共有できる無料ツール。">
 <meta property="og:url" content="https://whitesim-lab.com/tools/king-castle/">
-<meta property="og:image" content="https://whitesim-lab.com/favicon.png">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://whitesim-lab.com/assets/og-king-castle.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://whitesim-lab.com/assets/og-king-castle.png">
 <link rel="stylesheet" href="../../assets/site.css">
 <style>
   :root{
@@ -257,5 +261,17 @@
   }catch(e){}
 </script>
 <script src="app.js"></script>
+<script>
+/* ===== 王城戦 追加計測(v53) ===== */
+(function(){
+  function trk(a,p){try{if(window.gtag)gtag('event',a,Object.assign({tool:'king_castle'},p||{}));}catch(e){}}
+  var map={applyAlliance:'kc_apply_alliance',popConfirm:'kc_add_city',
+           resetServer:'kc_reset',resetAlliance:'kc_reset',resetCity:'kc_reset'};
+  Object.keys(map).forEach(function(id){var el=document.getElementById(id);
+    if(el)el.addEventListener('click',function(){
+      var p={}; if(map[id]==='kc_reset')p.target=id.replace('reset','').toLowerCase();
+      trk(map[id],p);},true);});
+})();
+</script>
 </body>
 </html>
