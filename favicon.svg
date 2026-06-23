@@ -3,8 +3,8 @@
 <stop offset="0" stop-color="#ff9f2e"/><stop offset="1" stop-color="#ff5e3a"/>
 </linearGradient></defs>
 <rect width="100" height="100" rx="29.4" fill="url(#g)"/>
-<g transform="translate(23.53,23.53) scale(2.2059)" fill="#fff">
-<ellipse cx="12" cy="15.5" rx="5" ry="4"/>
-<circle cx="6.5" cy="11" r="1.9"/><circle cx="17.5" cy="11" r="1.9"/>
-<circle cx="9.5" cy="7.5" r="1.7"/><circle cx="14.5" cy="7.5" r="1.7"/>
+<g transform="translate(6.25,6.25) scale(3.6458)" fill="#fff">
+<ellipse cx="12" cy="16" rx="6.5" ry="5.2"/>
+<circle cx="5" cy="10.5" r="2.5"/><circle cx="19" cy="10.5" r="2.5"/>
+<circle cx="8.7" cy="6" r="2.2"/><circle cx="15.3" cy="6" r="2.2"/>
 </g></svg>

@@ -25,7 +25,7 @@ body{
   font-family:'Noto Sans JP',sans-serif}
 .sitenav .brand .logo{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;
   background:linear-gradient(135deg,#ff9f2e,#ff5e3a);color:#fff;box-shadow:0 4px 14px rgba(255,108,52,.45)}
-.sitenav .brand .logo svg,.sitenav .brand .logo .ic{width:18px;height:18px;color:#fff}
+.sitenav .brand .logo svg,.sitenav .brand .logo .ic{width:22px;height:22px;color:#fff}
 .ic{width:1em;height:1em;vertical-align:-.14em}
 .sitenav a{color:#a7abb8;text-decoration:none;font-size:13px;font-weight:500}
 .sitenav a:hover{color:#fff}
