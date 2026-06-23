@@ -144,7 +144,7 @@ function render(forExport){
   else { svg.setAttribute('width',(W*state.zoom).toFixed(0)); svg.setAttribute('height',(H*state.zoom).toFixed(0)); }
   host.appendChild(svg); boardSvg=svg;
 
-  el('rect',{x:0,y:0,width:W,height:H,fill:'#0c1119'},svg);
+  el('rect',{x:0,y:0,width:W,height:H,fill:'#ffffff'},svg);
 
   // defs(castle grad) — エクスポートでも確実に出るよう先頭に
   const defs=el('defs',{},svg);
@@ -165,10 +165,10 @@ function render(forExport){
   for(let r=0;r<N;r++)for(let c=0;c<N;c++){
     if(isCastle(r,c)) continue;
     const k=r+','+c;
-    let fill='#2a3445';
+    let fill='#eef0fb';
     if(mode==='server')fill=serverColor(k);
     else if(mode==='alliance')fill=allianceFill(k);
-    else if(mode==='city'){ fill = underlay==='server'?serverColor(k): underlay==='alliance'?allianceFill(k):'#2a3445'; }
+    else if(mode==='city'){ fill = underlay==='server'?serverColor(k): underlay==='alliance'?allianceFill(k):'#eef0fb'; }
     const poly=el('polygon',{points:polyStr(cellPoly(r,c)),fill,stroke:'rgba(0,0,0,.28)','stroke-width':0.5,'data-r':r,'data-c':c},cells);
     if(!forExport) poly.setAttribute('class','kc-cell');
     if(highlightKey===k && !forExport){
@@ -185,14 +185,14 @@ function render(forExport){
   const gl=el('g',{},svg);
   for(let i=0;i<=N;i++){
     let a=projCorner(i,0),b=projCorner(i,N);
-    el('line',{x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:'rgba(255,255,255,.10)','stroke-width':1},gl);
+    el('line',{x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:'rgba(0,0,0,.07)','stroke-width':1},gl);
     let d=projCorner(0,i),e=projCorner(N,i);
-    el('line',{x1:d[0],y1:d[1],x2:e[0],y2:e[1],stroke:'rgba(255,255,255,.10)','stroke-width':1},gl);
+    el('line',{x1:d[0],y1:d[1],x2:e[0],y2:e[1],stroke:'rgba(0,0,0,.07)','stroke-width':1},gl);
   }
 
   drawCastle(svg);
   // outer edge
-  el('polygon',{points:polyStr([projCorner(0,0),projCorner(0,N),projCorner(N,N),projCorner(N,0)]),fill:'none',stroke:'rgba(255,255,255,.28)','stroke-width':1.6},svg);
+  el('polygon',{points:polyStr([projCorner(0,0),projCorner(0,N),projCorner(N,N),projCorner(N,0)]),fill:'none',stroke:'rgba(0,0,0,.22)','stroke-width':1.6},svg);
 
   if(mode==='server') drawServerLabels(svg);
   if(mode==='alliance') drawAllianceLabels(svg);
@@ -212,12 +212,13 @@ function drawCastle(svg){
   el('text',{x:cc[0],y:cc[1]+16,'text-anchor':'middle',style:lblStyle(15,'#cfe8ff')},g).textContent=T('（設置不可）','(No build)');
 }
 function lblStyle(size,fill){ return `font-size:${size}px;font-weight:800;fill:${fill};paint-order:stroke;stroke:rgba(0,0,0,.6);stroke-width:3px;font-family:sans-serif`; }
+function lblStyleD(size){ return `font-size:${size}px;font-weight:800;fill:#1f2433;paint-order:stroke;stroke:rgba(255,255,255,.92);stroke-width:3.5px;font-family:sans-serif`; }
 
 function drawCompass(svg){
   const g=el('g',{},svg);
   const top=projCorner(0,0),right=projCorner(0,N),bottom=projCorner(N,N),left=projCorner(N,0);
   [[T('北 N','N'),top,0,-12],[T('東 E','E'),right,30,4],[T('南 S','S'),bottom,0,24],[T('西 W','W'),left,-30,4]].forEach(([t,p,dx,dy])=>{
-    el('text',{x:p[0]+dx,y:p[1]+dy,'text-anchor':'middle',style:lblStyle(14,'#fff')},g).textContent=t;
+    el('text',{x:p[0]+dx,y:p[1]+dy,'text-anchor':'middle',style:lblStyleD(14)},g).textContent=t;
   });
 }
 
@@ -227,7 +228,7 @@ function drawServerLabels(svg){
   [['blue',state.blueName],['red',state.redName]].forEach(([k,name])=>{
     const arr=grp[k]; if(!arr.length)return;
     let sx=0,sy=0; arr.forEach(p=>{sx+=p[0];sy+=p[1];});
-    el('text',{x:sx/arr.length,y:sy/arr.length,'text-anchor':'middle',style:lblStyle(19,'#fff')},g).textContent=name;
+    el('text',{x:sx/arr.length,y:sy/arr.length,'text-anchor':'middle',style:lblStyleD(19)},g).textContent=name;
   });
 }
 function drawAllianceLabels(svg){
@@ -236,7 +237,7 @@ function drawAllianceLabels(svg){
   Object.keys(grp).forEach(i=>{
     const a=state.alliances[i]; if(!a)return; const arr=grp[i];
     let sx=0,sy=0; arr.forEach(p=>{sx+=p[0];sy+=p[1];});
-    el('text',{x:sx/arr.length,y:sy/arr.length,'text-anchor':'middle',style:lblStyle(17,'#fff')},g)
+    el('text',{x:sx/arr.length,y:sy/arr.length,'text-anchor':'middle',style:lblStyleD(17)},g)
       .textContent=a.name+(a.grey?T('（非表示）','(hidden)'):'');
   });
 }
@@ -253,7 +254,7 @@ function drawCities(svg){
     if(ct.name){
       // 番号は小さくタイル上部、担当者名はタイル中央に読みやすく(縁取り付き)
       el('text',{x:cx,y:cy-4,'text-anchor':'middle',style:'font-size:9px;font-weight:800;fill:#1a1206;font-family:sans-serif'},labelLayer).textContent='#'+ct.id;
-      el('text',{x:cx,y:cy+9,'text-anchor':'middle',style:lblStyle(11,'#fff')},labelLayer).textContent=ct.name;
+      el('text',{x:cx,y:cy+9,'text-anchor':'middle',style:lblStyleD(11)},labelLayer).textContent=ct.name;
     } else {
       el('text',{x:cx,y:cy+3,'text-anchor':'middle',style:'font-size:12px;font-weight:800;fill:#1a1206;font-family:sans-serif'},labelLayer).textContent='#'+ct.id;
     }
@@ -393,19 +394,19 @@ function buildExportSVG(){
   clone.setAttribute('width',W); clone.setAttribute('height',H+extra);
   // タイトル帯
   const bg=document.createElementNS(NS,'rect');
-  bg.setAttribute('x',0); bg.setAttribute('y',-extra); bg.setAttribute('width',W); bg.setAttribute('height',extra); bg.setAttribute('fill','#0c1119');
+  bg.setAttribute('x',0); bg.setAttribute('y',-extra); bg.setAttribute('width',W); bg.setAttribute('height',extra); bg.setAttribute('fill','#ffffff');
   clone.insertBefore(bg,clone.firstChild);
   const ttl=document.createElementNS(NS,'text');
   const titleText = state.mode==='server'?`${state.blueName} vs ${state.redName}`
     : state.mode==='alliance'?T('同盟エリア配置','Alliance Areas')
     : T('都市配置マップ','City Map');
   ttl.setAttribute('x',W/2); ttl.setAttribute('y',-16); ttl.setAttribute('text-anchor','middle');
-  ttl.setAttribute('style','font-size:25px;font-weight:800;fill:#ffe8a8;font-family:sans-serif;paint-order:stroke;stroke:rgba(0,0,0,.5);stroke-width:3px');
+  ttl.setAttribute('style','font-size:25px;font-weight:800;fill:#1f2433;font-family:sans-serif;paint-order:stroke;stroke:rgba(255,255,255,.9);stroke-width:3.5px');
   ttl.textContent=titleText; clone.appendChild(ttl);
   // サイトURL(左下に控えめに表示)
   const url=document.createElementNS(NS,'text');
   url.setAttribute('x',14); url.setAttribute('y',BOARD_H-12); url.setAttribute('text-anchor','start');
-  url.setAttribute('style','font-size:17px;font-weight:700;fill:#86d9ea;font-family:sans-serif;paint-order:stroke;stroke:rgba(0,0,0,.6);stroke-width:3px;opacity:0.9');
+  url.setAttribute('style','font-size:17px;font-weight:700;fill:#1f2433;font-family:sans-serif;paint-order:stroke;stroke:rgba(255,255,255,.92);stroke-width:3.5px');
   url.textContent='whitesim-lab.com';
   clone.appendChild(url);
   return {clone, W, H:H+extra};
@@ -425,7 +426,7 @@ function renderToCanvas(cb){
     const canvas=document.createElement('canvas');
     canvas.width=W*scale; canvas.height=H*scale;
     const ctx=canvas.getContext('2d');
-    ctx.fillStyle='#0c1119'; ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,canvas.width,canvas.height);
     ctx.drawImage(img,0,0,canvas.width,canvas.height);
     canvas.toBlob(b=>cb(b,canvas),'image/png');
   };
@@ -454,7 +455,7 @@ function exportImage(){
     a.href=url; a.download=`oukasen_${state.mode}_${new Date().toISOString().slice(0,10)}.png`;
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(()=>URL.revokeObjectURL(url),4000);
-    const m=document.getElementById('exportMsg'); m.style.color='#7fe0a0';
+    const m=document.getElementById('exportMsg'); m.style.color='#15a35b';
     m.textContent=T('✅ 画像を保存しました。','✅ Image saved.');
     setTimeout(()=>m.textContent='',3500);
   });
@@ -465,11 +466,11 @@ function shareX(){
   const txt = state.mode==='server'?T(`王城戦SvS: ${state.blueName} vs ${state.redName} のエリア配置を作成！`,`King Castle War: ${state.blueName} vs ${state.redName} area plan!`)
     : state.mode==='alliance'?T('王城戦の同盟エリア配置を作成！','Made an alliance area plan for King Castle War!')
     : T('王城戦の都市配置マップを作成！','Made a city map for King Castle War!');
-  const tags='#ホワサバ #王城戦 #whitesim_lab';
+  const tags=T('#ホワサバ #王城戦 #whitesim_lab','#WhiteoutSurvival #KingCastle #whitesim_lab');
   const url='https://whitesim-lab.com/tools/king-castle/';
   const u='https://twitter.com/intent/tweet?text='+encodeURIComponent(txt+' '+tags)+'&url='+encodeURIComponent(url);
   const w=window.open(u,'_blank','noopener,noreferrer'); if(w)w.opener=null;
-  const m=document.getElementById('exportMsg'); m.style.color='#7fe0a0';
+  const m=document.getElementById('exportMsg'); m.style.color='#15a35b';
   m.textContent=T('Xの投稿画面を開きました。「画像を保存」した画像を添付できます。','Opened X. You can attach the saved image.');
   setTimeout(()=>m.textContent='',5000);
 }

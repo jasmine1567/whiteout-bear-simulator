@@ -2,6 +2,7 @@
 <html lang="ja" id="htmlroot">
 <head>
 <meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
 
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y8YMCVQDMG"></script>
@@ -20,7 +21,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
 <link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/tools/troop-ratio/index.html">
 <link rel="alternate" hreflang="en" href="https://whitesim-lab.com/tools/troop-ratio/index.html?lang=en">
-<link rel="stylesheet" href="../../assets/site.css">
+<link rel="stylesheet" href="../../assets/site.css?v=71">
 <style>
   #bars{background:var(--night);border:1px solid var(--line);border-radius:10px;padding:8px 4px;margin-bottom:6px}
   #bars svg{max-width:100%}
@@ -88,8 +89,8 @@
 </div>
 <div id="foot"></div>
 
-<script src="../../assets/config.js"></script>
-<script src="../../assets/toolkit.js"></script>
+<script src="../../assets/config.js?v=71"></script>
+<script src="../../assets/toolkit.js?v=71"></script>
 <script>
 document.getElementById('nav').innerHTML = WOS_NAV(2);
 document.getElementById('foot').innerHTML = WOS_FOOT(2);
@@ -134,10 +135,10 @@ function render(){
     // ラベル(比率名)
     var sub=SUBLABELS[i]||'';
     var lblY=sub?(y+rowH/2-4):(y+rowH/2+1);
-    svg+='<text x="'+(padL-10)+'" y="'+lblY+'" text-anchor="end" font-size="13" font-weight="'+(isBest?'800':'600')+'" fill="'+(isBest?'#7ed98f':'#cfe0ea')+'" font-family="sans-serif">'+(isBest?'\uD83D\uDC51 ':'')+x.label+'</text>';
-    if(sub) svg+='<text x="'+(padL-10)+'" y="'+(y+rowH/2+11)+'" text-anchor="end" font-size="10" fill="#8aa3b3" font-family="sans-serif">'+sub+'</text>';
+    svg+='<text x="'+(padL-10)+'" y="'+lblY+'" text-anchor="end" font-size="13" font-weight="'+(isBest?'800':'600')+'" fill="'+(isBest?'#15a35b':'#5b6475')+'" font-family="sans-serif">'+(isBest?'\uD83D\uDC51 ':'')+x.label+'</text>';
+    if(sub) svg+='<text x="'+(padL-10)+'" y="'+(y+rowH/2+11)+'" text-anchor="end" font-size="10" fill="#6b7385" font-family="sans-serif">'+sub+'</text>';
     // トラック(背景)
-    svg+='<rect x="'+padL+'" y="'+(y+9)+'" width="'+maxBarW+'" height="'+(rowH-20)+'" rx="6" fill="#0e1d2c" stroke="#27425c"/>';
+    svg+='<rect x="'+padL+'" y="'+(y+9)+'" width="'+maxBarW+'" height="'+(rowH-20)+'" rx="6" fill="#eef0fb" stroke="#dfe3f0"/>';
     // 値バー(グラデ + アニメ用 width をJSで遷移)
     var gid='g'+i;
     svg+='<defs><linearGradient id="'+gid+'" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="'+col2+'"/><stop offset="1" stop-color="'+col+'"/></linearGradient></defs>';
@@ -145,7 +146,7 @@ function render(){
         +'<animate attributeName="width" from="'+(lastPct[i]!=null?(lastPct[i]*maxBarW).toFixed(1):0)+'" to="'+barW.toFixed(1)+'" dur="0.55s" fill="freeze" calcMode="spline" keySplines="0.22 1 0.36 1" keyTimes="0;1"/></rect>';
     // 数値(相対指数 0-1000)
     var disp=Math.round(pct*1000);
-    svg+='<text x="'+(W-padR+8)+'" y="'+(y+rowH/2+1)+'" font-size="14" font-weight="800" fill="'+(isBest?'#7ed98f':'#e6eff4')+'" font-family="sans-serif" font-variant-numeric="tabular-nums">'+disp+'</text>';
+    svg+='<text x="'+(W-padR+8)+'" y="'+(y+rowH/2+1)+'" font-size="14" font-weight="800" fill="'+(isBest?'#15a35b':'#1d2233')+'" font-family="sans-serif" font-variant-numeric="tabular-nums">'+disp+'</text>';
     lastPct[i]=pct;
   });
   svg+='</svg>';

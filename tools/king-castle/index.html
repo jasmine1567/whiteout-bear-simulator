@@ -2,6 +2,7 @@
 <html lang="ja" id="htmlroot">
 <head>
 <meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
 
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y8YMCVQDMG"></script>
@@ -29,7 +30,7 @@
 <meta property="og:image" content="https://whitesim-lab.com/assets/og-king-castle.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://whitesim-lab.com/assets/og-king-castle.png">
-<link rel="stylesheet" href="../../assets/site.css">
+<link rel="stylesheet" href="../../assets/site.css?v=71">
 <style>
   :root{
     --kc-red:#e0484d; --kc-blue:#3d7ff0; --kc-grey:#5d6a82;
@@ -48,8 +49,8 @@
   .kc-mode .n{width:19px;height:19px;border-radius:6px;background:var(--panel2);color:var(--muted);
     display:grid;place-items:center;font-size:11px;font-weight:800}
   .kc-mode:hover{border-color:var(--frost);color:var(--text)}
-  .kc-mode.on{background:var(--ember);color:#1a1206;border-color:var(--ember)}
-  .kc-mode.on .n{background:rgba(0,0,0,.25);color:#1a1206}
+  .kc-mode.on{background:linear-gradient(135deg,#ff9a3d,#ff7a2f);color:#fff;border-color:transparent}
+  .kc-mode.on .n{background:rgba(255,255,255,.28);color:#fff}
 
   .kc-layout{display:grid;grid-template-columns:330px 1fr;gap:16px;align-items:start}
   @media(max-width:860px){ .kc-layout{grid-template-columns:1fr} }
@@ -69,9 +70,9 @@
   .kc-btn{appearance:none;border:1px solid var(--line);background:var(--panel2);color:var(--text);
     padding:10px 14px;border-radius:10px;cursor:pointer;font-size:13.5px;font-weight:700;font-family:inherit;transition:.15s}
   .kc-btn:hover{border-color:var(--frost)}
-  .kc-btn.primary{background:var(--ember);color:#1a1206;border-color:var(--ember)}
+  .kc-btn.primary{background:linear-gradient(135deg,#ff9a3d,#ff7a2f);color:#fff;border-color:transparent}
   .kc-btn.x{background:#000;color:#fff;border-color:#333}
-  .kc-btn.danger{color:#ffb4b4}
+  .kc-btn.danger{color:#d93b3b}
   .kc-btn.sm{padding:8px 11px;font-size:12.5px;border-radius:9px}
   .kc-btnrow{display:flex;gap:8px;flex-wrap:wrap}
 
@@ -103,15 +104,15 @@
   .kc-li .tag{width:24px;height:24px;border-radius:7px;display:grid;place-items:center;font-size:12px;font-weight:800;color:#fff;flex:none}
   .kc-li input[type=text]{flex:1;min-width:90px;padding:8px 9px;font-size:14px}
   .kc-li .ratio{width:62px;flex:none}
-  .kc-ali.picking{border-color:var(--ember);box-shadow:0 0 0 2px rgba(242,162,60,.28)}
+  .kc-ali.picking{border-color:var(--ember);box-shadow:0 0 0 2px rgba(255,108,52,.28)}
   .kc-li .row2{display:flex;gap:6px;flex:none;flex-wrap:wrap}
 
   .kc-note{font-size:11.5px;color:var(--muted);margin-top:9px;line-height:1.65}
   .kc-toggle{display:flex;align-items:center;gap:8px;margin-bottom:10px}
   .kc-toggle label{font-size:13px;color:var(--text);font-weight:600;cursor:pointer;user-select:none}
   .kc-wrap input[type=checkbox]{width:18px;height:18px;accent-color:var(--ember);cursor:pointer;flex:none}
-  .kc-err{color:#ffb4b4;font-size:12px;margin-top:7px;min-height:15px}
-  .kc-ok{color:#7fe0a0;font-size:12px;margin-top:7px;min-height:15px}
+  .kc-err{color:#d93b3b;font-size:12px;margin-top:7px;min-height:15px}
+  .kc-ok{color:#15a35b;font-size:12px;margin-top:7px;min-height:15px}
   .kc-pill{display:inline-block;background:var(--panel2);border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:11px;color:var(--muted);margin:0 5px 5px 0}
 
   /* popup */
@@ -251,8 +252,8 @@
 </div>
 
 <div id="foot"></div>
-<script src="../../assets/config.js"></script>
-<script src="../../assets/toolkit.js"></script>
+<script src="../../assets/config.js?v=71"></script>
+<script src="../../assets/toolkit.js?v=71"></script>
 <script>
   // nav/footer 注入(深さ2 = tools/king-castle/)
   try{
@@ -271,6 +272,18 @@
     if(el)el.addEventListener('click',function(){
       var p={}; if(map[id]==='kc_reset')p.target=id.replace('reset','').toLowerCase();
       trk(map[id],p);},true);});
+})();
+</script>
+<script>
+/* アフィリエイト導線をフッター手前にマウント */
+(function(){
+  function mount(){
+    if(!window.WOS_mountAffiliate) return;
+    var f=document.getElementById('foot');
+    if(f) window.WOS_mountAffiliate(f,'before');
+  }
+  if(document.readyState!=='loading') mount();
+  else document.addEventListener('DOMContentLoaded', mount);
 })();
 </script>
 </body>

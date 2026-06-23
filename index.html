@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja" id="htmlroot"><head><meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
 
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y8YMCVQDMG"></script>
@@ -17,7 +18,7 @@
 <meta name="description" id="pgdesc" content="ホワイトアウト・サバイバルの熊狩り(Bear Hunt)攻略。ダメージシミュレーターを中心に、左英雄チェッカー・兵士比率比較・指揮官タイプ診断など遊べる無料ツールと11本の攻略記事。">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://docs.google.com; object-src 'none'; base-uri 'none'">
 <link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/"><link rel="alternate" hreflang="en" href="https://whitesim-lab.com/?lang=en">
-<link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/site.css?v=71">
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="shortcut icon" href="favicon.ico">
 <link rel="apple-touch-icon" href="favicon.png">
@@ -40,7 +41,8 @@
 <h1 id="hero-h1" style="font-size:22px;margin-bottom:4px"></h1>
 <p class="lead" id="hero-lead" style="margin-bottom:8px"></p>
 
-<!-- 花形:熊狩シミュレーター -->
+<!-- メインツール2本(並列) -->
+<div class="feature-2">
 <a class="hero-flag" id="flagLink" href="tools/bear-hunt/index.html">
   <div class="hf-in">
     <div class="hf-text">
@@ -60,15 +62,6 @@
     </div>
   </div>
 </a>
-
-<div class="ad-slot"></div>
-
-<!-- 華やかツール -->
-<div class="sec-head"><span class="sh-ico">🎮</span><span class="sh-t" id="playT"></span><span class="sh-line"></span></div>
-<div class="tool-grid" id="playGrid"></div>
-
-<!-- 王城戦ツール -->
-<div class="sec-head" style="margin-top:30px"><span class="sh-ico">◆</span><span class="sh-t" id="kcT"></span><span class="sh-line"></span></div>
 <a class="hero-flag kc-flag" id="kcLink" href="tools/king-castle/index.html">
   <div class="hf-in">
     <div class="hf-text">
@@ -87,6 +80,15 @@
     </div>
   </div>
 </a>
+</div>
+
+<div class="ad-slot"></div>
+
+<!-- 華やかツール -->
+<div class="sec-head"><span class="sh-ico">🎮</span><span class="sh-t" id="playT"></span><span class="sh-line"></span></div>
+<div class="tool-grid" id="playGrid"></div>
+
+
 
 <!-- 読み物(アコーディオン・閉) -->
 <div class="read-sec">
@@ -98,7 +100,7 @@
 <div id="about-sec"></div>
 </div>
 <div id="foot"></div>
-<script src="assets/config.js"></script><script src="assets/toolkit.js"></script>
+<script src="assets/config.js?v=71"></script><script src="assets/toolkit.js?v=71"></script>
 <script>
 var PLAY = [
   ["tools/left-hero/index.html", "左英雄チェッカー", "Left-Hero Checker", "乗りで効く英雄を一発判定", "Instantly check your left hero", "🔍", "tt-c1", null, null],
@@ -162,7 +164,6 @@ var READ = [{ "ico": "🔰", "tj": "はじめての方へ", "te": "Getting Start
   }).join('');
 
   // 王城戦ツール
-  document.getElementById('kcT').textContent = EN ? 'King Castle War' : '王城戦（SvS）ツール';
   document.getElementById('kcBadge').textContent = EN ? '◆ STRATEGY TOOL' : '◆ 戦略ツール';
   document.getElementById('kcTitle').innerHTML = EN ?
     '◆ King Castle War<br><span class="acc">Area Planner</span>' :

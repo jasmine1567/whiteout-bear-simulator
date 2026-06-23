@@ -421,7 +421,7 @@ window.WOS_HEROES = (function() {
 
 window.WOS_CONST = {
   CLS: { inf: { n: "盾", c: "#9db4c9" }, lan: { n: "槍", c: "#7fb6d9" }, mks: { n: "弓", c: "#f2a23c" } },
-  RAR_HEX: { R: "#5aa7e8", SR: "#b07ce8", SSR: "#e8c35a" },
+  RAR_HEX: { R: "#3b82d6", SR: "#9b4fd6", SSR: "#e0a020" },
   MAX_GEN: 16
 };
 window.WOS_ICON = function(hero) {
@@ -430,7 +430,8 @@ window.WOS_ICON = function(hero) {
   var EN = (window.WOS_LANG || "ja") === "en";
   var g = hero.gen === 0 ? (EN ? "P" : "常") : "G" + hero.gen;
   var glyph = EN ? ({ inf: "I", lan: "L", mks: "M" })[hero.cls] : C.n;
-  var s = "<svg xmlns='http://www.w3.org/2000/svg' width='96' height='96'><defs><radialGradient id='g' cx='50%' cy='32%'><stop offset='0%' stop-color='" + c + "'/><stop offset='100%' stop-color='#13202e'/></radialGradient></defs><rect width='96' height='96' rx='48' fill='url(#g)'/><text x='48' y='52' font-size='34' font-family='sans-serif' font-weight='bold' fill='#0a141f' text-anchor='middle'>" + glyph + "</text><rect x='26' y='60' width='44' height='20' rx='10' fill='#0a141f' opacity='.75'/><text x='48' y='75' font-size='14' font-family='sans-serif' font-weight='bold' fill='" + c + "' text-anchor='middle'>" + g + "</text></svg>";
+  var W = ({inf:"<path d='M12 3l7 2.6v5.2c0 4.3-2.9 7.4-7 8.6-4.1-1.2-7-4.3-7-8.6V5.6L12 3z'/>",lan:"<path d='M5 19L18 6'/><path d='M18 6l-4 .3M18 6l-.3 4'/><path d='M4.5 19.5l1.6-1.6'/>",mks:"<path d='M7 4a9 9 0 000 16'/><path d='M7 4v16'/><path d='M4 12h15'/><path d='M19 12l-3-2.2M19 12l-3 2.2'/>"})[hero.cls] || "";
+  var s = "<svg xmlns='http://www.w3.org/2000/svg' width='96' height='96'>"+"<rect width='96' height='96' rx='48' fill='#ffffff'/>"+"<rect width='96' height='96' rx='48' fill='" + c + "' opacity='0.10'/>"+"<circle cx='48' cy='48' r='45' fill='none' stroke='" + c + "' stroke-width='2' opacity='0.45'/>"+"<g transform='translate(25,13) scale(1.9)' fill='none' stroke='" + c + "' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'>" + W + "</g>"+"<rect x='24' y='62' width='48' height='20' rx='10' fill='" + c + "'/>"+"<text x='48' y='76' font-size='12' font-family='sans-serif' font-weight='bold' fill='#ffffff' text-anchor='middle'>" + g + "</text></svg>";
   return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(s);
 };
 
