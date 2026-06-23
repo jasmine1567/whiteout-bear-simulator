@@ -463,9 +463,9 @@ function exportImage(){
 function shareX(){
   kcTrack("kc_share",{mode:state.mode});
   // 画像は自動添付できないため、テキスト+URLでX投稿画面を開く
-  const txt = state.mode==='server'?T(`王城戦SvS: ${state.blueName} vs ${state.redName} のエリア配置を作成！`,`King Castle War: ${state.blueName} vs ${state.redName} area plan!`)
-    : state.mode==='alliance'?T('王城戦の同盟エリア配置を作成！','Made an alliance area plan for King Castle War!')
-    : T('王城戦の都市配置マップを作成！','Made a city map for King Castle War!');
+  const txt = state.mode==='server'?T(`王城戦SvS: ${state.blueName} vs ${state.redName} のエリア配置を作成！`,`Castle Battle: ${state.blueName} vs ${state.redName} area plan!`)
+    : state.mode==='alliance'?T('王城戦の同盟エリア配置を作成！','Made an alliance area plan for Castle Battle!')
+    : T('王城戦の都市配置マップを作成！','Made a city map for Castle Battle!');
   const tags=T('#ホワサバ #王城戦 #whitesim_lab','#WhiteoutSurvival #KingCastle #whitesim_lab');
   const url='https://whitesim-lab.com/tools/king-castle/';
   const u='https://twitter.com/intent/tweet?text='+encodeURIComponent(txt+' '+tags)+'&url='+encodeURIComponent(url);
@@ -479,8 +479,8 @@ function shareX(){
 function applyI18n(){
   if(!EN) return;
   const map={
-    'pgtitle':'King Castle War Area Planner | Whiteout Tools Lab',
-    't-title':'King Castle War Area Planner','t-intro':'Plan your SvS server split, alliance areas, and city placement — then share as an image or on X. The central Sun City (6×6) is a no-build zone.',
+    'pgtitle':'Castle Battle Area Planner | Whiteout Tools Lab',
+    't-title':'Castle Battle Area Planner','t-intro':'Plan your SvS server split, alliance areas, and city placement — then share as an image or on X. The central Sun City (6×6) is a no-build zone.',
     't-m1':'Server Areas','t-m2':'Alliance Areas','t-m3':'City Placement',
     't-sh':'Server area settings','t-sh2':'Blue = your server / Red = enemy. Tap cells to paint.',
     't-blue':'Blue server name (yours)','t-red':'Red server name (enemy)','t-brush':'Brush','t-sw-grey':'Grey',
