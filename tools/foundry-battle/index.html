@@ -275,12 +275,15 @@
   .fs-scn button.dl{ border-color:#f0c4c0; color:var(--fdanger); background:rgba(224,88,79,.05); }
   .fs-scn .note{ font:600 11px 'Noto Sans JP'; color:var(--facc); margin-left:2px; }
 
-  /* タイル: リーダー名(作戦)・獲得ポイント(模擬戦) */
-  .fs-leadtag,.fs-pts{ position:absolute; top:-22px; left:50%; transform:translateX(-50%); white-space:nowrap; z-index:3;
-    color:#fff; border-radius:999px; padding:1px 7px; box-shadow:0 1px 3px rgba(20,40,60,.3); border:1px solid rgba(255,255,255,.7); }
-  .fs-leadtag{ font:800 9px 'Noto Sans JP'; }
-  .fs-pts{ font:800 9.5px 'Rajdhani'; letter-spacing:.2px; }
-  .fs-tile.big .fs-leadtag,.fs-tile.big .fs-pts{ top:-27px; }
+  /* タイル: 獲得ポイント=上 / 占領者名・敵エース=下(名前の上) で重ならないよう分離 */
+  .fs-pts{ position:absolute; top:-21px; left:50%; transform:translateX(-50%); white-space:nowrap; z-index:4;
+    color:#fff; border-radius:999px; padding:1px 7px; box-shadow:0 1px 3px rgba(20,40,60,.3); border:1px solid rgba(255,255,255,.7); font:800 9.5px 'Rajdhani'; letter-spacing:.2px; }
+  .fs-leadtag{ position:absolute; top:calc(100% + 3px); left:50%; transform:translateX(-50%); white-space:nowrap; z-index:3;
+    color:#fff; border-radius:999px; padding:1px 7px; box-shadow:0 1px 3px rgba(20,40,60,.3); border:1px solid rgba(255,255,255,.7); font:800 9px 'Noto Sans JP'; max-width:108px; overflow:hidden; text-overflow:ellipsis; }
+  .fs-tile.hasocc .fs-pill{ top:calc(100% + 20px); }
+  .fs-tile.big .fs-pts{ top:-26px; }
+  .fs-tile.big .fs-leadtag{ top:calc(100% + 4px); }
+  .fs-tile.big.hasocc .fs-pill{ top:calc(100% + 22px); }
 
   /* 難易度ボタン無効化 */
   .fs-diffrow button:disabled{ opacity:.4; cursor:not-allowed; }
@@ -342,13 +345,15 @@
     .fs-tile.big .fs-badge{ width:20px; height:20px; font-size:11px; }
     .fs-pill{ width:auto; max-width:58px; font-size:8px; padding:1px 4px; border-radius:6px; top:calc(100% + 2px); }
     .fs-tile.big .fs-pill{ width:auto; max-width:62px; font-size:8.5px; }
+    .fs-tile.hasocc .fs-pill{ top:calc(100% + 2px); } /* 既定(自軍名は非表示) */
+    .fs-tile.hasocc:has(.fs-leadtag.ace) .fs-pill{ top:calc(100% + 16px); } /* 敵エース表示時のみ下げる */
     .fs-pill .nm-full{ display:none; } .fs-pill .nm-short{ display:inline; }
     .fs-tile .tag{ display:none; }            /* 開放/出現はゲーム時間バー・一覧で確認 */
-    .fs-leadtag{ font-size:8px; padding:0 5px; top:-17px; max-width:62px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .fs-leadtag{ font-size:8px; padding:0 5px; top:calc(100% + 2px); max-width:62px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
     .fs-leadtag:not(.ace){ display:none; }   /* 自軍リーダー名はスマホでは一覧で確認(マップ整理) */
     .fs-leadtag.ace{ display:block; }          /* 敵エースの位置はマップに明記 */
-    .fs-tile.big .fs-leadtag{ top:-20px; }
-    .fs-pts{ font-size:8px; padding:0 5px; top:-17px; } .fs-tile.big .fs-pts{ top:-20px; }
+    .fs-tile.big .fs-leadtag{ top:calc(100% + 3px); }
+    .fs-pts{ font-size:8px; padding:0 5px; top:-15px; } .fs-tile.big .fs-pts{ top:-18px; }
     .fs-ov.tl{ left:7px; top:7px; padding:4px 8px; } .fs-ov.tl .pn{ font-size:11px; } .fs-ov.tl .pi{ font-size:9px; }
     .fs-panel{ padding:10px; gap:10px; }
     .fs-tb{ gap:5px; } .fs-tg{ padding:4px 6px; gap:4px; } .fs-tg .lb{ font-size:9px; }
@@ -434,10 +439,10 @@
   try{
     document.getElementById('nav').innerHTML = window.WOS_NAV(2);
     document.getElementById('foot').innerHTML = window.WOS_FOOT(2);
-    document.getElementById('updbox').innerHTML = window.WOS_UPDATEBOX({date:'2026-06-26',gen:16,note:'占領者名・敵エース(エース1/2/3)表示、難易度を本格再調整(同格/格上/格下)、戦況アドバイス＋GOOD!!演出、敵の占領ポイント表示に対応',note_en:'Two modes, share links, 60-min match, enemy auto-sim'});
+    document.getElementById('updbox').innerHTML = window.WOS_UPDATEBOX({date:'2026-06-26',gen:16,note:'名前/ポイント表示を分離、速度×5/×10追加(既定×10)、開始直後に全拠点を即占領、格上エースを1〜5軍に拡張、敵の占領ポイント加算を修正',note_en:'Two modes, share links, 60-min match, enemy auto-sim'});
   }catch(e){}
 </script>
-<script src="app.js?v=92"></script>
+<script src="app.js?v=93"></script>
 <script>
 (function(){function mount(){if(!window.WOS_mountAffiliate)return;var f=document.getElementById('foot');if(f)window.WOS_mountAffiliate(f,'before');}if(document.readyState!=='loading')mount();else document.addEventListener('DOMContentLoaded',mount);})();
 </script>
