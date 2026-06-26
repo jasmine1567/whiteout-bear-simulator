@@ -537,7 +537,8 @@ function renderMockMap(){
     var ring='';
     if(cap){ ring=ringSVG(ownerColor(cap.by),1-cap.remain/cap.total); }
     else if(b.cat==='res'&&o){ ring=ringSVG(M.harvestDone[b.id]?'#2faa54':'#f59f3a',Math.min(1,M.harvestProg[b.id]/b.harvest)); }
-    var ptlab = (o && !cap) ? '<span class="fs-pts" style="background:'+bc+'">'+fmtN(M.bank[b.id]||0)+'</span>' : '';
+    var ptlab='';
+    if(o&&!cap){ if(b.cat==='res'){ var amo=M.harvestDone[b.id]?b.yield:Math.round((M.harvestProg[b.id]/b.harvest)*b.yield); ptlab='<span class="fs-pts" style="background:'+bc+'">🔫'+fmtN(amo)+'</span>'; } else { ptlab='<span class="fs-pts" style="background:'+bc+'">'+fmtN(M.bank[b.id]||0)+'</span>'; } }
     div.innerHTML=ring+'<div class="fs-dia" style="border-color:'+bc+'"><div class="fs-occ" style="background:'+bc+';opacity:'+(shown?'':'0')+'"></div><div class="bld"></div>'+
       '<div class="fs-badge" style="background:radial-gradient(circle at 38% 32%,'+(shown?bc:'#2f7fb0')+','+(shown?bc:'#145079')+');opacity:'+(locked?'.3':'1')+'">'+esc(b.num)+'</div></div>'+
       occLab+ptlab+(locked?'<span class="lockico">🔒</span>':'')+pillHTML(b);
@@ -622,7 +623,7 @@ function mockListCard(){
   var rows=BUILDINGS.filter(function(b){return visibleAt(b,M.elapsed);}).map(function(b){ var o=M.owners[b.id],cap=M.capturing[b.id],locked=lockedAt(b,M.elapsed),col=cap?cap.by:o;
     var who='';
     if(!locked&&!cap){ if(o==='Blue'){ var ld=scnLeaderOf(b.id); who=(keymap[b.id]?'★':'')+(ld||MS.blue); } else if(o==='Red'){ var ai=aces.indexOf(b.id); who=ai>=0?aceLabel(ai+1):MS.red; } }
-    var sub=locked?(T('解放','opens ')+b.openMin+T('分','m')):cap?(MS.cap+' '+mmss(cap.remain)):(o?(fmtN(M.bank[b.id]||0)+'pt'):(b.pts?('+'+b.pts+'/'+T('分','m')):(b.cat==='res'?(fmtN(b.yield)+'🔫'):'—')));
+    var sub=locked?(T('解放','opens ')+b.openMin+T('分','m')):cap?(MS.cap+' '+mmss(cap.remain)):(o?(b.cat==='res'?('🔫'+fmtN(M.harvestDone[b.id]?b.yield:Math.round((M.harvestProg[b.id]/b.harvest)*b.yield))):(fmtN(M.bank[b.id]||0)+'pt')):(b.pts?('+'+b.pts+'/'+T('分','m')):(b.cat==='res'?(fmtN(b.yield)+'🔫'):'—')));
     return '<div class="fs-fr '+(col==='Blue'?'b':col==='Red'?'r':'')+(locked?' lk':'')+'" data-bid="'+b.id+'" role="button" tabindex="0"><span class="dot" style="background:'+ownerColor(col)+'"></span><span class="fn">'+(locked?'🔒':'')+'#'+b.num+' '+esc(bname(b))+(who?' <small style="color:'+ownerColor(col)+';font-weight:700">['+esc(who)+']</small>':'')+'</span><span class="fp">'+sub+'</span></div>';
   }).join('');
   return '<div class="fs-card" id="lsCard"><h3>'+T('施設一覧','Facilities')+'</h3><div class="fs-flist">'+rows+'</div></div>';
@@ -659,7 +660,7 @@ function decide(){
   // ===== 自軍 =====
   var allySlots=Math.min(6, P.teams.length+2) - countCapturing('Blue');
   if(allySlots>0){
-    var targets=BUILDINGS.filter(function(b){ if(!visibleAt(b,M.elapsed)||lockedAt(b,M.elapsed))return false; if(M.owners[b.id]==='Blue')return false; if(M.capturing[b.id]&&M.capturing[b.id].by==='Blue')return false;
+    var targets=BUILDINGS.filter(function(b){ if(!visibleAt(b,M.elapsed)||lockedAt(b,M.elapsed))return false; if(M.owners[b.id]==='Blue')return false; if(M.capturing[b.id])return false;
         var isRed=M.owners[b.id]==='Red';
         // 自軍は: 作戦目標 / 未占領 / (敵保持なら)自分の要所か高得点拠点のみ奪い返す
         var retake=isRed&&(inPlan(b.id)||keymap[b.id]||(M.bank[b.id]||0)>=4000);
@@ -677,7 +678,7 @@ function decide(){
   var cfg={ weak:{slots:2}, even:{slots:N+1}, strong:{slots:Math.max(6,N+2)} }[M.diff]||{slots:N};
   var enSlots=cfg.slots - countCapturing('Red');
   if(enSlots<=0)return;
-  var cands=BUILDINGS.filter(function(b){ if(!visibleAt(b,M.elapsed)||lockedAt(b,M.elapsed))return false; if(M.owners[b.id]==='Red')return false; if(M.capturing[b.id]&&M.capturing[b.id].by==='Red')return false;
+  var cands=BUILDINGS.filter(function(b){ if(!visibleAt(b,M.elapsed)||lockedAt(b,M.elapsed))return false; if(M.owners[b.id]==='Red')return false; if(M.capturing[b.id])return false;
     var bk=M.bank[b.id]||0, isBlue=M.owners[b.id]==='Blue', isNull=M.owners[b.id]===null;
     if(M.diff==='even'){ // 自軍1軍拠点は奪わない(未占領でも避ける) → 1軍は守れる。それ以外は奪う
       if(isAllyKey(b.id))return false; return true;

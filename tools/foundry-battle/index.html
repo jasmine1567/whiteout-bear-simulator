@@ -82,6 +82,22 @@
   /* 本体 */
   .fs-main{ display:flex; flex-direction:row; }
   @media(max-width:900px){ .fs-main{ flex-direction:column; } }
+  /* PC: 縦スクロールせず1画面で遊べるよう高さを抑え、パネルは内部スクロール */
+  @media(min-width:901px){
+    .wrap.wide{ padding-top:8px; }
+    .crumb{ margin:0 0 4px; }
+    #h1{ font-size:25px; margin:3px 0 5px; }
+    #updbox{ display:none; }               /* 更新ボックスもプレイ画面では非表示(縦圧縮) */
+    .lead{ display:none; }                 /* 説明文はプレイ画面では非表示(縦圧縮) */
+    .fs-modebar{ padding:6px 14px 2px; }
+    .fs-scn{ padding:5px 14px 0; }
+    .fs-head{ padding:7px 14px; }
+    .fs-title .t{ font-size:15px; } .fs-title .s{ font-size:10px; }
+    .fs-main{ height:clamp(350px,50vh,510px); align-items:stretch; }
+    .fs-mapsec{ padding:8px 14px; }
+    .fs-mapbox{ width:auto; max-width:100%; height:100%; }
+    .fs-panel{ height:100%; overflow-y:auto; overscroll-behavior:contain; }
+  }
   .fs-mapsec{ flex:1 1 auto; min-width:0; display:flex; align-items:center; justify-content:center; padding:18px; }
   .fs-mapbox{ position:relative; width:100%; max-width:660px; aspect-ratio:5/4; border-radius:20px;
     background:radial-gradient(ellipse 120% 120% at 50% 50%,#eef6fb,#d6e6f1); border:1px solid #c8dbe9;
@@ -439,10 +455,10 @@
   try{
     document.getElementById('nav').innerHTML = window.WOS_NAV(2);
     document.getElementById('foot').innerHTML = window.WOS_FOOT(2);
-    document.getElementById('updbox').innerHTML = window.WOS_UPDATEBOX({date:'2026-06-26',gen:16,note:'名前/ポイント表示を分離、速度×5/×10追加(既定×10)、開始直後に全拠点を即占領、格上エースを1〜5軍に拡張、敵の占領ポイント加算を修正',note_en:'Two modes, share links, 60-min match, enemy auto-sim'});
+    document.getElementById('updbox').innerHTML = window.WOS_UPDATEBOX({date:'2026-06-26',gen:16,note:'占拠の競合バグ修正で全施設がポイント加算、占領施設にシナリオのリーダー名を表示、PC画面を1画面構成に最適化(縦スクロール削減)',note_en:'Two modes, share links, 60-min match, enemy auto-sim'});
   }catch(e){}
 </script>
-<script src="app.js?v=93"></script>
+<script src="app.js?v=94"></script>
 <script>
 (function(){function mount(){if(!window.WOS_mountAffiliate)return;var f=document.getElementById('foot');if(f)window.WOS_mountAffiliate(f,'before');}if(document.readyState!=='loading')mount();else document.addEventListener('DOMContentLoaded',mount);})();
 </script>
