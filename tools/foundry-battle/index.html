@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ja" id="htmlroot">
+<head>
+<meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Y8YMCVQDMG"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent','default',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'});
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',region:['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH'],wait_for_update:500});
+  gtag('js', new Date());
+  gtag('config', 'G-Y8YMCVQDMG');
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>兵器工場争奪戦 マップシミュレータ｜占領バフ・ポイントをリアルタイム試算 | ホワサバ ツールラボ</title>
+<meta name="description" content="ホワイトアウトサバイバル「兵器工場争奪戦」のフィールドマップを再現。各施設をクリックで占領切替し、占領バフ・獲得ポイント・弾丸をリアルタイムで試算。一括操作・Undo・シナリオ保存に対応。">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
+<link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/tools/foundry-battle/index.html">
+<link rel="alternate" hreflang="en" href="https://whitesim-lab.com/tools/foundry-battle/index.html?lang=en">
+<link rel="stylesheet" href="../../assets/site.css?v=85">
+<style>
+  /* ===== 兵器工場争奪戦シミュレータ専用 ===== */
+  .fb-layout{display:grid;grid-template-columns:minmax(0,1fr) 332px;gap:16px;align-items:start}
+  @media(max-width:900px){.fb-layout{grid-template-columns:1fr}}
+
+  /* ツールバー */
+  .fb-bar{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin:0 0 12px}
+  .fb-grp{display:flex;gap:5px;align-items:center;background:var(--panel);border:1px solid var(--line);
+    border-radius:11px;padding:5px 7px;box-shadow:var(--card-sh)}
+  .fb-grp .lbl{font-size:10.5px;color:var(--muted);font-weight:700;margin-right:2px}
+  .fb-b{font:inherit;font-size:12px;font-weight:700;border:1px solid var(--line);background:#fff;color:var(--text);
+    border-radius:8px;padding:6px 10px;cursor:pointer;transition:border-color .12s,background .12s;white-space:nowrap;
+    display:inline-flex;align-items:center;gap:5px;line-height:1}
+  .fb-b:hover{border-color:var(--frost)}
+  .fb-b:disabled{opacity:.4;cursor:not-allowed}
+  .fb-b.blue{border-color:#bcd2f7;color:#1f57c4}
+  .fb-b.blue:hover{background:#eef4ff}
+  .fb-b.red{border-color:#f5c2bc;color:#c4382b}
+  .fb-b.red:hover{background:#fff0ee}
+  .fb-b.on{background:var(--frost);border-color:var(--frost);color:#fff}
+  .fb-b svg{width:15px;height:15px}
+  .fb-ic{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+  /* マップ */
+  .fb-mapwrap{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:16px;
+    overflow:hidden;box-shadow:var(--card-sh);touch-action:none}
+  #fbMap{display:block;width:100%;height:auto;aspect-ratio:1000/720;cursor:grab;user-select:none}
+  #fbMap.drag{cursor:grabbing}
+  .fb-zoom{position:absolute;right:10px;bottom:10px;display:flex;flex-direction:column;gap:5px}
+  .fb-zoom button{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:rgba(255,255,255,.94);
+    color:var(--text);font-size:17px;font-weight:800;cursor:pointer;display:grid;place-items:center;box-shadow:0 2px 6px rgba(30,35,60,.1)}
+  .fb-zoom button:hover{border-color:var(--frost);color:var(--frost)}
+  .fb-clock{position:absolute;left:10px;top:10px;background:rgba(21,22,27,.86);color:#fff;border-radius:10px;
+    padding:6px 11px;font-size:13px;font-weight:800;font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:9px}
+  .fb-clock .ph{font-size:10px;font-weight:700;color:#ffb27a;background:rgba(255,122,47,.18);border-radius:5px;padding:1px 6px}
+
+  /* 施設ノード */
+  .fac{cursor:pointer}
+  .fac:focus{outline:none}
+  .fac .ring{transition:stroke .15s,stroke-width .15s}
+  .fac:focus-visible .hit{stroke:var(--frost);stroke-width:3}
+  .fac .lbl{font-family:'Noto Sans JP',sans-serif;font-weight:800;fill:#1d2233;text-anchor:middle;pointer-events:none}
+  .fac.dim{opacity:.22;pointer-events:none}
+  .fac .pulse{animation:fbpulse 1.6s ease-out infinite}
+  @keyframes fbpulse{0%{opacity:.5;r:var(--r0)}70%{opacity:0;r:var(--r1)}100%{opacity:0}}
+  @media(prefers-reduced-motion:reduce){.fac .pulse{animation:none;opacity:0}*{scroll-behavior:auto!important}}
+
+  /* ツールチップ */
+  .fb-tip{position:absolute;z-index:20;pointer-events:none;max-width:248px;background:#15161b;color:#e9ebf2;
+    border-radius:11px;padding:11px 13px;font-size:12px;line-height:1.7;box-shadow:0 10px 30px rgba(10,12,24,.4);
+    opacity:0;transform:translateY(4px);transition:opacity .12s,transform .12s}
+  .fb-tip.show{opacity:1;transform:translateY(0)}
+  .fb-tip h4{font-size:13px;font-weight:800;margin:0 0 5px;display:flex;align-items:center;gap:7px}
+  .fb-tip .ty{font-size:10px;font-weight:700;color:#9aa3c0;background:rgba(255,255,255,.08);border-radius:5px;padding:1px 6px}
+  .fb-tip .row{display:flex;justify-content:space-between;gap:10px;color:#c4c9d8}
+  .fb-tip .row b{color:#fff;font-weight:700}
+  .fb-tip .ownr{margin-top:6px;font-weight:800}
+  .fb-tip .buff{margin-top:5px;color:#ffd2a8}
+  .fb-tip .hint{margin-top:7px;font-size:10.5px;color:#7e889c;border-top:1px solid rgba(255,255,255,.08);padding-top:5px}
+
+  /* サイドパネル */
+  .fb-side{display:flex;flex-direction:column;gap:12px}
+  .fb-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:13px 14px;box-shadow:var(--card-sh)}
+  .fb-card h3{margin:0 0 9px;font-size:12.5px;color:var(--text);border:none;padding:0;display:flex;align-items:center;gap:7px}
+  .fb-card h3 .c{font-size:10px;color:var(--muted);font-weight:600;margin-left:auto}
+  .fb-score{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .fb-team{border-radius:11px;padding:10px;color:#fff;position:relative;overflow:hidden}
+  .fb-team.blue{background:linear-gradient(150deg,#3a7bf0,#2256c8)}
+  .fb-team.red{background:linear-gradient(150deg,#ef5d4a,#cf2e22)}
+  .fb-team .nm{font-size:11px;font-weight:800;opacity:.92;display:flex;align-items:center;gap:5px}
+  .fb-team .pt{font-size:23px;font-weight:900;font-variant-numeric:tabular-nums;line-height:1.15;letter-spacing:-.5px}
+  .fb-team .sub{font-size:10.5px;opacity:.9;font-variant-numeric:tabular-nums}
+  .fb-team .cnt{position:absolute;right:9px;top:9px;font-size:10px;font-weight:800;background:rgba(255,255,255,.2);border-radius:6px;padding:1px 6px}
+  .fb-lead{margin-top:9px;font-size:11px;text-align:center;font-weight:700;color:var(--muted)}
+  .fb-buffs{display:flex;flex-direction:column;gap:6px}
+  .fb-buff{display:flex;align-items:center;gap:8px;font-size:11.5px}
+  .fb-buff .k{color:var(--muted);min-width:104px}
+  .fb-buff .bv{font-weight:800;font-variant-numeric:tabular-nums;display:flex;gap:9px;margin-left:auto}
+  .fb-buff .bb{color:#2256c8}.fb-buff .br{color:#cf2e22}
+  .fb-buff.dbf .k{color:#b4521a}
+
+  /* 施設リスト */
+  .fb-flist{display:flex;flex-direction:column;gap:4px;max-height:none}
+  .fb-frow{display:flex;align-items:center;gap:8px;padding:6px 8px;border:1px solid var(--line);border-radius:9px;
+    cursor:pointer;background:#fff;transition:border-color .12s}
+  .fb-frow:hover{border-color:var(--frost)}
+  .fb-frow.b{background:#eff5ff;border-color:#cfe0fb}
+  .fb-frow.r{background:#fff1ef;border-color:#f7d2cc}
+  .fb-frow .dot{width:11px;height:11px;border-radius:50%;flex:none;border:2px solid #fff;box-shadow:0 0 0 1px var(--line)}
+  .fb-frow .fn{font-size:11.5px;font-weight:700;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .fb-frow .fp{font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+
+  /* 凡例 */
+  .fb-leg{display:flex;flex-wrap:wrap;gap:9px;font-size:11px;color:var(--muted)}
+  .fb-leg span{display:inline-flex;align-items:center;gap:5px}
+  .fb-leg .sw{width:13px;height:13px;border-radius:50%;border:2px solid}
+  .fb-leg .sw.b{border-color:#2256c8;background:#cfe0fb}
+  .fb-leg .sw.r{border-color:#cf2e22;background:#f7d2cc;border-style:dashed}
+  .fb-leg .sw.n{border-color:#9aa3b5;background:#eef0f5;border-style:dotted}
+  .fb-shapes{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;font-size:10.5px;color:var(--muted)}
+  .fb-shapes span{display:inline-flex;align-items:center;gap:4px}
+
+  /* フィルタ chips */
+  .fb-filt{display:flex;flex-wrap:wrap;gap:5px}
+  .fb-chip{font-size:11px;font-weight:700;border:1px solid var(--line);background:#fff;color:var(--muted);
+    border-radius:999px;padding:4px 11px;cursor:pointer;transition:.12s}
+  .fb-chip.on{background:var(--frost);border-color:var(--frost);color:#fff}
+
+  /* セーブ */
+  .fb-saverow{display:flex;gap:6px;margin-bottom:8px}
+  .fb-saverow input{flex:1;min-width:0;font:inherit;font-size:12px;border:1px solid var(--line);border-radius:8px;padding:7px 9px}
+  .fb-scen{display:flex;align-items:center;gap:7px;font-size:11.5px;padding:5px 8px;border:1px solid var(--line);border-radius:8px;margin-bottom:4px}
+  .fb-scen .sn{flex:1;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .fb-scen button{font-size:11px;border:none;background:none;cursor:pointer;color:var(--frost);font-weight:700;padding:2px 4px}
+  .fb-scen button.del{color:var(--bad)}
+  .fb-empty{font-size:11px;color:var(--muted);text-align:center;padding:6px}
+
+  .fb-helpgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  @media(max-width:560px){.fb-helpgrid{grid-template-columns:1fr}}
+  .fb-help{font-size:12px;border:1px solid var(--line);border-radius:10px;padding:11px 12px;background:#fff}
+  .fb-help b{color:var(--frost)}
+  .fb-tag{display:inline-block;font-size:10px;border:1px solid var(--frost);color:var(--frost);border-radius:5px;padding:1px 7px;margin-bottom:8px}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .fb-toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(12px);background:#15161b;color:#fff;
+    font-size:12.5px;font-weight:700;padding:10px 18px;border-radius:10px;box-shadow:0 8px 24px rgba(10,12,24,.35);
+    opacity:0;transition:.2s;z-index:60;pointer-events:none}
+  .fb-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg?v=85">
+<link rel="icon" type="image/png" href="../../favicon.png?v=85">
+<link rel="shortcut icon" href="../../favicon.ico?v=85">
+<link rel="apple-touch-icon" href="../../favicon.png?v=85">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ホワサバ ツールラボ">
+<meta property="og:title" content="兵器工場争奪戦 マップシミュレータ｜占領バフ・ポイントをリアルタイム試算">
+<meta property="og:description" content="「兵器工場争奪戦」のフィールドマップを再現。各施設をクリックで占領切替し、占領バフ・獲得ポイント・弾丸をリアルタイム試算。">
+<meta property="og:url" content="https://whitesim-lab.com/tools/foundry-battle/">
+<meta property="og:image" content="https://whitesim-lab.com/favicon.png?v=85">
+<meta name="twitter:card" content="summary">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4593324513914979" crossorigin="anonymous"></script>
+<link rel="canonical" href="https://whitesim-lab.com/tools/foundry-battle/">
+</head>
+<body>
+<div id="nav"></div>
+<div class="wrap wide">
+<div class="crumb" id="crumb"><a href="../../index.html">ホーム</a> &gt; 兵器工場争奪戦シミュレータ</div>
+
+<span class="fb-tag" id="tag">マップシミュレータ</span>
+<h1 id="h1"></h1>
+<div id="updbox"></div>
+<p class="lead" id="lead"></p>
+
+<!-- ツールバー -->
+<div class="fb-bar" id="bar"></div>
+
+<div class="fb-layout">
+  <!-- マップ -->
+  <div class="fb-mapwrap" id="mapwrap">
+    <svg id="fbMap" viewBox="0 0 1000 720" role="application" aria-label="兵器工場争奪戦マップ"></svg>
+    <div class="fb-clock" id="clock"><span id="clockT">00:00</span><span class="ph" id="phase"></span></div>
+    <div class="fb-zoom">
+      <button id="zIn" aria-label="拡大">＋</button>
+      <button id="zOut" aria-label="縮小">−</button>
+      <button id="zRst" aria-label="表示リセット" style="font-size:14px">⟲</button>
+    </div>
+    <div class="fb-tip" id="tip" role="tooltip" aria-hidden="true"></div>
+  </div>
+
+  <!-- サイドパネル -->
+  <div class="fb-side" id="side"></div>
+</div>
+
+<div id="ad1" class="ad-slot"></div>
+
+<h2 id="hHelp"></h2>
+<div class="fb-helpgrid" id="helpgrid"></div>
+
+<h2 id="hData"></h2>
+<p id="dataNote" class="note"></p>
+
+<div class="relbar" id="relbar"></div>
+
+</div>
+<div id="foot"></div>
+
+<div class="fb-toast" id="toast" role="status" aria-live="polite"></div>
+<input type="file" id="importFile" accept="application/json,.json" style="display:none">
+
+<script src="../../assets/config.js?v=85"></script>
+<script src="../../assets/toolkit.js?v=85"></script>
+<script>
+  try{
+    document.getElementById('nav').innerHTML = window.WOS_NAV(2);
+    document.getElementById('foot').innerHTML = window.WOS_FOOT(2);
+    document.getElementById('updbox').innerHTML = window.WOS_UPDATEBOX({date:'2026-06-24',gen:16,note:'兵器工場争奪戦シミュを新規公開',note_en:'New: Foundry Battle simulator'});
+  }catch(e){}
+</script>
+<script src="app.js?v=85"></script>
+<script>
+(function(){
+  function mount(){
+    if(!window.WOS_mountAffiliate) return;
+    var f=document.getElementById('foot');
+    if(f) window.WOS_mountAffiliate(f,'before');
+  }
+  if(document.readyState!=='loading') mount();
+  else document.addEventListener('DOMContentLoaded', mount);
+})();
+</script>
+</body>
+</html>
