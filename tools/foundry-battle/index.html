@@ -285,6 +285,70 @@
   /* 難易度ボタン無効化 */
   .fs-diffrow button:disabled{ opacity:.4; cursor:not-allowed; }
   .fs-diffrow.dis{ opacity:.7; }
+
+  /* ===== トランスポート(再生/速度/最初から) ===== */
+  .fs-transport{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .fs-bigplay{ display:inline-flex; align-items:center; gap:8px; height:44px; padding:0 22px; border:none; border-radius:13px;
+    background:linear-gradient(135deg,#34c759,#16a34a); color:#fff; font:800 15px 'Noto Sans JP'; cursor:pointer; box-shadow:0 4px 15px rgba(22,163,74,.4); transition:filter .12s,transform .06s; }
+  .fs-bigplay .ic{ font-size:15px; line-height:1; }
+  .fs-bigplay:hover{ filter:brightness(1.06); } .fs-bigplay:active{ transform:translateY(1px); }
+  .fs-bigplay.playing{ background:linear-gradient(135deg,#ffa53d,#f0791a); box-shadow:0 4px 15px rgba(240,121,26,.4); }
+  .fs-clockbox{ display:inline-flex; align-items:baseline; gap:5px; }
+  .fs-clockbox .lab{ font:700 10px 'Noto Sans JP'; color:var(--fmut); }
+  .fs-clockbox .fs-clock{ font:900 21px 'Rajdhani'; color:var(--fink); font-variant-numeric:tabular-nums; letter-spacing:.5px; }
+  .fs-clockbox .fs-clock.run{ color:var(--facc); }
+  .fs-spd{ display:inline-flex; align-items:center; gap:4px; background:var(--fsoft); border:1px solid var(--fline); border-radius:11px; padding:4px 8px; }
+  .fs-spd .lab{ font:700 10px 'Noto Sans JP'; color:var(--fmut); margin-right:1px; }
+  .fs-spbtn{ border:1px solid var(--fline); background:#fff; color:var(--ftxt); border-radius:8px; padding:6px 10px; font:800 12px 'Rajdhani'; cursor:pointer; }
+  .fs-spbtn.on{ background:var(--facc); border-color:var(--facc); color:#fff; }
+  .fs-rew{ display:inline-flex; align-items:center; gap:5px; border:1px solid var(--fline); background:#fff; color:var(--ftxt); border-radius:10px; padding:9px 13px; font:700 12px 'Noto Sans JP'; cursor:pointer; }
+  .fs-rew .ic{ font-size:13px; } .fs-rew:hover{ background:#eef4f8; }
+
+  /* ===== スマホ最適化 ===== */
+  .fs-pill .nm-short{ display:none; }
+  @media(max-width:680px){
+    .wrap.wide{ padding-left:8px; padding-right:8px; }
+    .fs-modebar{ padding:8px 8px 2px; gap:5px; }
+    .fs-mode{ font-size:12px; padding:8px 7px; gap:5px; } .fs-mode .ic{ font-size:13px; }
+    .fs-sharewrap{ margin-left:auto; } .fs-share{ font-size:11px; padding:7px 10px; }
+    .fs-scn{ padding:7px 8px 0; gap:5px; } .fs-scn .lb{ font-size:10px; }
+    .fs-scn select{ min-width:0; flex:1 1 120px; max-width:none; font-size:12px; padding:6px 8px; }
+    .fs-scn button{ font-size:10px; padding:6px 7px; } .fs-scn .note{ flex-basis:100%; font-size:10px; margin-left:0; }
+    .fs-head{ padding:8px 9px; gap:8px 9px; }
+    .fs-title .t{ font-size:14px; } .fs-title .s{ font-size:9.5px; }
+    .fs-subnav{ width:100%; } .fs-tab{ flex:1; font-size:12px; padding:7px 6px; }
+    .fs-transport{ width:100%; gap:7px; }
+    .fs-bigplay{ flex:1 1 150px; justify-content:center; height:42px; font-size:14px; }
+    .fs-clockbox .fs-clock{ font-size:18px; }
+    .fs-spd{ padding:3px 6px; } .fs-spbtn{ padding:5px 8px; font-size:11px; }
+    .fs-rew{ padding:8px 10px; font-size:11px; }
+    .fs-scorebar{ padding:7px 9px 0; }
+    .fs-sb-top .s{ font-size:15px; } .fs-sb-top .s small{ font-size:9px; }
+    .fs-mapsec{ padding:8px 4px; }
+    .fs-tile{ width:38px; } .fs-tile.big{ width:52px; }
+    .fs-badge{ width:18px; height:18px; font-size:10px; border-width:1.5px; }
+    .fs-tile.big .fs-badge{ width:20px; height:20px; font-size:11px; }
+    .fs-pill{ width:auto; max-width:58px; font-size:8px; padding:1px 4px; border-radius:6px; top:calc(100% + 2px); }
+    .fs-tile.big .fs-pill{ width:auto; max-width:62px; font-size:8.5px; }
+    .fs-pill .nm-full{ display:none; } .fs-pill .nm-short{ display:inline; }
+    .fs-tile .tag{ display:none; }            /* 開放/出現はゲーム時間バー・一覧で確認 */
+    .fs-leadtag{ font-size:8px; padding:0 5px; top:-17px; max-width:62px; overflow:hidden; text-overflow:ellipsis; }
+    .fs-tile.big .fs-leadtag{ top:-20px; }
+    .fs-pts{ font-size:8px; padding:0 5px; top:-17px; } .fs-tile.big .fs-pts{ top:-20px; }
+    .fs-ov.tl{ left:7px; top:7px; padding:4px 8px; } .fs-ov.tl .pn{ font-size:11px; } .fs-ov.tl .pi{ font-size:9px; }
+    .fs-panel{ padding:10px; gap:10px; }
+    .fs-tb{ gap:5px; } .fs-tg{ padding:4px 6px; gap:4px; } .fs-tg .lb{ font-size:9px; }
+    .fs-tbtn{ font-size:11px; padding:5px 7px; } .fs-tbtn .d{ width:8px; height:8px; }
+    .fs-banner{ padding:11px 12px; } .fs-banner .nm{ font-size:16px; } .fs-banner .no{ font-size:12px; }
+    .fs-card{ padding:11px 12px; } .fs-card h3{ font-size:12px; }
+  }
+  @media(max-width:430px){
+    .fs-tile{ width:34px; } .fs-tile.big{ width:46px; }
+    .fs-pill{ max-width:50px; font-size:7.5px; } .fs-tile.big .fs-pill{ max-width:54px; }
+    .fs-badge{ width:16px; height:16px; font-size:9px; }
+    .fs-bigplay{ flex-basis:100%; }
+    .fs-leadtag,.fs-pts{ font-size:7.5px; max-width:52px; }
+  }
 </style>
 <link rel="icon" type="image/svg+xml" href="../../favicon.svg?v=85">
 <link rel="icon" type="image/png" href="../../favicon.png?v=85">
@@ -356,10 +420,10 @@
   try{
     document.getElementById('nav').innerHTML = window.WOS_NAV(2);
     document.getElementById('foot').innerHTML = window.WOS_FOOT(2);
-    document.getElementById('updbox').innerHTML = window.WOS_UPDATEBOX({date:'2026-06-26',gen:16,note:'シナリオ保存・選択/共有リンク/リーダー表示/施設ポイント・資材回収率/敵の高得点優先狙いに対応',note_en:'Two modes, share links, 60-min match, enemy auto-sim'});
+    document.getElementById('updbox').innerHTML = window.WOS_UPDATEBOX({date:'2026-06-26',gen:16,note:'スマホ画面を最適化・操作UIを刷新(大きな再生/速度/最初から)。占領後ポイントは0スタート・未占領は必ず占領される挙動に修正',note_en:'Two modes, share links, 60-min match, enemy auto-sim'});
   }catch(e){}
 </script>
-<script src="app.js?v=89"></script>
+<script src="app.js?v=90"></script>
 <script>
 (function(){function mount(){if(!window.WOS_mountAffiliate)return;var f=document.getElementById('foot');if(f)window.WOS_mountAffiliate(f,'before');}if(document.readyState!=='loading')mount();else document.addEventListener('DOMContentLoaded',mount);})();
 </script>
