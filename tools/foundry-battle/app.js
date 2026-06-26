@@ -55,7 +55,7 @@ var PALETTE=['#2DD4BF','#F4A83A','#A78BFA','#60A5FA','#F472B6','#A3E635','#FB718
 var MAX_TEAMS=8;
 
 /* DOM */
-var tiles=$('tiles'), ovTL=$('ovTL'), ovTR=$('ovTR'), brushInd=$('brushInd'),
+var tiles=$('tiles'), ovTL=$('ovTL'), ovTR=$('ovTR'), brushInd=$('brushInd'), scnBar=$('scnBar'),
     panel=$('panel'), header=$('toolHeader'), scorebar=$('scorebar'), banner=$('fsBanner'), modalHost=$('modalHost');
 var SVGNS='http://www.w3.org/2000/svg';
 
@@ -67,9 +67,9 @@ function onTileClick(bid){ if(MODE==='mock'){ mockApply(bid); } else if(P.view==
 /* ===== 共有(URLハッシュ) ===== */
 function b64enc(s){ return btoa(unescape(encodeURIComponent(s))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''); }
 function b64dec(s){ s=s.replace(/-/g,'+').replace(/_/g,'/'); while(s.length%4)s+='='; return decodeURIComponent(escape(atob(s))); }
-function shareURL(){ var data={v:1,t:P.teams,p:P.phases}; return location.origin+location.pathname+'#s='+b64enc(JSON.stringify(data)); }
+function shareURL(){ var c=SCN(); var data={v:2,n:c.name,t:c.teams,p:c.phases}; return location.origin+location.pathname+'#s='+b64enc(JSON.stringify(data)); }
 function tryLoadShare(){ var m=/[#&]s=([^&]+)/.exec(location.hash||''); if(!m)return false;
-  try{ var d=JSON.parse(b64dec(m[1])); if(d&&d.t&&d.p){ P.teams=d.t; P.phases=d.p; P.teams.forEach(function(t){if(t.leader==null)t.leader='';}); P.phases.forEach(function(p){if(!p.assign)p.assign={};}); planSave(); try{history.replaceState(null,'',location.pathname+location.search);}catch(e){} return true; } }catch(e){}
+  try{ var d=JSON.parse(b64dec(m[1])); if(d&&d.t&&d.p){ var sc=normScenario({id:uid('s'),name:(d.n||T('共有シナリオ','Shared'))+T('（共有）',' (shared)'),teams:d.t,phases:d.p}); P.scenarios.push(sc); P.currentId=sc.id; planBind(); P.editPhaseId=(P.phases[0]&&P.phases[0].id)||'p1'; planSave(); try{history.replaceState(null,'',location.pathname+location.search);}catch(e){} return true; } }catch(e){}
   return false; }
 function openShareModal(){
   var url=shareURL();
@@ -100,7 +100,33 @@ function renderModeBar(){
 }
 function teardown(){ if(planClockT){clearInterval(planClockT);planClockT=null;} P.clock.running=false; M.playing=false;
   tiles.innerHTML=''; ovTL.innerHTML=''; ovTR.innerHTML=''; brushInd.innerHTML=''; banner.innerHTML=''; }
-function render(){ if(MODE==='plan'){ scorebar.style.display='none'; renderPlan(); } else { renderMock(); } }
+function render(){ renderScnBar(); if(MODE==='plan'){ scorebar.style.display='none'; renderPlan(); } else { renderMock(); } }
+
+function scnOptions(selId){ return P.scenarios.map(function(s){ return '<option value="'+s.id+'"'+(s.id===selId?' selected':'')+'>'+esc(s.name)+'</option>'; }).join(''); }
+function renderScnBar(){
+  if(MODE==='plan'){
+    scnBar.style.display='';
+    scnBar.innerHTML='<span class="lb">🗂 '+T('シナリオ','Scenario')+'</span>'+
+      '<select id="scnSel">'+scnOptions(P.currentId)+'</select>'+
+      '<button id="scnRen">'+T('名前変更','Rename')+'</button>'+
+      '<button class="pri" id="scnNew">＋'+T('新規','New')+'</button>'+
+      '<button class="pri" id="scnCopy">⧉ '+T('複製','Copy')+'</button>'+
+      (P.scenarios.length>1?'<button class="dl" id="scnDel">'+T('削除','Delete')+'</button>':'')+
+      '<span class="note">'+T('※ 模擬戦はこのシナリオ通りに自軍が自動行動','Mock auto-plays your side from this')+'</span>';
+    $('scnSel').addEventListener('change',function(e){ selectScenario(e.target.value); });
+    $('scnNew').addEventListener('click',function(){ addScenario(null); });
+    $('scnCopy').addEventListener('click',function(){ addScenario(P.currentId); });
+    $('scnRen').addEventListener('click',function(){ var v=window.prompt(T('シナリオ名','Scenario name'),SCN().name); if(v!=null&&v.trim())renameScenario(v.trim()); });
+    var dl=$('scnDel'); if(dl)dl.addEventListener('click',function(){ if(window.confirm(T('このシナリオを削除しますか？','Delete this scenario?')))deleteScenario(); });
+  } else {
+    // 模擬戦: 自軍が従うシナリオを選択
+    scnBar.style.display='';
+    scnBar.innerHTML='<span class="lb">⚔ '+T('使用シナリオ','Scenario in play')+'</span>'+
+      '<select id="mScnSel">'+scnOptions(M.scenarioId)+'</select>'+
+      '<span class="note">'+T('※ 自軍はこの作戦シナリオ通りに自動で動きます','Your side auto-follows this plan')+'</span>';
+    $('mScnSel').addEventListener('change',function(e){ M.scenarioId=e.target.value; mockSave(); renderMock(); });
+  }
+}
 
 /* ===== ゲーム時間ヘルパ(共通) ===== */
 function lockedAt(b,elapsedSec){ return elapsedSec < b.openMin*60; }
@@ -120,34 +146,51 @@ function timelineHTML(elapsedSec){
 /* =====================================================================
    ================= 作戦シミュレータ (PLANNER) =================
    ===================================================================== */
-var KEYP='wos_fieldsim_v2';
-function planDefaults(){
-  return {
-    view:'home', editTeamId:null, editPhaseId:'p1',
-    teams:[ {id:'t1',name:T('Aチーム','Team A'),color:'#2DD4BF',leader:''}, {id:'t2',name:T('Bチーム','Team B'),color:'#F4A83A',leader:''}, {id:'t3',name:T('Cチーム','Team C'),color:'#A78BFA',leader:''} ],
+var KEYP='wos_fieldsim_v3';
+function sampleScenario(){
+  return { id:'sample', name:T('サンプルシナリオ','Sample scenario'),
+    teams:[ {id:'t1',name:T('Aチーム','Team A'),color:'#2DD4BF',leader:T('Aさん','A-san')}, {id:'t2',name:T('Bチーム','Team B'),color:'#F4A83A',leader:T('Bさん','B-san')}, {id:'t3',name:T('Cチーム','Team C'),color:'#A78BFA',leader:T('Cさん','C-san')} ],
     phases:[
       {id:'p1',name:T('開幕時の初回占領狙い','Opening grab'),time:3, desc:T('準備明け。外周の試験場・修理工場・中継所・ボイラーを各チームで一斉に初回占領。中央はまだ開放されない。','Right after prep: grab outer test/repair/relay/boiler. Center still locked.'), assign:{'11':'t1','4':'t1','2':'t2','7':'t2','3':'t3','5':'t3'}},
       {id:'p2',name:T('フェーズ２','Phase 2'),time:20, desc:T('中央が開放(18分)。傭兵野営地・兵器倉庫を確保しバフを固めつつ、王室兵器工場へ圧力をかける。','Center opens (18m). Take camp & armory, pressure the Royal Foundry.'), assign:{'9':'t1','6':'t1','8':'t2','10':'t2','3':'t3','1':'t3'}},
       {id:'p3',name:T('後半戦','Late game'),time:45, desc:T('武器工房(四隅)で弾薬を稼ぎつつ、王室兵器工場の保持を最優先。要所を厚く守る。','Farm workshops; prioritize holding the Royal Foundry.'), assign:{'1':'t1','12':'t2','13':'t2','14':'t3','15':'t3'}},
       {id:'p4',name:T('終了5分前','Final 5 min'),time:55, desc:T('全チームで王室兵器工場と高得点拠点を死守。被占領で半分散逸するため、終盤の奪取に注意。','All-in defense of high-value points; beware late steals (half scatters).'), assign:{'1':'t1','9':'t1','8':'t2','2':'t2','3':'t3'}}
-    ],
-    clock:{elapsed:0, running:false}, speed:30, selectedBuildingId:null
+    ]
   };
 }
-function planLoad(){ try{ var r=localStorage.getItem(KEYP); if(r){ var s=JSON.parse(r); var d=planDefaults(); var st=Object.assign(d,s);
-  st.clock={elapsed:(s.clock&&s.clock.elapsed)||0,running:false}; st.editTeamId=null; st.view=s.view==='edit'?'edit':'home';
-  st.teams.forEach(function(t){if(t.leader==null)t.leader='';}); st.phases.forEach(function(p){if(!p.assign)p.assign={}; if(p.desc==null)p.desc='';}); return st; } }catch(e){} return planDefaults(); }
+function planDefaults(){ var sc=sampleScenario(); return { scenarios:[sc], currentId:sc.id, teams:sc.teams, phases:sc.phases, view:'home', editTeamId:null, editPhaseId:'p1', clock:{elapsed:0,running:false}, speed:30, selectedBuildingId:null }; }
+function normScenario(sc){ if(!sc.teams)sc.teams=[]; if(!sc.phases)sc.phases=[]; sc.teams.forEach(function(t){if(t.leader==null)t.leader='';}); sc.phases.forEach(function(p){if(!p.assign)p.assign={}; if(p.desc==null)p.desc='';}); return sc; }
+function planLoad(){ try{ var r=localStorage.getItem(KEYP); if(r){ var s=JSON.parse(r);
+  if(s.scenarios&&s.scenarios.length){ s.scenarios.forEach(normScenario);
+    var st={ scenarios:s.scenarios, currentId:(s.scenarios.some(function(x){return x.id===s.currentId;})?s.currentId:s.scenarios[0].id),
+      view:s.view==='edit'?'edit':'home', editTeamId:null, editPhaseId:s.editPhaseId||(s.scenarios[0].phases[0]&&s.scenarios[0].phases[0].id)||'p1',
+      clock:{elapsed:(s.clock&&s.clock.elapsed)||0,running:false}, speed:s.speed||30, selectedBuildingId:null };
+    var cur=st.scenarios.find(function(x){return x.id===st.currentId;}); st.teams=cur.teams; st.phases=cur.phases; return st; } } }catch(e){}
+  return planDefaults(); }
 var P=planLoad();
-function planSave(){ try{ localStorage.setItem(KEYP, JSON.stringify({view:P.view,teams:P.teams,phases:P.phases,editPhaseId:P.editPhaseId,clock:{elapsed:P.clock.elapsed},speed:P.speed})); }catch(e){} }
+function SCN(){ return P.scenarios.find(function(s){return s.id===P.currentId;})||P.scenarios[0]; }
+function planBind(){ var c=SCN(); P.teams=c.teams; P.phases=c.phases; }
+function planSave(){ try{ localStorage.setItem(KEYP, JSON.stringify({scenarios:P.scenarios,currentId:P.currentId,view:P.view,editPhaseId:P.editPhaseId,clock:{elapsed:P.clock.elapsed},speed:P.speed})); }catch(e){} }
+function uid(p){ return (p||'x')+Date.now().toString(36)+Math.floor(Math.random()*900+100); }
+function selectScenario(id){ if(!P.scenarios.some(function(s){return s.id===id;}))return; P.currentId=id; planBind(); P.editTeamId=null; P.selectedBuildingId=null; P.editPhaseId=(P.phases[0]&&P.phases[0].id)||'p1'; renderPlan(); }
+function addScenario(copyFromId){
+  var src=copyFromId?P.scenarios.find(function(s){return s.id===copyFromId;}):null;
+  var sc; if(src){ sc=JSON.parse(JSON.stringify(src)); sc.id=uid('s'); sc.name=src.name+T(' のコピー',' copy'); }
+  else { sc={id:uid('s'),name:T('新規シナリオ','New scenario'),teams:[{id:'t1',name:T('Aチーム','Team A'),color:'#2DD4BF',leader:T('Aさん','A-san')}],phases:[{id:'p1',name:T('フェーズ1','Phase 1'),time:3,desc:'',assign:{}}]}; }
+  P.scenarios.push(sc); selectScenario(sc.id);
+}
+function renameScenario(name){ SCN().name=name; var sel=$('scnSel'); if(sel){var o=sel.options[sel.selectedIndex]; if(o)o.text=name;} planSave(); }
+function deleteScenario(){ if(P.scenarios.length<=1)return; P.scenarios=P.scenarios.filter(function(s){return s.id!==P.currentId;}); P.currentId=P.scenarios[0].id; planBind(); P.editTeamId=null; P.editPhaseId=(P.phases[0]&&P.phases[0].id)||'p1'; renderPlan(); }
 function pTeam(id){ return P.teams.find(function(t){return t.id===id;})||null; }
 function pPhaseById(id){ return P.phases.find(function(p){return p.id===id;})||P.phases[0]; }
 function pPhasesSorted(){ return P.phases.slice().sort(function(a,b){return a.time-b.time;}); }
 function pActivePhase(){ var el=P.clock.elapsed, sorted=pPhasesSorted(), cur=null; sorted.forEach(function(p){ if(p.time*60<=el)cur=p; }); return cur; }
 function pViewPhase(){ if(P.view==='home') return pActivePhase(); return pPhaseById(P.editPhaseId); }
 function pHolder(bid,ph){ ph=ph||pViewPhase(); if(!ph)return null; var tid=ph.assign[String(bid)]; return tid?pTeam(tid):null; }
-function scenarioReady(){ return P.phases.some(function(p){return Object.keys(p.assign).length>0;}); }
+function scenarioReady(phs){ phs=phs||P.phases; return phs.some(function(p){return Object.keys(p.assign).length>0;}); }
+function mockScenario(){ return P.scenarios.find(function(s){return s.id===M.scenarioId;})||P.scenarios[0]; }
 
-function renderPlan(){ scorebar.style.display='none'; renderPlanHeader(); renderPlanBanner(); renderPlanMap(); renderPlanPanel(); planSave(); }
+function renderPlan(){ renderScnBar(); scorebar.style.display='none'; renderPlanHeader(); renderPlanBanner(); renderPlanMap(); renderPlanPanel(); planSave(); }
 
 function renderPlanHeader(){
   header.className='fs-head';
@@ -192,7 +235,8 @@ function renderPlanMap(){
     div.setAttribute('data-bid',b.id); div.setAttribute('role','button'); div.setAttribute('tabindex','0');
     div.setAttribute('aria-label','#'+b.num+' '+bname(b)+(holder?('｜'+holder.name):''));
     var tag = b.openMin===GAME.CENTRAL?('<span class="tag">'+T('18分開放','+18m')+'</span>') : b.appear?('<span class="tag">'+T('23分出現','+23m')+'</span>') : '';
-    div.innerHTML='<div class="fs-dia" style="border-color:'+bc+'"><div class="fs-occ" style="background:'+bc+';opacity:'+(holder?'':'0')+'"></div><div class="bld"></div><div class="fs-badge">'+esc(b.num)+'</div></div>'+tag+'<div class="fs-pill">'+esc(bname(b))+'</div>';
+    var lead = (holder&&holder.leader)?('<span class="fs-leadtag" style="background:'+bc+'">'+esc(holder.leader)+'</span>'):'';
+    div.innerHTML='<div class="fs-dia" style="border-color:'+bc+'"><div class="fs-occ" style="background:'+bc+';opacity:'+(holder?'':'0')+'"></div><div class="bld"></div><div class="fs-badge">'+esc(b.num)+'</div></div>'+lead+tag+'<div class="fs-pill">'+esc(bname(b))+'</div>';
     tiles.appendChild(div);
   });
   // オーバーレイ
@@ -343,12 +387,14 @@ function refreshPlanHomeCards(){ if(P.view!=='home')return;
 var KEYM='wos_fb_mock_v2';
 function mockBlank(){ var o={owners:{},capturing:{},occSec:{},bank:{},harvestProg:{},harvestDone:{}};
   BUILDINGS.forEach(function(b){ o.owners[b.id]=null; o.capturing[b.id]=null; o.occSec[b.id]=0; o.bank[b.id]=0; o.harvestProg[b.id]=0; o.harvestDone[b.id]=false; }); return o; }
-function mockDefaults(){ return Object.assign(mockBlank(),{ score:{Blue:0,Red:0}, bullets:{Blue:0,Red:0}, elapsed:0, playing:false, speed:30, ended:false, brush:'Red', capTimed:true, self:{inField:true,reentryRemain:0}, auto:false, diff:'even', lastDecide:0 }); }
-function mockLoad(){ try{ var r=localStorage.getItem(KEYM); if(r){ var s=JSON.parse(r); return Object.assign(mockDefaults(),s,{playing:false}); } }catch(e){} return mockDefaults(); }
+function mockDefaults(){ return Object.assign(mockBlank(),{ score:{Blue:0,Red:0}, bullets:{Blue:0,Red:0}, elapsed:0, playing:false, speed:30, ended:false, brush:'Red', capTimed:true, self:{inField:true,reentryRemain:0}, auto:false, diff:'even', lastDecide:0, scenarioId:'sample', recovery:0.5 }); }
+function mockLoad(){ try{ var r=localStorage.getItem(KEYM); if(r){ var s=JSON.parse(r); var m=Object.assign(mockDefaults(),s,{playing:false}); if(typeof m.recovery!=='number')m.recovery=0.5; return m; } }catch(e){} return mockDefaults(); }
 var M=mockLoad();
+if(!P.scenarios.some(function(s){return s.id===M.scenarioId;})) M.scenarioId=P.currentId;
 function mockSave(){ try{ localStorage.setItem(KEYM, JSON.stringify(M)); }catch(e){} }
 var MS={ blue:T('自軍','Blue'), red:T('敵軍','Red'), npc:T('NPC','NPC'),
   toScatter:T('💥 占拠開始でポイントの半分が散らばった','💥 Half the points scattered'), toLocked:T('まだ攻撃できません','Not open yet'), toEnd:T('試合終了(60分)','Match ended'),
+  scatterMsg:function(lost,rec,en){ return EN?('💥 Stolen! '+fmtN(lost)+' scattered → recover '+fmtN(rec)+' / enemy '+fmtN(en)):('💥 奪取！施設の'+fmtN(lost)+'ptが散逸 → 回収'+fmtN(rec)+' / 敵軍'+fmtN(en)); },
   cap:T('占拠中','Capturing'), facHeld:T('施設','facs') };
 function ownerColor(o){ return o==='Blue'?'#2256c8':o==='Red'?'#cf2e22':'#9fb6c8'; }
 function ownerName(o){ return o==='Blue'?MS.blue:o==='Red'?MS.red:MS.npc; }
@@ -365,12 +411,20 @@ function sideHasBoiler(side){ return BUILDINGS.some(function(b){ return b.buff==
 function captureTime(side){ var t=GAME.CAP_SEC; if(sideHasBoiler(side))t*=0.5; return Math.max(1,t); }
 function mercTier(id){ return Math.max(1,Math.min(5,1+Math.floor(M.occSec[id]/60))); }
 
-function mScatter(id,prev){ var b=BMAP[id];
-  if(b.cat==='res'){ if(!M.harvestDone[id]){ var stored=(M.harvestProg[id]/b.harvest)*b.yield; var keep=stored*(1-SCATTER); M.harvestProg[id]=(keep/b.yield)*b.harvest; if(stored>1)toast(MS.toScatter); } }
-  else { var sc=M.bank[id]*SCATTER; if(sc>1){ M.score[prev]=Math.max(0,M.score[prev]-sc); M.bank[id]-=sc; toast(MS.toScatter); } }
+function mScatter(id,prev,by){ var b=BMAP[id], r=(typeof M.recovery==='number'?M.recovery:0.5);
+  if(b.cat==='res'){ if(!M.harvestDone[id]){ var stored=(M.harvestProg[id]/b.harvest)*b.yield, lost=stored*SCATTER, toEn=lost*(1-r);
+      M.harvestProg[id]=((stored-lost)/b.yield)*b.harvest; if(by)M.bullets[by]+=toEn; if(stored>1)toast(MS.toScatter); } return; }
+  var B=M.bank[id]; if(B<=0){ M.bank[id]=0; return; }
+  var lost=B*SCATTER;            // 半分が散逸(=軍事施設資材)
+  var rec=lost*r;                // 回収(元所有者へ)
+  var toEnemy=lost*(1-r);        // 敵軍へ加算
+  M.score[prev]=Math.max(0, M.score[prev]-lost+rec);
+  if(by) M.score[by]+=toEnemy;
+  M.bank[id]=0;                   // 施設のポイントはリセット
+  toast(MS.scatterMsg(Math.round(lost),Math.round(rec),Math.round(toEnemy)));
 }
 function mStartCapture(id,by){ var b=BMAP[id], prev=M.owners[id];
-  if(prev&&prev!==by){ mScatter(id,prev); }       /* 占拠"開始"時に散逸 */
+  if(prev&&prev!==by){ mScatter(id,prev,by); }   /* 占拠"開始"の瞬間に散逸＋テロップ */
   if(M.capTimed){ M.capturing[id]={by:by,remain:captureTime(by),total:captureTime(by)}; } else { mFinalize(id,by); }
 }
 function mFinalize(id,by){ var b=BMAP[id]; M.owners[id]=by; M.capturing[id]=null; M.occSec[id]=0;
@@ -391,11 +445,12 @@ function perMinFor(side){ var s=0; BUILDINGS.forEach(function(b){ if(M.owners[b.
 function mCount(side){ var n=0; BUILDINGS.forEach(function(b){ if(M.owners[b.id]===side)n++; }); return n; }
 
 /* 作戦シナリオ → 自軍(Blue)の目標(累積) */
-function allyTargets(){ var set={}, el=M.elapsed; pPhasesSorted().forEach(function(p){ if(p.time*60<=el){ for(var k in p.assign)set[k]=1; } }); return Object.keys(set).map(Number); }
+function allyTargets(){ var set={}, el=M.elapsed, phs=mockScenario().phases.slice().sort(function(a,b){return a.time-b.time;}); phs.forEach(function(p){ if(p.time*60<=el){ for(var k in p.assign)set[k]=1; } }); return Object.keys(set).map(Number); }
 
 function renderMock(){
+  renderScnBar();
   scorebar.style.display='';
-  if(!scenarioReady()){ renderMockNoScenario(); return; }
+  if(!scenarioReady(mockScenario().phases)){ renderMockNoScenario(); return; }
   renderMockHeader(); renderMockBar(); renderMockMap(); renderMockPanel(); mockSave();
 }
 function renderMockNoScenario(){
@@ -432,8 +487,8 @@ function renderMockBar(){
   var B=M.score.Blue,R=M.score.Red,total=B+R,bp=total>0?B/total:0.5,edge=(bp*100).toFixed(2);
   var net=perMinFor('Blue')-perMinFor('Red'),adv;
   if(Math.abs(net)<1) adv='<div class="ind e" style="left:'+edge+'%">'+T('互角','Even')+'</div>';
-  else if(net>0) adv='<div class="ind b" style="left:'+edge+'%">◀ '+T('自軍優勢','Blue')+' +'+fmtN(net)+'/'+T('分','m')+'</div>';
-  else adv='<div class="ind r" style="left:'+edge+'%">'+T('敵軍優勢','Red')+' +'+fmtN(-net)+'/'+T('分','m')+' ▶</div>';
+  else if(net>0) adv='<div class="ind b" style="left:'+edge+'%">'+T('自軍優勢','Blue')+' +'+fmtN(net)+'/'+T('分','m')+' ▶</div>';
+  else adv='<div class="ind r" style="left:'+edge+'%">◀ '+T('敵軍優勢','Red')+' +'+fmtN(-net)+'/'+T('分','m')+'</div>';
   scorebar.innerHTML=
     '<div class="fs-sb-top"><div class="s b">'+fmtN(B)+'<small>● '+MS.blue+' ・ '+mCount('Blue')+MS.facHeld+' ・ 🔫'+fmtN(M.bullets.Blue)+'</small></div>'+
       '<div class="s r"><small>🔫'+fmtN(M.bullets.Red)+' ・ '+mCount('Red')+MS.facHeld+' ・ '+MS.red+' ●</small>'+fmtN(R)+'</div></div>'+
@@ -451,9 +506,10 @@ function renderMockMap(){
     var ring='';
     if(cap){ ring=ringSVG(ownerColor(cap.by),1-cap.remain/cap.total); }
     else if(b.cat==='res'&&o){ ring=ringSVG(M.harvestDone[b.id]?'#2faa54':'#f59f3a',Math.min(1,M.harvestProg[b.id]/b.harvest)); }
+    var ptlab = (shown && !cap && M.bank[b.id]>0) ? '<span class="fs-pts" style="background:'+bc+'">'+fmtN(M.bank[b.id])+'</span>' : '';
     div.innerHTML=ring+'<div class="fs-dia" style="border-color:'+bc+'"><div class="fs-occ" style="background:'+bc+';opacity:'+(shown?'':'0')+'"></div><div class="bld"></div>'+
       '<div class="fs-badge" style="background:radial-gradient(circle at 38% 32%,'+(shown?bc:'#2f7fb0')+','+(shown?bc:'#145079')+');opacity:'+(locked?'.3':'1')+'">'+esc(b.num)+'</div></div>'+
-      (locked?'<span class="lockico">🔒</span>':'')+'<div class="fs-pill">'+esc(bname(b))+'</div>';
+      ptlab+(locked?'<span class="lockico">🔒</span>':'')+'<div class="fs-pill">'+esc(bname(b))+'</div>';
     tiles.appendChild(div);
   });
   var ph=M.elapsed<GAME.PREP*60?T('準備','Prep'):M.elapsed<GAME.CENTRAL*60?T('中央以外 攻撃可','Outer'):M.elapsed<GAME.WORKSHOP*60?T('全施設 攻撃可','All'):T('工房出現','Workshops');
@@ -466,10 +522,11 @@ function renderMockPanel(){ panel.innerHTML = mockTimeCard()+mockAutoCard()+mock
 function mockTimeCard(){ var rem=Math.max(0,GAME.EVENT*60-M.elapsed);
   return '<div class="fs-card" id="evCard"><h3>'+T('ゲーム時間','Match time')+'</h3><div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:700 11px \'Noto Sans JP\';color:var(--fmut)">'+ruleText(M.elapsed)+'</span><span class="fs-raj" style="font:900 18px \'Rajdhani\'">'+(M.ended?MS.toEnd:T('残り','Left')+' '+mmss(rem))+'</span></div>'+timelineHTML(M.elapsed)+'</div>'; }
 function mockAutoCard(){
-  function db(k,lab){ return '<button class="'+(M.diff===k?'on':'')+'" data-d="'+k+'">'+lab+'</button>'; }
+  function db(k,lab){ return '<button class="'+(M.diff===k?'on':'')+'" data-d="'+k+'"'+(M.auto?'':' disabled')+'>'+lab+'</button>'; }
   return '<div class="fs-card" id="autoCard"><h3>'+T('敵の自動シミュレーション','Enemy auto-sim')+'<span class="add" id="autoTgl" style="'+(M.auto?'background:var(--facc);color:#fff;border-color:var(--facc)':'')+'">'+(M.auto?T('自動 ON','Auto ON'):T('自動 OFF','Auto OFF'))+'</span></h3>'+
-    '<div class="fs-hint">'+T('自軍は作戦どおりに自動行動します。敵の強さを選び、再生すると自動で攻防します。OFFなら敵は手動。','Ally auto-follows the plan. Pick enemy strength; play to auto-fight. Off = manual enemy.')+'</div>'+
-    '<div class="fs-diffrow">'+db('weak',T('格下','Weaker'))+db('even',T('同格','Even'))+db('strong',T('格上','Stronger'))+'</div></div>';
+    '<div class="fs-hint"><b style="color:var(--facc)">'+T('自軍は上で選んだ作戦シナリオの通りに自動行動します。','Your side auto-follows the chosen scenario above.')+'</b> '+T('敵は、自動OFFなら手動占拠、ONなら下の強さに応じて自動で攻防します。','Enemy is manual when auto is off, or fights automatically at the strength below when on.')+'</div>'+
+    '<div class="fs-diffrow'+(M.auto?'':' off')+'">'+db('weak',T('格下','Weaker'))+db('even',T('同格','Even'))+db('strong',T('格上','Stronger'))+'</div>'+
+    (M.auto?'':'<div class="fs-hint" style="margin-top:6px;color:var(--fmut)">'+T('※ 強さ設定は「自動 ON」のときだけ有効です。','Strength applies only when Auto is ON.')+'</div>')+'</div>';
 }
 function mockExitCard(){ var sf=M.self;
   if(sf.inField) return '<div class="fs-card" id="exCard"><h3>'+T('自分の状態','Your status')+'</h3><div class="fs-exit"><div class="st"><span class="pin" style="background:#2faa54"></span>'+T('在場中','In field')+'</div><button id="exitBtn">'+T('一時退出','Temp exit')+'</button></div></div>';
@@ -495,13 +552,16 @@ function mockListCard(){
 }
 function mockSetCard(){ return '<div class="fs-card"><h3>'+T('詳細設定','Settings')+'</h3><div class="fs-set">'+
   '<label>'+T('占拠時間(秒)','Capture (s)')+'<input type="number" id="csCap" value="'+GAME.CAP_SEC+'" min="1"></label>'+
+  '<label>'+T('軍事施設資材 獲得率(%)','Resource recovery (%)')+'<input type="number" id="csRec" value="'+Math.round((M.recovery||0)*100)+'" min="0" max="100"></label>'+
   '<label>'+T('試合時間','Match')+'<span class="fixed">60:00 ('+T('固定','fixed')+')</span></label>'+
-  '<label>'+T('再入場','Re-entry')+'<span class="fixed">12:00 ('+T('固定','fixed')+')</span></label></div></div>'; }
+  '<label>'+T('再入場','Re-entry')+'<span class="fixed">12:00 ('+T('固定','fixed')+')</span></label></div>'+
+  '<div class="fs-hint" style="margin-top:8px">'+T('奪われると施設ポイントの半分が散逸。散逸分のうち獲得率ぶんを元所有者が回収し、残りが敵軍へ加算されます。','When stolen, half the facility points scatter; you recover the recovery-rate share, the rest goes to the enemy.')+'</div></div>'; }
 
 function mockWire(){
   var lc=$('lsCard'); if(lc)lc.addEventListener('click',function(e){ var r=e.target.closest('.fs-fr'); if(r)mockApply(+r.getAttribute('data-bid')); });
   var ag=$('autoTgl'); if(ag)ag.addEventListener('click',function(){ M.auto=!M.auto; renderMockPanel(); mockSave(); });
-  Array.prototype.forEach.call(document.querySelectorAll('.fs-diffrow button'),function(b){ b.addEventListener('click',function(){ M.diff=b.getAttribute('data-d'); renderMockPanel(); mockSave(); }); });
+  Array.prototype.forEach.call(document.querySelectorAll('.fs-diffrow button'),function(b){ b.addEventListener('click',function(){ if(!M.auto)return; M.diff=b.getAttribute('data-d'); renderMockPanel(); mockSave(); }); });
+  var rec=$('csRec'); if(rec)rec.addEventListener('change',function(e){ var v=parseInt(e.target.value,10); if(isNaN(v))v=50; v=Math.max(0,Math.min(100,v)); M.recovery=v/100; e.target.value=v; mockSave(); });
   var eb=$('exitBtn'); if(eb)eb.addEventListener('click',function(){ M.self.inField=false; M.self.reentryRemain=GAME.REENTRY_SEC; renderMockPanel(); mockSave(); });
   var rb=$('reBtn'); if(rb)rb.addEventListener('click',function(){ if(M.self.reentryRemain<=0){ M.self.inField=true; renderMockPanel(); mockSave(); } });
   var cap=$('csCap'); if(cap)cap.addEventListener('change',function(e){ var v=parseInt(e.target.value,10); if(v>0)GAME.CAP_SEC=v; });
@@ -510,12 +570,14 @@ function mockWire(){
 /* 自動意思決定 */
 function countCapturing(side){ var n=0; BUILDINGS.forEach(function(b){ if(M.capturing[b.id]&&M.capturing[b.id].by===side)n++; }); return n; }
 function bValue(b){ return b.init + b.pts*8 + (b.buff?2000:0); }
+/* 施設に貯まっているポイントが高いほど、奪う価値が高い(相手のポイントを半減できる) */
+function liveValue(b){ return bValue(b) + (M.bank[b.id]||0)*1.5; }
 function decide(){
   // 自軍: 作戦どおり(累積目標)を占拠
   var allySlots=Math.min(5, P.teams.length+1) - countCapturing('Blue');
   if(allySlots>0){ var targets=allyTargets().map(function(id){return BMAP[id];})
       .filter(function(b){ return visibleAt(b,M.elapsed)&&!lockedAt(b,M.elapsed)&&M.owners[b.id]!=='Blue'&&!(M.capturing[b.id]&&M.capturing[b.id].by==='Blue'); })
-      .sort(function(a,b){ return bValue(b)-bValue(a); });
+      .sort(function(a,b){ return liveValue(b)-liveValue(a); });
     for(var i=0;i<targets.length&&allySlots>0;i++){ mStartCapture(targets[i].id,'Blue'); allySlots--; }
   }
   // 敵: 難易度
@@ -523,9 +585,9 @@ function decide(){
     var cfg={weak:{slots:1,contest:false},even:{slots:2,contest:true},strong:{slots:3,contest:true}}[M.diff]||{slots:2,contest:true};
     var enSlots=cfg.slots - countCapturing('Red');
     if(enSlots>0){ var cands=BUILDINGS.filter(function(b){ if(!visibleAt(b,M.elapsed)||lockedAt(b,M.elapsed))return false; if(M.owners[b.id]==='Red')return false; if(M.capturing[b.id]&&M.capturing[b.id].by==='Red')return false;
-        if(M.owners[b.id]==='Blue'){ if(!cfg.contest)return false; if(M.diff==='even'&&Math.random()>0.5)return false; }
+        if(M.owners[b.id]==='Blue'){ if(!cfg.contest)return false; if(M.diff==='even'&&(M.bank[b.id]||0)<800&&Math.random()>0.5)return false; }
         return true; })
-        .sort(function(a,b){ var va=bValue(a),vb=bValue(b); if(M.diff==='strong'){ va+=(M.owners[a.id]==='Blue'?3000:0); vb+=(M.owners[b.id]==='Blue'?3000:0);} return vb-va; });
+        .sort(function(a,b){ var va=liveValue(a),vb=liveValue(b); if(M.diff==='strong'){ va+=(M.owners[a.id]==='Blue'?2500:0); vb+=(M.owners[b.id]==='Blue'?2500:0);} return vb-va; });
       if(M.diff==='weak') cands.reverse(); // 格下は価値の低い順を好む
       for(var j=0;j<cands.length&&enSlots>0;j++){ mStartCapture(cands[j].id,'Red'); enSlots--; }
     }
@@ -533,7 +595,7 @@ function decide(){
 }
 
 var mockStepT=null;
-function mockStep(){ if(MODE!=='mock'||!M.playing||M.ended||!scenarioReady())return; var dt=0.1*M.speed; M.elapsed+=dt;
+function mockStep(){ if(MODE!=='mock'||!M.playing||M.ended||!scenarioReady(mockScenario().phases))return; var dt=0.1*M.speed; M.elapsed+=dt;
   // 占拠進行
   BUILDINGS.forEach(function(b){ var cap=M.capturing[b.id]; if(cap){ cap.remain-=dt; if(cap.remain<=0)mFinalize(b.id,cap.by); } });
   // 生産(占拠中は停止)

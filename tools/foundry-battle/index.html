@@ -264,6 +264,27 @@
   .fb-help b{color:var(--frost)}
   .fb-toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(12px);background:#15161b;color:#fff;font-size:12.5px;font-weight:700;padding:10px 18px;border-radius:10px;box-shadow:0 8px 24px rgba(10,12,24,.35);opacity:0;transition:.2s;z-index:95;pointer-events:none}
   .fb-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  /* シナリオバー */
+  .fs-scn{ display:flex; align-items:center; gap:8px; padding:9px 16px 0; flex-wrap:wrap; }
+  .fs-scn .lb{ font:700 11px 'Noto Sans JP'; color:var(--fmut); display:flex; align-items:center; gap:5px; }
+  .fs-scn select{ border:1px solid var(--fline); background:#fff; color:var(--fink); border-radius:9px; padding:7px 11px; font:700 12px 'Noto Sans JP'; min-width:168px; cursor:pointer; }
+  .fs-scn button{ border:1px solid var(--fline); background:#fff; color:var(--ftxt); border-radius:8px; padding:7px 10px; font:700 11px 'Noto Sans JP'; cursor:pointer; }
+  .fs-scn button:hover{ background:#e3eef6; }
+  .fs-scn button.pri{ border-color:var(--facc); color:var(--facc); background:rgba(22,150,194,.06); }
+  .fs-scn button.dl{ border-color:#f0c4c0; color:var(--fdanger); background:rgba(224,88,79,.05); }
+  .fs-scn .note{ font:600 11px 'Noto Sans JP'; color:var(--facc); margin-left:2px; }
+
+  /* タイル: リーダー名(作戦)・獲得ポイント(模擬戦) */
+  .fs-leadtag,.fs-pts{ position:absolute; top:-22px; left:50%; transform:translateX(-50%); white-space:nowrap; z-index:3;
+    color:#fff; border-radius:999px; padding:1px 7px; box-shadow:0 1px 3px rgba(20,40,60,.3); border:1px solid rgba(255,255,255,.7); }
+  .fs-leadtag{ font:800 9px 'Noto Sans JP'; }
+  .fs-pts{ font:800 9.5px 'Rajdhani'; letter-spacing:.2px; }
+  .fs-tile.big .fs-leadtag,.fs-tile.big .fs-pts{ top:-27px; }
+
+  /* 難易度ボタン無効化 */
+  .fs-diffrow button:disabled{ opacity:.4; cursor:not-allowed; }
+  .fs-diffrow.dis{ opacity:.7; }
 </style>
 <link rel="icon" type="image/svg+xml" href="../../favicon.svg?v=85">
 <link rel="icon" type="image/png" href="../../favicon.png?v=85">
@@ -291,6 +312,7 @@
 
 <div class="fs" id="fs">
   <div class="fs-modebar" id="modeBar"></div>
+  <div class="fs-scn" id="scnBar"></div>
   <header class="fs-head" id="toolHeader"></header>
   <div id="fsBanner"></div>
   <div class="fs-scorebar" id="scorebar" style="display:none"></div>
@@ -334,10 +356,10 @@
   try{
     document.getElementById('nav').innerHTML = window.WOS_NAV(2);
     document.getElementById('foot').innerHTML = window.WOS_FOOT(2);
-    document.getElementById('updbox').innerHTML = window.WOS_UPDATEBOX({date:'2026-06-26',gen:16,note:'作戦/模擬戦の2モード・共有リンク・60分制・敵自動シミュに対応',note_en:'Two modes, share links, 60-min match, enemy auto-sim'});
+    document.getElementById('updbox').innerHTML = window.WOS_UPDATEBOX({date:'2026-06-26',gen:16,note:'シナリオ保存・選択/共有リンク/リーダー表示/施設ポイント・資材回収率/敵の高得点優先狙いに対応',note_en:'Two modes, share links, 60-min match, enemy auto-sim'});
   }catch(e){}
 </script>
-<script src="app.js?v=88"></script>
+<script src="app.js?v=89"></script>
 <script>
 (function(){function mount(){if(!window.WOS_mountAffiliate)return;var f=document.getElementById('foot');if(f)window.WOS_mountAffiliate(f,'before');}if(document.readyState!=='loading')mount();else document.addEventListener('DOMContentLoaded',mount);})();
 </script>
