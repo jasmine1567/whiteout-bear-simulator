@@ -286,6 +286,18 @@
   .fs-diffrow button:disabled{ opacity:.4; cursor:not-allowed; }
   .fs-diffrow.dis{ opacity:.7; }
 
+  /* 戦況アドバイス */
+  .fs-advisecard{ background:linear-gradient(135deg,#fff6e8,#fffdf8); border-color:#f1d5a0 !important; }
+  .fs-advisecard h3{ color:#b5791a; }
+  .fs-advlist{ display:flex; flex-direction:column; gap:6px; }
+  .fs-adv-item{ display:flex; align-items:flex-start; gap:7px; font:600 12px 'Noto Sans JP'; color:#5a4a2e; background:#fff; border:1px solid #f0e0c0; border-radius:9px; padding:7px 9px; }
+  .fs-adv-item .bj{ color:#e8920c; font-weight:900; line-height:1.4; }
+  .fs-adv-item .tx{ flex:1; line-height:1.36; }
+  .fs-adv-item.good{ background:linear-gradient(135deg,#e7fbee,#f3fff6); border-color:#9fe6b4; color:#1d6b39; animation:advgood .45s ease; }
+  .fs-adv-item .gd{ flex:none; background:#16a34a; color:#fff; font:900 10px 'Rajdhani'; padding:3px 8px; border-radius:7px; letter-spacing:.5px; box-shadow:0 2px 7px rgba(22,163,74,.45); }
+  @keyframes advgood{ 0%{transform:scale(.96)} 55%{transform:scale(1.03)} 100%{transform:scale(1)} }
+  .fs-leadtag.ace{ font-weight:800; box-shadow:0 1px 6px rgba(207,46,34,.5); border-color:#fff; }
+
   /* ===== トランスポート(再生/速度/最初から) ===== */
   .fs-transport{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
   .fs-bigplay{ display:inline-flex; align-items:center; gap:8px; height:44px; padding:0 22px; border:none; border-radius:13px;
@@ -332,7 +344,9 @@
     .fs-tile.big .fs-pill{ width:auto; max-width:62px; font-size:8.5px; }
     .fs-pill .nm-full{ display:none; } .fs-pill .nm-short{ display:inline; }
     .fs-tile .tag{ display:none; }            /* 開放/出現はゲーム時間バー・一覧で確認 */
-    .fs-leadtag{ font-size:8px; padding:0 5px; top:-17px; max-width:62px; overflow:hidden; text-overflow:ellipsis; }
+    .fs-leadtag{ font-size:8px; padding:0 5px; top:-17px; max-width:62px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .fs-leadtag:not(.ace){ display:none; }   /* 自軍リーダー名はスマホでは一覧で確認(マップ整理) */
+    .fs-leadtag.ace{ display:block; }          /* 敵エースの位置はマップに明記 */
     .fs-tile.big .fs-leadtag{ top:-20px; }
     .fs-pts{ font-size:8px; padding:0 5px; top:-17px; } .fs-tile.big .fs-pts{ top:-20px; }
     .fs-ov.tl{ left:7px; top:7px; padding:4px 8px; } .fs-ov.tl .pn{ font-size:11px; } .fs-ov.tl .pi{ font-size:9px; }
@@ -420,10 +434,10 @@
   try{
     document.getElementById('nav').innerHTML = window.WOS_NAV(2);
     document.getElementById('foot').innerHTML = window.WOS_FOOT(2);
-    document.getElementById('updbox').innerHTML = window.WOS_UPDATEBOX({date:'2026-06-26',gen:16,note:'スマホ画面を最適化・操作UIを刷新(大きな再生/速度/最初から)。占領後ポイントは0スタート・未占領は必ず占領される挙動に修正',note_en:'Two modes, share links, 60-min match, enemy auto-sim'});
+    document.getElementById('updbox').innerHTML = window.WOS_UPDATEBOX({date:'2026-06-26',gen:16,note:'占領者名・敵エース(エース1/2/3)表示、難易度を本格再調整(同格/格上/格下)、戦況アドバイス＋GOOD!!演出、敵の占領ポイント表示に対応',note_en:'Two modes, share links, 60-min match, enemy auto-sim'});
   }catch(e){}
 </script>
-<script src="app.js?v=90"></script>
+<script src="app.js?v=92"></script>
 <script>
 (function(){function mount(){if(!window.WOS_mountAffiliate)return;var f=document.getElementById('foot');if(f)window.WOS_mountAffiliate(f,'before');}if(document.readyState!=='loading')mount();else document.addEventListener('DOMContentLoaded',mount);})();
 </script>
