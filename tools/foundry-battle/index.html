@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Rajdhani:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
-
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y8YMCVQDMG"></script>
 <script>
@@ -15,18 +14,17 @@
   gtag('config', 'G-Y8YMCVQDMG');
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>兵器工場争奪戦 フィールド作戦シミュレータ｜チーム編成・占領プランニング | ホワサバ ツールラボ</title>
-<meta name="description" content="ホワイトアウトサバイバル「兵器工場争奪戦」のフィールド作戦ツール。チームを編成し、各拠点へのターゲット割当をフェーズ（時間軸）ごとに計画。移動矢印つきの再生・集合タイマー・占領ポイント/バフ集計に対応。">
+<title>兵器工場争奪戦 フィールド作戦シミュレータ｜作戦計画・模擬戦 | ホワサバ ツールラボ</title>
+<meta name="description" content="ホワイトアウトサバイバル「兵器工場争奪戦」のフィールドツール。作戦シミュレータでチーム編成とフェーズ別の行動を計画し、模擬戦シミュレータで敵の動きを加えて占領ポイント・バフをリアルタイム試算。結果は共有リンクで共有可能。">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
 <link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/tools/foundry-battle/index.html">
 <link rel="alternate" hreflang="en" href="https://whitesim-lab.com/tools/foundry-battle/index.html?lang=en">
 <link rel="stylesheet" href="../../assets/site.css?v=85">
 <style>
-  /* ===== 領地戦シミュレーター(アイスブルー基調・自己完結スコープ .fs) ===== */
+  /* ===== 兵器工場争奪戦ツール(アイスブルー基調・スコープ .fs) ===== */
   .fs{ --fbg:#e9f2f8; --fpanel:#fff; --fpanel2:#f1f7fb; --fline:#d4e2ee; --ftxt:#22323f; --fink:#1a2a37; --fmut:#6c8295;
-       --facc:#1696c2; --fsoft:#f5f9fc; --fdanger:#d0524a;
-       color:var(--ftxt); border-radius:18px; overflow:hidden; border:1px solid #cfe0ec;
-       box-shadow:0 14px 40px rgba(60,100,140,.16);
+       --facc:#1696c2; --fsoft:#f5f9fc; --fdanger:#d0524a; --fblue:#2256c8; --fred:#cf2e22;
+       color:var(--ftxt); border-radius:18px; overflow:hidden; border:1px solid #cfe0ec; box-shadow:0 14px 40px rgba(60,100,140,.16);
        background:radial-gradient(58% 70% at 50% -8%, #fff, transparent 62%),
                   radial-gradient(42% 64% at 0% 48%, rgba(56,194,224,.14), transparent 60%),
                   radial-gradient(42% 64% at 100% 48%, rgba(255,138,126,.12), transparent 60%),
@@ -34,34 +32,58 @@
   .fs *{ box-sizing:border-box; }
   .fs-raj{ font-family:'Rajdhani','Noto Sans JP',sans-serif; }
 
+  /* モード切替バー */
+  .fs-modebar{ display:flex; gap:6px; padding:10px 14px 4px; flex-wrap:wrap; }
+  .fs-mode{ flex:1; min-width:160px; max-width:260px; border:1px solid var(--fline); background:rgba(255,255,255,.7); color:var(--fmut);
+    border-radius:10px; padding:9px 12px; cursor:pointer; font:700 13px 'Noto Sans JP'; display:flex; align-items:center; gap:8px; justify-content:center; transition:.12s; }
+  .fs-mode .ic{ font-size:15px; }
+  .fs-mode.on{ background:linear-gradient(135deg,#37bdd9,#1696c2); border-color:var(--facc); color:#fff; box-shadow:0 3px 10px rgba(22,150,194,.3); }
+  .fs-sharewrap{ margin-left:auto; display:flex; align-items:center; }
+  .fs-share{ border:1px solid var(--facc); background:#fff; color:var(--facc); border-radius:10px; padding:9px 13px; cursor:pointer; font:700 12px 'Noto Sans JP'; display:flex; gap:6px; align-items:center; }
+  .fs-share:hover{ background:#eaf6fb; }
+
   /* ヘッダー */
-  .fs-head{ display:flex; flex-wrap:wrap; align-items:center; gap:10px 16px; padding:12px 16px;
-    background:rgba(255,255,255,.92); border-bottom:1px solid var(--fline); }
+  .fs-head{ display:flex; flex-wrap:wrap; align-items:center; gap:10px 14px; padding:10px 16px; background:rgba(255,255,255,.92); border-bottom:1px solid var(--fline); }
   .fs-title{ margin-right:auto; display:flex; flex-direction:column; gap:2px; }
-  .fs-title .t{ font:700 19px/1 'Rajdhani','Noto Sans JP'; letter-spacing:.5px; color:var(--fink); display:flex; align-items:center; gap:9px; }
+  .fs-title .t{ font:700 18px/1 'Rajdhani','Noto Sans JP'; letter-spacing:.5px; color:var(--fink); display:flex; align-items:center; gap:9px; }
   .fs-title .t .dot{ width:11px;height:11px;border-radius:2px;background:linear-gradient(135deg,#3cc6e0,#1696c2);box-shadow:0 0 10px rgba(60,198,224,.6);transform:rotate(45deg); }
-  .fs-title .s{ font:500 11px/1 'Noto Sans JP'; color:var(--fmut); letter-spacing:.3px; }
+  .fs-title .s{ font:500 11px/1 'Noto Sans JP'; color:var(--fmut); }
   .fs-grp{ display:flex; align-items:center; gap:7px; background:var(--fsoft); border:1px solid var(--fline); border-radius:12px; padding:5px 8px; }
-  .fs-timer .lab{ font:600 9px/1.3 'Noto Sans JP'; color:var(--fmut); letter-spacing:1.5px; display:block; }
-  .fs-timer .val{ font:700 23px/1.05 'Rajdhani'; letter-spacing:1px; font-variant-numeric:tabular-nums; cursor:pointer; color:var(--fink); }
-  .fs-timer .val.run{ color:var(--facc); }
-  .fs-btn{ height:30px; border-radius:8px; border:1px solid var(--fline); background:#fff; color:var(--ftxt);
-    font:600 12px 'Noto Sans JP'; cursor:pointer; padding:0 10px; transition:background .12s; }
-  .fs-btn:hover{ background:#e3eef6; }
+  .fs-btn{ height:30px; border-radius:8px; border:1px solid var(--fline); background:#fff; color:var(--ftxt); font:600 12px 'Noto Sans JP'; cursor:pointer; padding:0 10px; transition:background .12s; }
+  .fs-btn:hover{ background:#e3eef6; } .fs-btn:disabled{ opacity:.45; cursor:not-allowed; }
   .fs-ico{ width:32px; padding:0; font-family:'Rajdhani'; font-size:17px; color:var(--fmut); }
-  .fs-play{ height:32px; min-width:60px; padding:0 12px; border-radius:8px; border:1px solid var(--facc);
-    background:linear-gradient(135deg,#37bdd9,#1696c2); color:#fff; font:700 13px 'Noto Sans JP'; cursor:pointer;
-    box-shadow:0 2px 8px rgba(22,150,194,.32); }
+  .fs-play{ height:32px; min-width:64px; padding:0 14px; border-radius:8px; border:1px solid var(--facc); background:linear-gradient(135deg,#37bdd9,#1696c2); color:#fff; font:700 13px 'Noto Sans JP'; cursor:pointer; box-shadow:0 2px 8px rgba(22,150,194,.32); }
   .fs-play:hover{ filter:brightness(1.06); }
-  .fs-pname{ display:flex; flex-direction:column; padding:0 4px 0 6px; min-width:84px; }
-  .fs-pname .n{ font:700 13px/1.15 'Noto Sans JP'; color:var(--fink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:140px; }
-  .fs-pname .i{ font:600 10px/1 'Rajdhani'; color:var(--fmut); letter-spacing:.5px; }
+  .fs-clock{ font:700 22px/1.05 'Rajdhani'; letter-spacing:1px; font-variant-numeric:tabular-nums; color:var(--fink); }
+  .fs-clock.run{ color:var(--facc); }
+  .fs-clab{ font:600 9px/1.3 'Noto Sans JP'; color:var(--fmut); letter-spacing:1.5px; display:block; }
+  select.fs-btn{ -webkit-appearance:none; appearance:none; padding-right:8px; }
+
+  /* サブナビ(作戦: ホーム/チーム編集) */
+  .fs-subnav{ display:flex; gap:6px; }
+  .fs-tab{ border:1px solid var(--fline); background:#fff; color:var(--fmut); border-radius:9px; padding:7px 13px; cursor:pointer; font:700 12px 'Noto Sans JP'; }
+  .fs-tab.on{ background:var(--facc); border-color:var(--facc); color:#fff; }
+
+  /* フェーズ作戦バナー(目立たせる) */
+  .fs-banner{ margin:10px 16px 0; border-radius:14px; padding:13px 16px; color:#fff; position:relative; overflow:hidden;
+    background:linear-gradient(120deg,#1d8fb8,#2b6fd0); box-shadow:0 8px 22px rgba(30,110,170,.28); }
+  .fs-banner .ph{ font:700 11px 'Noto Sans JP'; opacity:.92; letter-spacing:.5px; display:flex; align-items:center; gap:8px; }
+  .fs-banner .ph .clk{ font-family:'Rajdhani'; font-weight:700; background:rgba(255,255,255,.2); border-radius:6px; padding:1px 8px; }
+  .fs-banner .nm{ font:800 19px/1.2 'Noto Sans JP'; margin:3px 0 5px; }
+  .fs-banner .no{ font:500 13px/1.6 'Noto Sans JP'; opacity:.97; white-space:pre-wrap; }
+  .fs-banner .rule{ margin-top:7px; font:700 10.5px 'Noto Sans JP'; background:rgba(255,255,255,.16); display:inline-block; padding:3px 9px; border-radius:7px; }
+
+  /* 模擬戦: 作戦未設定の案内 */
+  .fs-notice{ margin:11px 16px 0; border:1px dashed #9cc6dc; background:rgba(22,150,194,.06); border-radius:12px; padding:13px 15px; display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+  .fs-notice .tx{ font:600 12.5px/1.6 'Noto Sans JP'; color:#1a5876; flex:1; min-width:200px; }
+  .fs-notice .tx b{ color:var(--facc); }
+  .fs-notice button{ border:1px solid var(--facc); background:var(--facc); color:#fff; border-radius:9px; padding:9px 14px; font:700 12px 'Noto Sans JP'; cursor:pointer; }
 
   /* 本体 */
   .fs-main{ display:flex; flex-direction:row; }
   @media(max-width:900px){ .fs-main{ flex-direction:column; } }
-  .fs-mapsec{ flex:1 1 auto; min-width:0; display:flex; align-items:center; justify-content:center; padding:20px; }
-  .fs-mapbox{ position:relative; width:100%; max-width:640px; aspect-ratio:5/4; border-radius:20px;
+  .fs-mapsec{ flex:1 1 auto; min-width:0; display:flex; align-items:center; justify-content:center; padding:18px; }
+  .fs-mapbox{ position:relative; width:100%; max-width:660px; aspect-ratio:5/4; border-radius:20px;
     background:radial-gradient(ellipse 120% 120% at 50% 50%,#eef6fb,#d6e6f1); border:1px solid #c8dbe9;
     box-shadow:0 20px 50px rgba(60,100,140,.18), inset 0 0 0 1px rgba(255,255,255,.6); overflow:hidden; }
   .fs-ring{ position:absolute; inset:-2%; border-radius:50%; z-index:0;
@@ -74,141 +96,113 @@
       radial-gradient(ellipse 40% 60% at 8% 50%, rgba(56,200,228,.18), transparent 60%),
       radial-gradient(ellipse 40% 60% at 92% 50%, rgba(255,138,120,.16), transparent 60%);
     box-shadow:inset 0 0 60px rgba(120,160,190,.35); }
-  .fs-safe{ position:absolute; width:13%; aspect-ratio:1; transform:translate(-50%,-50%) rotate(45deg); border-radius:22%; z-index:2;
-    top:49%; display:flex; align-items:center; justify-content:center; }
+  .fs-safe{ position:absolute; width:13%; aspect-ratio:1; transform:translate(-50%,-50%) rotate(45deg); border-radius:22%; z-index:2; top:49%; display:flex; align-items:center; justify-content:center; }
   .fs-safe.l{ left:9.5%; background:linear-gradient(135deg,rgba(46,200,228,.34),rgba(46,200,228,.1)); border:2px solid rgba(40,180,210,.8); }
   .fs-safe.r{ left:90.5%; background:linear-gradient(135deg,rgba(248,120,110,.34),rgba(248,120,110,.1)); border:2px solid rgba(235,100,92,.8); }
-  .fs-safe span{ transform:rotate(-45deg); font:700 10px 'Noto Sans JP'; letter-spacing:.5px; }
+  .fs-safe span{ transform:rotate(-45deg); font:700 9px 'Noto Sans JP'; letter-spacing:.3px; }
   .fs-safe.l span{ color:#0c7d97; } .fs-safe.r span{ color:#c0473f; }
-
-  .fs-arrows{ position:absolute; inset:0; z-index:3; pointer-events:none; }
-  @keyframes fsflow{ to{ stroke-dashoffset:-3.5; } }
   @keyframes fsOcc{ 0%,100%{ opacity:.38; } 50%{ opacity:.7; } }
 
   /* 拠点タイル */
-  .fs-tile{ position:absolute; transform:translate(-50%,-50%); z-index:4; width:58px; cursor:pointer; }
-  .fs-tile.big{ width:84px; z-index:5; }
+  .fs-tile{ position:absolute; transform:translate(-50%,-50%); z-index:4; width:50px; cursor:pointer; }
+  .fs-tile.big{ width:74px; z-index:5; }
   .fs-dia{ position:relative; width:100%; aspect-ratio:1; transform:rotate(45deg); border-radius:24%;
     background:linear-gradient(160deg, rgba(255,255,255,.95), rgba(228,240,248,.92)); border:2px solid #9fb6c8;
     box-shadow:0 5px 14px rgba(60,100,140,.18); display:flex; align-items:center; justify-content:center; transition:border-color .15s,box-shadow .15s; }
   .fs-occ{ position:absolute; inset:0; border-radius:24%; opacity:0; animation:fsOcc 2.4s ease-in-out infinite; }
-  .fs-tile .bld{ transform:rotate(-45deg); width:38%; height:38%; border-radius:3px;
-    background:linear-gradient(160deg,#9fb4c4,#6f8597); box-shadow:inset 0 1px 0 rgba(255,255,255,.5); }
-  .fs-badge{ position:absolute; top:-9px; left:50%; transform:translateX(-50%); width:26px; height:26px; border-radius:50%;
-    background:radial-gradient(circle at 38% 32%,#2f7fb0,#145079); border:2px solid rgba(255,255,255,.9); color:#fff;
-    font:700 13px 'Rajdhani'; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 6px rgba(20,80,120,.4); z-index:2; }
-  .fs-tile.big .fs-badge{ width:30px; height:30px; font-size:15px; }
-  .fs-pill{ position:absolute; top:calc(100% + 5px); left:50%; transform:translateX(-50%); white-space:nowrap;
-    background:rgba(255,255,255,.95); border:1px solid var(--fline); border-radius:999px; padding:2px 9px;
-    font:700 10px 'Noto Sans JP'; color:#2a3a47; box-shadow:0 2px 5px rgba(60,100,140,.14); }
+  .fs-tile .bld{ transform:rotate(-45deg); width:36%; height:36%; border-radius:3px; background:linear-gradient(160deg,#9fb4c4,#6f8597); box-shadow:inset 0 1px 0 rgba(255,255,255,.5); }
+  .fs-badge{ position:absolute; top:-8px; left:50%; transform:translateX(-50%); width:23px; height:23px; border-radius:50%;
+    background:radial-gradient(circle at 38% 32%,#2f7fb0,#145079); border:2px solid rgba(255,255,255,.9); color:#fff; font:700 12px 'Rajdhani';
+    display:flex; align-items:center; justify-content:center; box-shadow:0 2px 6px rgba(20,80,120,.4); z-index:2; }
+  .fs-tile.big .fs-badge{ width:27px; height:27px; font-size:14px; }
+  .fs-pill{ position:absolute; top:calc(100% + 4px); left:50%; transform:translateX(-50%); width:78px; text-align:center; line-height:1.15;
+    background:rgba(255,255,255,.96); border:1px solid var(--fline); border-radius:8px; padding:2px 4px; font:700 9px 'Noto Sans JP'; color:#2a3a47; box-shadow:0 2px 5px rgba(60,100,140,.14); }
+  .fs-tile.big .fs-pill{ width:92px; font-size:9.5px; }
   .fs-tile.sel .fs-dia{ border-color:var(--facc); box-shadow:0 0 0 3px rgba(22,150,194,.28),0 6px 16px rgba(22,150,194,.3); }
-  .fs-tile .tag{ position:absolute; top:-10px; right:-6px; z-index:3; font:700 8px 'Noto Sans JP'; background:#fff7e6;
-    color:#b5791a; border:1px solid #f0d9a8; border-radius:6px; padding:0 4px; transform:none; }
+  .fs-tile.dim{ opacity:.5; } .fs-tile.locked{ opacity:.5; }
+  .fs-tile .tag{ position:absolute; top:-10px; right:-8px; z-index:3; font:700 8px 'Noto Sans JP'; background:#fff7e6; color:#b5791a; border:1px solid #f0d9a8; border-radius:6px; padding:0 4px; }
+  .fs-tile .lockico{ position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:14px; z-index:3; }
+  .fs-cap{ position:absolute; inset:-6px; pointer-events:none; z-index:1; }
 
   /* オーバーレイ */
   .fs-ov{ position:absolute; z-index:6; }
-  .fs-ov.tl{ left:12px; top:12px; background:rgba(255,255,255,.9); border:1px solid var(--fline); border-radius:10px; padding:7px 11px; }
-  .fs-ov.tl .pn{ font:700 13px 'Noto Sans JP'; color:var(--fink); }
-  .fs-ov.tl .pi{ font:600 10px 'Rajdhani'; color:var(--fmut); letter-spacing:.4px; }
-  .fs-ov.tr{ right:12px; top:12px; }
-  .fs-toggle{ display:flex; align-items:center; gap:6px; background:rgba(255,255,255,.9); border:1px solid var(--fline);
-    border-radius:999px; padding:4px 10px; font:700 11px 'Noto Sans JP'; color:var(--ftxt); cursor:pointer; }
-  .fs-toggle .sw{ width:26px; height:15px; border-radius:999px; background:#c9d6e1; position:relative; transition:background .15s; }
-  .fs-toggle .sw::after{ content:''; position:absolute; top:2px; left:2px; width:11px; height:11px; border-radius:50%; background:#fff; transition:left .15s; }
-  .fs-toggle.on .sw{ background:var(--facc); } .fs-toggle.on .sw::after{ left:13px; }
-  .fs-brush{ position:absolute; left:50%; bottom:12px; transform:translateX(-50%); z-index:6; display:flex; align-items:center; gap:8px;
-    background:rgba(26,42,55,.92); color:#fff; border-radius:999px; padding:6px 8px 6px 13px; font:700 11px 'Noto Sans JP'; }
+  .fs-ov.tl{ left:12px; top:12px; background:rgba(255,255,255,.9); border:1px solid var(--fline); border-radius:10px; padding:6px 11px; }
+  .fs-ov.tl .pn{ font:700 13px 'Noto Sans JP'; color:var(--fink); } .fs-ov.tl .pi{ font:600 10px 'Rajdhani'; color:var(--fmut); letter-spacing:.4px; }
+  .fs-ov.tr{ right:12px; top:12px; text-align:right; }
+  .fs-brush{ position:absolute; left:50%; bottom:12px; transform:translateX(-50%); z-index:6; display:flex; align-items:center; gap:8px; background:rgba(26,42,55,.92); color:#fff; border-radius:999px; padding:6px 8px 6px 13px; font:700 11px 'Noto Sans JP'; }
   .fs-brush .dot{ width:11px; height:11px; border-radius:50%; }
-  .fs-brush button{ border:none; background:rgba(255,255,255,.18); color:#fff; border-radius:999px; width:20px; height:20px; cursor:pointer; font-size:13px; }
 
   /* サイドパネル */
-  .fs-panel{ width:386px; flex:0 0 auto; border-left:1px solid var(--fline); background:rgba(255,255,255,.55);
-    padding:14px; display:flex; flex-direction:column; gap:13px; max-height:none; }
+  .fs-panel{ width:392px; flex:0 0 auto; border-left:1px solid var(--fline); background:rgba(255,255,255,.55); padding:14px; display:flex; flex-direction:column; gap:13px; }
   @media(max-width:900px){ .fs-panel{ width:100%; border-left:none; border-top:1px solid var(--fline); } }
   .fs-card{ background:var(--fpanel); border:1px solid var(--fline); border-radius:12px; padding:12px 13px; box-shadow:0 5px 14px rgba(60,100,140,.08); }
   .fs-card h3{ margin:0 0 10px; font:700 13px 'Noto Sans JP'; color:var(--fink); border:none; padding:0; display:flex; align-items:center; gap:7px; }
-  .fs-card h3 .add{ margin-left:auto; font:700 11px 'Noto Sans JP'; color:var(--facc); background:rgba(22,150,194,.08);
-    border:1px solid #bfe0ec; border-radius:7px; padding:3px 9px; cursor:pointer; }
+  .fs-card h3 .add{ margin-left:auto; font:700 11px 'Noto Sans JP'; color:var(--facc); background:rgba(22,150,194,.08); border:1px solid #bfe0ec; border-radius:7px; padding:3px 9px; cursor:pointer; }
+  .fs-hint{ font:500 12px/1.6 'Noto Sans JP'; color:var(--fmut); }
 
   /* チーム編成 */
-  .fs-team{ display:flex; align-items:center; gap:7px; padding:5px 0; }
+  .fs-team{ display:flex; align-items:center; gap:7px; padding:6px 0 2px; }
   .fs-team input[type=color]{ width:24px; height:24px; border:none; background:none; padding:0; border-radius:6px; cursor:pointer; }
   .fs-team input[type=text]{ flex:1; min-width:0; border:1px solid var(--fline); border-radius:7px; padding:5px 8px; font:600 12px 'Noto Sans JP'; color:var(--ftxt); }
-  .fs-team .cnt{ font:700 11px 'Rajdhani'; min-width:30px; text-align:center; color:var(--fmut); background:var(--fsoft); border-radius:6px; padding:2px 0; }
-  .fs-team .bru{ border:1px solid var(--fline); background:#fff; border-radius:7px; width:30px; height:28px; cursor:pointer; font-size:14px; }
-  .fs-team .bru.on{ background:var(--facc); border-color:var(--facc); }
+  .fs-team .cnt{ font:700 11px 'Rajdhani'; min-width:26px; text-align:center; color:var(--fmut); background:var(--fsoft); border-radius:6px; padding:2px 0; }
   .fs-team .del{ border:none; background:none; color:var(--fdanger); cursor:pointer; font-size:15px; padding:2px 4px; }
+  .fs-leadrow{ display:flex; align-items:center; gap:6px; margin:2px 0 4px; padding-left:31px; }
+  .fs-leadrow .lab{ font:700 9px 'Noto Sans JP'; color:var(--fmut); letter-spacing:.5px; }
+  .fs-leadrow input{ flex:1; min-width:0; border:1px solid var(--fline); border-radius:7px; padding:5px 7px; font:500 11px 'Noto Sans JP'; color:var(--ftxt); }
+  .fs-editbtn{ margin:2px 0 8px 31px; border:1px solid var(--facc); background:rgba(22,150,194,.07); color:var(--facc); border-radius:8px; padding:6px 11px; font:700 11px 'Noto Sans JP'; cursor:pointer; }
 
   /* 拠点詳細 */
-  .fs-hint{ font:500 12px/1.6 'Noto Sans JP'; color:var(--fmut); }
   .fs-det .hd{ display:flex; align-items:center; gap:9px; margin-bottom:7px; }
   .fs-det .nb{ width:28px; height:28px; border-radius:50%; background:radial-gradient(circle at 38% 32%,#2f7fb0,#145079); color:#fff; font:700 14px 'Rajdhani'; display:flex; align-items:center; justify-content:center; }
   .fs-det .nm{ font:700 14px 'Noto Sans JP'; color:var(--fink); }
   .fs-det .role{ font:500 11.5px/1.6 'Noto Sans JP'; color:var(--fmut); margin-bottom:9px; }
-  .fs-det .meta{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px; }
+  .fs-det .meta{ display:flex; flex-wrap:wrap; gap:6px; }
   .fs-det .meta .m{ font:700 10.5px 'Noto Sans JP'; background:var(--fsoft); border:1px solid var(--fline); border-radius:7px; padding:3px 8px; color:#3a5366; }
   .fs-det .meta .m.buff{ background:#fff7e6; border-color:#f0d9a8; color:#9a6a13; }
-  .fs-chips{ display:flex; flex-wrap:wrap; gap:6px; }
+
+  /* チップ(占領チーム選択) */
+  .fs-chips{ display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
   .fs-chip{ display:flex; align-items:center; gap:5px; border:1px solid var(--fline); background:#fff; border-radius:999px; padding:4px 10px; font:700 11px 'Noto Sans JP'; color:var(--ftxt); cursor:pointer; }
-  .fs-chip .d{ width:9px; height:9px; border-radius:50%; }
-  .fs-chip.none{ color:var(--fmut); }
+  .fs-chip .d{ width:9px; height:9px; border-radius:50%; } .fs-chip.none{ color:var(--fmut); }
 
   /* フェーズ */
   .fs-plist{ display:flex; flex-direction:column; gap:5px; margin-bottom:10px; }
   .fs-prow{ display:flex; align-items:center; gap:8px; padding:7px 9px; border:1px solid var(--fline); border-radius:9px; cursor:pointer; background:#fff; }
   .fs-prow.on{ border-color:var(--facc); box-shadow:0 0 0 2px rgba(22,150,194,.18); }
   .fs-prow .pn{ font:700 12px 'Noto Sans JP'; color:var(--fink); flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .fs-prow .pt{ font:600 10px 'Rajdhani'; color:var(--fmut); }
+  .fs-prow .pt{ font:700 10px 'Rajdhani'; color:var(--facc); background:var(--fsoft); border-radius:5px; padding:1px 6px; }
   .fs-pedit{ display:flex; flex-direction:column; gap:7px; }
   .fs-pedit input,.fs-pedit textarea{ border:1px solid var(--fline); border-radius:7px; padding:6px 8px; font:500 12px 'Noto Sans JP'; color:var(--ftxt); width:100%; resize:vertical; }
-  .fs-pedit .row2{ display:flex; gap:7px; }
+  .fs-pedit textarea{ min-height:54px; }
+  .fs-pedit .lab{ font:700 10px 'Noto Sans JP'; color:var(--fmut); margin-bottom:-3px; }
+  .fs-pedit .row2{ display:flex; gap:7px; align-items:center; } .fs-pedit .row2 input{ width:90px; }
   .fs-pbtns{ display:flex; gap:6px; margin-top:3px; }
   .fs-pbtns button{ flex:1; border:1px solid var(--fline); background:#fff; border-radius:8px; padding:6px; font:700 11px 'Noto Sans JP'; color:var(--ftxt); cursor:pointer; }
   .fs-pbtns button.del{ color:var(--fdanger); border-color:#f0c4c0; background:rgba(224,88,79,.06); }
 
-  /* ポイント/バフ集計 */
+  /* 全体バフ */
+  .fs-buffs{ display:flex; flex-direction:column; gap:6px; }
+  .fs-bf{ display:flex; align-items:center; gap:8px; font:600 11.5px 'Noto Sans JP'; }
+  .fs-bf .k{ color:var(--fmut); } .fs-bf .v{ margin-left:auto; font:800 13px 'Rajdhani'; color:var(--fink); }
+  .fs-bf .v.b{ color:var(--fblue);} .fs-bf .v.r{ color:var(--fred);} .fs-bf .v.off{ color:#b9c4cd; }
+  .fs-bf2{ display:flex; align-items:center; gap:8px; font:600 11.5px 'Noto Sans JP'; }
+  .fs-bf2 .k{ color:var(--fmut); flex:1;} .fs-bf2 .vb{ color:var(--fblue); font:800 12px 'Rajdhani'; } .fs-bf2 .vr{ color:var(--fred); font:800 12px 'Rajdhani'; }
+
+  /* チーム別pt集計(作戦) */
   .fs-tot{ display:flex; flex-direction:column; gap:6px; }
   .fs-totrow{ display:flex; align-items:center; gap:8px; font:600 12px 'Noto Sans JP'; }
   .fs-totrow .d{ width:10px; height:10px; border-radius:50%; flex:none; }
-  .fs-totrow .nm{ flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:var(--ftxt); }
-  .fs-totrow .pm{ font:700 13px 'Rajdhani'; color:var(--fink); font-variant-numeric:tabular-nums; }
-  .fs-totrow .pm small{ font:600 9px 'Noto Sans JP'; color:var(--fmut); }
-  .fs-bchips{ display:flex; flex-wrap:wrap; gap:4px; margin-top:7px; }
-  .fs-bchips .bc{ font:700 9.5px 'Noto Sans JP'; border-radius:6px; padding:2px 6px; background:var(--fsoft); border:1px solid var(--fline); color:#3a5366; }
+  .fs-totrow .nm{ flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .fs-totrow .pm{ font:700 13px 'Rajdhani'; color:var(--fink); } .fs-totrow .pm small{ font:600 9px 'Noto Sans JP'; color:var(--fmut); }
+
+  /* タイムライン */
+  .fs-tl{ position:relative; height:8px; background:#e7eef5; border-radius:5px; margin:12px 0 18px; border:1px solid var(--fline); }
+  .fs-tl .now{ position:absolute; top:0; bottom:0; left:0; background:linear-gradient(90deg,#7fd0e6,#1696c2); border-radius:5px 0 0 5px; }
+  .fs-tl .pf{ position:absolute; top:-3px; width:2px; height:14px; background:#9fb1c0; }
+  .fs-tl .pf.r{ background:#e0a13a; } .fs-tl .pf.ph{ background:#7b8aa0; }
+  .fs-tl .pl{ position:absolute; top:13px; font:600 8.5px 'Rajdhani'; color:var(--fmut); transform:translateX(-50%); white-space:nowrap; }
 
   .fs-reset{ border:1px solid #f0c4c0; background:rgba(224,88,79,.06); color:var(--fdanger); border-radius:9px; padding:9px; font:700 12px 'Noto Sans JP'; cursor:pointer; width:100%; }
-
-  .fb-tag{display:inline-block;font-size:10px;border:1px solid var(--frost);color:var(--frost);border-radius:5px;padding:1px 7px;margin-bottom:8px}
-  .fb-helpgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}
-  @media(max-width:560px){.fb-helpgrid{grid-template-columns:1fr}}
-  .fb-help{font-size:12px;border:1px solid var(--line);border-radius:10px;padding:11px 12px;background:#fff}
-  .fb-help b{color:var(--frost)}
-  .fb-toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(12px);background:#15161b;color:#fff;font-size:12.5px;font-weight:700;padding:10px 18px;border-radius:10px;box-shadow:0 8px 24px rgba(10,12,24,.35);opacity:0;transition:.2s;z-index:60;pointer-events:none}
-  .fb-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-  /* ===== モード切替バー ===== */
-  .fs-modebar{ display:flex; gap:6px; padding:10px 14px 0; }
-  .fs-mode{ flex:1; max-width:260px; border:1px solid var(--fline); background:rgba(255,255,255,.7); color:var(--fmut);
-    border-radius:10px; padding:9px 12px; cursor:pointer; font:700 13px 'Noto Sans JP'; display:flex; align-items:center; gap:8px; justify-content:center; transition:.12s; }
-  .fs-mode .ic{ font-size:15px; }
-  .fs-mode.on{ background:linear-gradient(135deg,#37bdd9,#1696c2); border-color:var(--facc); color:#fff; box-shadow:0 3px 10px rgba(22,150,194,.3); }
-
-  /* ===== 模擬戦: 横棒スコアバー ===== */
-  .fs-scorebar{ padding:8px 16px 0; }
-  .fs-sb-top{ display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:5px; font-variant-numeric:tabular-nums; }
-  .fs-sb-top .s{ font:900 19px 'Rajdhani'; letter-spacing:-.3px; }
-  .fs-sb-top .s.b{ color:#2256c8; } .fs-sb-top .s.r{ color:#cf2e22; }
-  .fs-sb-top .s small{ font:700 11px 'Noto Sans JP'; color:var(--fmut); margin:0 6px; }
-  .fs-sb-track{ position:relative; height:28px; border-radius:8px; overflow:hidden; background:#e7eef5; border:1px solid var(--fline); }
-  .fs-sb-b{ position:absolute; left:0; top:0; bottom:0; background:linear-gradient(90deg,#3a7bf0,#2256c8); transition:width .4s cubic-bezier(.22,1,.36,1); }
-  .fs-sb-r{ position:absolute; right:0; top:0; bottom:0; background:linear-gradient(90deg,#cf2e22,#ef5d4a); transition:width .4s cubic-bezier(.22,1,.36,1); }
-  .fs-sb-edge{ position:absolute; top:0; bottom:0; width:3px; background:#fff; transform:translateX(-1.5px); transition:left .4s cubic-bezier(.22,1,.36,1); box-shadow:0 0 6px rgba(255,255,255,.9); }
-  .fs-clash{ position:absolute; top:50%; transform:translate(-50%,-50%); font-size:13px; transition:left .4s; filter:drop-shadow(0 0 3px rgba(255,200,60,.9)); animation:fsclash 1.1s ease-in-out infinite; }
-  @keyframes fsclash{ 0%,100%{ transform:translate(-50%,-50%) scale(1) rotate(-8deg);} 50%{ transform:translate(-50%,-50%) scale(1.2) rotate(8deg);} }
-  .fs-sb-arr{ position:absolute; top:-22px; transform:translateX(-50%); transition:left .4s; font:900 11px 'Rajdhani'; white-space:nowrap; display:flex; align-items:center; gap:3px; font-variant-numeric:tabular-nums; }
-  .fs-sb-arr.b{ color:#2256c8; } .fs-sb-arr.r{ color:#cf2e22; }
-  .fs-sb-even{ position:absolute; top:-20px; left:50%; transform:translateX(-50%); font:800 11px 'Noto Sans JP'; color:var(--fmut); }
-  @media(prefers-reduced-motion:reduce){ .fs-clash{ animation:none; } }
 
   /* ===== 模擬戦: ツールバー ===== */
   .fs-tb{ display:flex; flex-wrap:wrap; gap:7px; align-items:center; }
@@ -217,55 +211,59 @@
   .fs-tbtn{ font:700 12px 'Noto Sans JP'; border:1px solid var(--fline); background:#fff; color:var(--ftxt); border-radius:8px; padding:6px 10px; cursor:pointer; display:inline-flex; align-items:center; gap:5px; }
   .fs-tbtn:hover{ background:#e3eef6; } .fs-tbtn:disabled{ opacity:.4; cursor:not-allowed; }
   .fs-tbtn.on{ background:var(--facc); border-color:var(--facc); color:#fff; }
-  .fs-tbtn.b.on{ background:#2256c8; border-color:#2256c8; } .fs-tbtn.r.on{ background:#cf2e22; border-color:#cf2e22; }
+  .fs-tbtn.b.on{ background:var(--fblue); border-color:var(--fblue); color:#fff; } .fs-tbtn.r.on{ background:var(--fred); border-color:var(--fred); color:#fff; }
   .fs-tbtn .d{ width:10px; height:10px; border-radius:50%; }
 
-  /* ===== 模擬戦: タイルの占領/占拠/ロック ===== */
-  .fs-tile .fs-cap{ position:absolute; inset:-7px; border-radius:50%; pointer-events:none; }
-  .fs-tile.locked{ opacity:.5; }
-  .fs-tile .lockico{ position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:15px; z-index:3; }
+  /* ===== 模擬戦: スコアバー ===== */
+  .fs-scorebar{ padding:8px 16px 2px; }
+  .fs-sb-top{ display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:5px; font-variant-numeric:tabular-nums; }
+  .fs-sb-top .s{ font:900 19px 'Rajdhani'; } .fs-sb-top .s.b{ color:var(--fblue);} .fs-sb-top .s.r{ color:var(--fred);} .fs-sb-top .s small{ font:700 11px 'Noto Sans JP'; color:var(--fmut); margin:0 6px; }
+  .fs-sb-track{ position:relative; height:26px; border-radius:8px; overflow:hidden; background:#e7eef5; border:1px solid var(--fline); }
+  .fs-sb-b{ position:absolute; left:0; top:0; bottom:0; background:linear-gradient(90deg,#3a7bf0,#2256c8); transition:width .4s cubic-bezier(.22,1,.36,1); }
+  .fs-sb-r{ position:absolute; right:0; top:0; bottom:0; background:linear-gradient(90deg,#cf2e22,#ef5d4a); transition:width .4s cubic-bezier(.22,1,.36,1); }
+  .fs-sb-edge{ position:absolute; top:0; bottom:0; width:3px; background:#fff; transform:translateX(-1.5px); transition:left .4s cubic-bezier(.22,1,.36,1); box-shadow:0 0 6px rgba(255,255,255,.9); }
+  .fs-clash{ position:absolute; top:50%; transform:translate(-50%,-50%); font-size:13px; transition:left .4s; filter:drop-shadow(0 0 3px rgba(255,200,60,.9)); animation:fsclash 1.1s ease-in-out infinite; }
+  @keyframes fsclash{ 0%,100%{ transform:translate(-50%,-50%) scale(1) rotate(-8deg);} 50%{ transform:translate(-50%,-50%) scale(1.2) rotate(8deg);} }
+  @media(prefers-reduced-motion:reduce){ .fs-clash{ animation:none; } }
+  /* 優勢矢印(クラッシュ直下) */
+  .fs-adv{ position:relative; height:20px; margin-top:3px; }
+  .fs-adv .ind{ position:absolute; top:0; transform:translateX(-50%); display:flex; align-items:center; gap:4px; font:800 11px 'Rajdhani'; white-space:nowrap; transition:left .4s; font-variant-numeric:tabular-nums; }
+  .fs-adv .ind.b{ color:var(--fblue);} .fs-adv .ind.r{ color:var(--fred);} .fs-adv .ind.e{ color:var(--fmut); font-family:'Noto Sans JP'; font-weight:700; }
 
-  /* 優先度バッジ(作戦) */
-  .fs-prio{ position:absolute; top:-9px; right:-9px; z-index:3; min-width:17px; height:17px; padding:0 3px; border-radius:9px;
-    color:#fff; font:800 10px 'Rajdhani'; display:flex; align-items:center; justify-content:center; border:1.5px solid #fff; box-shadow:0 1px 3px rgba(0,0,0,.3); }
+  /* 模擬戦: 自動シミュ */
+  .fs-diffrow{ display:flex; gap:6px; margin-top:8px; }
+  .fs-diffrow button{ flex:1; border:1px solid var(--fline); background:#fff; color:var(--ftxt); border-radius:8px; padding:7px 4px; font:700 11px 'Noto Sans JP'; cursor:pointer; }
+  .fs-diffrow button.on{ background:var(--facc); border-color:var(--facc); color:#fff; }
 
-  /* チームのリーダー入力 */
-  .fs-team .ld{ width:74px; min-width:0; border:1px solid var(--fline); border-radius:7px; padding:5px 7px; font:500 11px 'Noto Sans JP'; color:var(--ftxt); }
-  .fs-leadrow{ display:flex; align-items:center; gap:6px; margin-top:4px; padding-left:31px; }
-  .fs-leadrow .lab{ font:700 9px 'Noto Sans JP'; color:var(--fmut); letter-spacing:.5px; }
-
-  /* 攻撃ライン優先度リスト(拠点詳細) */
-  .fs-prioedit{ display:flex; align-items:center; gap:7px; margin-top:8px; }
-  .fs-prioedit input{ width:56px; border:1px solid var(--fline); border-radius:7px; padding:5px 7px; font:600 12px 'Rajdhani'; text-align:center; }
-  .fs-prioedit .lab{ font:700 11px 'Noto Sans JP'; color:var(--fmut); }
-
-  /* 設定/退出カード(模擬戦) */
+  /* 模擬戦: 状態/設定/施設一覧 */
+  .fs-exit{ display:flex; flex-direction:column; gap:8px; }
+  .fs-exit .st{ display:flex; align-items:center; gap:8px; font:700 12px 'Noto Sans JP'; } .fs-exit .pin{ width:10px; height:10px; border-radius:50%; }
+  .fs-exit .big{ font:900 19px 'Rajdhani'; } .fs-exit button{ border:none; border-radius:9px; padding:9px; font:700 12.5px 'Noto Sans JP'; cursor:pointer; color:#fff; background:var(--facc); } .fs-exit button:disabled{ opacity:.45; cursor:not-allowed; }
   .fs-set label{ display:flex; align-items:center; justify-content:space-between; gap:8px; font:600 11.5px 'Noto Sans JP'; color:var(--fmut); margin-bottom:6px; }
   .fs-set input{ width:78px; border:1px solid var(--fline); border-radius:7px; padding:5px 7px; font:600 12px 'Rajdhani'; text-align:right; }
   .fs-set .fixed{ font:700 12px 'Rajdhani'; color:var(--fink); }
-  .fs-exit{ display:flex; flex-direction:column; gap:8px; }
-  .fs-exit .st{ display:flex; align-items:center; gap:8px; font:700 12px 'Noto Sans JP'; }
-  .fs-exit .pin{ width:10px; height:10px; border-radius:50%; }
-  .fs-exit .big{ font:900 19px 'Rajdhani'; }
-  .fs-exit button{ border:none; border-radius:9px; padding:9px; font:700 12.5px 'Noto Sans JP'; cursor:pointer; color:#fff; background:var(--facc); }
-  .fs-exit button:disabled{ opacity:.45; cursor:not-allowed; }
-
-  /* 模擬戦タイムライン */
-  .fs-tl{ position:relative; height:7px; background:#e7eef5; border-radius:5px; margin:9px 0 4px; border:1px solid var(--fline); }
-  .fs-tl .now{ position:absolute; top:0; bottom:0; left:0; background:linear-gradient(90deg,#7fd0e6,#1696c2); border-radius:5px 0 0 5px; }
-  .fs-tl .pf{ position:absolute; top:-3px; width:2px; height:13px; background:#a8b8c6; }
-  .fs-tl .pl{ position:absolute; top:10px; font:600 9px 'Rajdhani'; color:var(--fmut); transform:translateX(-50%); white-space:nowrap; }
-
-  .fs-buffs{ display:flex; flex-direction:column; gap:6px; }
-  .fs-bf{ display:flex; align-items:center; gap:8px; font:600 11.5px 'Noto Sans JP'; }
-  .fs-bf .k{ color:var(--fmut); min-width:96px; } .fs-bf .v{ margin-left:auto; display:flex; gap:9px; font:800 12px 'Rajdhani'; }
-  .fs-bf .vb{ color:#2256c8; } .fs-bf .vr{ color:#cf2e22; }
-  .fs-flist{ display:flex; flex-direction:column; gap:4px; }
+  .fs-flist{ display:flex; flex-direction:column; gap:4px; max-height:340px; overflow:auto; }
   .fs-fr{ display:flex; align-items:center; gap:8px; padding:6px 8px; border:1px solid var(--fline); border-radius:8px; cursor:pointer; background:#fff; }
   .fs-fr.b{ background:#eff5ff; border-color:#cfe0fb; } .fs-fr.r{ background:#fff1ef; border-color:#f7d2cc; } .fs-fr.lk{ opacity:.55; }
-  .fs-fr .dot{ width:11px; height:11px; border-radius:50%; flex:none; }
-  .fs-fr .fn{ flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font:700 11.5px 'Noto Sans JP'; }
-  .fs-fr .fp{ font:600 10px 'Rajdhani'; color:var(--fmut); }
+  .fs-fr .dot{ width:11px; height:11px; border-radius:50%; flex:none; } .fs-fr .fn{ flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font:700 11.5px 'Noto Sans JP'; } .fs-fr .fp{ font:600 10px 'Rajdhani'; color:var(--fmut); }
+
+  /* 共有モーダル */
+  .fs-modal{ position:fixed; inset:0; background:rgba(15,25,35,.5); z-index:90; display:flex; align-items:center; justify-content:center; padding:18px; }
+  .fs-modal .box{ background:#fff; border-radius:16px; padding:20px; max-width:520px; width:100%; box-shadow:0 24px 60px rgba(0,0,0,.3); }
+  .fs-modal h4{ margin:0 0 6px; font:800 16px 'Noto Sans JP'; color:var(--fink); }
+  .fs-modal p{ margin:0 0 12px; font:500 12.5px/1.6 'Noto Sans JP'; color:var(--fmut); }
+  .fs-modal textarea{ width:100%; height:78px; border:1px solid var(--fline); border-radius:9px; padding:9px; font:500 11px 'Rajdhani','Noto Sans JP'; color:var(--ftxt); resize:none; word-break:break-all; }
+  .fs-modal .acts{ display:flex; gap:8px; margin-top:12px; justify-content:flex-end; }
+  .fs-modal .acts button{ border-radius:9px; padding:9px 15px; font:700 12px 'Noto Sans JP'; cursor:pointer; border:1px solid var(--fline); background:#fff; color:var(--ftxt); }
+  .fs-modal .acts button.pri{ background:var(--facc); border-color:var(--facc); color:#fff; }
+
+  .fb-tag{display:inline-block;font-size:10px;border:1px solid var(--frost);color:var(--frost);border-radius:5px;padding:1px 7px;margin-bottom:8px}
+  .fb-helpgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}
+  @media(max-width:560px){.fb-helpgrid{grid-template-columns:1fr}}
+  .fb-help{font-size:12px;border:1px solid var(--line);border-radius:10px;padding:11px 12px;background:#fff}
+  .fb-help b{color:var(--frost)}
+  .fb-toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(12px);background:#15161b;color:#fff;font-size:12.5px;font-weight:700;padding:10px 18px;border-radius:10px;box-shadow:0 8px 24px rgba(10,12,24,.35);opacity:0;transition:.2s;z-index:95;pointer-events:none}
+  .fb-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
 <link rel="icon" type="image/svg+xml" href="../../favicon.svg?v=85">
 <link rel="icon" type="image/png" href="../../favicon.png?v=85">
@@ -273,8 +271,8 @@
 <link rel="apple-touch-icon" href="../../favicon.png?v=85">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ホワサバ ツールラボ">
-<meta property="og:title" content="兵器工場争奪戦 フィールド作戦シミュレータ｜チーム編成・占領プランニング">
-<meta property="og:description" content="チームを編成し、各拠点へのターゲット割当をフェーズごとに計画。移動矢印つき再生・集合タイマーつき。">
+<meta property="og:title" content="兵器工場争奪戦 フィールド作戦シミュレータ">
+<meta property="og:description" content="作戦計画と模擬戦シミュ。占領ポイント・バフをリアルタイム試算し、結果は共有リンクで共有可能。">
 <meta property="og:url" content="https://whitesim-lab.com/tools/foundry-battle/">
 <meta property="og:image" content="https://whitesim-lab.com/favicon.png?v=85">
 <meta name="twitter:card" content="summary">
@@ -291,10 +289,10 @@
 <div id="updbox"></div>
 <p class="lead" id="lead"></p>
 
-<!-- 兵器工場争奪戦ツール本体 -->
 <div class="fs" id="fs">
   <div class="fs-modebar" id="modeBar"></div>
   <header class="fs-head" id="toolHeader"></header>
+  <div id="fsBanner"></div>
   <div class="fs-scorebar" id="scorebar" style="display:none"></div>
 
   <div class="fs-main">
@@ -304,8 +302,6 @@
         <div class="fs-arena"></div>
         <div class="fs-safe l" style="top:49%"><span id="safeL">セーフエリア</span></div>
         <div class="fs-safe r" style="top:49%"><span id="safeR">セーフエリア</span></div>
-        <svg class="fs-arrows" id="arrows" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
-        <!-- タイル・オーバーレイはJSで挿入 -->
         <div class="fs-ov tl" id="ovTL"></div>
         <div class="fs-ov tr" id="ovTR"></div>
         <div id="brushInd"></div>
@@ -329,6 +325,7 @@
 </div>
 <div id="foot"></div>
 
+<div id="modalHost"></div>
 <div class="fb-toast" id="toast" role="status" aria-live="polite"></div>
 
 <script src="../../assets/config.js?v=85"></script>
@@ -337,10 +334,10 @@
   try{
     document.getElementById('nav').innerHTML = window.WOS_NAV(2);
     document.getElementById('foot').innerHTML = window.WOS_FOOT(2);
-    document.getElementById('updbox').innerHTML = window.WOS_UPDATEBOX({date:'2026-06-26',gen:16,note:'作戦/模擬戦の2モード切替に対応(チーム編成・攻撃ライン／占領ポイント・バフ試算)',note_en:'Two modes: Op Planner & Mock Battle'});
+    document.getElementById('updbox').innerHTML = window.WOS_UPDATEBOX({date:'2026-06-26',gen:16,note:'作戦/模擬戦の2モード・共有リンク・60分制・敵自動シミュに対応',note_en:'Two modes, share links, 60-min match, enemy auto-sim'});
   }catch(e){}
 </script>
-<script src="app.js?v=86"></script>
+<script src="app.js?v=88"></script>
 <script>
 (function(){function mount(){if(!window.WOS_mountAffiliate)return;var f=document.getElementById('foot');if(f)window.WOS_mountAffiliate(f,'before');}if(document.readyState!=='loading')mount();else document.addEventListener('DOMContentLoaded',mount);})();
 </script>
