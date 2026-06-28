@@ -21,7 +21,8 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
 <link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/tools/damage-doctor/index.html">
 <link rel="alternate" hreflang="en" href="https://whitesim-lab.com/tools/damage-doctor/index.html?lang=en">
-<link rel="stylesheet" href="../../assets/site.css?v=86">
+<link rel="stylesheet" href="../../assets/site.css?v=87">
+<script>(function(){try{var l=new URLSearchParams(location.search).get("lang")||localStorage.getItem("wos_lang")||"ja";if(l!=="en")l="ja";document.documentElement.setAttribute("data-wos-lang",l);}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
 <link rel="icon" type="image/svg+xml" href="../../favicon.svg?v=85">
 <link rel="icon" type="image/png" href="../../favicon.png?v=85">
 <link rel="shortcut icon" href="../../favicon.ico?v=85">
@@ -60,6 +61,7 @@
 </div>
 
 <section class="tool-article">
+<div class="i18n-ja">
 <h2>ダメージが伸びない原因診断とは</h2>
 <p class="ta-lead">「今回の熊狩り、なぜかダメージが低かった……」——その原因を、<strong>いくつかの質問に答えるだけで切り分ける</strong>非公式の診断ツールです。左英雄の選定ミス・兵士比率・集結主（リーダー）の選び方・回転率・専用装備など、<strong>当てはまりやすい原因と具体的な対処</strong>を提示します。</p>
 
@@ -100,6 +102,45 @@
     <strong>最終更新</strong>：2026年6月　|　ホワイトアウトサバイバルを実際にプレイし、ゲーム内での検証と公開情報をもとに作成しています。<br>
     ※ 本ツールはファンメイドの非公式コンテンツです。数値・判定は公開情報と実測に基づく推定であり、運営の内部仕様の完全な再現ではありません。仕様はアップデートで変わることがあります。Whiteout Survival は Century Games の商標であり、当サイトは同社と提携・公認関係にありません。
   </div>
+</div>
+<div class="i18n-en">
+<h2>What is the Damage Doctor?</h2>
+<p class="ta-lead">"My Bear Hunt damage was low this time — why?" This unofficial diagnostic <strong>narrows down the cause by asking you a few questions</strong>: left-hero mistakes, troop ratio, rally-leader choice, rotation, exclusive gear and more — then shows the likely cause and a concrete fix.</p>
+<h2>How to use it</h2>
+<ol>
+  <li>Answer the questions (yes / no, etc.).</li>
+  <li>Based on your answers, the most likely causes are narrowed down.</li>
+  <li>You get a fix for each cause, with links to the relevant tools and guides.</li>
+</ol>
+<h2>Common causes it surfaces</h2>
+<ul>
+  <li><strong>Left-hero (rally leader) mistake</strong>: the 1st expedition skill isn't rally-suited. → check with the Left-Hero Checker.</li>
+  <li><strong>Mismatched troop ratio</strong>: e.g. all-marksman with a thin front line. → compare in the Troop Ratio Simulator.</li>
+  <li><strong>Rally leadership / timing</strong>: too few rallies or a weak rally organizer.</li>
+  <li><strong>Gear / talents not built</strong>: the upside is on the gear side.</li>
+</ul>
+<p>Once you find the cause, re-test the improved setup in the Bear Hunt Damage Simulator to confirm the gain.</p>
+<h2>FAQ</h2>
+<div class="ta-faq"><dl>
+  <dt>Will the diagnosis always be right?</dt>
+  <dd>It's there to help narrow things down. Causes can stack, so try the suggested fixes one by one.</dd>
+  <dt>Can beginners use it?</dt>
+  <dd>Yes. Just answer the questions — no jargon required. Terms are explained in the guides.</dd>
+</dl></div>
+<h2>Related tools &amp; guides</h2>
+<div class="ta-links">
+  <a href="../left-hero/index.html">Left-Hero Checker</a>
+  <a href="../troop-ratio/index.html">Troop Ratio Simulator</a>
+  <a href="../bear-hunt/index.html">Bear Hunt Damage Simulator</a>
+  <a href="../../guides/damage-not-growing.html">Why damage isn't growing (guide)</a>
+  <a href="../../guides/beginner-faq.html">Beginner FAQ</a>
+</div>
+  <div class="ta-meta">
+    <strong>Operator</strong>: Jasmine (Server 1567 / leader of alliance &quot;bst&quot;)　|　<strong>Contact</strong>: <a href="https://x.com/tegetege_m" target="_blank" rel="noopener">X @tegetege_m</a> · <a href="../../contact.html">Contact</a><br>
+    <strong>Last updated</strong>: June 2026　|　Written by an active Whiteout Survival player, based on in-game testing and public information.<br>
+    * This is a fan-made, unofficial tool. Figures are estimates based on public data and measurements, not a reproduction of the game's internal formulas. Specs may change with updates. Whiteout Survival is a trademark of Century Games; this site is not affiliated with or endorsed by it.
+  </div>
+</div>
 </section>
 <div id="foot"></div>
 

@@ -21,7 +21,8 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
 <link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/tools/troop-ratio/index.html">
 <link rel="alternate" hreflang="en" href="https://whitesim-lab.com/tools/troop-ratio/index.html?lang=en">
-<link rel="stylesheet" href="../../assets/site.css?v=86">
+<link rel="stylesheet" href="../../assets/site.css?v=87">
+<script>(function(){try{var l=new URLSearchParams(location.search).get("lang")||localStorage.getItem("wos_lang")||"ja";if(l!=="en")l="ja";document.documentElement.setAttribute("data-wos-lang",l);}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
 <style>
   #bars{background:var(--night);border:1px solid var(--line);border-radius:10px;padding:8px 4px;margin-bottom:6px}
   #bars svg{max-width:100%}
@@ -90,6 +91,7 @@
 </div>
 
 <section class="tool-article">
+<div class="i18n-ja">
 <h2>兵士比率シミュレータとは</h2>
 <p class="ta-lead">熊狩りのダメージは、歩兵・槍兵・弓兵（射手）の<strong>「比率」</strong>で大きく変わります。本ツールは、<strong>10:30:60・10:10:80・1:1:8</strong> といった主要な比率を、あなたの実際の兵数に当てはめて<strong>横並びで比較</strong>できる非公式シミュレータです。「なんとなく弓100%」を卒業し、数値で最適比率を選べます。</p>
 
@@ -132,6 +134,46 @@
     <strong>最終更新</strong>：2026年6月　|　ホワイトアウトサバイバルを実際にプレイし、ゲーム内での検証と公開情報をもとに作成しています。<br>
     ※ 本ツールはファンメイドの非公式コンテンツです。数値・判定は公開情報と実測に基づく推定であり、運営の内部仕様の完全な再現ではありません。仕様はアップデートで変わることがあります。Whiteout Survival は Century Games の商標であり、当サイトは同社と提携・公認関係にありません。
   </div>
+</div>
+<div class="i18n-en">
+<h2>What is the Troop Ratio Simulator?</h2>
+<p class="ta-lead">Bear Hunt damage changes a lot with your <strong>infantry / lancer / marksman ratio</strong>. This unofficial simulator lets you <strong>compare major ratios such as 10:30:60, 10:10:80 and 1:1:8 side by side</strong> using your own troop counts, so you can move past "just go 100% marksman" and pick the best split with numbers.</p>
+<h2>How to use it</h2>
+<ol>
+  <li>Enter your total troops (or each troop type you own).</li>
+  <li>Pick the ratio presets you want to compare (e.g. 10:30:60).</li>
+  <li>The estimates appear side by side — choose the setup that pulls the most.</li>
+</ol>
+<h2>Why isn't "100% marksman" optimal?</h2>
+<p>Marksman are efficient against infantry, but <strong>zeroing out infantry and lancer is penalized</strong> in public testing. Without front-line infantry/lancer the formation breaks and total damage can actually drop. As a result, <strong>"marksman-favored but not all-in"</strong> is the standard. This tool quantifies that gap with your real numbers.</p>
+<h2>Common ratios at a glance</h2>
+<table class="ta-table">
+  <tr><th>Ratio (inf:lan:mks)</th><th>Character / best for</th></tr>
+  <tr><td>10:30:60</td><td>Balanced. Thicker lancers for stability. Easy general-purpose pick.</td></tr>
+  <tr><td>10:10:80</td><td>Marksman-heavy. Higher damage but a thin front line.</td></tr>
+  <tr><td>1:1:8</td><td>Very marksman-heavy. High output when it fits, but fragile.</td></tr>
+</table>
+<p>The best ratio depends on heroes, gear and generation. The reasoning is covered in the guide.</p>
+<h2>FAQ</h2>
+<div class="ta-faq"><dl>
+  <dt>Which ratio is strongest overall?</dt>
+  <dd>It varies by setup and opponent — which is exactly why a side-by-side comparison with your own counts helps.</dd>
+  <dt>Can't I just run 100% marksman?</dt>
+  <dd>A zero front line is easily penalized and usually loses on total damage. Mixing in some infantry/lancer is safer.</dd>
+</dl></div>
+<h2>Related tools &amp; guides</h2>
+<div class="ta-links">
+  <a href="../bear-hunt/index.html">Bear Hunt Damage Simulator</a>
+  <a href="../left-hero/index.html">Left-Hero Checker</a>
+  <a href="../damage-doctor/index.html">Damage Doctor</a>
+  <a href="../../guides/troop-ratio.html">Troop ratio guide</a>
+</div>
+  <div class="ta-meta">
+    <strong>Operator</strong>: Jasmine (Server 1567 / leader of alliance &quot;bst&quot;)　|　<strong>Contact</strong>: <a href="https://x.com/tegetege_m" target="_blank" rel="noopener">X @tegetege_m</a> · <a href="../../contact.html">Contact</a><br>
+    <strong>Last updated</strong>: June 2026　|　Written by an active Whiteout Survival player, based on in-game testing and public information.<br>
+    * This is a fan-made, unofficial tool. Figures are estimates based on public data and measurements, not a reproduction of the game's internal formulas. Specs may change with updates. Whiteout Survival is a trademark of Century Games; this site is not affiliated with or endorsed by it.
+  </div>
+</div>
 </section>
 <div id="foot"></div>
 

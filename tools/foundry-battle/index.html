@@ -19,7 +19,8 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
 <link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/tools/foundry-battle/index.html">
 <link rel="alternate" hreflang="en" href="https://whitesim-lab.com/tools/foundry-battle/index.html?lang=en">
-<link rel="stylesheet" href="../../assets/site.css?v=86">
+<link rel="stylesheet" href="../../assets/site.css?v=87">
+<script>(function(){try{var l=new URLSearchParams(location.search).get("lang")||localStorage.getItem("wos_lang")||"ja";if(l!=="en")l="ja";document.documentElement.setAttribute("data-wos-lang",l);}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
 <style>
   /* ===== 兵器工場争奪戦ツール(アイスブルー基調・スコープ .fs) ===== */
   .fs{ --fbg:#e9f2f8; --fpanel:#fff; --fpanel2:#f1f7fb; --fline:#d4e2ee; --ftxt:#22323f; --fink:#1a2a37; --fmut:#6c8295;
@@ -421,8 +422,8 @@
       <div class="fs-mapbox" id="mapbox">
         <div class="fs-ring"></div>
         <div class="fs-arena"></div>
-        <div class="fs-safe l" style="top:49%"><span id="safeL">セーフエリア</span></div>
-        <div class="fs-safe r" style="top:49%"><span id="safeR">セーフエリア</span></div>
+        <div class="fs-safe l" style="top:49%"><span id="safeL"><span class="i18n-ja-inline">セーフエリア</span><span class="i18n-en-inline">Safe Area</span></span></div>
+        <div class="fs-safe r" style="top:49%"><span id="safeR"><span class="i18n-ja-inline">セーフエリア</span><span class="i18n-en-inline">Safe Area</span></span></div>
         <div class="fs-ov tl" id="ovTL"></div>
         <div class="fs-ov tr" id="ovTR"></div>
         <div id="brushInd"></div>
@@ -446,6 +447,7 @@
 </div>
 
 <section class="tool-article">
+<div class="i18n-ja">
 <h2>兵器工場争奪戦 フィールドツールとは</h2>
 <p class="ta-lead">兵器工場争奪戦は、フィールド上の施設を占領してポイントを稼ぐ陣取りイベントです。本ツールは2つのモードで構成されます。<strong>作戦シミュレータ</strong>でチーム編成とフェーズごとの担当（どの施設を誰が取るか）を計画し、<strong>模擬戦シミュレータ</strong>で敵の動きを加えて、占領ポイント・バフ・優勢/劣勢の推移をリアルタイムに試算できます。作った作戦は共有リンクで仲間に配れます。</p>
 
@@ -496,6 +498,54 @@
     <strong>最終更新</strong>：2026年6月　|　ホワイトアウトサバイバルを実際にプレイし、ゲーム内での検証と公開情報をもとに作成しています。<br>
     ※ 本ツールはファンメイドの非公式コンテンツです。数値・判定は公開情報と実測に基づく推定であり、運営の内部仕様の完全な再現ではありません。仕様はアップデートで変わることがあります。Whiteout Survival は Century Games の商標であり、当サイトは同社と提携・公認関係にありません。
   </div>
+</div>
+<div class="i18n-en">
+<h2>What is the Foundry Battle field tool?</h2>
+<p class="ta-lead">Foundry Battle is a territory event where you capture field structures to earn points. This tool has two modes: an <strong>operation planner</strong> for assigning teams and per-phase targets (who takes what), and a <strong>mock battle simulator</strong> that adds enemy behavior to estimate capture points, buffs and the lead/behind trend in real time. You can share a finished plan via link.</p>
+<h2>How to use it</h2>
+<ol>
+  <li><strong>Operation planner</strong>: set up to 8 teams with leader names and assign target structures per phase. Press "Start" to advance time and review each phase.</li>
+  <li><strong>Mock battle</strong>: your side auto-plays the plan; pick the enemy strength (weaker / even / stronger) and the enemy attacks and defends automatically. Capture-point trends and tactical advice are shown.</li>
+  <li><strong>Share</strong>: copy the URL from "Share" and the same plan opens on the other person's screen.</li>
+</ol>
+<h2>Basic event rules (the tool's assumptions)</h2>
+<table class="ta-table">
+  <tr><th>Item</th><th>Approx.</th></tr>
+  <tr><td>Match length</td><td>60 min</td></tr>
+  <tr><td>Prep time</td><td>0–3 min (no moving or attacking)</td></tr>
+  <tr><td>Central structures open</td><td>around 18 min</td></tr>
+  <tr><td>Corner weapon workshops appear</td><td>around 23 min</td></tr>
+  <tr><td>Time to capture</td><td>about 120 sec</td></tr>
+  <tr><td>When captured from you</td><td>half of that structure's banked points scatter</td></tr>
+</table>
+<p>* Figures are approximate, based on in-game measurement and public info. They may change with updates.</p>
+<h2>Reading the results / tips</h2>
+<ul>
+  <li><strong>Defend high-value points</strong>: a structure with lots of banked points hurts most when lost. The mock battle's tactical advice flags when to defend or retake.</li>
+  <li><strong>Tune difficulty by enemy strength</strong>: even / stronger / weaker change enemy behavior. Test against the opponent you expect.</li>
+  <li><strong>Use it to pre-align</strong>: when everyone sees the same plan via the share link, you get fewer overlaps and fewer ignored targets.</li>
+</ul>
+<h2>FAQ</h2>
+<div class="ta-faq"><dl>
+  <dt>Is it exactly like the real event?</dt>
+  <dd>No — it's an unofficial simulation for planning and estimation. The live game takes precedence on fine details.</dd>
+  <dt>Does it work on mobile?</dt>
+  <dd>Yes. It's optimized for phones with short labels and a large play button.</dd>
+  <dt>Can I share a plan with my alliance?</dt>
+  <dd>Copy the URL from "Share" and the same plan opens for them.</dd>
+</dl></div>
+<h2>Related tools &amp; guides</h2>
+<div class="ta-links">
+  <a href="../king-castle/index.html">Castle Battle Area Planner</a>
+  <a href="../bear-hunt/index.html">Bear Hunt Damage Simulator</a>
+  <a href="../../guides/bear-hunt-guide.html">All guides</a>
+</div>
+  <div class="ta-meta">
+    <strong>Operator</strong>: Jasmine (Server 1567 / leader of alliance &quot;bst&quot;)　|　<strong>Contact</strong>: <a href="https://x.com/tegetege_m" target="_blank" rel="noopener">X @tegetege_m</a> · <a href="../../contact.html">Contact</a><br>
+    <strong>Last updated</strong>: June 2026　|　Written by an active Whiteout Survival player, based on in-game testing and public information.<br>
+    * This is a fan-made, unofficial tool. Figures are estimates based on public data and measurements, not a reproduction of the game's internal formulas. Specs may change with updates. Whiteout Survival is a trademark of Century Games; this site is not affiliated with or endorsed by it.
+  </div>
+</div>
 </section>
 <div id="foot"></div>
 

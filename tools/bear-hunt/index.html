@@ -27,7 +27,8 @@
 <meta property="og:type" content="website">
 <meta name="twitter:title" content="熊狩ダメージ・シミュレーター(ホワサバ非公式)">
 <meta name="twitter:description" content="英雄をえらんで兵数を入れるだけで熊狩ラリーのダメージポイントを予測。強化アドバイス付き。">
-<link rel="stylesheet" href="../../assets/site.css?v=86">
+<link rel="stylesheet" href="../../assets/site.css?v=87">
+<script>(function(){try{var l=new URLSearchParams(location.search).get("lang")||localStorage.getItem("wos_lang")||"ja";if(l!=="en")l="ja";document.documentElement.setAttribute("data-wos-lang",l);}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
 <style>
   :root{
     /* ブランド色(--night/--panel/--panel2/--line/--frost/--frost-dim/--ember/--ember-hi/
@@ -889,6 +890,7 @@ window.WOS_TR = { "部隊攻撃力%（全兵種共通）": "Troop Attack % (all 
 <div class="ad-slot"><!-- AdSense承認後: 広告ユニット --></div>
 
 <section class="tool-article">
+<div class="i18n-ja">
 <h2>熊狩ダメージ・シミュレーターとは</h2>
 <p class="ta-lead">ホワイトアウトサバイバルの<strong>熊狩り（Bear Hunt）</strong>は、同盟全員で巨大な熊に集結し、与えたダメージの合計を競うイベントです。最終的なダメージは「どの英雄を、どの兵種・比率で、どんな専用装備や天賦と組み合わせて出すか」で大きく変わります。本ツールは、課金や実際の集結を待たずに、<strong>編成を変えたときのダメージの伸びを事前に試算する非公式シミュレーター</strong>です。</p>
 <p>「左英雄を入れ替えたら伸びる？」「弓100%と混成、どちらが上？」「専用装備を強化する価値はある？」——こうした疑問を、実戦の前に数値で比較できます。無料で何度でも試せるので、限られた強化素材や課金をどこに使うべきかの判断材料になります。</p>
@@ -934,6 +936,48 @@ window.WOS_TR = { "部隊攻撃力%（全兵種共通）": "Troop Attack % (all 
     <strong>最終更新</strong>：2026年6月　|　ホワイトアウトサバイバルを実際にプレイし、ゲーム内での検証と公開情報をもとに作成しています。<br>
     ※ 本ツールはファンメイドの非公式コンテンツです。数値・判定は公開情報と実測に基づく推定であり、運営の内部仕様の完全な再現ではありません。仕様はアップデートで変わることがあります。Whiteout Survival は Century Games の商標であり、当サイトは同社と提携・公認関係にありません。
   </div>
+</div>
+<div class="i18n-en">
+<h2>What is the Bear Hunt Damage Simulator?</h2>
+<p class="ta-lead">In Whiteout Survival's <strong>Bear Hunt</strong> event, your whole alliance rallies a giant bear and competes on total damage. Final damage shifts a lot depending on <strong>which hero you set as rally leader, your troop ratio, exclusive gear and talents</strong>. This unofficial simulator lets you <strong>estimate how much a given setup will pull before you spend money or wait for a real rally</strong>.</p>
+<p>"Will swapping my left hero help?" "Is 100% marksman better than a mix?" "Is upgrading this gear worth it?" — you can answer these with numbers ahead of time. It's free and unlimited, so it doubles as a guide for where to spend scarce upgrade materials.</p>
+<h2>How to use it (3 steps)</h2>
+<ol>
+  <li><strong>Pick your heroes</strong>: choose the rally leader (left) and the joining heroes. Generation and skills decide whether a hero is effective, so pair this with the Left-Hero Checker if unsure.</li>
+  <li><strong>Enter troop type and ratio</strong>: input your infantry / lancer / marksman split. Common ratios like 10:30:60 can be compared side by side in the Troop Ratio Simulator.</li>
+  <li><strong>Set exclusive gear / talents</strong>: toggle them to match what you own, then hit calculate to see an estimated damage figure.</li>
+</ol>
+<h2>How the calculation works</h2>
+<p>The tool uses a <strong>constraint-based estimation model</strong> that combines attack, troop ratio, skill multipliers, exclusive gear and talents. The hero master data is normalized from public sources (official wiki / timeline) as of June 2026 (62 heroes). Importantly, this is <strong>not a full reconstruction of the game's internal formula</strong>, so it's best used for <strong>relative comparison (setup A vs B)</strong> rather than absolute values.</p>
+<h2>Reading the results</h2>
+<ul>
+  <li><strong>Judge by the difference</strong>: change one setting at a time and watch how much it moves.</li>
+  <li><strong>Check return on investment</strong>: if a gear upgrade or hero swap barely moves the number, put resources elsewhere.</li>
+  <li><strong>Tune your rally leader</strong>: the left hero affects everything — compare candidates.</li>
+</ul>
+<h2>FAQ</h2>
+<div class="ta-faq"><dl>
+  <dt>Do the numbers match the exact in-game values?</dt>
+  <dd>Not exactly. It's an estimation model, so absolute values carry error. Use it for relative comparison between setups.</dd>
+  <dt>Do I need to pay or sign up?</dt>
+  <dd>No. It's free with no usage limits.</dd>
+  <dt>Which hero / ratio is best?</dt>
+  <dd>It depends on your roster and generation. Swapping candidates to compare is the whole point. If you're unsure why damage is low, try the Damage Doctor.</dd>
+</dl></div>
+<h2>Related tools &amp; guides</h2>
+<div class="ta-links">
+  <a href="../troop-ratio/index.html">Troop Ratio Simulator</a>
+  <a href="../left-hero/index.html">Left-Hero Checker</a>
+  <a href="../damage-doctor/index.html">Damage Doctor</a>
+  <a href="../../guides/bear-hunt-guide.html">Bear Hunt Guide</a>
+  <a href="../../guides/how-to-use.html">How to use the tools</a>
+</div>
+  <div class="ta-meta">
+    <strong>Operator</strong>: Jasmine (Server 1567 / leader of alliance &quot;bst&quot;)　|　<strong>Contact</strong>: <a href="https://x.com/tegetege_m" target="_blank" rel="noopener">X @tegetege_m</a> · <a href="../../contact.html">Contact</a><br>
+    <strong>Last updated</strong>: June 2026　|　Written by an active Whiteout Survival player, based on in-game testing and public information.<br>
+    * This is a fan-made, unofficial tool. Figures are estimates based on public data and measurements, not a reproduction of the game's internal formulas. Specs may change with updates. Whiteout Survival is a trademark of Century Games; this site is not affiliated with or endorsed by it.
+  </div>
+</div>
 </section>
 <footer id="footerArea">
   <div style="margin-bottom:8px">

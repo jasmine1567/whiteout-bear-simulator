@@ -17,7 +17,8 @@
 <title id="pgtitle">熊狩シミュレーターの使い方 | ホワサバ ツールラボ</title><meta name="description" id="pgdesc" content="熊狩ダメージ・シミュレーターの使い方を初心者向けに解説。ゲーム内のどの数値を入力するかをステップごとに説明。">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://docs.google.com; object-src 'none'; base-uri 'none'">
 <link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/guides/how-to-use.html"><link rel="alternate" hreflang="en" href="https://whitesim-lab.com/guides/how-to-use.html?lang=en">
-<link rel="stylesheet" href="../assets/site.css?v=86"><link rel="icon" type="image/svg+xml" href="../favicon.svg?v=85">
+<link rel="stylesheet" href="../assets/site.css?v=87">
+<script>(function(){try{var l=new URLSearchParams(location.search).get("lang")||localStorage.getItem("wos_lang")||"ja";if(l!=="en")l="ja";document.documentElement.setAttribute("data-wos-lang",l);}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script><link rel="icon" type="image/svg+xml" href="../favicon.svg?v=85">
 <link rel="icon" type="image/png" href="../favicon.png?v=85">
 <link rel="shortcut icon" href="../favicon.ico?v=85">
 <link rel="apple-touch-icon" href="../favicon.png?v=85">
@@ -89,16 +90,16 @@
 <p>This tool runs on a "constraint-based estimate" model from public specs and community verification. Since the game's exact internal formula isn't published, the raw (uncorrected) value can differ from your actual points. This is by design, not a bug.</p>
 <p>That's exactly what <b>real-measure calibration</b> is for. Enter your measured points once and the tool auto-computes factor C, then shows absolute values fitted to your account. After calibrating once, you can accurately compare the "relative gains" from changing heroes, pets or ratios. We recommend calibrating with a real value first.</p>
 <div class="cta"><a class="btn" href="../tools/bear-hunt/index.html">🐻 Open the simulator</a></div></div>
-<div class="relbar" id="relbar"></div></div><nav class="relposts" aria-label="関連記事"><h2 class="relposts-h">あわせて読みたい関連記事</h2><ul><li><a href="bear-hunt-guide.html">熊狩のダメージの仕組みを徹底解説</a></li><li><a href="beginner-faq.html">熊狩り初心者FAQ</a></li><li><a href="troop-ratio.html">熊狩りの兵士比率は何が正解?</a></li><li><a href="damage-not-growing.html">熊狩りでダメージが伸びない原因と対処</a></li></ul></nav>
+<div class="relbar" id="relbar"></div></div><nav class="relposts" aria-label="関連記事"><h2 class="relposts-h">Related articles</h2><ul><li><a href="bear-hunt-guide.html">How Bear Hunt damage works (full guide)</a></li><li><a href="beginner-faq.html">Bear Hunt beginner FAQ</a></li><li><a href="troop-ratio.html">What's the right troop ratio?</a></li><li><a href="damage-not-growing.html">Why your damage isn't growing, and fixes</a></li></ul></nav>
 <div id="foot"></div>
 <script src="../assets/config.js?v=87"></script><script src="../assets/toolkit.js?v=87"></script>
 <script>(function(){var EN=(window.WOS_LANG==="en");
 document.getElementById("htmlroot").lang=EN?"en":"ja";
-document.getElementById("pgtitle").textContent=EN?"How to use the Bear Hunt Simulator | Whiteout Tools Lab":"熊狩シミュレーターの使い方 | ホワサバ ツールラボ";
+document.getElementById("pgtitle").textContent=EN?"How to use the Bear Hunt Simulator | Whiteout Tools Lab":"How to use the simulator | ホワサバ ツールラボ";
 document.getElementById("pgdesc").content=EN?"Beginner guide to the Bear Hunt damage simulator: which in-game values to enter, step by step.":"熊狩ダメージ・シミュレーターの使い方を初心者向けに解説。ゲーム内のどの数値を入力するかをステップごとに説明。";
 document.getElementById("crumb").innerHTML=EN?"<a href=\"../index.html?lang=en\">Home</a> &gt; How to use":"<a href=\"../index.html\">ホーム</a> &gt; 使い方ガイド";
 document.getElementById("updbox").innerHTML=WOS_UPDATEBOX({date:"2026-06-15",gen:16,note:"STEP式の使い方",note_en:"Step-by-step guide"});
 if(EN){document.getElementById("bodyja").style.display="none";document.getElementById("bodyen").style.display="block";}
-document.getElementById("relbar").innerHTML='<a href="../tools/left-hero/index.html'+(EN?"?lang=en":"")+'">'+(EN?"→ Left-Hero Checker":"→ 左英雄チェッカー")+'</a>'+'<a href="../tools/troop-ratio/index.html'+(EN?"?lang=en":"")+'">'+(EN?"→ Troop Ratio Simulator":"→ 兵士比率シミュレータ")+'</a>'+'<a href="../tools/bear-hunt/index.html'+(EN?"?lang=en":"")+'">'+(EN?"→ Damage Simulator":"→ 熊狩シミュレーター")+'</a>';
+document.getElementById("relbar").innerHTML='<a href="../tools/left-hero/index.html'+(EN?"?lang=en":"")+'">'+(EN?"→ Left-Hero Checker":"→ Left-Hero Checker")+'</a>'+'<a href="../tools/troop-ratio/index.html'+(EN?"?lang=en":"")+'">'+(EN?"→ Troop Ratio Simulator":"→ Troop Ratio Simulator")+'</a>'+'<a href="../tools/bear-hunt/index.html'+(EN?"?lang=en":"")+'">'+(EN?"→ Damage Simulator":"→ Bear Hunt Simulator")+'</a>';
 document.getElementById("nav").innerHTML=WOS_NAV(1);
 document.getElementById("foot").innerHTML=WOS_FOOT(1);})();</script></body></html>

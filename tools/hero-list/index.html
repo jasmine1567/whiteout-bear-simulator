@@ -14,21 +14,15 @@
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>熊狩り・対人戦 英雄一覧・データベース｜全62英雄を世代・兵種・役割で検索 | ホワサバ ツールラボ</title>
-<meta name="description" content="ホワイトアウトサバイバルの全62英雄を一覧化したデータベース。世代(常設〜第16世代)・兵種(歩/槍/弓)・レアリティ・役割(集結主/乗り手/専用装備/成長型)で絞り込み検索。各英雄のスキル・専用装備・シナジー、探検/遠征スキルの仕組みも解説。熊狩りだけでなく対人戦の編成検討にも。">
+<meta name="description" content="ホワイトアウトサバイバルの全62英雄を一覧化したデータベース。世代・兵種(歩/槍/弓)・レアリティ・役割(集結主/乗り手/専用装備/成長型)で検索。各英雄のスキル・専用装備・シナジー、探検/遠征スキルの仕組みも解説。熊狩り・対人戦の編成検討に。">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
 <link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/tools/hero-list/">
-<link rel="stylesheet" href="../../assets/site.css?v=86">
-<link rel="icon" type="image/svg+xml" href="../../favicon.svg?v=85">
-<link rel="icon" type="image/png" href="../../favicon.png?v=85">
-<link rel="shortcut icon" href="../../favicon.ico?v=85">
-<link rel="apple-touch-icon" href="../../favicon.png?v=85">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="ホワサバ ツールラボ">
-<meta property="og:title" content="熊狩り・対人戦 英雄一覧・データベース｜全62英雄を検索">
-<meta property="og:description" content="全62英雄を世代・兵種・役割・スキルで検索。探検/遠征スキルの仕組みも解説。熊狩り・対人戦の編成検討に。">
-<meta property="og:url" content="https://whitesim-lab.com/tools/hero-list/">
-<meta property="og:image" content="https://whitesim-lab.com/favicon.png?v=85">
-<meta name="twitter:card" content="summary">
+<link rel="alternate" hreflang="en" href="https://whitesim-lab.com/tools/hero-list/?lang=en">
+<link rel="stylesheet" href="../../assets/site.css?v=87">
+<script>try{var l=new URLSearchParams(location.search).get("lang")||localStorage.getItem("wos_lang")||"ja";if(l!=="en")l="ja";document.documentElement.setAttribute("data-wos-lang",l);}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}</script>
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg?v=85"><link rel="icon" type="image/png" href="../../favicon.png?v=85"><link rel="shortcut icon" href="../../favicon.ico?v=85"><link rel="apple-touch-icon" href="../../favicon.png?v=85">
+<meta property="og:type" content="website"><meta property="og:site_name" content="ホワサバ ツールラボ">
+<meta property="og:title" content="熊狩り・対人戦 英雄一覧・データベース｜全62英雄を検索"><meta property="og:url" content="https://whitesim-lab.com/tools/hero-list/"><meta property="og:image" content="https://whitesim-lab.com/favicon.png?v=85"><meta name="twitter:card" content="summary">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4593324513914979" crossorigin="anonymous"></script>
 <link rel="canonical" href="https://whitesim-lab.com/tools/hero-list/">
 <style>
@@ -47,752 +41,677 @@
   .hl-count{font-size:12.5px;color:#6b7385;margin:4px 0 12px;font-weight:700}
   .hero-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;margin:8px 0 20px}
   .hero-card{position:relative;background:#fff;border:1px solid #e5e7f2;border-radius:13px;padding:13px 14px 12px;box-shadow:0 1px 3px rgba(28,34,80,.05)}
-  .hero-fav{position:absolute;top:9px;right:9px;border:none;background:none;font-size:19px;line-height:1;color:#d9b84a;cursor:pointer;padding:2px}
-  .hero-fav.on{color:#f5a623}
+  .hero-fav{position:absolute;top:9px;right:9px;border:none;background:none;font-size:19px;line-height:1;color:#d9b84a;cursor:pointer;padding:2px}.hero-fav.on{color:#f5a623}
   .hc-head{display:flex;align-items:baseline;gap:7px;padding-right:26px}
   .hc-name{font-size:16px;font-weight:800;color:#1d2233}.hc-en{font-size:11px;color:#9aa0b0;font-weight:600}
-  .hc-badges{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 6px}
-  .hc-badges span{font-size:11px;font-weight:800;border-radius:6px;padding:2px 7px}
+  .hc-badges{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 6px}.hc-badges span{font-size:11px;font-weight:800;border-radius:6px;padding:2px 7px}
   .b-cls.inf{background:#e8f0fb;color:#2563a8}.b-cls.lan{background:#eafaf0;color:#1d8a4e}.b-cls.mks{background:#fdeede;color:#c2710f}
   .b-gen{background:#f0eefb;color:#6a52b8}
   .b-rar.r-ssr{background:#fff3d6;color:#b5791a}.b-rar.r-sr{background:#efeafb;color:#7a52c0}.b-rar.r-r{background:#e9f0fb;color:#3a6fb0}
   .hc-roles{display:flex;flex-wrap:wrap;gap:4px;margin:0 0 7px}
   .role-tag{font-size:10.5px;font-weight:800;background:#fff4e6;color:#b5791a;border:1px solid #f0d9a8;border-radius:5px;padding:1px 6px}
   .hc-meta{font-size:11px;color:#8a8f9c;margin:0 0 8px;line-height:1.5}
-  .hc-skills{margin:0}
-  .hc-skills>div{display:flex;gap:8px;margin:5px 0;font-size:12.5px;line-height:1.5}
-  .hc-skills dt{flex:none;width:108px;color:#8a7a5a;font-weight:800}
-  .hc-skills dt small{font-weight:600;color:#b3a888;font-size:10px}
+  .hc-skills{margin:0}.hc-skills>div{display:flex;gap:8px;margin:5px 0;font-size:12.5px;line-height:1.5}
+  .hc-skills dt{flex:none;width:112px;color:#8a7a5a;font-weight:800}.hc-skills dt small{font-weight:600;color:#b3a888;font-size:10px}
   .hc-skills dd{margin:0;color:#2b313c}
   .hl-hidden{display:none!important}
   .hl-empty{padding:24px;text-align:center;color:#8a8f9c;font-size:14px}
-  .hl-soon{border:1px dashed #d8c4a0;background:#fffaf1;border-radius:12px;padding:16px 18px;margin:16px 0;color:#6b5a36}
-  .hl-soon h3{margin:0 0 6px;color:#b5791a}
+  .hl-soon{border:1px dashed #d8c4a0;background:#fffaf1;border-radius:12px;padding:16px 18px;margin:16px 0;color:#6b5a36}.hl-soon h3{margin:0 0 6px;color:#b5791a}
   .hl-note{background:#eef4fb;border:1px solid #cfe0f2;border-radius:10px;padding:11px 14px;font-size:12.5px;color:#345;line-height:1.7;margin:14px 0}
-  @media(max-width:560px){.hero-grid{grid-template-columns:1fr}.hc-skills dt{width:96px}}
+  @media(max-width:560px){.hero-grid{grid-template-columns:1fr}.hc-skills dt{width:104px}}
 </style>
 </head>
 <body>
 <div id="nav"></div>
 <div class="wrap wide hl-wrap">
-<div class="crumb"><a href="../../index.html">ホーム</a> &gt; 英雄一覧・データベース</div>
-
-<h1 style="font-size:23px;margin:6px 0 4px">熊狩り・対人戦 英雄一覧・データベース <span class="acc">全62英雄</span></h1>
-<p class="hl-intro">ホワイトアウトサバイバルの<strong>全62英雄</strong>を、世代・兵種・レアリティ・<strong>役割（集結主／乗り手／専用装備／成長型）</strong>でまとめたデータベースです。各英雄の<strong>集結主スキル・乗り手スキル・専用装備・兵種シナジー</strong>に加え、レアリティ別のスキル構成や強化される兵種も確認できます。熊狩り（Bear Hunt）の編成はもちろん、<strong>対人戦（PvP）・集結防衛などの編成検討</strong>の下調べにもお使いください。</p>
-
+<div class="crumb"><a href="../../index.html"><span class="i18n-ja-inline">ホーム</span><span class="i18n-en-inline">Home</span></a> &gt; <span class="i18n-ja-inline">英雄一覧・データベース</span><span class="i18n-en-inline">Hero Database</span></div>
+<h1 style="font-size:23px;margin:6px 0 4px"><span class="i18n-ja-inline">熊狩り・対人戦 英雄一覧・データベース</span><span class="i18n-en-inline">Hero Database — Bear Hunt &amp; PvP</span> <span class="acc"><span class="i18n-ja-inline">全62英雄</span><span class="i18n-en-inline">All 62</span></span></h1>
+<p class="hl-intro"><span class="i18n-ja-inline">ホワイトアウトサバイバルの<strong>全62英雄</strong>を、世代・兵種・レアリティ・<strong>役割（集結主／乗り手／専用装備／成長型）</strong>でまとめたデータベースです。各英雄の集結主スキル・乗り手スキル・専用装備・兵種シナジーに加え、レアリティ別のスキル構成や強化される兵種も確認できます。熊狩り（Bear Hunt）の編成はもちろん、<strong>対人戦（PvP）・集結防衛などの編成検討</strong>にもどうぞ。</span><span class="i18n-en-inline">A database of all <strong>62 Whiteout Survival heroes</strong> by generation, class, rarity and <strong>role (rally leader / joiner / exclusive gear / growth)</strong>. See rally-leader skill, joiner skill, exclusive gear and troop synergy, plus skill loadout by rarity and which troop they buff. Useful for <strong>Bear Hunt and PvP</strong> team planning alike.</span></p>
 <div class="hl-stats">
-  <span class="hl-stat"><b>62</b>英雄</span>
-  <span class="hl-stat"><b>17</b>世代区分</span>
-  <span class="hl-stat">神話級<b style="margin-left:4px">49</b></span>
-  <span class="hl-stat">エピック<b style="margin-left:4px">9</b></span>
-  <span class="hl-stat">レア<b style="margin-left:4px">4</b></span>
-  <span class="hl-stat">歩兵<b style="margin-left:4px">20</b></span>
-  <span class="hl-stat">槍兵<b style="margin-left:4px">21</b></span>
-  <span class="hl-stat">弓兵<b style="margin-left:4px">21</b></span>
+  <span class="hl-stat"><b>62</b><span class="i18n-ja-inline">英雄</span><span class="i18n-en-inline">heroes</span></span>
+  <span class="hl-stat"><b>17</b><span class="i18n-ja-inline">世代区分</span><span class="i18n-en-inline">gens</span></span>
+  <span class="hl-stat"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span><b style="margin-left:4px">49</b></span>
+  <span class="hl-stat"><span class="i18n-ja-inline">エピック</span><span class="i18n-en-inline">Epic</span><b style="margin-left:4px">9</b></span>
+  <span class="hl-stat"><span class="i18n-ja-inline">レア</span><span class="i18n-en-inline">Rare</span><b style="margin-left:4px">4</b></span>
+  <span class="hl-stat"><span class="i18n-ja-inline">歩兵</span><span class="i18n-en-inline">Inf</span><b style="margin-left:4px">20</b></span>
+  <span class="hl-stat"><span class="i18n-ja-inline">槍兵</span><span class="i18n-en-inline">Lan</span><b style="margin-left:4px">21</b></span>
+  <span class="hl-stat"><span class="i18n-ja-inline">弓兵</span><span class="i18n-en-inline">Mks</span><b style="margin-left:4px">21</b></span>
 </div>
-
 <div class="hl-controls" id="hlControls">
   <input type="text" class="hl-search" id="hlSearch" placeholder="英雄名で検索（例：ナタリア / natalia）">
-  <div class="hl-row"><span class="lab">兵種</span><button class="hl-chip" data-f="cls" data-v="inf">歩兵</button><button class="hl-chip" data-f="cls" data-v="lan">槍兵</button><button class="hl-chip" data-f="cls" data-v="mks">弓兵</button><span class="lab" style="margin-left:6px">レア</span><button class="hl-chip" data-f="rar" data-v="SSR">神話級</button><button class="hl-chip" data-f="rar" data-v="SR">エピック</button><button class="hl-chip" data-f="rar" data-v="R">レア</button></div>
-  <div class="hl-row"><span class="lab">役割</span><button class="hl-chip" data-f="role" data-v="集結主">集結主</button><button class="hl-chip" data-f="role" data-v="乗り手">乗り手</button><button class="hl-chip" data-f="role" data-v="専用装備">専用装備</button><button class="hl-chip" data-f="role" data-v="成長型">成長型</button><button class="hl-chip" data-f="fav" data-v="1">★お気に入り</button><button class="hl-reset" id="hlReset">リセット</button></div>
-  <div class="hl-row"><span class="lab">世代</span><button class="hl-chip" data-f="gen" data-v="0">常設</button><button class="hl-chip" data-f="gen" data-v="1">第1世代</button><button class="hl-chip" data-f="gen" data-v="2">第2世代</button><button class="hl-chip" data-f="gen" data-v="3">第3世代</button><button class="hl-chip" data-f="gen" data-v="4">第4世代</button><button class="hl-chip" data-f="gen" data-v="5">第5世代</button><button class="hl-chip" data-f="gen" data-v="6">第6世代</button><button class="hl-chip" data-f="gen" data-v="7">第7世代</button><button class="hl-chip" data-f="gen" data-v="8">第8世代</button><button class="hl-chip" data-f="gen" data-v="9">第9世代</button><button class="hl-chip" data-f="gen" data-v="10">第10世代</button><button class="hl-chip" data-f="gen" data-v="11">第11世代</button><button class="hl-chip" data-f="gen" data-v="12">第12世代</button><button class="hl-chip" data-f="gen" data-v="13">第13世代</button><button class="hl-chip" data-f="gen" data-v="14">第14世代</button><button class="hl-chip" data-f="gen" data-v="15">第15世代</button><button class="hl-chip" data-f="gen" data-v="16">第16世代</button></div>
+  <div class="hl-row"><span class="lab"><span class="i18n-ja-inline">兵種</span><span class="i18n-en-inline">Class</span></span><button class="hl-chip" data-f="cls" data-v="inf"><span class="i18n-ja-inline">歩兵</span><span class="i18n-en-inline">Infantry</span></button><button class="hl-chip" data-f="cls" data-v="lan"><span class="i18n-ja-inline">槍兵</span><span class="i18n-en-inline">Lancer</span></button><button class="hl-chip" data-f="cls" data-v="mks"><span class="i18n-ja-inline">弓兵</span><span class="i18n-en-inline">Marksman</span></button><span class="lab" style="margin-left:6px"><span class="i18n-ja-inline">レア</span><span class="i18n-en-inline">Rarity</span></span><button class="hl-chip" data-f="rar" data-v="SSR"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></button><button class="hl-chip" data-f="rar" data-v="SR"><span class="i18n-ja-inline">エピック</span><span class="i18n-en-inline">Epic</span></button><button class="hl-chip" data-f="rar" data-v="R"><span class="i18n-ja-inline">レア</span><span class="i18n-en-inline">Rare</span></button></div>
+  <div class="hl-row"><span class="lab"><span class="i18n-ja-inline">役割</span><span class="i18n-en-inline">Role</span></span><button class="hl-chip" data-f="role" data-v="集結主"><span class="i18n-ja-inline">集結主</span><span class="i18n-en-inline">Rally Leader</span></button><button class="hl-chip" data-f="role" data-v="乗り手"><span class="i18n-ja-inline">乗り手</span><span class="i18n-en-inline">Joiner</span></button><button class="hl-chip" data-f="role" data-v="専用装備"><span class="i18n-ja-inline">専用装備</span><span class="i18n-en-inline">Exclusive Gear</span></button><button class="hl-chip" data-f="role" data-v="成長型"><span class="i18n-ja-inline">成長型</span><span class="i18n-en-inline">Growth</span></button><button class="hl-chip" data-f="fav" data-v="1"><span class="i18n-ja-inline">★お気に入り</span><span class="i18n-en-inline">★ Favorites</span></button><button class="hl-reset" id="hlReset"><span class="i18n-ja-inline">リセット</span><span class="i18n-en-inline">Reset</span></button></div>
+  <div class="hl-row"><span class="lab"><span class="i18n-ja-inline">世代</span><span class="i18n-en-inline">Gen</span></span><button class="hl-chip" data-f="gen" data-v="0"><span class="i18n-ja-inline">常設</span><span class="i18n-en-inline">Standard</span></button><button class="hl-chip" data-f="gen" data-v="1"><span class="i18n-ja-inline">第1世代</span><span class="i18n-en-inline">Gen 1</span></button><button class="hl-chip" data-f="gen" data-v="2"><span class="i18n-ja-inline">第2世代</span><span class="i18n-en-inline">Gen 2</span></button><button class="hl-chip" data-f="gen" data-v="3"><span class="i18n-ja-inline">第3世代</span><span class="i18n-en-inline">Gen 3</span></button><button class="hl-chip" data-f="gen" data-v="4"><span class="i18n-ja-inline">第4世代</span><span class="i18n-en-inline">Gen 4</span></button><button class="hl-chip" data-f="gen" data-v="5"><span class="i18n-ja-inline">第5世代</span><span class="i18n-en-inline">Gen 5</span></button><button class="hl-chip" data-f="gen" data-v="6"><span class="i18n-ja-inline">第6世代</span><span class="i18n-en-inline">Gen 6</span></button><button class="hl-chip" data-f="gen" data-v="7"><span class="i18n-ja-inline">第7世代</span><span class="i18n-en-inline">Gen 7</span></button><button class="hl-chip" data-f="gen" data-v="8"><span class="i18n-ja-inline">第8世代</span><span class="i18n-en-inline">Gen 8</span></button><button class="hl-chip" data-f="gen" data-v="9"><span class="i18n-ja-inline">第9世代</span><span class="i18n-en-inline">Gen 9</span></button><button class="hl-chip" data-f="gen" data-v="10"><span class="i18n-ja-inline">第10世代</span><span class="i18n-en-inline">Gen 10</span></button><button class="hl-chip" data-f="gen" data-v="11"><span class="i18n-ja-inline">第11世代</span><span class="i18n-en-inline">Gen 11</span></button><button class="hl-chip" data-f="gen" data-v="12"><span class="i18n-ja-inline">第12世代</span><span class="i18n-en-inline">Gen 12</span></button><button class="hl-chip" data-f="gen" data-v="13"><span class="i18n-ja-inline">第13世代</span><span class="i18n-en-inline">Gen 13</span></button><button class="hl-chip" data-f="gen" data-v="14"><span class="i18n-ja-inline">第14世代</span><span class="i18n-en-inline">Gen 14</span></button><button class="hl-chip" data-f="gen" data-v="15"><span class="i18n-ja-inline">第15世代</span><span class="i18n-en-inline">Gen 15</span></button><button class="hl-chip" data-f="gen" data-v="16"><span class="i18n-ja-inline">第16世代</span><span class="i18n-en-inline">Gen 16</span></button></div>
 </div>
 <div class="hl-count" id="hlCount"></div>
-
 <div class="hero-grid" id="heroGrid">
       <article class="hero-card" data-gen="0" data-cls="inf" data-rar="SR" data-role="" data-id="sergey" data-name="セルゲイ sergey sergey">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="sergey">☆</button>
-        <div class="hc-head"><span class="hc-name">セルゲイ</span><span class="hc-en">Sergey</span></div>
-        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">常設</span><span class="b-rar r-sr">エピック</span></div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="sergey">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">セルゲイ</span><span class="i18n-en-inline">Sergey</span></span><span class="hc-en i18n-ja-inline">Sergey</span></div>
+        <div class="hc-badges"><span class="b-cls inf"><span class="i18n-ja-inline">歩兵</span><span class="i18n-en-inline">Infantry</span></span><span class="b-gen"><span class="i18n-ja-inline">常設</span><span class="i18n-en-inline">Standard</span></span><span class="b-rar r-sr"><span class="i18n-ja-inline">エピック</span><span class="i18n-en-inline">Epic</span></span></div>
         
-        <div class="hc-meta">スキル構成：探検3 / 遠征2　/　強化兵種：歩兵</div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征2　/　強化兵種：歩兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 2　/　Buffs: Infantry</span></div>
         <dl class="hc-skills">
-<div><dt>スキル</dt><dd>データ拡充予定</dd></div>
         </dl>
       </article>
       <article class="hero-card" data-gen="0" data-cls="lan" data-rar="SR" data-role="集結主,乗り手" data-id="jessie" data-name="ジェシー jessie jessie">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="jessie">☆</button>
-        <div class="hc-head"><span class="hc-name">ジェシー</span><span class="hc-en">Jessie</span></div>
-        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">常設</span><span class="b-rar r-sr">エピック</span></div>
-        <div class="hc-roles"><span class="role-tag">集結主</span><span class="role-tag">乗り手</span></div>
-        <div class="hc-meta">スキル構成：探検3 / 遠征2　/　強化兵種：槍兵</div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="jessie">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">ジェシー</span><span class="i18n-en-inline">Jessie</span></span><span class="hc-en i18n-ja-inline">Jessie</span></div>
+        <div class="hc-badges"><span class="b-cls lan"><span class="i18n-ja-inline">槍兵</span><span class="i18n-en-inline">Lancer</span></span><span class="b-gen"><span class="i18n-ja-inline">常設</span><span class="i18n-en-inline">Standard</span></span><span class="b-rar r-sr"><span class="i18n-ja-inline">エピック</span><span class="i18n-en-inline">Epic</span></span></div>
+        <div class="hc-roles"><span class="role-tag"><span class="i18n-ja-inline">集結主</span><span class="i18n-en-inline">Rally Leader</span></span><span class="role-tag"><span class="i18n-ja-inline">乗り手</span><span class="i18n-en-inline">Joiner</span></span></div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征2　/　強化兵種：槍兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 2　/　Buffs: Lancer</span></div>
         <dl class="hc-skills">
-<div><dt>集結主スキル<small>(遠征由来)</small></dt><dd>与ダメ25(完全武装)</dd></div><div><dt>乗り手スキル<small>(遠征1)</small></dt><dd>与ダメ+5→25%(完全武装)</dd></div><div><dt>実測参考値</dt><dd>攻撃140.11</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">集結主スキル<small>(遠征由来)</small></span><span class="i18n-en-inline">Rally-leader skill<small>(from exped.)</small></span></dt><dd><span class="i18n-ja-inline">与ダメ25(完全武装)</span><span class="i18n-en-inline">Dmg dealt 25 (Full Armament)</span></dd></div><div><dt><span class="i18n-ja-inline">乗り手スキル<small>(遠征1)</small></span><span class="i18n-en-inline">Joiner skill<small>(exped. 1)</small></span></dt><dd><span class="i18n-ja-inline">与ダメ+5→25%(完全武装)</span><span class="i18n-en-inline">Dmg dealt +5→25% (Full Armament)</span></dd></div><div><dt><span class="i18n-ja-inline">実測参考値</span><span class="i18n-en-inline">Measured ref.</span></dt><dd><span class="i18n-ja-inline">攻撃140.11</span><span class="i18n-en-inline">Atk 140.11</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="0" data-cls="lan" data-rar="SR" data-role="集結主" data-id="patrick" data-name="パトリック patrick patrick">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="patrick">☆</button>
-        <div class="hc-head"><span class="hc-name">パトリック</span><span class="hc-en">Patrick</span></div>
-        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">常設</span><span class="b-rar r-sr">エピック</span></div>
-        <div class="hc-roles"><span class="role-tag">集結主</span></div>
-        <div class="hc-meta">スキル構成：探検3 / 遠征2　/　強化兵種：槍兵</div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="patrick">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">パトリック</span><span class="i18n-en-inline">Patrick</span></span><span class="hc-en i18n-ja-inline">Patrick</span></div>
+        <div class="hc-badges"><span class="b-cls lan"><span class="i18n-ja-inline">槍兵</span><span class="i18n-en-inline">Lancer</span></span><span class="b-gen"><span class="i18n-ja-inline">常設</span><span class="i18n-en-inline">Standard</span></span><span class="b-rar r-sr"><span class="i18n-ja-inline">エピック</span><span class="i18n-en-inline">Epic</span></span></div>
+        <div class="hc-roles"><span class="role-tag"><span class="i18n-ja-inline">集結主</span><span class="i18n-en-inline">Rally Leader</span></span></div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征2　/　強化兵種：槍兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 2　/　Buffs: Lancer</span></div>
         <dl class="hc-skills">
-<div><dt>集結主スキル<small>(遠征由来)</small></dt><dd>攻撃+25%(カロリー吸収)</dd></div><div><dt>実測参考値</dt><dd>攻撃140.11</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">集結主スキル<small>(遠征由来)</small></span><span class="i18n-en-inline">Rally-leader skill<small>(from exped.)</small></span></dt><dd><span class="i18n-ja-inline">攻撃+25%(カロリー吸収)</span><span class="i18n-en-inline">Attack +25% (Calorie Absorption)</span></dd></div><div><dt><span class="i18n-ja-inline">実測参考値</span><span class="i18n-en-inline">Measured ref.</span></dt><dd><span class="i18n-ja-inline">攻撃140.11</span><span class="i18n-en-inline">Atk 140.11</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="0" data-cls="lan" data-rar="SR" data-role="" data-id="lingxue" data-name="リンセツ ling xue lingxue">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="lingxue">☆</button>
-        <div class="hc-head"><span class="hc-name">リンセツ</span><span class="hc-en">Ling Xue</span></div>
-        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">常設</span><span class="b-rar r-sr">エピック</span></div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="lingxue">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">リンセツ</span><span class="i18n-en-inline">Ling Xue</span></span><span class="hc-en i18n-ja-inline">Ling Xue</span></div>
+        <div class="hc-badges"><span class="b-cls lan"><span class="i18n-ja-inline">槍兵</span><span class="i18n-en-inline">Lancer</span></span><span class="b-gen"><span class="i18n-ja-inline">常設</span><span class="i18n-en-inline">Standard</span></span><span class="b-rar r-sr"><span class="i18n-ja-inline">エピック</span><span class="i18n-en-inline">Epic</span></span></div>
         
-        <div class="hc-meta">スキル構成：探検3 / 遠征2　/　強化兵種：槍兵</div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征2　/　強化兵種：槍兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 2　/　Buffs: Lancer</span></div>
         <dl class="hc-skills">
-<div><dt>スキル</dt><dd>データ拡充予定</dd></div>
         </dl>
       </article>
       <article class="hero-card" data-gen="0" data-cls="lan" data-rar="SR" data-role="" data-id="lumak" data-name="ルム・ボーガン lumak bokan lumak">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="lumak">☆</button>
-        <div class="hc-head"><span class="hc-name">ルム・ボーガン</span><span class="hc-en">Lumak Bokan</span></div>
-        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">常設</span><span class="b-rar r-sr">エピック</span></div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="lumak">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">ルム・ボーガン</span><span class="i18n-en-inline">Lumak Bokan</span></span><span class="hc-en i18n-ja-inline">Lumak Bokan</span></div>
+        <div class="hc-badges"><span class="b-cls lan"><span class="i18n-ja-inline">槍兵</span><span class="i18n-en-inline">Lancer</span></span><span class="b-gen"><span class="i18n-ja-inline">常設</span><span class="i18n-en-inline">Standard</span></span><span class="b-rar r-sr"><span class="i18n-ja-inline">エピック</span><span class="i18n-en-inline">Epic</span></span></div>
         
-        <div class="hc-meta">スキル構成：探検3 / 遠征2　/　強化兵種：槍兵</div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征2　/　強化兵種：槍兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 2　/　Buffs: Lancer</span></div>
         <dl class="hc-skills">
-<div><dt>スキル</dt><dd>データ拡充予定</dd></div>
         </dl>
       </article>
       <article class="hero-card" data-gen="0" data-cls="mks" data-rar="SR" data-role="" data-id="gina" data-name="ジーナ gina gina">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="gina">☆</button>
-        <div class="hc-head"><span class="hc-name">ジーナ</span><span class="hc-en">Gina</span></div>
-        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">常設</span><span class="b-rar r-sr">エピック</span></div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="gina">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">ジーナ</span><span class="i18n-en-inline">Gina</span></span><span class="hc-en i18n-ja-inline">Gina</span></div>
+        <div class="hc-badges"><span class="b-cls mks"><span class="i18n-ja-inline">弓兵</span><span class="i18n-en-inline">Marksman</span></span><span class="b-gen"><span class="i18n-ja-inline">常設</span><span class="i18n-en-inline">Standard</span></span><span class="b-rar r-sr"><span class="i18n-ja-inline">エピック</span><span class="i18n-en-inline">Epic</span></span></div>
         
-        <div class="hc-meta">スキル構成：探検3 / 遠征2　/　強化兵種：弓兵</div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征2　/　強化兵種：弓兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 2　/　Buffs: Marksman</span></div>
         <dl class="hc-skills">
-<div><dt>スキル</dt><dd>データ拡充予定</dd></div>
         </dl>
       </article>
       <article class="hero-card" data-gen="0" data-cls="mks" data-rar="SR" data-role="集結主,乗り手,成長型" data-id="jasser" data-name="ジャセル jasser jasser">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="jasser">☆</button>
-        <div class="hc-head"><span class="hc-name">ジャセル</span><span class="hc-en">Jasser</span></div>
-        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">常設</span><span class="b-rar r-sr">エピック</span></div>
-        <div class="hc-roles"><span class="role-tag">集結主</span><span class="role-tag">乗り手</span><span class="role-tag">成長型</span></div>
-        <div class="hc-meta">スキル構成：探検3 / 遠征2　/　強化兵種：弓兵</div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="jasser">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">ジャセル</span><span class="i18n-en-inline">Jasser</span></span><span class="hc-en i18n-ja-inline">Jasser</span></div>
+        <div class="hc-badges"><span class="b-cls mks"><span class="i18n-ja-inline">弓兵</span><span class="i18n-en-inline">Marksman</span></span><span class="b-gen"><span class="i18n-ja-inline">常設</span><span class="i18n-en-inline">Standard</span></span><span class="b-rar r-sr"><span class="i18n-ja-inline">エピック</span><span class="i18n-en-inline">Epic</span></span></div>
+        <div class="hc-roles"><span class="role-tag"><span class="i18n-ja-inline">集結主</span><span class="i18n-en-inline">Rally Leader</span></span><span class="role-tag"><span class="i18n-ja-inline">乗り手</span><span class="i18n-en-inline">Joiner</span></span><span class="role-tag"><span class="i18n-ja-inline">成長型</span><span class="i18n-en-inline">Growth</span></span></div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征2　/　強化兵種：弓兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 2　/　Buffs: Marksman</span></div>
         <dl class="hc-skills">
-<div><dt>集結主スキル<small>(遠征由来)</small></dt><dd>与ダメ25(戦術演習)</dd></div><div><dt>乗り手スキル<small>(遠征1)</small></dt><dd>与ダメ+5→25%(戦術演習)</dd></div><div><dt>実測参考値</dt><dd>攻撃140.11</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">集結主スキル<small>(遠征由来)</small></span><span class="i18n-en-inline">Rally-leader skill<small>(from exped.)</small></span></dt><dd><span class="i18n-ja-inline">与ダメ25(戦術演習)</span><span class="i18n-en-inline">Dmg dealt 25 (Tactical Drill)</span></dd></div><div><dt><span class="i18n-ja-inline">乗り手スキル<small>(遠征1)</small></span><span class="i18n-en-inline">Joiner skill<small>(exped. 1)</small></span></dt><dd><span class="i18n-ja-inline">与ダメ+5→25%(戦術演習)</span><span class="i18n-en-inline">Dmg dealt +5→25% (Tactical Drill)</span></dd></div><div><dt><span class="i18n-ja-inline">実測参考値</span><span class="i18n-en-inline">Measured ref.</span></dt><dd><span class="i18n-ja-inline">攻撃140.11</span><span class="i18n-en-inline">Atk 140.11</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="0" data-cls="mks" data-rar="SR" data-role="集結主,乗り手,成長型" data-id="seoyoon" data-name="ソユン seo-yoon seoyoon">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="seoyoon">☆</button>
-        <div class="hc-head"><span class="hc-name">ソユン</span><span class="hc-en">Seo-yoon</span></div>
-        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">常設</span><span class="b-rar r-sr">エピック</span></div>
-        <div class="hc-roles"><span class="role-tag">集結主</span><span class="role-tag">乗り手</span><span class="role-tag">成長型</span></div>
-        <div class="hc-meta">スキル構成：探検3 / 遠征2　/　強化兵種：弓兵</div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="seoyoon">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">ソユン</span><span class="i18n-en-inline">Seo-yoon</span></span><span class="hc-en i18n-ja-inline">Seo-yoon</span></div>
+        <div class="hc-badges"><span class="b-cls mks"><span class="i18n-ja-inline">弓兵</span><span class="i18n-en-inline">Marksman</span></span><span class="b-gen"><span class="i18n-ja-inline">常設</span><span class="i18n-en-inline">Standard</span></span><span class="b-rar r-sr"><span class="i18n-ja-inline">エピック</span><span class="i18n-en-inline">Epic</span></span></div>
+        <div class="hc-roles"><span class="role-tag"><span class="i18n-ja-inline">集結主</span><span class="i18n-en-inline">Rally Leader</span></span><span class="role-tag"><span class="i18n-ja-inline">乗り手</span><span class="i18n-en-inline">Joiner</span></span><span class="role-tag"><span class="i18n-ja-inline">成長型</span><span class="i18n-en-inline">Growth</span></span></div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征2　/　強化兵種：弓兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 2　/　Buffs: Marksman</span></div>
         <dl class="hc-skills">
-<div><dt>集結主スキル<small>(遠征由来)</small></dt><dd>攻撃25(征伐の陣太鼓)</dd></div><div><dt>乗り手スキル<small>(遠征1)</small></dt><dd>攻撃+5→25%(征伐の陣太鼓)</dd></div><div><dt>実測参考値</dt><dd>攻撃140.11</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">集結主スキル<small>(遠征由来)</small></span><span class="i18n-en-inline">Rally-leader skill<small>(from exped.)</small></span></dt><dd><span class="i18n-ja-inline">攻撃25(征伐の陣太鼓)</span><span class="i18n-en-inline">Attack 25 (War Drum)</span></dd></div><div><dt><span class="i18n-ja-inline">乗り手スキル<small>(遠征1)</small></span><span class="i18n-en-inline">Joiner skill<small>(exped. 1)</small></span></dt><dd><span class="i18n-ja-inline">攻撃+5→25%(征伐の陣太鼓)</span><span class="i18n-en-inline">Attack +5→25% (War Drum)</span></dd></div><div><dt><span class="i18n-ja-inline">実測参考値</span><span class="i18n-en-inline">Measured ref.</span></dt><dd><span class="i18n-ja-inline">攻撃140.11</span><span class="i18n-en-inline">Atk 140.11</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="0" data-cls="mks" data-rar="SR" data-role="集結主" data-id="bahiti" data-name="バシティ bahiti bahiti">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="bahiti">☆</button>
-        <div class="hc-head"><span class="hc-name">バシティ</span><span class="hc-en">Bahiti</span></div>
-        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">常設</span><span class="b-rar r-sr">エピック</span></div>
-        <div class="hc-roles"><span class="role-tag">集結主</span></div>
-        <div class="hc-meta">スキル構成：探検3 / 遠征2　/　強化兵種：弓兵</div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="bahiti">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">バシティ</span><span class="i18n-en-inline">Bahiti</span></span><span class="hc-en i18n-ja-inline">Bahiti</span></div>
+        <div class="hc-badges"><span class="b-cls mks"><span class="i18n-ja-inline">弓兵</span><span class="i18n-en-inline">Marksman</span></span><span class="b-gen"><span class="i18n-ja-inline">常設</span><span class="i18n-en-inline">Standard</span></span><span class="b-rar r-sr"><span class="i18n-ja-inline">エピック</span><span class="i18n-en-inline">Epic</span></span></div>
+        <div class="hc-roles"><span class="role-tag"><span class="i18n-ja-inline">集結主</span><span class="i18n-en-inline">Rally Leader</span></span></div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征2　/　強化兵種：弓兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 2　/　Buffs: Marksman</span></div>
         <dl class="hc-skills">
-<div><dt>集結主スキル<small>(遠征由来)</small></dt><dd>50%で与ダメ+50%</dd></div><div><dt>兵種シナジー</dt><dd>弓兵と同陣で+3%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">集結主スキル<small>(遠征由来)</small></span><span class="i18n-en-inline">Rally-leader skill<small>(from exped.)</small></span></dt><dd><span class="i18n-ja-inline">50%で与ダメ+50%</span><span class="i18n-en-inline">50%: dmg dealt +50%</span></dd></div><div><dt><span class="i18n-ja-inline">兵種シナジー</span><span class="i18n-en-inline">Troop synergy</span></dt><dd><span class="i18n-ja-inline">弓兵と同陣で+3%</span><span class="i18n-en-inline">+3% with Marksman</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="0" data-cls="inf" data-rar="R" data-role="" data-id="smith" data-name="スミス smith smith">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="smith">☆</button>
-        <div class="hc-head"><span class="hc-name">スミス</span><span class="hc-en">Smith</span></div>
-        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">常設</span><span class="b-rar r-r">レア</span></div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="smith">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">スミス</span><span class="i18n-en-inline">Smith</span></span><span class="hc-en i18n-ja-inline">Smith</span></div>
+        <div class="hc-badges"><span class="b-cls inf"><span class="i18n-ja-inline">歩兵</span><span class="i18n-en-inline">Infantry</span></span><span class="b-gen"><span class="i18n-ja-inline">常設</span><span class="i18n-en-inline">Standard</span></span><span class="b-rar r-r"><span class="i18n-ja-inline">レア</span><span class="i18n-en-inline">Rare</span></span></div>
         
-        <div class="hc-meta">スキル構成：探検2 / 遠征2　/　強化兵種：歩兵</div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検2 / 遠征2　/　強化兵種：歩兵</span><span class="i18n-en-inline">Skills: Explore 2 / Exped 2　/　Buffs: Infantry</span></div>
         <dl class="hc-skills">
-<div><dt>スキル</dt><dd>データ拡充予定</dd></div>
         </dl>
       </article>
       <article class="hero-card" data-gen="0" data-cls="inf" data-rar="R" data-role="" data-id="eugene" data-name="ユージーン eugene eugene">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="eugene">☆</button>
-        <div class="hc-head"><span class="hc-name">ユージーン</span><span class="hc-en">Eugene</span></div>
-        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">常設</span><span class="b-rar r-r">レア</span></div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="eugene">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">ユージーン</span><span class="i18n-en-inline">Eugene</span></span><span class="hc-en i18n-ja-inline">Eugene</span></div>
+        <div class="hc-badges"><span class="b-cls inf"><span class="i18n-ja-inline">歩兵</span><span class="i18n-en-inline">Infantry</span></span><span class="b-gen"><span class="i18n-ja-inline">常設</span><span class="i18n-en-inline">Standard</span></span><span class="b-rar r-r"><span class="i18n-ja-inline">レア</span><span class="i18n-en-inline">Rare</span></span></div>
         
-        <div class="hc-meta">スキル構成：探検2 / 遠征2　/　強化兵種：歩兵</div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検2 / 遠征2　/　強化兵種：歩兵</span><span class="i18n-en-inline">Skills: Explore 2 / Exped 2　/　Buffs: Infantry</span></div>
         <dl class="hc-skills">
-<div><dt>スキル</dt><dd>データ拡充予定</dd></div>
         </dl>
       </article>
       <article class="hero-card" data-gen="0" data-cls="lan" data-rar="R" data-role="" data-id="charlie" data-name="チャーリー charlie charlie">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="charlie">☆</button>
-        <div class="hc-head"><span class="hc-name">チャーリー</span><span class="hc-en">Charlie</span></div>
-        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">常設</span><span class="b-rar r-r">レア</span></div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="charlie">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">チャーリー</span><span class="i18n-en-inline">Charlie</span></span><span class="hc-en i18n-ja-inline">Charlie</span></div>
+        <div class="hc-badges"><span class="b-cls lan"><span class="i18n-ja-inline">槍兵</span><span class="i18n-en-inline">Lancer</span></span><span class="b-gen"><span class="i18n-ja-inline">常設</span><span class="i18n-en-inline">Standard</span></span><span class="b-rar r-r"><span class="i18n-ja-inline">レア</span><span class="i18n-en-inline">Rare</span></span></div>
         
-        <div class="hc-meta">スキル構成：探検2 / 遠征2　/　強化兵種：槍兵</div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検2 / 遠征2　/　強化兵種：槍兵</span><span class="i18n-en-inline">Skills: Explore 2 / Exped 2　/　Buffs: Lancer</span></div>
         <dl class="hc-skills">
-<div><dt>スキル</dt><dd>データ拡充予定</dd></div>
         </dl>
       </article>
       <article class="hero-card" data-gen="0" data-cls="mks" data-rar="R" data-role="" data-id="cloris" data-name="クラリス cloris cloris">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="cloris">☆</button>
-        <div class="hc-head"><span class="hc-name">クラリス</span><span class="hc-en">Cloris</span></div>
-        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">常設</span><span class="b-rar r-r">レア</span></div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="cloris">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">クラリス</span><span class="i18n-en-inline">Cloris</span></span><span class="hc-en i18n-ja-inline">Cloris</span></div>
+        <div class="hc-badges"><span class="b-cls mks"><span class="i18n-ja-inline">弓兵</span><span class="i18n-en-inline">Marksman</span></span><span class="b-gen"><span class="i18n-ja-inline">常設</span><span class="i18n-en-inline">Standard</span></span><span class="b-rar r-r"><span class="i18n-ja-inline">レア</span><span class="i18n-en-inline">Rare</span></span></div>
         
-        <div class="hc-meta">スキル構成：探検2 / 遠征2　/　強化兵種：弓兵</div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検2 / 遠征2　/　強化兵種：弓兵</span><span class="i18n-en-inline">Skills: Explore 2 / Exped 2　/　Buffs: Marksman</span></div>
         <dl class="hc-skills">
-<div><dt>スキル</dt><dd>データ拡充予定</dd></div>
         </dl>
       </article>
       <article class="hero-card" data-gen="1" data-cls="inf" data-rar="SSR" data-role="集結主,乗り手,専用装備" data-id="jeronimo" data-name="ジェロニモ jeronimo jeronimo">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="jeronimo">☆</button>
-        <div class="hc-head"><span class="hc-name">ジェロニモ</span><span class="hc-en">Jeronimo</span></div>
-        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">第1世代</span><span class="b-rar r-ssr">神話級</span></div>
-        <div class="hc-roles"><span class="role-tag">集結主</span><span class="role-tag">乗り手</span><span class="role-tag">専用装備</span></div>
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：歩兵</div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="jeronimo">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">ジェロニモ</span><span class="i18n-en-inline">Jeronimo</span></span><span class="hc-en i18n-ja-inline">Jeronimo</span></div>
+        <div class="hc-badges"><span class="b-cls inf"><span class="i18n-ja-inline">歩兵</span><span class="i18n-en-inline">Infantry</span></span><span class="b-gen"><span class="i18n-ja-inline">第1世代</span><span class="i18n-en-inline">Gen 1</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
+        <div class="hc-roles"><span class="role-tag"><span class="i18n-ja-inline">集結主</span><span class="i18n-en-inline">Rally Leader</span></span><span class="role-tag"><span class="i18n-ja-inline">乗り手</span><span class="i18n-en-inline">Joiner</span></span><span class="role-tag"><span class="i18n-ja-inline">専用装備</span><span class="i18n-en-inline">Exclusive Gear</span></span></div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：歩兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Infantry</span></div>
         <dl class="hc-skills">
-<div><dt>集結主スキル<small>(遠征由来)</small></dt><dd>与ダメ25/攻撃25/4T毎与ダメ30/殺傷15</dd></div><div><dt>乗り手スキル<small>(遠征1)</small></dt><dd>与ダメ+5→25%(決起集会)</dd></div><div><dt>専用装備バフ</dt><dd>集結攻撃+5→15%(真実の術)</dd></div><div><dt>専用装備ステータス</dt><dd>攻撃+8% / 殺傷+4%</dd></div><div><dt>兵種シナジー</dt><dd>歩兵と同陣で+3%</dd></div><div><dt>実測参考値</dt><dd>攻撃260.2</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">集結主スキル<small>(遠征由来)</small></span><span class="i18n-en-inline">Rally-leader skill<small>(from exped.)</small></span></dt><dd><span class="i18n-ja-inline">与ダメ25/攻撃25/4T毎与ダメ30/殺傷15</span><span class="i18n-en-inline">Dmg 25 / atk 25 / every 4T dmg 30 / lethality 15</span></dd></div><div><dt><span class="i18n-ja-inline">乗り手スキル<small>(遠征1)</small></span><span class="i18n-en-inline">Joiner skill<small>(exped. 1)</small></span></dt><dd><span class="i18n-ja-inline">与ダメ+5→25%(決起集会)</span><span class="i18n-en-inline">Dmg dealt +5→25% (Rally Call)</span></dd></div><div><dt><span class="i18n-ja-inline">専用装備バフ</span><span class="i18n-en-inline">Exclusive gear buff</span></dt><dd><span class="i18n-ja-inline">集結攻撃+5→15%(真実の術)</span><span class="i18n-en-inline">Rally attack +5→15% (Art of Truth)</span></dd></div><div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+8% / 殺傷+4%</span><span class="i18n-en-inline">Atk +8% / Lethality +4%</span></dd></div><div><dt><span class="i18n-ja-inline">兵種シナジー</span><span class="i18n-en-inline">Troop synergy</span></dt><dd><span class="i18n-ja-inline">歩兵と同陣で+3%</span><span class="i18n-en-inline">+3% with Infantry</span></dd></div><div><dt><span class="i18n-ja-inline">実測参考値</span><span class="i18n-en-inline">Measured ref.</span></dt><dd><span class="i18n-ja-inline">攻撃260.2</span><span class="i18n-en-inline">Atk 260.2</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="1" data-cls="inf" data-rar="SSR" data-role="集結主,専用装備" data-id="natalia" data-name="ナタリア natalia natalia">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="natalia">☆</button>
-        <div class="hc-head"><span class="hc-name">ナタリア</span><span class="hc-en">Natalia</span></div>
-        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">第1世代</span><span class="b-rar r-ssr">神話級</span></div>
-        <div class="hc-roles"><span class="role-tag">集結主</span><span class="role-tag">専用装備</span></div>
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：歩兵</div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="natalia">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">ナタリア</span><span class="i18n-en-inline">Natalia</span></span><span class="hc-en i18n-ja-inline">Natalia</span></div>
+        <div class="hc-badges"><span class="b-cls inf"><span class="i18n-ja-inline">歩兵</span><span class="i18n-en-inline">Infantry</span></span><span class="b-gen"><span class="i18n-ja-inline">第1世代</span><span class="i18n-en-inline">Gen 1</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
+        <div class="hc-roles"><span class="role-tag"><span class="i18n-ja-inline">集結主</span><span class="i18n-en-inline">Rally Leader</span></span><span class="role-tag"><span class="i18n-ja-inline">専用装備</span><span class="i18n-en-inline">Exclusive Gear</span></span></div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：歩兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Infantry</span></div>
         <dl class="hc-skills">
-<div><dt>集結主スキル<small>(遠征由来)</small></dt><dd>攻撃25/与ダメ25/攻撃10</dd></div><div><dt>専用装備バフ</dt><dd>集結殺傷+5→15%</dd></div><div><dt>専用装備ステータス</dt><dd>攻撃+4% / 殺傷+8%</dd></div><div><dt>兵種シナジー</dt><dd>歩兵と同陣で+3%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">集結主スキル<small>(遠征由来)</small></span><span class="i18n-en-inline">Rally-leader skill<small>(from exped.)</small></span></dt><dd><span class="i18n-ja-inline">攻撃25/与ダメ25/攻撃10</span><span class="i18n-en-inline">Attack 25 / dmg 25 / attack 10</span></dd></div><div><dt><span class="i18n-ja-inline">専用装備バフ</span><span class="i18n-en-inline">Exclusive gear buff</span></dt><dd><span class="i18n-ja-inline">集結殺傷+5→15%</span><span class="i18n-en-inline">Rally lethality +5→15%</span></dd></div><div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+4% / 殺傷+8%</span><span class="i18n-en-inline">Atk +4% / Lethality +8%</span></dd></div><div><dt><span class="i18n-ja-inline">兵種シナジー</span><span class="i18n-en-inline">Troop synergy</span></dt><dd><span class="i18n-ja-inline">歩兵と同陣で+3%</span><span class="i18n-en-inline">+3% with Infantry</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="1" data-cls="lan" data-rar="SSR" data-role="集結主" data-id="molly" data-name="ジャスミン molly molly">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="molly">☆</button>
-        <div class="hc-head"><span class="hc-name">ジャスミン</span><span class="hc-en">Molly</span></div>
-        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">第1世代</span><span class="b-rar r-ssr">神話級</span></div>
-        <div class="hc-roles"><span class="role-tag">集結主</span></div>
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：槍兵</div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="molly">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">ジャスミン</span><span class="i18n-en-inline">Molly</span></span><span class="hc-en i18n-ja-inline">Molly</span></div>
+        <div class="hc-badges"><span class="b-cls lan"><span class="i18n-ja-inline">槍兵</span><span class="i18n-en-inline">Lancer</span></span><span class="b-gen"><span class="i18n-ja-inline">第1世代</span><span class="i18n-en-inline">Gen 1</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
+        <div class="hc-roles"><span class="role-tag"><span class="i18n-ja-inline">集結主</span><span class="i18n-en-inline">Rally Leader</span></span></div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：槍兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Lancer</span></div>
         <dl class="hc-skills">
-<div><dt>集結主スキル<small>(遠征由来)</small></dt><dd>50%で与ダメ50/固定与ダメ25</dd></div><div><dt>専用装備ステータス</dt><dd>攻撃+4% / 殺傷+8%</dd></div><div><dt>兵種シナジー</dt><dd>槍兵と同陣で+3%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">集結主スキル<small>(遠征由来)</small></span><span class="i18n-en-inline">Rally-leader skill<small>(from exped.)</small></span></dt><dd><span class="i18n-ja-inline">50%で与ダメ50/固定与ダメ25</span><span class="i18n-en-inline">50%: dmg 50 / fixed dmg 25</span></dd></div><div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+4% / 殺傷+8%</span><span class="i18n-en-inline">Atk +4% / Lethality +8%</span></dd></div><div><dt><span class="i18n-ja-inline">兵種シナジー</span><span class="i18n-en-inline">Troop synergy</span></dt><dd><span class="i18n-ja-inline">槍兵と同陣で+3%</span><span class="i18n-en-inline">+3% with Lancer</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="1" data-cls="mks" data-rar="SSR" data-role="成長型" data-id="zinman" data-name="ジンマン zinman zinman">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="zinman">☆</button>
-        <div class="hc-head"><span class="hc-name">ジンマン</span><span class="hc-en">Zinman</span></div>
-        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">第1世代</span><span class="b-rar r-ssr">神話級</span></div>
-        <div class="hc-roles"><span class="role-tag">成長型</span></div>
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：弓兵</div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="zinman">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">ジンマン</span><span class="i18n-en-inline">Zinman</span></span><span class="hc-en i18n-ja-inline">Zinman</span></div>
+        <div class="hc-badges"><span class="b-cls mks"><span class="i18n-ja-inline">弓兵</span><span class="i18n-en-inline">Marksman</span></span><span class="b-gen"><span class="i18n-ja-inline">第1世代</span><span class="i18n-en-inline">Gen 1</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
+        <div class="hc-roles"><span class="role-tag"><span class="i18n-ja-inline">成長型</span><span class="i18n-en-inline">Growth</span></span></div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：弓兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Marksman</span></div>
         <dl class="hc-skills">
-<div><dt>専用装備ステータス</dt><dd>攻撃+4% / 殺傷+8%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+4% / 殺傷+8%</span><span class="i18n-en-inline">Atk +4% / Lethality +8%</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="2" data-cls="inf" data-rar="SSR" data-role="集結主,乗り手" data-id="flint" data-name="フリント flint flint">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="flint">☆</button>
-        <div class="hc-head"><span class="hc-name">フリント</span><span class="hc-en">Flint</span></div>
-        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">第2世代</span><span class="b-rar r-ssr">神話級</span></div>
-        <div class="hc-roles"><span class="role-tag">集結主</span><span class="role-tag">乗り手</span></div>
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：歩兵</div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="flint">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">フリント</span><span class="i18n-en-inline">Flint</span></span><span class="hc-en i18n-ja-inline">Flint</span></div>
+        <div class="hc-badges"><span class="b-cls inf"><span class="i18n-ja-inline">歩兵</span><span class="i18n-en-inline">Infantry</span></span><span class="b-gen"><span class="i18n-ja-inline">第2世代</span><span class="i18n-en-inline">Gen 2</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
+        <div class="hc-roles"><span class="role-tag"><span class="i18n-ja-inline">集結主</span><span class="i18n-en-inline">Rally Leader</span></span><span class="role-tag"><span class="i18n-ja-inline">乗り手</span><span class="i18n-en-inline">Joiner</span></span></div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：歩兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Infantry</span></div>
         <dl class="hc-skills">
-<div><dt>集結主スキル<small>(遠征由来)</small></dt><dd>攻撃25/殺傷25</dd></div><div><dt>乗り手スキル<small>(遠征1)</small></dt><dd>炎上20%/3T(期待+20%)</dd></div><div><dt>専用装備ステータス</dt><dd>攻撃+4.4% / 殺傷+8.8%</dd></div><div><dt>兵種シナジー</dt><dd>歩兵と同陣で+4%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">集結主スキル<small>(遠征由来)</small></span><span class="i18n-en-inline">Rally-leader skill<small>(from exped.)</small></span></dt><dd><span class="i18n-ja-inline">攻撃25/殺傷25</span><span class="i18n-en-inline">Attack 25 / lethality 25</span></dd></div><div><dt><span class="i18n-ja-inline">乗り手スキル<small>(遠征1)</small></span><span class="i18n-en-inline">Joiner skill<small>(exped. 1)</small></span></dt><dd><span class="i18n-ja-inline">炎上20%/3T(期待+20%)</span><span class="i18n-en-inline">Burn 20%/3T (avg +24%)</span></dd></div><div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+4.4% / 殺傷+8.8%</span><span class="i18n-en-inline">Atk +4.4% / Lethality +8.8%</span></dd></div><div><dt><span class="i18n-ja-inline">兵種シナジー</span><span class="i18n-en-inline">Troop synergy</span></dt><dd><span class="i18n-ja-inline">歩兵と同陣で+4%</span><span class="i18n-en-inline">+4% with Infantry</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="2" data-cls="lan" data-rar="SSR" data-role="集結主,乗り手" data-id="philly" data-name="フレンダー philly philly">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="philly">☆</button>
-        <div class="hc-head"><span class="hc-name">フレンダー</span><span class="hc-en">Philly</span></div>
-        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">第2世代</span><span class="b-rar r-ssr">神話級</span></div>
-        <div class="hc-roles"><span class="role-tag">集結主</span><span class="role-tag">乗り手</span></div>
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：槍兵</div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="philly">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">フレンダー</span><span class="i18n-en-inline">Philly</span></span><span class="hc-en i18n-ja-inline">Philly</span></div>
+        <div class="hc-badges"><span class="b-cls lan"><span class="i18n-ja-inline">槍兵</span><span class="i18n-en-inline">Lancer</span></span><span class="b-gen"><span class="i18n-ja-inline">第2世代</span><span class="i18n-en-inline">Gen 2</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
+        <div class="hc-roles"><span class="role-tag"><span class="i18n-ja-inline">集結主</span><span class="i18n-en-inline">Rally Leader</span></span><span class="role-tag"><span class="i18n-ja-inline">乗り手</span><span class="i18n-en-inline">Joiner</span></span></div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：槍兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Lancer</span></div>
         <dl class="hc-skills">
-<div><dt>集結主スキル<small>(遠征由来)</small></dt><dd>攻撃15</dd></div><div><dt>乗り手スキル<small>(遠征1)</small></dt><dd>攻撃+15%</dd></div><div><dt>専用装備ステータス</dt><dd>攻撃+4.4% / 殺傷+8.8%</dd></div><div><dt>兵種シナジー</dt><dd>槍兵と同陣で+3%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">集結主スキル<small>(遠征由来)</small></span><span class="i18n-en-inline">Rally-leader skill<small>(from exped.)</small></span></dt><dd><span class="i18n-ja-inline">攻撃15</span><span class="i18n-en-inline">Attack 15</span></dd></div><div><dt><span class="i18n-ja-inline">乗り手スキル<small>(遠征1)</small></span><span class="i18n-en-inline">Joiner skill<small>(exped. 1)</small></span></dt><dd><span class="i18n-ja-inline">攻撃+15%</span><span class="i18n-en-inline">Attack +15%</span></dd></div><div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+4.4% / 殺傷+8.8%</span><span class="i18n-en-inline">Atk +4.4% / Lethality +8.8%</span></dd></div><div><dt><span class="i18n-ja-inline">兵種シナジー</span><span class="i18n-en-inline">Troop synergy</span></dt><dd><span class="i18n-ja-inline">槍兵と同陣で+3%</span><span class="i18n-en-inline">+3% with Lancer</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="2" data-cls="mks" data-rar="SSR" data-role="集結主,専用装備" data-id="alonso" data-name="アロンゾ alonso alonso">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="alonso">☆</button>
-        <div class="hc-head"><span class="hc-name">アロンゾ</span><span class="hc-en">Alonso</span></div>
-        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">第2世代</span><span class="b-rar r-ssr">神話級</span></div>
-        <div class="hc-roles"><span class="role-tag">集結主</span><span class="role-tag">専用装備</span></div>
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：弓兵</div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="alonso">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">アロンゾ</span><span class="i18n-en-inline">Alonso</span></span><span class="hc-en i18n-ja-inline">Alonso</span></div>
+        <div class="hc-badges"><span class="b-cls mks"><span class="i18n-ja-inline">弓兵</span><span class="i18n-en-inline">Marksman</span></span><span class="b-gen"><span class="i18n-ja-inline">第2世代</span><span class="i18n-en-inline">Gen 2</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
+        <div class="hc-roles"><span class="role-tag"><span class="i18n-ja-inline">集結主</span><span class="i18n-en-inline">Rally Leader</span></span><span class="role-tag"><span class="i18n-ja-inline">専用装備</span><span class="i18n-en-inline">Exclusive Gear</span></span></div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：弓兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Marksman</span></div>
         <dl class="hc-skills">
-<div><dt>集結主スキル<small>(遠征由来)</small></dt><dd>50%で与ダメ50/40%で殺傷50</dd></div><div><dt>専用装備バフ</dt><dd>集結殺傷+5→15%</dd></div><div><dt>専用装備ステータス</dt><dd>攻撃+4.4% / 殺傷+8.8%</dd></div><div><dt>兵種シナジー</dt><dd>弓兵と同陣で+5%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">集結主スキル<small>(遠征由来)</small></span><span class="i18n-en-inline">Rally-leader skill<small>(from exped.)</small></span></dt><dd><span class="i18n-ja-inline">50%で与ダメ50/40%で殺傷50</span><span class="i18n-en-inline">50%: dmg 50 / 40%: lethality 50</span></dd></div><div><dt><span class="i18n-ja-inline">専用装備バフ</span><span class="i18n-en-inline">Exclusive gear buff</span></dt><dd><span class="i18n-ja-inline">集結殺傷+5→15%</span><span class="i18n-en-inline">Rally lethality +5→15%</span></dd></div><div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+4.4% / 殺傷+8.8%</span><span class="i18n-en-inline">Atk +4.4% / Lethality +8.8%</span></dd></div><div><dt><span class="i18n-ja-inline">兵種シナジー</span><span class="i18n-en-inline">Troop synergy</span></dt><dd><span class="i18n-ja-inline">弓兵と同陣で+5%</span><span class="i18n-en-inline">+5% with Marksman</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="3" data-cls="inf" data-rar="SSR" data-role="乗り手" data-id="logan" data-name="ローガン logan logan">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="logan">☆</button>
-        <div class="hc-head"><span class="hc-name">ローガン</span><span class="hc-en">Logan</span></div>
-        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">第3世代</span><span class="b-rar r-ssr">神話級</span></div>
-        <div class="hc-roles"><span class="role-tag">乗り手</span></div>
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：歩兵</div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="logan">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">ローガン</span><span class="i18n-en-inline">Logan</span></span><span class="hc-en i18n-ja-inline">Logan</span></div>
+        <div class="hc-badges"><span class="b-cls inf"><span class="i18n-ja-inline">歩兵</span><span class="i18n-en-inline">Infantry</span></span><span class="b-gen"><span class="i18n-ja-inline">第3世代</span><span class="i18n-en-inline">Gen 3</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
+        <div class="hc-roles"><span class="role-tag"><span class="i18n-ja-inline">乗り手</span><span class="i18n-en-inline">Joiner</span></span></div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：歩兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Infantry</span></div>
         <dl class="hc-skills">
-<div><dt>乗り手スキル<small>(遠征1)</small></dt><dd>追撃20%/3T(期待+20%)</dd></div><div><dt>専用装備ステータス</dt><dd>攻撃+4.8% / 殺傷+9.6%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">乗り手スキル<small>(遠征1)</small></span><span class="i18n-en-inline">Joiner skill<small>(exped. 1)</small></span></dt><dd><span class="i18n-ja-inline">追撃20%/3T(期待+20%)</span><span class="i18n-en-inline">Follow-up 20%/3T (avg +24%)</span></dd></div><div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+4.8% / 殺傷+9.6%</span><span class="i18n-en-inline">Atk +4.8% / Lethality +9.6%</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="3" data-cls="lan" data-rar="SSR" data-role="集結主,乗り手,専用装備" data-id="mia" data-name="ミア mia mia">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="mia">☆</button>
-        <div class="hc-head"><span class="hc-name">ミア</span><span class="hc-en">Mia</span></div>
-        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">第3世代</span><span class="b-rar r-ssr">神話級</span></div>
-        <div class="hc-roles"><span class="role-tag">集結主</span><span class="role-tag">乗り手</span><span class="role-tag">専用装備</span></div>
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：槍兵</div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="mia">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">ミア</span><span class="i18n-en-inline">Mia</span></span><span class="hc-en i18n-ja-inline">Mia</span></div>
+        <div class="hc-badges"><span class="b-cls lan"><span class="i18n-ja-inline">槍兵</span><span class="i18n-en-inline">Lancer</span></span><span class="b-gen"><span class="i18n-ja-inline">第3世代</span><span class="i18n-en-inline">Gen 3</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
+        <div class="hc-roles"><span class="role-tag"><span class="i18n-ja-inline">集結主</span><span class="i18n-en-inline">Rally Leader</span></span><span class="role-tag"><span class="i18n-ja-inline">乗り手</span><span class="i18n-en-inline">Joiner</span></span><span class="role-tag"><span class="i18n-ja-inline">専用装備</span><span class="i18n-en-inline">Exclusive Gear</span></span></div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：槍兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Lancer</span></div>
         <dl class="hc-skills">
-<div><dt>集結主スキル<small>(遠征由来)</small></dt><dd>50%被ダメ+50/50%与ダメ+50</dd></div><div><dt>乗り手スキル<small>(遠征1)</small></dt><dd>50%で被ダメ+10→50%(不幸の連鎖)</dd></div><div><dt>専用装備バフ</dt><dd>集結攻撃+5→15%(宿命の集結)</dd></div><div><dt>専用装備ステータス</dt><dd>攻撃+9.6% / 殺傷+4.8%</dd></div><div><dt>兵種シナジー</dt><dd>槍兵と同陣で+5%</dd></div><div><dt>実測参考値</dt><dd>攻撃290.23 / 殺傷70</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">集結主スキル<small>(遠征由来)</small></span><span class="i18n-en-inline">Rally-leader skill<small>(from exped.)</small></span></dt><dd><span class="i18n-ja-inline">50%被ダメ+50/50%与ダメ+50</span><span class="i18n-en-inline">50%: dmg taken +50 / 50%: dmg dealt +50</span></dd></div><div><dt><span class="i18n-ja-inline">乗り手スキル<small>(遠征1)</small></span><span class="i18n-en-inline">Joiner skill<small>(exped. 1)</small></span></dt><dd><span class="i18n-ja-inline">50%で被ダメ+10→50%(不幸の連鎖)</span><span class="i18n-en-inline">50%: dmg taken +10→50% (Chain of Misfortune)</span></dd></div><div><dt><span class="i18n-ja-inline">専用装備バフ</span><span class="i18n-en-inline">Exclusive gear buff</span></dt><dd><span class="i18n-ja-inline">集結攻撃+5→15%(宿命の集結)</span><span class="i18n-en-inline">Rally attack +5→15% (Fated Rally)</span></dd></div><div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+9.6% / 殺傷+4.8%</span><span class="i18n-en-inline">Atk +9.6% / Lethality +4.8%</span></dd></div><div><dt><span class="i18n-ja-inline">兵種シナジー</span><span class="i18n-en-inline">Troop synergy</span></dt><dd><span class="i18n-ja-inline">槍兵と同陣で+5%</span><span class="i18n-en-inline">+5% with Lancer</span></dd></div><div><dt><span class="i18n-ja-inline">実測参考値</span><span class="i18n-en-inline">Measured ref.</span></dt><dd><span class="i18n-ja-inline">攻撃290.23 / 殺傷70</span><span class="i18n-en-inline">Atk 290.23 / Lethality 70</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="3" data-cls="mks" data-rar="SSR" data-role="集結主,乗り手" data-id="greg" data-name="グレッグ greg greg">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="greg">☆</button>
-        <div class="hc-head"><span class="hc-name">グレッグ</span><span class="hc-en">Greg</span></div>
-        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">第3世代</span><span class="b-rar r-ssr">神話級</span></div>
-        <div class="hc-roles"><span class="role-tag">集結主</span><span class="role-tag">乗り手</span></div>
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：弓兵</div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="greg">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">グレッグ</span><span class="i18n-en-inline">Greg</span></span><span class="hc-en i18n-ja-inline">Greg</span></div>
+        <div class="hc-badges"><span class="b-cls mks"><span class="i18n-ja-inline">弓兵</span><span class="i18n-en-inline">Marksman</span></span><span class="b-gen"><span class="i18n-ja-inline">第3世代</span><span class="i18n-en-inline">Gen 3</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
+        <div class="hc-roles"><span class="role-tag"><span class="i18n-ja-inline">集結主</span><span class="i18n-en-inline">Rally Leader</span></span><span class="role-tag"><span class="i18n-ja-inline">乗り手</span><span class="i18n-en-inline">Joiner</span></span></div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：弓兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Marksman</span></div>
         <dl class="hc-skills">
-<div><dt>集結主スキル<small>(遠征由来)</small></dt><dd>20%で全軍ダメ40/3T(正義の剣)</dd></div><div><dt>乗り手スキル<small>(遠征1)</small></dt><dd>20%で全軍ダメ+8→40%/3T(正義の剣)</dd></div><div><dt>専用装備ステータス</dt><dd>攻撃+4.8% / 殺傷+9.6%</dd></div><div><dt>兵種シナジー</dt><dd>弓兵と同陣で+4%</dd></div><div><dt>実測参考値</dt><dd>攻撃290.23</dd></div><div><dt>備考</dt><dd>集結HP+15%(熊補正なし)</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">集結主スキル<small>(遠征由来)</small></span><span class="i18n-en-inline">Rally-leader skill<small>(from exped.)</small></span></dt><dd><span class="i18n-ja-inline">20%で全軍ダメ40/3T(正義の剣)</span><span class="i18n-en-inline">20%: all-army dmg 40/3T (Sword of Justice)</span></dd></div><div><dt><span class="i18n-ja-inline">乗り手スキル<small>(遠征1)</small></span><span class="i18n-en-inline">Joiner skill<small>(exped. 1)</small></span></dt><dd><span class="i18n-ja-inline">20%で全軍ダメ+8→40%/3T(正義の剣)</span><span class="i18n-en-inline">20%: all-army dmg +8→40%/3T (Sword of Justice)</span></dd></div><div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+4.8% / 殺傷+9.6%</span><span class="i18n-en-inline">Atk +4.8% / Lethality +9.6%</span></dd></div><div><dt><span class="i18n-ja-inline">兵種シナジー</span><span class="i18n-en-inline">Troop synergy</span></dt><dd><span class="i18n-ja-inline">弓兵と同陣で+4%</span><span class="i18n-en-inline">+4% with Marksman</span></dd></div><div><dt><span class="i18n-ja-inline">実測参考値</span><span class="i18n-en-inline">Measured ref.</span></dt><dd><span class="i18n-ja-inline">攻撃290.23</span><span class="i18n-en-inline">Atk 290.23</span></dd></div><div><dt><span class="i18n-ja-inline">備考</span><span class="i18n-en-inline">Note</span></dt><dd><span class="i18n-ja-inline">集結HP+15%(熊補正なし)</span><span class="i18n-en-inline">Rally HP +15% (no bear effect)</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="4" data-cls="inf" data-rar="SSR" data-role="" data-id="ahmose" data-name="アクモス ahmose ahmose">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="ahmose">☆</button>
-        <div class="hc-head"><span class="hc-name">アクモス</span><span class="hc-en">Ahmose</span></div>
-        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">第4世代</span><span class="b-rar r-ssr">神話級</span></div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="ahmose">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">アクモス</span><span class="i18n-en-inline">Ahmose</span></span><span class="hc-en i18n-ja-inline">Ahmose</span></div>
+        <div class="hc-badges"><span class="b-cls inf"><span class="i18n-ja-inline">歩兵</span><span class="i18n-en-inline">Infantry</span></span><span class="b-gen"><span class="i18n-ja-inline">第4世代</span><span class="i18n-en-inline">Gen 4</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
         
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：歩兵</div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：歩兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Infantry</span></div>
         <dl class="hc-skills">
-<div><dt>専用装備ステータス</dt><dd>攻撃+5.2% / 殺傷+10.4%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+5.2% / 殺傷+10.4%</span><span class="i18n-en-inline">Atk +5.2% / Lethality +10.4%</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="4" data-cls="lan" data-rar="SSR" data-role="集結主,乗り手,専用装備" data-id="reina" data-name="レイナ reina reina">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="reina">☆</button>
-        <div class="hc-head"><span class="hc-name">レイナ</span><span class="hc-en">Reina</span></div>
-        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">第4世代</span><span class="b-rar r-ssr">神話級</span></div>
-        <div class="hc-roles"><span class="role-tag">集結主</span><span class="role-tag">乗り手</span><span class="role-tag">専用装備</span></div>
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：槍兵</div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="reina">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">レイナ</span><span class="i18n-en-inline">Reina</span></span><span class="hc-en i18n-ja-inline">Reina</span></div>
+        <div class="hc-badges"><span class="b-cls lan"><span class="i18n-ja-inline">槍兵</span><span class="i18n-en-inline">Lancer</span></span><span class="b-gen"><span class="i18n-ja-inline">第4世代</span><span class="i18n-en-inline">Gen 4</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
+        <div class="hc-roles"><span class="role-tag"><span class="i18n-ja-inline">集結主</span><span class="i18n-en-inline">Rally Leader</span></span><span class="role-tag"><span class="i18n-ja-inline">乗り手</span><span class="i18n-en-inline">Joiner</span></span><span class="role-tag"><span class="i18n-ja-inline">専用装備</span><span class="i18n-en-inline">Exclusive Gear</span></span></div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：槍兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Lancer</span></div>
         <dl class="hc-skills">
-<div><dt>集結主スキル<small>(遠征由来)</small></dt><dd>通常攻撃30/槍25%で200%追撃</dd></div><div><dt>乗り手スキル<small>(遠征1)</small></dt><dd>通常攻撃ダメ+30%(troop限定)</dd></div><div><dt>専用装備バフ</dt><dd>集結殺傷+5→15%</dd></div><div><dt>専用装備ステータス</dt><dd>攻撃+5.2% / 殺傷+10.4%</dd></div><div><dt>兵種シナジー</dt><dd>槍兵と同陣で+5%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">集結主スキル<small>(遠征由来)</small></span><span class="i18n-en-inline">Rally-leader skill<small>(from exped.)</small></span></dt><dd><span class="i18n-ja-inline">通常攻撃30/槍25%で200%追撃</span><span class="i18n-en-inline">Normal atk 30 / lancer 25%: 200% follow-up</span></dd></div><div><dt><span class="i18n-ja-inline">乗り手スキル<small>(遠征1)</small></span><span class="i18n-en-inline">Joiner skill<small>(exped. 1)</small></span></dt><dd><span class="i18n-ja-inline">通常攻撃ダメ+30%(troop限定)</span><span class="i18n-en-inline">Normal attack dmg +30%</span></dd></div><div><dt><span class="i18n-ja-inline">専用装備バフ</span><span class="i18n-en-inline">Exclusive gear buff</span></dt><dd><span class="i18n-ja-inline">集結殺傷+5→15%</span><span class="i18n-en-inline">Rally lethality +5→15%</span></dd></div><div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+5.2% / 殺傷+10.4%</span><span class="i18n-en-inline">Atk +5.2% / Lethality +10.4%</span></dd></div><div><dt><span class="i18n-ja-inline">兵種シナジー</span><span class="i18n-en-inline">Troop synergy</span></dt><dd><span class="i18n-ja-inline">槍兵と同陣で+5%</span><span class="i18n-en-inline">+5% with Lancer</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="4" data-cls="mks" data-rar="SSR" data-role="集結主,乗り手" data-id="lynn" data-name="リオン lynn lynn">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="lynn">☆</button>
-        <div class="hc-head"><span class="hc-name">リオン</span><span class="hc-en">Lynn</span></div>
-        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">第4世代</span><span class="b-rar r-ssr">神話級</span></div>
-        <div class="hc-roles"><span class="role-tag">集結主</span><span class="role-tag">乗り手</span></div>
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：弓兵</div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="lynn">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">リオン</span><span class="i18n-en-inline">Lynn</span></span><span class="hc-en i18n-ja-inline">Lynn</span></div>
+        <div class="hc-badges"><span class="b-cls mks"><span class="i18n-ja-inline">弓兵</span><span class="i18n-en-inline">Marksman</span></span><span class="b-gen"><span class="i18n-ja-inline">第4世代</span><span class="i18n-en-inline">Gen 4</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
+        <div class="hc-roles"><span class="role-tag"><span class="i18n-ja-inline">集結主</span><span class="i18n-en-inline">Rally Leader</span></span><span class="role-tag"><span class="i18n-ja-inline">乗り手</span><span class="i18n-en-inline">Joiner</span></span></div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：弓兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Marksman</span></div>
         <dl class="hc-skills">
-<div><dt>集結主スキル<small>(遠征由来)</small></dt><dd>40%で与ダメ50</dd></div><div><dt>乗り手スキル<small>(遠征1)</small></dt><dd>40%で与ダメ+50%(期待+20%)</dd></div><div><dt>専用装備ステータス</dt><dd>攻撃+5.2% / 殺傷+10.4%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">集結主スキル<small>(遠征由来)</small></span><span class="i18n-en-inline">Rally-leader skill<small>(from exped.)</small></span></dt><dd><span class="i18n-ja-inline">40%で与ダメ50</span><span class="i18n-en-inline">40%: dmg dealt 50</span></dd></div><div><dt><span class="i18n-ja-inline">乗り手スキル<small>(遠征1)</small></span><span class="i18n-en-inline">Joiner skill<small>(exped. 1)</small></span></dt><dd><span class="i18n-ja-inline">40%で与ダメ+50%(期待+20%)</span><span class="i18n-en-inline">40%: dmg dealt +50% (avg +20%)</span></dd></div><div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+5.2% / 殺傷+10.4%</span><span class="i18n-en-inline">Atk +5.2% / Lethality +10.4%</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="5" data-cls="inf" data-rar="SSR" data-role="集結主" data-id="hector" data-name="ヘクトー hector hector">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="hector">☆</button>
-        <div class="hc-head"><span class="hc-name">ヘクトー</span><span class="hc-en">Hector</span></div>
-        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">第5世代</span><span class="b-rar r-ssr">神話級</span></div>
-        <div class="hc-roles"><span class="role-tag">集結主</span></div>
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：歩兵</div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="hector">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">ヘクトー</span><span class="i18n-en-inline">Hector</span></span><span class="hc-en i18n-ja-inline">Hector</span></div>
+        <div class="hc-badges"><span class="b-cls inf"><span class="i18n-ja-inline">歩兵</span><span class="i18n-en-inline">Infantry</span></span><span class="b-gen"><span class="i18n-ja-inline">第5世代</span><span class="i18n-en-inline">Gen 5</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
+        <div class="hc-roles"><span class="role-tag"><span class="i18n-ja-inline">集結主</span><span class="i18n-en-inline">Rally Leader</span></span></div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：歩兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Infantry</span></div>
         <dl class="hc-skills">
-<div><dt>集結主スキル<small>(遠征由来)</small></dt><dd>盾優先:与ダメ減衰(盾200/弓50%)+25%追撃</dd></div><div><dt>専用装備ステータス</dt><dd>攻撃+5.6% / 殺傷+11.2%</dd></div><div><dt>兵種シナジー</dt><dd>歩兵と同陣で+5%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">集結主スキル<small>(遠征由来)</small></span><span class="i18n-en-inline">Rally-leader skill<small>(from exped.)</small></span></dt><dd><span class="i18n-ja-inline">盾優先:与ダメ減衰(盾200/弓50%)+25%追撃</span><span class="i18n-en-inline">INF-focused: decaying dmg (INF 200/MKS 50%) + 25% follow-up</span></dd></div><div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+5.6% / 殺傷+11.2%</span><span class="i18n-en-inline">Atk +5.6% / Lethality +11.2%</span></dd></div><div><dt><span class="i18n-ja-inline">兵種シナジー</span><span class="i18n-en-inline">Troop synergy</span></dt><dd><span class="i18n-ja-inline">歩兵と同陣で+5%</span><span class="i18n-en-inline">+5% with Infantry</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="5" data-cls="lan" data-rar="SSR" data-role="乗り手" data-id="nora" data-name="ノラ nora nora">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="nora">☆</button>
-        <div class="hc-head"><span class="hc-name">ノラ</span><span class="hc-en">Nora</span></div>
-        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">第5世代</span><span class="b-rar r-ssr">神話級</span></div>
-        <div class="hc-roles"><span class="role-tag">乗り手</span></div>
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：槍兵</div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="nora">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">ノラ</span><span class="i18n-en-inline">Nora</span></span><span class="hc-en i18n-ja-inline">Nora</span></div>
+        <div class="hc-badges"><span class="b-cls lan"><span class="i18n-ja-inline">槍兵</span><span class="i18n-en-inline">Lancer</span></span><span class="b-gen"><span class="i18n-ja-inline">第5世代</span><span class="i18n-en-inline">Gen 5</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
+        <div class="hc-roles"><span class="role-tag"><span class="i18n-ja-inline">乗り手</span><span class="i18n-en-inline">Joiner</span></span></div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：槍兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Lancer</span></div>
         <dl class="hc-skills">
-<div><dt>乗り手スキル<small>(遠征1)</small></dt><dd>盾弓:与ダメ+15%</dd></div><div><dt>専用装備ステータス</dt><dd>攻撃+5.6% / 殺傷+11.2%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">乗り手スキル<small>(遠征1)</small></span><span class="i18n-en-inline">Joiner skill<small>(exped. 1)</small></span></dt><dd><span class="i18n-ja-inline">盾弓:与ダメ+15%</span><span class="i18n-en-inline">Inf/Mks: dmg dealt +15%</span></dd></div><div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+5.6% / 殺傷+11.2%</span><span class="i18n-en-inline">Atk +5.6% / Lethality +11.2%</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="5" data-cls="mks" data-rar="SSR" data-role="集結主,乗り手" data-id="gwen" data-name="グエン gwen gwen">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="gwen">☆</button>
-        <div class="hc-head"><span class="hc-name">グエン</span><span class="hc-en">Gwen</span></div>
-        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">第5世代</span><span class="b-rar r-ssr">神話級</span></div>
-        <div class="hc-roles"><span class="role-tag">集結主</span><span class="role-tag">乗り手</span></div>
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：弓兵</div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="gwen">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">グエン</span><span class="i18n-en-inline">Gwen</span></span><span class="hc-en i18n-ja-inline">Gwen</span></div>
+        <div class="hc-badges"><span class="b-cls mks"><span class="i18n-ja-inline">弓兵</span><span class="i18n-en-inline">Marksman</span></span><span class="b-gen"><span class="i18n-ja-inline">第5世代</span><span class="i18n-en-inline">Gen 5</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
+        <div class="hc-roles"><span class="role-tag"><span class="i18n-ja-inline">集結主</span><span class="i18n-en-inline">Rally Leader</span></span><span class="role-tag"><span class="i18n-ja-inline">乗り手</span><span class="i18n-en-inline">Joiner</span></span></div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：弓兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Marksman</span></div>
         <dl class="hc-skills">
-<div><dt>集結主スキル<small>(遠征由来)</small></dt><dd>敵被ダメ25</dd></div><div><dt>乗り手スキル<small>(遠征1)</small></dt><dd>敵被ダメ+25%</dd></div><div><dt>専用装備ステータス</dt><dd>攻撃+5.6% / 殺傷+11.2%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">集結主スキル<small>(遠征由来)</small></span><span class="i18n-en-inline">Rally-leader skill<small>(from exped.)</small></span></dt><dd><span class="i18n-ja-inline">敵被ダメ25</span><span class="i18n-en-inline">Enemy dmg taken 25</span></dd></div><div><dt><span class="i18n-ja-inline">乗り手スキル<small>(遠征1)</small></span><span class="i18n-en-inline">Joiner skill<small>(exped. 1)</small></span></dt><dd><span class="i18n-ja-inline">敵被ダメ+25%</span><span class="i18n-en-inline">Enemy dmg taken +25%</span></dd></div><div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+5.6% / 殺傷+11.2%</span><span class="i18n-en-inline">Atk +5.6% / Lethality +11.2%</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="6" data-cls="inf" data-rar="SSR" data-role="" data-id="wuming" data-name="無名 wu ming wuming">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="wuming">☆</button>
-        <div class="hc-head"><span class="hc-name">無名</span><span class="hc-en">Wu Ming</span></div>
-        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">第6世代</span><span class="b-rar r-ssr">神話級</span></div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="wuming">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">無名</span><span class="i18n-en-inline">Wu Ming</span></span><span class="hc-en i18n-ja-inline">Wu Ming</span></div>
+        <div class="hc-badges"><span class="b-cls inf"><span class="i18n-ja-inline">歩兵</span><span class="i18n-en-inline">Infantry</span></span><span class="b-gen"><span class="i18n-ja-inline">第6世代</span><span class="i18n-en-inline">Gen 6</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
         
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：歩兵</div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：歩兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Infantry</span></div>
         <dl class="hc-skills">
-<div><dt>専用装備ステータス</dt><dd>攻撃+6% / 殺傷+12%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+6% / 殺傷+12%</span><span class="i18n-en-inline">Atk +6% / Lethality +12%</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="6" data-cls="lan" data-rar="SSR" data-role="乗り手" data-id="renee" data-name="レネ renee renee">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="renee">☆</button>
-        <div class="hc-head"><span class="hc-name">レネ</span><span class="hc-en">Renee</span></div>
-        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">第6世代</span><span class="b-rar r-ssr">神話級</span></div>
-        <div class="hc-roles"><span class="role-tag">乗り手</span></div>
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：槍兵</div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="renee">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">レネ</span><span class="i18n-en-inline">Renee</span></span><span class="hc-en i18n-ja-inline">Renee</span></div>
+        <div class="hc-badges"><span class="b-cls lan"><span class="i18n-ja-inline">槍兵</span><span class="i18n-en-inline">Lancer</span></span><span class="b-gen"><span class="i18n-ja-inline">第6世代</span><span class="i18n-en-inline">Gen 6</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
+        <div class="hc-roles"><span class="role-tag"><span class="i18n-ja-inline">乗り手</span><span class="i18n-en-inline">Joiner</span></span></div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：槍兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Lancer</span></div>
         <dl class="hc-skills">
-<div><dt>乗り手スキル<small>(遠征1)</small></dt><dd>槍:3T毎に200%追撃</dd></div><div><dt>専用装備ステータス</dt><dd>攻撃+6% / 殺傷+12%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">乗り手スキル<small>(遠征1)</small></span><span class="i18n-en-inline">Joiner skill<small>(exped. 1)</small></span></dt><dd><span class="i18n-ja-inline">槍:3T毎に200%追撃</span><span class="i18n-en-inline">Lancer: every 3T 200% follow-up</span></dd></div><div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+6% / 殺傷+12%</span><span class="i18n-en-inline">Atk +6% / Lethality +12%</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="6" data-cls="mks" data-rar="SSR" data-role="集結主,乗り手" data-id="wayne" data-name="ウェイン wayne wayne">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="wayne">☆</button>
-        <div class="hc-head"><span class="hc-name">ウェイン</span><span class="hc-en">Wayne</span></div>
-        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">第6世代</span><span class="b-rar r-ssr">神話級</span></div>
-        <div class="hc-roles"><span class="role-tag">集結主</span><span class="role-tag">乗り手</span></div>
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：弓兵</div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="wayne">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">ウェイン</span><span class="i18n-en-inline">Wayne</span></span><span class="hc-en i18n-ja-inline">Wayne</span></div>
+        <div class="hc-badges"><span class="b-cls mks"><span class="i18n-ja-inline">弓兵</span><span class="i18n-en-inline">Marksman</span></span><span class="b-gen"><span class="i18n-ja-inline">第6世代</span><span class="i18n-en-inline">Gen 6</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
+        <div class="hc-roles"><span class="role-tag"><span class="i18n-ja-inline">集結主</span><span class="i18n-en-inline">Rally Leader</span></span><span class="role-tag"><span class="i18n-ja-inline">乗り手</span><span class="i18n-en-inline">Joiner</span></span></div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：弓兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Marksman</span></div>
         <dl class="hc-skills">
-<div><dt>集結主スキル<small>(遠征由来)</small></dt><dd>4T毎100%追加攻撃</dd></div><div><dt>乗り手スキル<small>(遠征1)</small></dt><dd>4T毎に100%追加攻撃(+20%)</dd></div><div><dt>専用装備ステータス</dt><dd>攻撃+6% / 殺傷+12%</dd></div><div><dt>兵種シナジー</dt><dd>弓兵と同陣で+4%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">集結主スキル<small>(遠征由来)</small></span><span class="i18n-en-inline">Rally-leader skill<small>(from exped.)</small></span></dt><dd><span class="i18n-ja-inline">4T毎100%追加攻撃</span><span class="i18n-en-inline">Every 4T: 100% extra attack</span></dd></div><div><dt><span class="i18n-ja-inline">乗り手スキル<small>(遠征1)</small></span><span class="i18n-en-inline">Joiner skill<small>(exped. 1)</small></span></dt><dd><span class="i18n-ja-inline">4T毎に100%追加攻撃(+20%)</span><span class="i18n-en-inline">Every 4T: 100% extra attack (+20%)</span></dd></div><div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+6% / 殺傷+12%</span><span class="i18n-en-inline">Atk +6% / Lethality +12%</span></dd></div><div><dt><span class="i18n-ja-inline">兵種シナジー</span><span class="i18n-en-inline">Troop synergy</span></dt><dd><span class="i18n-ja-inline">弓兵と同陣で+4%</span><span class="i18n-en-inline">+4% with Marksman</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="7" data-cls="inf" data-rar="SSR" data-role="乗り手" data-id="edith" data-name="エディス edith edith">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="edith">☆</button>
-        <div class="hc-head"><span class="hc-name">エディス</span><span class="hc-en">Edith</span></div>
-        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">第7世代</span><span class="b-rar r-ssr">神話級</span></div>
-        <div class="hc-roles"><span class="role-tag">乗り手</span></div>
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：歩兵</div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="edith">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">エディス</span><span class="i18n-en-inline">Edith</span></span><span class="hc-en i18n-ja-inline">Edith</span></div>
+        <div class="hc-badges"><span class="b-cls inf"><span class="i18n-ja-inline">歩兵</span><span class="i18n-en-inline">Infantry</span></span><span class="b-gen"><span class="i18n-ja-inline">第7世代</span><span class="i18n-en-inline">Gen 7</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
+        <div class="hc-roles"><span class="role-tag"><span class="i18n-ja-inline">乗り手</span><span class="i18n-en-inline">Joiner</span></span></div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：歩兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Infantry</span></div>
         <dl class="hc-skills">
-<div><dt>乗り手スキル<small>(遠征1)</small></dt><dd>槍:与ダメ+20%</dd></div><div><dt>専用装備ステータス</dt><dd>攻撃+6.4% / 殺傷+12.8%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">乗り手スキル<small>(遠征1)</small></span><span class="i18n-en-inline">Joiner skill<small>(exped. 1)</small></span></dt><dd><span class="i18n-ja-inline">槍:与ダメ+20%</span><span class="i18n-en-inline">Lancer: dmg dealt +20%</span></dd></div><div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+6.4% / 殺傷+12.8%</span><span class="i18n-en-inline">Atk +6.4% / Lethality +12.8%</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="7" data-cls="lan" data-rar="SSR" data-role="乗り手" data-id="gordon" data-name="ゴードン gordon gordon">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="gordon">☆</button>
-        <div class="hc-head"><span class="hc-name">ゴードン</span><span class="hc-en">Gordon</span></div>
-        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">第7世代</span><span class="b-rar r-ssr">神話級</span></div>
-        <div class="hc-roles"><span class="role-tag">乗り手</span></div>
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：槍兵</div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="gordon">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">ゴードン</span><span class="i18n-en-inline">Gordon</span></span><span class="hc-en i18n-ja-inline">Gordon</span></div>
+        <div class="hc-badges"><span class="b-cls lan"><span class="i18n-ja-inline">槍兵</span><span class="i18n-en-inline">Lancer</span></span><span class="b-gen"><span class="i18n-ja-inline">第7世代</span><span class="i18n-en-inline">Gen 7</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
+        <div class="hc-roles"><span class="role-tag"><span class="i18n-ja-inline">乗り手</span><span class="i18n-en-inline">Joiner</span></span></div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：槍兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Lancer</span></div>
         <dl class="hc-skills">
-<div><dt>乗り手スキル<small>(遠征1)</small></dt><dd>槍:2回毎に100%追撃</dd></div><div><dt>専用装備ステータス</dt><dd>攻撃+6.4% / 殺傷+12.8%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">乗り手スキル<small>(遠征1)</small></span><span class="i18n-en-inline">Joiner skill<small>(exped. 1)</small></span></dt><dd><span class="i18n-ja-inline">槍:2回毎に100%追撃</span><span class="i18n-en-inline">Lancer: every 2 hits 100% follow-up</span></dd></div><div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+6.4% / 殺傷+12.8%</span><span class="i18n-en-inline">Atk +6.4% / Lethality +12.8%</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="7" data-cls="mks" data-rar="SSR" data-role="集結主,乗り手" data-id="bradley" data-name="ブラッドリー bradley bradley">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="bradley">☆</button>
-        <div class="hc-head"><span class="hc-name">ブラッドリー</span><span class="hc-en">Bradley</span></div>
-        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">第7世代</span><span class="b-rar r-ssr">神話級</span></div>
-        <div class="hc-roles"><span class="role-tag">集結主</span><span class="role-tag">乗り手</span></div>
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：弓兵</div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="bradley">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">ブラッドリー</span><span class="i18n-en-inline">Bradley</span></span><span class="hc-en i18n-ja-inline">Bradley</span></div>
+        <div class="hc-badges"><span class="b-cls mks"><span class="i18n-ja-inline">弓兵</span><span class="i18n-en-inline">Marksman</span></span><span class="b-gen"><span class="i18n-ja-inline">第7世代</span><span class="i18n-en-inline">Gen 7</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
+        <div class="hc-roles"><span class="role-tag"><span class="i18n-ja-inline">集結主</span><span class="i18n-en-inline">Rally Leader</span></span><span class="role-tag"><span class="i18n-ja-inline">乗り手</span><span class="i18n-en-inline">Joiner</span></span></div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：弓兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Marksman</span></div>
         <dl class="hc-skills">
-<div><dt>集結主スキル<small>(遠征由来)</small></dt><dd>攻撃25/4T毎与ダメ30(戦局洞察)</dd></div><div><dt>乗り手スキル<small>(遠征1)</small></dt><dd>攻撃+5→25%(老兵の誇り)</dd></div><div><dt>専用装備ステータス</dt><dd>攻撃+6.4% / 殺傷+12.8%</dd></div><div><dt>兵種シナジー</dt><dd>弓兵と同陣で+8%</dd></div><div><dt>実測参考値</dt><dd>攻撃650.52</dd></div><div><dt>備考</dt><dd>防衛部隊攻撃+15%(熊補正なし)</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">集結主スキル<small>(遠征由来)</small></span><span class="i18n-en-inline">Rally-leader skill<small>(from exped.)</small></span></dt><dd><span class="i18n-ja-inline">攻撃25/4T毎与ダメ30(戦局洞察)</span><span class="i18n-en-inline">Attack 25 / every 4T dmg 30 (Battle Insight)</span></dd></div><div><dt><span class="i18n-ja-inline">乗り手スキル<small>(遠征1)</small></span><span class="i18n-en-inline">Joiner skill<small>(exped. 1)</small></span></dt><dd><span class="i18n-ja-inline">攻撃+5→25%(老兵の誇り)</span><span class="i18n-en-inline">Attack +5→25% (Veteran's Pride)</span></dd></div><div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+6.4% / 殺傷+12.8%</span><span class="i18n-en-inline">Atk +6.4% / Lethality +12.8%</span></dd></div><div><dt><span class="i18n-ja-inline">兵種シナジー</span><span class="i18n-en-inline">Troop synergy</span></dt><dd><span class="i18n-ja-inline">弓兵と同陣で+8%</span><span class="i18n-en-inline">+8% with Marksman</span></dd></div><div><dt><span class="i18n-ja-inline">実測参考値</span><span class="i18n-en-inline">Measured ref.</span></dt><dd><span class="i18n-ja-inline">攻撃650.52</span><span class="i18n-en-inline">Atk 650.52</span></dd></div><div><dt><span class="i18n-ja-inline">備考</span><span class="i18n-en-inline">Note</span></dt><dd><span class="i18n-ja-inline">防衛部隊攻撃+15%(熊補正なし)</span><span class="i18n-en-inline">Defense troop attack +15% (no bear effect)</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="8" data-cls="inf" data-rar="SSR" data-role="" data-id="gatot" data-name="ガト gatot gatot">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="gatot">☆</button>
-        <div class="hc-head"><span class="hc-name">ガト</span><span class="hc-en">Gatot</span></div>
-        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">第8世代</span><span class="b-rar r-ssr">神話級</span></div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="gatot">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">ガト</span><span class="i18n-en-inline">Gatot</span></span><span class="hc-en i18n-ja-inline">Gatot</span></div>
+        <div class="hc-badges"><span class="b-cls inf"><span class="i18n-ja-inline">歩兵</span><span class="i18n-en-inline">Infantry</span></span><span class="b-gen"><span class="i18n-ja-inline">第8世代</span><span class="i18n-en-inline">Gen 8</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
         
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：歩兵</div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：歩兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Infantry</span></div>
         <dl class="hc-skills">
-<div><dt>専用装備ステータス</dt><dd>攻撃+6.8% / 殺傷+13.6%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+6.8% / 殺傷+13.6%</span><span class="i18n-en-inline">Atk +6.8% / Lethality +13.6%</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="8" data-cls="lan" data-rar="SSR" data-role="集結主,乗り手" data-id="sonya" data-name="ソニヤ sonya sonya">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="sonya">☆</button>
-        <div class="hc-head"><span class="hc-name">ソニヤ</span><span class="hc-en">Sonya</span></div>
-        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">第8世代</span><span class="b-rar r-ssr">神話級</span></div>
-        <div class="hc-roles"><span class="role-tag">集結主</span><span class="role-tag">乗り手</span></div>
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：槍兵</div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="sonya">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">ソニヤ</span><span class="i18n-en-inline">Sonya</span></span><span class="hc-en i18n-ja-inline">Sonya</span></div>
+        <div class="hc-badges"><span class="b-cls lan"><span class="i18n-ja-inline">槍兵</span><span class="i18n-en-inline">Lancer</span></span><span class="b-gen"><span class="i18n-ja-inline">第8世代</span><span class="i18n-en-inline">Gen 8</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
+        <div class="hc-roles"><span class="role-tag"><span class="i18n-ja-inline">集結主</span><span class="i18n-en-inline">Rally Leader</span></span><span class="role-tag"><span class="i18n-ja-inline">乗り手</span><span class="i18n-en-inline">Joiner</span></span></div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：槍兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Lancer</span></div>
         <dl class="hc-skills">
-<div><dt>集結主スキル<small>(遠征由来)</small></dt><dd>与ダメ20/周期火力/槍強化</dd></div><div><dt>乗り手スキル<small>(遠征1)</small></dt><dd>与ダメ+20%</dd></div><div><dt>専用装備ステータス</dt><dd>攻撃+6.8% / 殺傷+13.6%</dd></div><div><dt>兵種シナジー</dt><dd>槍兵と同陣で+5%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">集結主スキル<small>(遠征由来)</small></span><span class="i18n-en-inline">Rally-leader skill<small>(from exped.)</small></span></dt><dd><span class="i18n-ja-inline">与ダメ20/周期火力/槍強化</span><span class="i18n-en-inline">Dmg 20 / periodic burst / lancer boost</span></dd></div><div><dt><span class="i18n-ja-inline">乗り手スキル<small>(遠征1)</small></span><span class="i18n-en-inline">Joiner skill<small>(exped. 1)</small></span></dt><dd><span class="i18n-ja-inline">与ダメ+20%</span><span class="i18n-en-inline">Dmg dealt +20%</span></dd></div><div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+6.8% / 殺傷+13.6%</span><span class="i18n-en-inline">Atk +6.8% / Lethality +13.6%</span></dd></div><div><dt><span class="i18n-ja-inline">兵種シナジー</span><span class="i18n-en-inline">Troop synergy</span></dt><dd><span class="i18n-ja-inline">槍兵と同陣で+5%</span><span class="i18n-en-inline">+5% with Lancer</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="8" data-cls="mks" data-rar="SSR" data-role="集結主,乗り手" data-id="hendrik" data-name="ヘンドリック hendrik hendrik">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="hendrik">☆</button>
-        <div class="hc-head"><span class="hc-name">ヘンドリック</span><span class="hc-en">Hendrik</span></div>
-        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">第8世代</span><span class="b-rar r-ssr">神話級</span></div>
-        <div class="hc-roles"><span class="role-tag">集結主</span><span class="role-tag">乗り手</span></div>
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：弓兵</div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="hendrik">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">ヘンドリック</span><span class="i18n-en-inline">Hendrik</span></span><span class="hc-en i18n-ja-inline">Hendrik</span></div>
+        <div class="hc-badges"><span class="b-cls mks"><span class="i18n-ja-inline">弓兵</span><span class="i18n-en-inline">Marksman</span></span><span class="b-gen"><span class="i18n-ja-inline">第8世代</span><span class="i18n-en-inline">Gen 8</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
+        <div class="hc-roles"><span class="role-tag"><span class="i18n-ja-inline">集結主</span><span class="i18n-en-inline">Rally Leader</span></span><span class="role-tag"><span class="i18n-ja-inline">乗り手</span><span class="i18n-en-inline">Joiner</span></span></div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：弓兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Marksman</span></div>
         <dl class="hc-skills">
-<div><dt>集結主スキル<small>(遠征由来)</small></dt><dd>敵防御-25%(被ダメ増)</dd></div><div><dt>乗り手スキル<small>(遠征1)</small></dt><dd>敵防御-25%(被ダメ増)</dd></div><div><dt>専用装備ステータス</dt><dd>攻撃+6.8% / 殺傷+13.6%</dd></div><div><dt>兵種シナジー</dt><dd>弓兵と同陣で+5%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">集結主スキル<small>(遠征由来)</small></span><span class="i18n-en-inline">Rally-leader skill<small>(from exped.)</small></span></dt><dd><span class="i18n-ja-inline">敵防御-25%(被ダメ増)</span><span class="i18n-en-inline">Enemy DEF -25% (more dmg taken)</span></dd></div><div><dt><span class="i18n-ja-inline">乗り手スキル<small>(遠征1)</small></span><span class="i18n-en-inline">Joiner skill<small>(exped. 1)</small></span></dt><dd><span class="i18n-ja-inline">敵防御-25%(被ダメ増)</span><span class="i18n-en-inline">Enemy DEF -25% (more dmg taken)</span></dd></div><div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+6.8% / 殺傷+13.6%</span><span class="i18n-en-inline">Atk +6.8% / Lethality +13.6%</span></dd></div><div><dt><span class="i18n-ja-inline">兵種シナジー</span><span class="i18n-en-inline">Troop synergy</span></dt><dd><span class="i18n-ja-inline">弓兵と同陣で+5%</span><span class="i18n-en-inline">+5% with Marksman</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="9" data-cls="inf" data-rar="SSR" data-role="集結主,乗り手" data-id="magnus" data-name="マグヌス magnus magnus">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="magnus">☆</button>
-        <div class="hc-head"><span class="hc-name">マグヌス</span><span class="hc-en">Magnus</span></div>
-        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">第9世代</span><span class="b-rar r-ssr">神話級</span></div>
-        <div class="hc-roles"><span class="role-tag">集結主</span><span class="role-tag">乗り手</span></div>
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：歩兵</div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="magnus">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">マグヌス</span><span class="i18n-en-inline">Magnus</span></span><span class="hc-en i18n-ja-inline">Magnus</span></div>
+        <div class="hc-badges"><span class="b-cls inf"><span class="i18n-ja-inline">歩兵</span><span class="i18n-en-inline">Infantry</span></span><span class="b-gen"><span class="i18n-ja-inline">第9世代</span><span class="i18n-en-inline">Gen 9</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
+        <div class="hc-roles"><span class="role-tag"><span class="i18n-ja-inline">集結主</span><span class="i18n-en-inline">Rally Leader</span></span><span class="role-tag"><span class="i18n-ja-inline">乗り手</span><span class="i18n-en-inline">Joiner</span></span></div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：歩兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Infantry</span></div>
         <dl class="hc-skills">
-<div><dt>集結主スキル<small>(遠征由来)</small></dt><dd>攻撃25/弓与ダメ10</dd></div><div><dt>乗り手スキル<small>(遠征1)</small></dt><dd>攻撃+25%</dd></div><div><dt>専用装備ステータス</dt><dd>攻撃+7.2% / 殺傷+14.4%</dd></div><div><dt>兵種シナジー</dt><dd>歩兵と同陣で+3%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">集結主スキル<small>(遠征由来)</small></span><span class="i18n-en-inline">Rally-leader skill<small>(from exped.)</small></span></dt><dd><span class="i18n-ja-inline">攻撃25/弓与ダメ10</span><span class="i18n-en-inline">Attack 25 / mks dmg 10</span></dd></div><div><dt><span class="i18n-ja-inline">乗り手スキル<small>(遠征1)</small></span><span class="i18n-en-inline">Joiner skill<small>(exped. 1)</small></span></dt><dd><span class="i18n-ja-inline">攻撃+25%</span><span class="i18n-en-inline">Attack +25%</span></dd></div><div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+7.2% / 殺傷+14.4%</span><span class="i18n-en-inline">Atk +7.2% / Lethality +14.4%</span></dd></div><div><dt><span class="i18n-ja-inline">兵種シナジー</span><span class="i18n-en-inline">Troop synergy</span></dt><dd><span class="i18n-ja-inline">歩兵と同陣で+3%</span><span class="i18n-en-inline">+3% with Infantry</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="9" data-cls="lan" data-rar="SSR" data-role="" data-id="fred" data-name="フレッド fred fred">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="fred">☆</button>
-        <div class="hc-head"><span class="hc-name">フレッド</span><span class="hc-en">Fred</span></div>
-        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">第9世代</span><span class="b-rar r-ssr">神話級</span></div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="fred">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">フレッド</span><span class="i18n-en-inline">Fred</span></span><span class="hc-en i18n-ja-inline">Fred</span></div>
+        <div class="hc-badges"><span class="b-cls lan"><span class="i18n-ja-inline">槍兵</span><span class="i18n-en-inline">Lancer</span></span><span class="b-gen"><span class="i18n-ja-inline">第9世代</span><span class="i18n-en-inline">Gen 9</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
         
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：槍兵</div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：槍兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Lancer</span></div>
         <dl class="hc-skills">
-<div><dt>専用装備ステータス</dt><dd>攻撃+7.2% / 殺傷+14.4%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+7.2% / 殺傷+14.4%</span><span class="i18n-en-inline">Atk +7.2% / Lethality +14.4%</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="9" data-cls="mks" data-rar="SSR" data-role="" data-id="xura" data-name="シュラ xura xura">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="xura">☆</button>
-        <div class="hc-head"><span class="hc-name">シュラ</span><span class="hc-en">Xura</span></div>
-        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">第9世代</span><span class="b-rar r-ssr">神話級</span></div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="xura">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">シュラ</span><span class="i18n-en-inline">Xura</span></span><span class="hc-en i18n-ja-inline">Xura</span></div>
+        <div class="hc-badges"><span class="b-cls mks"><span class="i18n-ja-inline">弓兵</span><span class="i18n-en-inline">Marksman</span></span><span class="b-gen"><span class="i18n-ja-inline">第9世代</span><span class="i18n-en-inline">Gen 9</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
         
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：弓兵</div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：弓兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Marksman</span></div>
         <dl class="hc-skills">
-<div><dt>専用装備ステータス</dt><dd>攻撃+7.2% / 殺傷+14.4%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+7.2% / 殺傷+14.4%</span><span class="i18n-en-inline">Atk +7.2% / Lethality +14.4%</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="10" data-cls="inf" data-rar="SSR" data-role="" data-id="gregory" data-name="グレゴリー gregory gregory">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="gregory">☆</button>
-        <div class="hc-head"><span class="hc-name">グレゴリー</span><span class="hc-en">Gregory</span></div>
-        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">第10世代</span><span class="b-rar r-ssr">神話級</span></div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="gregory">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">グレゴリー</span><span class="i18n-en-inline">Gregory</span></span><span class="hc-en i18n-ja-inline">Gregory</span></div>
+        <div class="hc-badges"><span class="b-cls inf"><span class="i18n-ja-inline">歩兵</span><span class="i18n-en-inline">Infantry</span></span><span class="b-gen"><span class="i18n-ja-inline">第10世代</span><span class="i18n-en-inline">Gen 10</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
         
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：歩兵</div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：歩兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Infantry</span></div>
         <dl class="hc-skills">
-<div><dt>専用装備ステータス</dt><dd>攻撃+7.6% / 殺傷+15.2%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+7.6% / 殺傷+15.2%</span><span class="i18n-en-inline">Atk +7.6% / Lethality +15.2%</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="10" data-cls="lan" data-rar="SSR" data-role="" data-id="freya" data-name="フレイヤ freya freya">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="freya">☆</button>
-        <div class="hc-head"><span class="hc-name">フレイヤ</span><span class="hc-en">Freya</span></div>
-        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">第10世代</span><span class="b-rar r-ssr">神話級</span></div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="freya">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">フレイヤ</span><span class="i18n-en-inline">Freya</span></span><span class="hc-en i18n-ja-inline">Freya</span></div>
+        <div class="hc-badges"><span class="b-cls lan"><span class="i18n-ja-inline">槍兵</span><span class="i18n-en-inline">Lancer</span></span><span class="b-gen"><span class="i18n-ja-inline">第10世代</span><span class="i18n-en-inline">Gen 10</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
         
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：槍兵</div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：槍兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Lancer</span></div>
         <dl class="hc-skills">
-<div><dt>専用装備ステータス</dt><dd>攻撃+7.6% / 殺傷+15.2%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+7.6% / 殺傷+15.2%</span><span class="i18n-en-inline">Atk +7.6% / Lethality +15.2%</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="10" data-cls="mks" data-rar="SSR" data-role="集結主,乗り手" data-id="blanchette" data-name="ブランシュ blanchette blanchette">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="blanchette">☆</button>
-        <div class="hc-head"><span class="hc-name">ブランシュ</span><span class="hc-en">Blanchette</span></div>
-        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">第10世代</span><span class="b-rar r-ssr">神話級</span></div>
-        <div class="hc-roles"><span class="role-tag">集結主</span><span class="role-tag">乗り手</span></div>
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：弓兵</div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="blanchette">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">ブランシュ</span><span class="i18n-en-inline">Blanchette</span></span><span class="hc-en i18n-ja-inline">Blanchette</span></div>
+        <div class="hc-badges"><span class="b-cls mks"><span class="i18n-ja-inline">弓兵</span><span class="i18n-en-inline">Marksman</span></span><span class="b-gen"><span class="i18n-ja-inline">第10世代</span><span class="i18n-en-inline">Gen 10</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
+        <div class="hc-roles"><span class="role-tag"><span class="i18n-ja-inline">集結主</span><span class="i18n-en-inline">Rally Leader</span></span><span class="role-tag"><span class="i18n-ja-inline">乗り手</span><span class="i18n-en-inline">Joiner</span></span></div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：弓兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Marksman</span></div>
         <dl class="hc-skills">
-<div><dt>集結主スキル<small>(遠征由来)</small></dt><dd>殺傷25/3T毎弓75%追撃</dd></div><div><dt>乗り手スキル<small>(遠征1)</small></dt><dd>殺傷+25%</dd></div><div><dt>専用装備ステータス</dt><dd>攻撃+7.6% / 殺傷+15.2%</dd></div><div><dt>兵種シナジー</dt><dd>弓兵と同陣で+8%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">集結主スキル<small>(遠征由来)</small></span><span class="i18n-en-inline">Rally-leader skill<small>(from exped.)</small></span></dt><dd><span class="i18n-ja-inline">殺傷25/3T毎弓75%追撃</span><span class="i18n-en-inline">Lethality 25 / every 3T mks 75% follow-up</span></dd></div><div><dt><span class="i18n-ja-inline">乗り手スキル<small>(遠征1)</small></span><span class="i18n-en-inline">Joiner skill<small>(exped. 1)</small></span></dt><dd><span class="i18n-ja-inline">殺傷+25%</span><span class="i18n-en-inline">Lethality +25%</span></dd></div><div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+7.6% / 殺傷+15.2%</span><span class="i18n-en-inline">Atk +7.6% / Lethality +15.2%</span></dd></div><div><dt><span class="i18n-ja-inline">兵種シナジー</span><span class="i18n-en-inline">Troop synergy</span></dt><dd><span class="i18n-ja-inline">弓兵と同陣で+8%</span><span class="i18n-en-inline">+8% with Marksman</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="11" data-cls="inf" data-rar="SSR" data-role="" data-id="eleonora" data-name="エリオノーラ eleonora eleonora">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="eleonora">☆</button>
-        <div class="hc-head"><span class="hc-name">エリオノーラ</span><span class="hc-en">Eleonora</span></div>
-        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">第11世代</span><span class="b-rar r-ssr">神話級</span></div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="eleonora">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">エリオノーラ</span><span class="i18n-en-inline">Eleonora</span></span><span class="hc-en i18n-ja-inline">Eleonora</span></div>
+        <div class="hc-badges"><span class="b-cls inf"><span class="i18n-ja-inline">歩兵</span><span class="i18n-en-inline">Infantry</span></span><span class="b-gen"><span class="i18n-ja-inline">第11世代</span><span class="i18n-en-inline">Gen 11</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
         
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：歩兵</div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：歩兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Infantry</span></div>
         <dl class="hc-skills">
-<div><dt>専用装備ステータス</dt><dd>攻撃+8% / 殺傷+16%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+8% / 殺傷+16%</span><span class="i18n-en-inline">Atk +8% / Lethality +16%</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="11" data-cls="lan" data-rar="SSR" data-role="" data-id="lloyd" data-name="ロイド lloyd lloyd">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="lloyd">☆</button>
-        <div class="hc-head"><span class="hc-name">ロイド</span><span class="hc-en">Lloyd</span></div>
-        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">第11世代</span><span class="b-rar r-ssr">神話級</span></div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="lloyd">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">ロイド</span><span class="i18n-en-inline">Lloyd</span></span><span class="hc-en i18n-ja-inline">Lloyd</span></div>
+        <div class="hc-badges"><span class="b-cls lan"><span class="i18n-ja-inline">槍兵</span><span class="i18n-en-inline">Lancer</span></span><span class="b-gen"><span class="i18n-ja-inline">第11世代</span><span class="i18n-en-inline">Gen 11</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
         
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：槍兵</div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：槍兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Lancer</span></div>
         <dl class="hc-skills">
-<div><dt>専用装備ステータス</dt><dd>攻撃+8% / 殺傷+16%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+8% / 殺傷+16%</span><span class="i18n-en-inline">Atk +8% / Lethality +16%</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="11" data-cls="mks" data-rar="SSR" data-role="集結主,乗り手" data-id="rufus" data-name="ルーファス rufus rufus">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="rufus">☆</button>
-        <div class="hc-head"><span class="hc-name">ルーファス</span><span class="hc-en">Rufus</span></div>
-        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">第11世代</span><span class="b-rar r-ssr">神話級</span></div>
-        <div class="hc-roles"><span class="role-tag">集結主</span><span class="role-tag">乗り手</span></div>
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：弓兵</div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="rufus">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">ルーファス</span><span class="i18n-en-inline">Rufus</span></span><span class="hc-en i18n-ja-inline">Rufus</span></div>
+        <div class="hc-badges"><span class="b-cls mks"><span class="i18n-ja-inline">弓兵</span><span class="i18n-en-inline">Marksman</span></span><span class="b-gen"><span class="i18n-ja-inline">第11世代</span><span class="i18n-en-inline">Gen 11</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
+        <div class="hc-roles"><span class="role-tag"><span class="i18n-ja-inline">集結主</span><span class="i18n-en-inline">Rally Leader</span></span><span class="role-tag"><span class="i18n-ja-inline">乗り手</span><span class="i18n-en-inline">Joiner</span></span></div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：弓兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Marksman</span></div>
         <dl class="hc-skills">
-<div><dt>集結主スキル<small>(遠征由来)</small></dt><dd>攻撃25/弓与ダメ60</dd></div><div><dt>乗り手スキル<small>(遠征1)</small></dt><dd>攻撃+25%</dd></div><div><dt>専用装備ステータス</dt><dd>攻撃+8% / 殺傷+16%</dd></div><div><dt>兵種シナジー</dt><dd>弓兵と同陣で+8%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">集結主スキル<small>(遠征由来)</small></span><span class="i18n-en-inline">Rally-leader skill<small>(from exped.)</small></span></dt><dd><span class="i18n-ja-inline">攻撃25/弓与ダメ60</span><span class="i18n-en-inline">Attack 25 / mks dmg 60</span></dd></div><div><dt><span class="i18n-ja-inline">乗り手スキル<small>(遠征1)</small></span><span class="i18n-en-inline">Joiner skill<small>(exped. 1)</small></span></dt><dd><span class="i18n-ja-inline">攻撃+25%</span><span class="i18n-en-inline">Attack +25%</span></dd></div><div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+8% / 殺傷+16%</span><span class="i18n-en-inline">Atk +8% / Lethality +16%</span></dd></div><div><dt><span class="i18n-ja-inline">兵種シナジー</span><span class="i18n-en-inline">Troop synergy</span></dt><dd><span class="i18n-ja-inline">弓兵と同陣で+8%</span><span class="i18n-en-inline">+8% with Marksman</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="12" data-cls="inf" data-rar="SSR" data-role="集結主,乗り手" data-id="hervor" data-name="ヘルヴィル hervor hervor">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="hervor">☆</button>
-        <div class="hc-head"><span class="hc-name">ヘルヴィル</span><span class="hc-en">Hervor</span></div>
-        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">第12世代</span><span class="b-rar r-ssr">神話級</span></div>
-        <div class="hc-roles"><span class="role-tag">集結主</span><span class="role-tag">乗り手</span></div>
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：歩兵</div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="hervor">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">ヘルヴィル</span><span class="i18n-en-inline">Hervor</span></span><span class="hc-en i18n-ja-inline">Hervor</span></div>
+        <div class="hc-badges"><span class="b-cls inf"><span class="i18n-ja-inline">歩兵</span><span class="i18n-en-inline">Infantry</span></span><span class="b-gen"><span class="i18n-ja-inline">第12世代</span><span class="i18n-en-inline">Gen 12</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
+        <div class="hc-roles"><span class="role-tag"><span class="i18n-ja-inline">集結主</span><span class="i18n-en-inline">Rally Leader</span></span><span class="role-tag"><span class="i18n-ja-inline">乗り手</span><span class="i18n-en-inline">Joiner</span></span></div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：歩兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Infantry</span></div>
         <dl class="hc-skills">
-<div><dt>集結主スキル<small>(遠征由来)</small></dt><dd>殺傷25</dd></div><div><dt>乗り手スキル<small>(遠征1)</small></dt><dd>殺傷+25%</dd></div><div><dt>専用装備ステータス</dt><dd>攻撃+8.4% / 殺傷+16.8%</dd></div><div><dt>兵種シナジー</dt><dd>歩兵と同陣で+4%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">集結主スキル<small>(遠征由来)</small></span><span class="i18n-en-inline">Rally-leader skill<small>(from exped.)</small></span></dt><dd><span class="i18n-ja-inline">殺傷25</span><span class="i18n-en-inline">Lethality 25</span></dd></div><div><dt><span class="i18n-ja-inline">乗り手スキル<small>(遠征1)</small></span><span class="i18n-en-inline">Joiner skill<small>(exped. 1)</small></span></dt><dd><span class="i18n-ja-inline">殺傷+25%</span><span class="i18n-en-inline">Lethality +25%</span></dd></div><div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+8.4% / 殺傷+16.8%</span><span class="i18n-en-inline">Atk +8.4% / Lethality +16.8%</span></dd></div><div><dt><span class="i18n-ja-inline">兵種シナジー</span><span class="i18n-en-inline">Troop synergy</span></dt><dd><span class="i18n-ja-inline">歩兵と同陣で+4%</span><span class="i18n-en-inline">+4% with Infantry</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="12" data-cls="lan" data-rar="SSR" data-role="" data-id="karol" data-name="カロール karol karol">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="karol">☆</button>
-        <div class="hc-head"><span class="hc-name">カロール</span><span class="hc-en">Karol</span></div>
-        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">第12世代</span><span class="b-rar r-ssr">神話級</span></div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="karol">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">カロール</span><span class="i18n-en-inline">Karol</span></span><span class="hc-en i18n-ja-inline">Karol</span></div>
+        <div class="hc-badges"><span class="b-cls lan"><span class="i18n-ja-inline">槍兵</span><span class="i18n-en-inline">Lancer</span></span><span class="b-gen"><span class="i18n-ja-inline">第12世代</span><span class="i18n-en-inline">Gen 12</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
         
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：槍兵</div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：槍兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Lancer</span></div>
         <dl class="hc-skills">
-<div><dt>専用装備ステータス</dt><dd>攻撃+8.4% / 殺傷+16.8%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+8.4% / 殺傷+16.8%</span><span class="i18n-en-inline">Atk +8.4% / Lethality +16.8%</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="12" data-cls="mks" data-rar="SSR" data-role="" data-id="ligeia" data-name="ライジーア ligeia ligeia">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="ligeia">☆</button>
-        <div class="hc-head"><span class="hc-name">ライジーア</span><span class="hc-en">Ligeia</span></div>
-        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">第12世代</span><span class="b-rar r-ssr">神話級</span></div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="ligeia">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">ライジーア</span><span class="i18n-en-inline">Ligeia</span></span><span class="hc-en i18n-ja-inline">Ligeia</span></div>
+        <div class="hc-badges"><span class="b-cls mks"><span class="i18n-ja-inline">弓兵</span><span class="i18n-en-inline">Marksman</span></span><span class="b-gen"><span class="i18n-ja-inline">第12世代</span><span class="i18n-en-inline">Gen 12</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
         
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：弓兵</div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：弓兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Marksman</span></div>
         <dl class="hc-skills">
-<div><dt>専用装備ステータス</dt><dd>攻撃+8.4% / 殺傷+16.8%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+8.4% / 殺傷+16.8%</span><span class="i18n-en-inline">Atk +8.4% / Lethality +16.8%</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="13" data-cls="inf" data-rar="SSR" data-role="" data-id="gisela" data-name="ギーゼラ gisela gisela">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="gisela">☆</button>
-        <div class="hc-head"><span class="hc-name">ギーゼラ</span><span class="hc-en">Gisela</span></div>
-        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">第13世代</span><span class="b-rar r-ssr">神話級</span></div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="gisela">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">ギーゼラ</span><span class="i18n-en-inline">Gisela</span></span><span class="hc-en i18n-ja-inline">Gisela</span></div>
+        <div class="hc-badges"><span class="b-cls inf"><span class="i18n-ja-inline">歩兵</span><span class="i18n-en-inline">Infantry</span></span><span class="b-gen"><span class="i18n-ja-inline">第13世代</span><span class="i18n-en-inline">Gen 13</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
         
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：歩兵</div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：歩兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Infantry</span></div>
         <dl class="hc-skills">
-<div><dt>専用装備ステータス</dt><dd>攻撃+8.8% / 殺傷+17.6%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+8.8% / 殺傷+17.6%</span><span class="i18n-en-inline">Atk +8.8% / Lethality +17.6%</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="13" data-cls="lan" data-rar="SSR" data-role="" data-id="flora" data-name="フローラ flora flora">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="flora">☆</button>
-        <div class="hc-head"><span class="hc-name">フローラ</span><span class="hc-en">Flora</span></div>
-        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">第13世代</span><span class="b-rar r-ssr">神話級</span></div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="flora">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">フローラ</span><span class="i18n-en-inline">Flora</span></span><span class="hc-en i18n-ja-inline">Flora</span></div>
+        <div class="hc-badges"><span class="b-cls lan"><span class="i18n-ja-inline">槍兵</span><span class="i18n-en-inline">Lancer</span></span><span class="b-gen"><span class="i18n-ja-inline">第13世代</span><span class="i18n-en-inline">Gen 13</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
         
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：槍兵</div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：槍兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Lancer</span></div>
         <dl class="hc-skills">
-<div><dt>専用装備ステータス</dt><dd>攻撃+8.8% / 殺傷+17.6%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+8.8% / 殺傷+17.6%</span><span class="i18n-en-inline">Atk +8.8% / Lethality +17.6%</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="13" data-cls="mks" data-rar="SSR" data-role="" data-id="vulcanus" data-name="ウルカヌス vulcanus vulcanus">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="vulcanus">☆</button>
-        <div class="hc-head"><span class="hc-name">ウルカヌス</span><span class="hc-en">Vulcanus</span></div>
-        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">第13世代</span><span class="b-rar r-ssr">神話級</span></div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="vulcanus">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">ウルカヌス</span><span class="i18n-en-inline">Vulcanus</span></span><span class="hc-en i18n-ja-inline">Vulcanus</span></div>
+        <div class="hc-badges"><span class="b-cls mks"><span class="i18n-ja-inline">弓兵</span><span class="i18n-en-inline">Marksman</span></span><span class="b-gen"><span class="i18n-ja-inline">第13世代</span><span class="i18n-en-inline">Gen 13</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
         
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：弓兵</div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：弓兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Marksman</span></div>
         <dl class="hc-skills">
-<div><dt>専用装備ステータス</dt><dd>攻撃+8.8% / 殺傷+17.6%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+8.8% / 殺傷+17.6%</span><span class="i18n-en-inline">Atk +8.8% / Lethality +17.6%</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="14" data-cls="inf" data-rar="SSR" data-role="" data-id="elif" data-name="エリーフ elif elif">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="elif">☆</button>
-        <div class="hc-head"><span class="hc-name">エリーフ</span><span class="hc-en">Elif</span></div>
-        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">第14世代</span><span class="b-rar r-ssr">神話級</span></div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="elif">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">エリーフ</span><span class="i18n-en-inline">Elif</span></span><span class="hc-en i18n-ja-inline">Elif</span></div>
+        <div class="hc-badges"><span class="b-cls inf"><span class="i18n-ja-inline">歩兵</span><span class="i18n-en-inline">Infantry</span></span><span class="b-gen"><span class="i18n-ja-inline">第14世代</span><span class="i18n-en-inline">Gen 14</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
         
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：歩兵</div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：歩兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Infantry</span></div>
         <dl class="hc-skills">
-<div><dt>専用装備ステータス</dt><dd>攻撃+9.2% / 殺傷+18.4%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+9.2% / 殺傷+18.4%</span><span class="i18n-en-inline">Atk +9.2% / Lethality +18.4%</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="14" data-cls="lan" data-rar="SSR" data-role="" data-id="dominic" data-name="ドミニク dominic dominic">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="dominic">☆</button>
-        <div class="hc-head"><span class="hc-name">ドミニク</span><span class="hc-en">Dominic</span></div>
-        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">第14世代</span><span class="b-rar r-ssr">神話級</span></div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="dominic">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">ドミニク</span><span class="i18n-en-inline">Dominic</span></span><span class="hc-en i18n-ja-inline">Dominic</span></div>
+        <div class="hc-badges"><span class="b-cls lan"><span class="i18n-ja-inline">槍兵</span><span class="i18n-en-inline">Lancer</span></span><span class="b-gen"><span class="i18n-ja-inline">第14世代</span><span class="i18n-en-inline">Gen 14</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
         
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：槍兵</div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：槍兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Lancer</span></div>
         <dl class="hc-skills">
-<div><dt>専用装備ステータス</dt><dd>攻撃+9.2% / 殺傷+18.4%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+9.2% / 殺傷+18.4%</span><span class="i18n-en-inline">Atk +9.2% / Lethality +18.4%</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="14" data-cls="mks" data-rar="SSR" data-role="" data-id="cara" data-name="カーラ cara cara">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="cara">☆</button>
-        <div class="hc-head"><span class="hc-name">カーラ</span><span class="hc-en">Cara</span></div>
-        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">第14世代</span><span class="b-rar r-ssr">神話級</span></div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="cara">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">カーラ</span><span class="i18n-en-inline">Cara</span></span><span class="hc-en i18n-ja-inline">Cara</span></div>
+        <div class="hc-badges"><span class="b-cls mks"><span class="i18n-ja-inline">弓兵</span><span class="i18n-en-inline">Marksman</span></span><span class="b-gen"><span class="i18n-ja-inline">第14世代</span><span class="i18n-en-inline">Gen 14</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
         
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：弓兵</div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：弓兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Marksman</span></div>
         <dl class="hc-skills">
-<div><dt>専用装備ステータス</dt><dd>攻撃+9.2% / 殺傷+18.4%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+9.2% / 殺傷+18.4%</span><span class="i18n-en-inline">Atk +9.2% / Lethality +18.4%</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="15" data-cls="inf" data-rar="SSR" data-role="" data-id="hank" data-name="ハンク hank hank">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="hank">☆</button>
-        <div class="hc-head"><span class="hc-name">ハンク</span><span class="hc-en">Hank</span></div>
-        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">第15世代</span><span class="b-rar r-ssr">神話級</span></div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="hank">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">ハンク</span><span class="i18n-en-inline">Hank</span></span><span class="hc-en i18n-ja-inline">Hank</span></div>
+        <div class="hc-badges"><span class="b-cls inf"><span class="i18n-ja-inline">歩兵</span><span class="i18n-en-inline">Infantry</span></span><span class="b-gen"><span class="i18n-ja-inline">第15世代</span><span class="i18n-en-inline">Gen 15</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
         
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：歩兵</div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：歩兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Infantry</span></div>
         <dl class="hc-skills">
-<div><dt>専用装備ステータス</dt><dd>攻撃+9.6% / 殺傷+19.2%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+9.6% / 殺傷+19.2%</span><span class="i18n-en-inline">Atk +9.6% / Lethality +19.2%</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="15" data-cls="lan" data-rar="SSR" data-role="" data-id="estrella" data-name="エステラ estrella estrella">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="estrella">☆</button>
-        <div class="hc-head"><span class="hc-name">エステラ</span><span class="hc-en">Estrella</span></div>
-        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">第15世代</span><span class="b-rar r-ssr">神話級</span></div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="estrella">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">エステラ</span><span class="i18n-en-inline">Estrella</span></span><span class="hc-en i18n-ja-inline">Estrella</span></div>
+        <div class="hc-badges"><span class="b-cls lan"><span class="i18n-ja-inline">槍兵</span><span class="i18n-en-inline">Lancer</span></span><span class="b-gen"><span class="i18n-ja-inline">第15世代</span><span class="i18n-en-inline">Gen 15</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
         
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：槍兵</div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：槍兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Lancer</span></div>
         <dl class="hc-skills">
-<div><dt>専用装備ステータス</dt><dd>攻撃+9.6% / 殺傷+19.2%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+9.6% / 殺傷+19.2%</span><span class="i18n-en-inline">Atk +9.6% / Lethality +19.2%</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="15" data-cls="mks" data-rar="SSR" data-role="" data-id="viveca" data-name="ヴィヴィカ viveca viveca">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="viveca">☆</button>
-        <div class="hc-head"><span class="hc-name">ヴィヴィカ</span><span class="hc-en">Viveca</span></div>
-        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">第15世代</span><span class="b-rar r-ssr">神話級</span></div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="viveca">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">ヴィヴィカ</span><span class="i18n-en-inline">Viveca</span></span><span class="hc-en i18n-ja-inline">Viveca</span></div>
+        <div class="hc-badges"><span class="b-cls mks"><span class="i18n-ja-inline">弓兵</span><span class="i18n-en-inline">Marksman</span></span><span class="b-gen"><span class="i18n-ja-inline">第15世代</span><span class="i18n-en-inline">Gen 15</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
         
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：弓兵</div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：弓兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Marksman</span></div>
         <dl class="hc-skills">
-<div><dt>専用装備ステータス</dt><dd>攻撃+9.6% / 殺傷+19.2%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+9.6% / 殺傷+19.2%</span><span class="i18n-en-inline">Atk +9.6% / Lethality +19.2%</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="16" data-cls="inf" data-rar="SSR" data-role="集結主" data-id="seigel" data-name="シガー seigel seigel">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="seigel">☆</button>
-        <div class="hc-head"><span class="hc-name">シガー</span><span class="hc-en">Seigel</span></div>
-        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">第16世代</span><span class="b-rar r-ssr">神話級</span></div>
-        <div class="hc-roles"><span class="role-tag">集結主</span></div>
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：歩兵</div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="seigel">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">シガー</span><span class="i18n-en-inline">Seigel</span></span><span class="hc-en i18n-ja-inline">Seigel</span></div>
+        <div class="hc-badges"><span class="b-cls inf"><span class="i18n-ja-inline">歩兵</span><span class="i18n-en-inline">Infantry</span></span><span class="b-gen"><span class="i18n-ja-inline">第16世代</span><span class="i18n-en-inline">Gen 16</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
+        <div class="hc-roles"><span class="role-tag"><span class="i18n-ja-inline">集結主</span><span class="i18n-en-inline">Rally Leader</span></span></div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：歩兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Infantry</span></div>
         <dl class="hc-skills">
-<div><dt>集結主スキル<small>(遠征由来)</small></dt><dd>盾兵攻撃-20%(永夜の堅城/熊では微減)</dd></div><div><dt>専用装備ステータス</dt><dd>攻撃+10% / 殺傷+20%</dd></div><div><dt>実測参考値</dt><dd>攻撃2131.7</dd></div><div><dt>備考</dt><dd>防衛部隊殺傷+15%(熊補正なし)</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">集結主スキル<small>(遠征由来)</small></span><span class="i18n-en-inline">Rally-leader skill<small>(from exped.)</small></span></dt><dd><span class="i18n-ja-inline">盾兵攻撃-20%(永夜の堅城/熊では微減)</span><span class="i18n-en-inline">Inf attack -20% (Eternal Fortress / minor on bear)</span></dd></div><div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+10% / 殺傷+20%</span><span class="i18n-en-inline">Atk +10% / Lethality +20%</span></dd></div><div><dt><span class="i18n-ja-inline">実測参考値</span><span class="i18n-en-inline">Measured ref.</span></dt><dd><span class="i18n-ja-inline">攻撃2131.7</span><span class="i18n-en-inline">Atk 2131.7</span></dd></div><div><dt><span class="i18n-ja-inline">備考</span><span class="i18n-en-inline">Note</span></dt><dd><span class="i18n-ja-inline">防衛部隊殺傷+15%(熊補正なし)</span><span class="i18n-en-inline">Defense troop lethality +15% (no bear effect)</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="16" data-cls="lan" data-rar="SSR" data-role="" data-id="ursar" data-name="ウルタール ursar ursar">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="ursar">☆</button>
-        <div class="hc-head"><span class="hc-name">ウルタール</span><span class="hc-en">Ursar</span></div>
-        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">第16世代</span><span class="b-rar r-ssr">神話級</span></div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="ursar">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">ウルタール</span><span class="i18n-en-inline">Ursar</span></span><span class="hc-en i18n-ja-inline">Ursar</span></div>
+        <div class="hc-badges"><span class="b-cls lan"><span class="i18n-ja-inline">槍兵</span><span class="i18n-en-inline">Lancer</span></span><span class="b-gen"><span class="i18n-ja-inline">第16世代</span><span class="i18n-en-inline">Gen 16</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
         
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：槍兵</div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：槍兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Lancer</span></div>
         <dl class="hc-skills">
-<div><dt>専用装備ステータス</dt><dd>攻撃+10% / 殺傷+20%</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+10% / 殺傷+20%</span><span class="i18n-en-inline">Atk +10% / Lethality +20%</span></dd></div>        </dl>
       </article>
       <article class="hero-card" data-gen="16" data-cls="mks" data-rar="SSR" data-role="集結主,乗り手" data-id="aisling" data-name="アシュリン aisling aisling">
-        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="aisling">☆</button>
-        <div class="hc-head"><span class="hc-name">アシュリン</span><span class="hc-en">Aisling</span></div>
-        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">第16世代</span><span class="b-rar r-ssr">神話級</span></div>
-        <div class="hc-roles"><span class="role-tag">集結主</span><span class="role-tag">乗り手</span></div>
-        <div class="hc-meta">スキル構成：探検3 / 遠征3　/　強化兵種：弓兵</div>
+        <button class="hero-fav" type="button" aria-label="favorite" data-id="aisling">☆</button>
+        <div class="hc-head"><span class="hc-name"><span class="i18n-ja-inline">アシュリン</span><span class="i18n-en-inline">Aisling</span></span><span class="hc-en i18n-ja-inline">Aisling</span></div>
+        <div class="hc-badges"><span class="b-cls mks"><span class="i18n-ja-inline">弓兵</span><span class="i18n-en-inline">Marksman</span></span><span class="b-gen"><span class="i18n-ja-inline">第16世代</span><span class="i18n-en-inline">Gen 16</span></span><span class="b-rar r-ssr"><span class="i18n-ja-inline">神話級</span><span class="i18n-en-inline">Mythic</span></span></div>
+        <div class="hc-roles"><span class="role-tag"><span class="i18n-ja-inline">集結主</span><span class="i18n-en-inline">Rally Leader</span></span><span class="role-tag"><span class="i18n-ja-inline">乗り手</span><span class="i18n-en-inline">Joiner</span></span></div>
+        <div class="hc-meta"><span class="i18n-ja-inline">スキル構成：探検3 / 遠征3　/　強化兵種：弓兵</span><span class="i18n-en-inline">Skills: Explore 3 / Exped 3　/　Buffs: Marksman</span></div>
         <dl class="hc-skills">
-<div><dt>集結主スキル<small>(遠征由来)</small></dt><dd>与ダメ20/3T毎弓与ダメ150/3T毎弓追撃40</dd></div><div><dt>乗り手スキル<small>(遠征1)</small></dt><dd>与ダメ+4→20%(密林の戦歌)</dd></div><div><dt>専用装備ステータス</dt><dd>攻撃+10% / 殺傷+20%</dd></div><div><dt>兵種シナジー</dt><dd>弓兵と同陣で+8%</dd></div><div><dt>実測参考値</dt><dd>攻撃2131.7</dd></div><div><dt>備考</dt><dd>防衛部隊防御+15%(熊補正なし)</dd></div>
-        </dl>
+<div><dt><span class="i18n-ja-inline">集結主スキル<small>(遠征由来)</small></span><span class="i18n-en-inline">Rally-leader skill<small>(from exped.)</small></span></dt><dd><span class="i18n-ja-inline">与ダメ20/3T毎弓与ダメ150/3T毎弓追撃40</span><span class="i18n-en-inline">Dmg 20 / every 3T mks dmg 150 / every 3T mks follow-up 40</span></dd></div><div><dt><span class="i18n-ja-inline">乗り手スキル<small>(遠征1)</small></span><span class="i18n-en-inline">Joiner skill<small>(exped. 1)</small></span></dt><dd><span class="i18n-ja-inline">与ダメ+4→20%(密林の戦歌)</span><span class="i18n-en-inline">Dmg dealt +4→20% (Jungle War Song)</span></dd></div><div><dt><span class="i18n-ja-inline">専用装備ステータス</span><span class="i18n-en-inline">Gear stats</span></dt><dd><span class="i18n-ja-inline">攻撃+10% / 殺傷+20%</span><span class="i18n-en-inline">Atk +10% / Lethality +20%</span></dd></div><div><dt><span class="i18n-ja-inline">兵種シナジー</span><span class="i18n-en-inline">Troop synergy</span></dt><dd><span class="i18n-ja-inline">弓兵と同陣で+8%</span><span class="i18n-en-inline">+8% with Marksman</span></dd></div><div><dt><span class="i18n-ja-inline">実測参考値</span><span class="i18n-en-inline">Measured ref.</span></dt><dd><span class="i18n-ja-inline">攻撃2131.7</span><span class="i18n-en-inline">Atk 2131.7</span></dd></div><div><dt><span class="i18n-ja-inline">備考</span><span class="i18n-en-inline">Note</span></dt><dd><span class="i18n-ja-inline">防衛部隊防御+15%(熊補正なし)</span><span class="i18n-en-inline">Defense troop defense +15% (no bear effect)</span></dd></div>        </dl>
       </article>
 </div>
-<div class="hl-empty hl-hidden" id="hlEmpty">条件に合う英雄が見つかりませんでした。フィルタをリセットしてください。</div>
-
-<div class="hl-note">
-  <strong>表示スキルについて：</strong> 各カードに表示しているスキル・数値は、当サイトが<strong>熊狩り（集結）ダメージの検証のために整理した遠征系スキルと専用装備</strong>が中心です。各英雄の<strong>探検スキル全文・遠征スキルの全レベル数値・PvP専用の効果</strong>は、公式情報をもとに順次このデータベースへ追記していきます（誤った数値の掲載を避けるため、確認できたものから反映します）。
-</div>
-
+<div class="hl-empty hl-hidden" id="hlEmpty"><span class="i18n-ja-inline">条件に合う英雄が見つかりませんでした。</span><span class="i18n-en-inline">No heroes match. Reset the filters.</span></div>
+<div class="hl-note"><span class="i18n-ja-inline"><strong>表示スキルについて：</strong> 各カードのスキル・数値は、当サイトが<strong>熊狩り（集結）ダメージの検証のために整理した遠征系スキルと専用装備</strong>が中心です。各英雄の探検スキル全文・遠征スキルの全レベル数値・PvP専用効果は、公式情報をもとに順次追記します（誤った数値の掲載を避けるため、確認できたものから反映します）。</span><span class="i18n-en-inline"><strong>About the listed skills:</strong> the skills shown are mainly the <strong>expedition skills and exclusive gear we organized for Bear Hunt (rally) damage testing</strong>. Full exploration skills, per-level expedition values and PvP-only effects are being added from official info (we publish only what we can verify, to avoid wrong numbers).</span></div>
 <div class="hl-soon">
-  <h3>🗳️ 人気英雄投票（近日公開予定）</h3>
-  <p style="margin:0;font-size:13.5px;line-height:1.7">各カードの<strong>★ボタンでお気に入り登録</strong>（端末内に保存）ができます。上の「★お気に入り」で絞り込み可能。将来的に、このデータをもとにした<strong>人気ランキング・世代別の人気英雄・用途別（熊狩り／対人戦／探検）おすすめ</strong>へ発展させる予定です。</p>
+  <h3><span class="i18n-ja-inline">🗳️ 人気英雄投票（近日公開予定）</span><span class="i18n-en-inline">🗳️ Popular hero vote (coming soon)</span></h3>
+  <p style="margin:0;font-size:13.5px;line-height:1.7"><span class="i18n-ja-inline">各カードの<strong>★ボタンでお気に入り登録</strong>（端末内保存）ができます。上の「★お気に入り」で絞り込み可能。将来的に、このデータをもとにした<strong>人気ランキング・世代別の人気英雄・用途別おすすめ</strong>へ発展させる予定です。</span><span class="i18n-en-inline">Use the <strong>★ button to favorite</strong> heroes (saved on your device); filter by "★ Favorites" above. We plan to grow this into <strong>popularity rankings and per-generation / per-use-case picks</strong>.</span></p>
 </div>
-
 <section class="tool-article" style="max-width:none">
+<div class="i18n-ja">
   <h2>このデータベースの見方</h2>
   <p>各カードには、英雄の<strong>兵種・世代・レアリティ・役割</strong>と、保有しているスキル情報をまとめています。熊狩りや対人戦の編成は「誰を集結主（左）にするか」「どの英雄で集結に乗るか」「どの兵種を強化するか」で結果が変わるため、これらを一目で見比べられるようにしています。</p>
-
   <h3>兵種（歩兵・槍兵・弓兵）と強化対象</h3>
   <p>英雄は<strong>歩兵（20体）・槍兵（21体）・弓兵／射手（21体）</strong>の3兵種に分かれます。各英雄は<strong>自分と同じ兵種を強化</strong>し、探検では同兵種の護衛（エスコート）を連れて戦います。熊狩りでは射手の火力が中心ですが、前衛の歩兵・槍兵をゼロにすると不利になる場面があり、比率のバランスが重要です（<a href="../troop-ratio/index.html">兵士比率シミュレータ</a>で比較できます）。</p>
-
   <h3>レアリティとスキル構成</h3>
   <p>レアリティは<strong>レア＜エピック＜神話級</strong>の順に高くなります。レアリティによって持てるスキル数が決まっており、一般的に次のとおりです。</p>
-  <table class="ta-table">
-    <tr><th>レアリティ</th><th>探検スキル</th><th>遠征スキル</th><th>本データの該当数</th></tr>
-    <tr><td>神話級（SSR）</td><td>3</td><td>3</td><td>49体</td></tr>
-    <tr><td>エピック（SR）</td><td>3</td><td>2</td><td>9体</td></tr>
-    <tr><td>レア（R）</td><td>2</td><td>2</td><td>4体</td></tr>
-  </table>
-
+  <table class="ta-table"><tr><th>レアリティ</th><th>探検スキル</th><th>遠征スキル</th><th>本データの該当数</th></tr>
+  <tr><td>神話級（SSR）</td><td>3</td><td>3</td><td>49体</td></tr><tr><td>エピック（SR）</td><td>3</td><td>2</td><td>9体</td></tr><tr><td>レア（R）</td><td>2</td><td>2</td><td>4体</td></tr></table>
   <h3>探検スキルと遠征スキルの違い（重要）</h3>
   <p>ホワイトアウトサバイバルの英雄スキルは大きく2種類に分かれます。</p>
-  <ul>
-    <li><strong>探検スキル</strong>：英雄だけで戦う場面（探検・アリーナなど）で発動します。</li>
-    <li><strong>遠征スキル</strong>：兵士と一緒に出す場面（対人戦・熊などの討伐・集結・採集）で発動します。熊狩りや対人戦で効くのはこちらです。</li>
-  </ul>
-  <p>さらに集結（ラリー）では、<strong>集結に「乗る」側は、自分の先頭英雄の遠征スキル1だけ</strong>が集結全体に反映されます。一方<strong>集結を立てる「集結主」は、編成した英雄たちの遠征スキルが反映</strong>されます。「強い英雄を入れたのに伸びない」原因の多くは、この<strong>左英雄（集結主・先頭）の選定</strong>にあります（<a href="../left-hero/index.html">左英雄チェッカー</a>で判定できます）。本データベースでは、各英雄の「集結主スキル」と「乗り手スキル（遠征1）」を分けて表示しています。</p>
-
+  <ul><li><strong>探検スキル</strong>：英雄だけで戦う場面（探検・アリーナなど）で発動します。</li>
+  <li><strong>遠征スキル</strong>：兵士と一緒に出す場面（対人戦・熊などの討伐・集結・採集）で発動します。熊狩りや対人戦で効くのはこちらです。</li></ul>
+  <p>さらに集結（ラリー）では、<strong>集結に「乗る」側は、自分の先頭英雄の遠征スキル1だけ</strong>が集結全体に反映されます。一方<strong>集結を立てる「集結主」は、編成した英雄たちの遠征スキルが反映</strong>されます。「強い英雄を入れたのに伸びない」原因の多くは、この<strong>左英雄（集結主・先頭）の選定</strong>にあります（<a href="../left-hero/index.html">左英雄チェッカー</a>で判定できます）。</p>
   <h3>役割タグの意味</h3>
-  <ul>
-    <li><strong>集結主</strong>：集結を立てる先頭（左）に置いて強い効果を持つ英雄。</li>
-    <li><strong>乗り手</strong>：集結に乗る際に有効な遠征スキル1を持つ英雄。</li>
-    <li><strong>専用装備</strong>：専用装備による集結バフを持つ英雄。</li>
-    <li><strong>成長型</strong>：遠征スキルの一部が都市発展（研究・治療など）に寄与するサブクラス。戦闘特化ではない分、内政で活躍します。</li>
-  </ul>
-
+  <ul><li><strong>集結主</strong>：集結を立てる先頭（左）に置いて強い効果を持つ英雄。</li>
+  <li><strong>乗り手</strong>：集結に乗る際に有効な遠征スキル1を持つ英雄。</li>
+  <li><strong>専用装備</strong>：専用装備による集結バフを持つ英雄。</li>
+  <li><strong>成長型</strong>：遠征スキルの一部が都市発展（研究・治療など）に寄与するサブクラス。</li></ul>
   <h2>熊狩り・対人戦での使い分け</h2>
-  <p>同じ英雄でも、<strong>熊狩り（集結ダメージ）</strong>と<strong>対人戦（PvP）</strong>では重視するスキルが変わります。熊狩りでは与ダメージ・攻撃・殺傷を上げる遠征スキルが中心ですが、対人戦では被ダメージ軽減・敵弱体化・隊列の耐久といった効果も重要になります。本データベースは、まず熊狩り検証で整理した遠征系スキルを掲載し、対人戦向けの観点（防御・デバフ・隊列）も順次追記していく方針です。育成の優先順位は<a href="../../guides/f2p-damage.html">無課金の伸ばし方</a>・<a href="../../guides/light-spender.html">微課金の投資先ランキング</a>もご参照ください。</p>
-
+  <p>同じ英雄でも、<strong>熊狩り（集結ダメージ）</strong>と<strong>対人戦（PvP）</strong>では重視するスキルが変わります。熊狩りでは与ダメージ・攻撃・殺傷を上げる遠征スキルが中心ですが、対人戦では被ダメージ軽減・敵弱体化・隊列の耐久も重要です。本データベースは熊狩り検証で整理した遠征系スキルを中心に掲載し、対人戦向けの観点も順次追記します。育成優先度は<a href="../../guides/f2p-damage.html">無課金の伸ばし方</a>・<a href="../../guides/light-spender.html">微課金の投資先ランキング</a>もご参照ください。</p>
   <h2>よくある質問（FAQ）</h2>
   <div class="ta-faq"><dl>
-    <dt>全部のスキルが載っていないのはなぜ？</dt>
-    <dd>誤った数値の掲載を避けるため、公式情報で確認できたスキルから順次掲載しています。現在は熊狩り検証で整理した遠征系スキル・専用装備が中心で、探検スキルや対人戦専用効果は拡充中です。</dd>
-    <dt>データはいつ時点のものですか？</dt>
-    <dd>2026年6月時点の公式情報・実測をもとに整理した全62英雄です。新英雄や調整があれば順次更新します。</dd>
-    <dt>対人戦の編成にも使えますか？</dt>
-    <dd>はい。兵種・役割・シナジーで絞り込めるので、集結主候補や同兵種の組み合わせ検討に使えます。対人戦特化の指標は今後追記します。</dd>
-  </dl></div>
-
+    <dt>全部のスキルが載っていないのはなぜ？</dt><dd>誤った数値の掲載を避けるため、公式情報で確認できたスキルから順次掲載しています。現在は熊狩り検証で整理した遠征系スキル・専用装備が中心で、探検スキルや対人戦専用効果は拡充中です。</dd>
+    <dt>データはいつ時点のものですか？</dt><dd>2026年6月時点の公式情報・実測をもとに整理した全62英雄です。</dd>
+    <dt>対人戦の編成にも使えますか？</dt><dd>はい。兵種・役割・シナジーで絞り込めるので、集結主候補や同兵種の組み合わせ検討に使えます。</dd></dl></div>
   <h2>関連ツール・ガイド</h2>
-  <div class="ta-links">
-    <a href="../bear-hunt/index.html">熊狩ダメージ・シミュレーター</a>
-    <a href="../left-hero/index.html">左英雄チェッカー</a>
-    <a href="../troop-ratio/index.html">兵士比率シミュレータ</a>
-    <a href="../foundry-battle/index.html">兵器工場争奪戦ツール</a>
-    <a href="../../guides/leader-formation.html">集結主・編成ガイド</a>
-    <a href="../../guides/bear-hunt-guide.html">熊狩り攻略ガイド</a>
-  </div>
-  <div class="ta-meta">
-    <strong>運営者</strong>：じゃすみん（1567サーバー / 同盟「bst」盟主）　|　<strong>連絡先</strong>：<a href="https://x.com/tegetege_m" target="_blank" rel="noopener">X @tegetege_m</a> ・ <a href="../../contact.html">お問い合わせ</a><br>
-    <strong>最終更新</strong>：2026年6月　|　英雄マスタは公式Wiki・公式タイムライン等の調査（計62英雄）を正規化したものです。スキル体系（探検／遠征、レアリティ別スキル数、集結の仕様）は公開情報に基づきます。<br>
-    ※ 本ページはファンメイドの非公式コンテンツです。数値・スキルは公開情報と実測に基づく整理であり、内部仕様の完全な再現ではありません。アップデートで変わることがあります。Whiteout Survival は Century Games の商標であり、当サイトは同社と提携・公認関係にありません。
-  </div>
+  <div class="ta-links"><a href="../bear-hunt/index.html">熊狩ダメージ・シミュレーター</a><a href="../left-hero/index.html">左英雄チェッカー</a><a href="../troop-ratio/index.html">兵士比率シミュレータ</a><a href="../foundry-battle/index.html">兵器工場争奪戦ツール</a><a href="../../guides/leader-formation.html">集結主・編成ガイド</a><a href="../../guides/bear-hunt-guide.html">熊狩り攻略ガイド</a></div>
+  <div class="ta-meta"><strong>運営者</strong>：じゃすみん（1567サーバー / 同盟「bst」盟主）　|　<strong>連絡先</strong>：<a href="https://x.com/tegetege_m" target="_blank" rel="noopener">X @tegetege_m</a> ・ <a href="../../contact.html">お問い合わせ</a><br><strong>最終更新</strong>：2026年6月　|　英雄マスタは公式Wiki・公式タイムライン等の調査（計62英雄）を正規化したものです。<br>※ ファンメイドの非公式コンテンツです。数値・スキルは公開情報と実測に基づく整理であり内部仕様の完全な再現ではありません。Whiteout Survival は Century Games の商標です。</div>
+</div>
+<div class="i18n-en">
+  <h2>How to read this database</h2>
+  <p>Each card summarizes a hero's <strong>class, generation, rarity and role</strong>, plus the skill data we hold. Bear Hunt and PvP results shift with "who leads the rally (left)", "which heroes join" and "which troop type you buff", so this lets you compare those at a glance.</p>
+  <h3>Class (Infantry / Lancer / Marksman) and what they buff</h3>
+  <p>Heroes split into <strong>Infantry (20), Lancer (21) and Marksman (21)</strong>. Each hero <strong>buffs its own troop type</strong> and brings same-class escorts in Exploration. Bear Hunt leans on marksman damage, but zeroing the infantry/lancer front line is penalized, so ratio balance matters (compare in the <a href="../troop-ratio/index.html">Troop Ratio Simulator</a>).</p>
+  <h3>Rarity and skill loadout</h3>
+  <p>Rarity rises <strong>Rare &lt; Epic &lt; Mythic</strong>, and rarity sets how many skills a hero has:</p>
+  <table class="ta-table"><tr><th>Rarity</th><th>Exploration</th><th>Expedition</th><th>Count in this data</th></tr>
+  <tr><td>Mythic (SSR)</td><td>3</td><td>3</td><td>49</td></tr><tr><td>Epic (SR)</td><td>3</td><td>2</td><td>9</td></tr><tr><td>Rare (R)</td><td>2</td><td>2</td><td>4</td></tr></table>
+  <h3>Exploration vs Expedition skills (important)</h3>
+  <p>Hero skills come in two kinds:</p>
+  <ul><li><strong>Exploration skills</strong> — active when only heroes fight (Exploration, Arena).</li>
+  <li><strong>Expedition skills</strong> — active when heroes go out with troops (PvP, beast/bear hunts, rallies, gathering). These are what matter in Bear Hunt and PvP.</li></ul>
+  <p>In a rally, the <strong>joining side only contributes its lead hero's 1st expedition skill</strong>, while the <strong>rally leader benefits from the expedition skills of all their heroes</strong>. Most "added a strong hero but it didn't help" cases trace to the <strong>left-hero (rally leader) choice</strong> — check it in the <a href="../left-hero/index.html">Left-Hero Checker</a>.</p>
+  <h3>What the role tags mean</h3>
+  <ul><li><strong>Rally Leader</strong> — strong when placed first (left) to lead a rally.</li>
+  <li><strong>Joiner</strong> — has an effective 1st expedition skill for joining rallies.</li>
+  <li><strong>Exclusive Gear</strong> — provides a rally buff via exclusive gear.</li>
+  <li><strong>Growth</strong> — a subclass whose expedition skills partly feed city growth (research, healing, etc.).</li></ul>
+  <h2>Bear Hunt vs PvP usage</h2>
+  <p>The same hero values different skills in <strong>Bear Hunt (rally damage)</strong> versus <strong>PvP</strong>. Bear Hunt favors expedition skills that raise damage dealt, attack and lethality; PvP also cares about damage reduction, enemy debuffs and front-line durability. This database starts with the expedition skills organized through Bear Hunt testing and will add PvP-oriented notes over time. For build priority see <a href="../../guides/f2p-damage.html">growing as F2P</a> and the <a href="../../guides/light-spender.html">light-spender ranking</a>.</p>
+  <h2>FAQ</h2>
+  <div class="ta-faq"><dl>
+    <dt>Why aren't all skills listed?</dt><dd>To avoid posting wrong numbers, we add skills we can verify from official info. The current focus is the expedition skills and exclusive gear organized through Bear Hunt testing; exploration skills and PvP-only effects are being expanded.</dd>
+    <dt>How current is the data?</dt><dd>All 62 heroes, organized from official info and measurement as of June 2026.</dd>
+    <dt>Can I use it for PvP teams?</dt><dd>Yes. Filtering by class, role and synergy helps you check rally-leader candidates and same-class combos.</dd></dl></div>
+  <h2>Related tools &amp; guides</h2>
+  <div class="ta-links"><a href="../bear-hunt/index.html">Bear Hunt Damage Simulator</a><a href="../left-hero/index.html">Left-Hero Checker</a><a href="../troop-ratio/index.html">Troop Ratio Simulator</a><a href="../foundry-battle/index.html">Foundry Battle tool</a><a href="../../guides/leader-formation.html">Rally leader &amp; formation guide</a><a href="../../guides/bear-hunt-guide.html">Bear Hunt Guide</a></div>
+  <div class="ta-meta"><strong>Operator</strong>: Jasmine (Server 1567 / leader of alliance "bst")　|　<strong>Contact</strong>: <a href="https://x.com/tegetege_m" target="_blank" rel="noopener">X @tegetege_m</a> · <a href="../../contact.html">Contact</a><br><strong>Last updated</strong>: June 2026　|　Hero master data is normalized from public sources (official wiki / timeline; 62 heroes).<br>* Fan-made, unofficial content. Figures and skills are estimates based on public info and measurement, not a reproduction of internal specs. Whiteout Survival is a trademark of Century Games.</div>
+</div>
 </section>
-
 <div id="foot"></div>
 </div>
 <script src="../../assets/config.js?v=87"></script><script src="../../assets/toolkit.js?v=87"></script>
@@ -800,8 +719,10 @@
   document.getElementById('nav').innerHTML = window.WOS_NAV(2);
   document.getElementById('foot').innerHTML = window.WOS_FOOT(2);
   (function(){
+    var EN = (document.documentElement.getAttribute('data-wos-lang')==='en');
     var grid=document.getElementById('heroGrid'), cards=[].slice.call(grid.querySelectorAll('.hero-card'));
     var search=document.getElementById('hlSearch'), countEl=document.getElementById('hlCount'), emptyEl=document.getElementById('hlEmpty');
+    if(EN) search.placeholder='Search by name (e.g. Natalia / natalia)';
     var FAVKEY='wos_hero_fav';
     function getFav(){ try{return JSON.parse(localStorage.getItem(FAVKEY)||'[]');}catch(e){return [];} }
     function setFav(a){ try{localStorage.setItem(FAVKEY,JSON.stringify(a));}catch(e){} }
@@ -820,7 +741,7 @@
         if(q && c.getAttribute('data-name').indexOf(q)<0)ok=false;
         c.classList.toggle('hl-hidden',!ok); if(ok)shown++;
       });
-      countEl.textContent='表示中：'+shown+' / '+cards.length+' 英雄';
+      countEl.textContent = EN ? ('Showing '+shown+' / '+cards.length+' heroes') : ('表示中：'+shown+' / '+cards.length+' 英雄');
       emptyEl.classList.toggle('hl-hidden',shown!==0);
     }
     document.querySelectorAll('.hl-chip').forEach(function(ch){

@@ -311,3 +311,11 @@ code{background:var(--panel2);border:1px solid var(--line);border-radius:5px;
 .tool-article .ta-table th,.tool-article .ta-table td{border:1px solid #e0e4f0;padding:7px 10px;text-align:left;vertical-align:top}
 .tool-article .ta-table th{background:#f5f7fc;font-weight:700;color:#1d2233}
 @media(max-width:560px){.tool-article{font-size:14px;line-height:1.85}.tool-article h2{font-size:18px}}
+
+/* ===== 二言語(i18n) 表示切替: 既定はJA表示・EN非表示。data-wos-lang=en でEN表示 ===== */
+.i18n-en{display:none}
+html[data-wos-lang="en"] .i18n-en{display:block}
+html[data-wos-lang="en"] .i18n-ja{display:none}
+.i18n-en-inline{display:none}
+html[data-wos-lang="en"] .i18n-en-inline{display:inline}
+html[data-wos-lang="en"] .i18n-ja-inline{display:none}
