@@ -21,7 +21,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
 <link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/tools/troop-ratio/index.html">
 <link rel="alternate" hreflang="en" href="https://whitesim-lab.com/tools/troop-ratio/index.html?lang=en">
-<link rel="stylesheet" href="../../assets/site.css?v=85">
+<link rel="stylesheet" href="../../assets/site.css?v=86">
 <style>
   #bars{background:var(--night);border:1px solid var(--line);border-radius:10px;padding:8px 4px;margin-bottom:6px}
   #bars svg{max-width:100%}
@@ -88,10 +88,55 @@
 <h2>なぜ弓100%が最適にならないのか</h2>
 <p style="font-size:13px">兵士の量はダメージに対して逓減(平方根的)に効くため、1兵種に全振りすると伸びしろが頭打ちになります。さらに公開検証では、盾・槍がゼロの編成にはダメージの目減り(ペナルティ)が確認されています。弓は対歩兵の特性で効率が高い一方、槍・盾を少量混ぜて分散させた方が合計で勝つケースが多い――これが「弓寄せだが全振りはしない」が定番になる理由です。</p>
 </div>
+
+<section class="tool-article">
+<h2>兵士比率シミュレータとは</h2>
+<p class="ta-lead">熊狩りのダメージは、歩兵・槍兵・弓兵（射手）の<strong>「比率」</strong>で大きく変わります。本ツールは、<strong>10:30:60・10:10:80・1:1:8</strong> といった主要な比率を、あなたの実際の兵数に当てはめて<strong>横並びで比較</strong>できる非公式シミュレータです。「なんとなく弓100%」を卒業し、数値で最適比率を選べます。</p>
+
+<h2>使い方</h2>
+<ol>
+  <li>手持ちの総兵数（または各兵種の保有数）を入力します。</li>
+  <li>比較したい比率プリセット（10:30:60 など）を選びます。</li>
+  <li>各比率の試算結果が横並びで表示されるので、いちばん伸びる構成を選びます。</li>
+</ol>
+
+<h2>なぜ「弓100%」が最適ではないのか</h2>
+<p>射手は対歩兵などで効率が高い一方、<strong>歩兵・槍兵をゼロにすると不利になる場面</strong>が公開検証で確認されています。前衛となる歩兵・槍兵が欠けると隊列が崩れ、総ダメージではむしろ落ちることがあるためです。結果として、<strong>「射手寄りだが全振りはしない」</strong>混成が標準とされます。本ツールは、その差を実際の兵数で数値化します。</p>
+
+<h2>代表的な比率の目安</h2>
+<table class="ta-table">
+  <tr><th>比率（歩:槍:弓）</th><th>特徴・向いている場面</th></tr>
+  <tr><td>10:30:60</td><td>バランス型。槍を厚めにして安定。汎用的に扱いやすい。</td></tr>
+  <tr><td>10:10:80</td><td>射手重視。火力を伸ばしやすいが前衛が薄い。</td></tr>
+  <tr><td>1:1:8</td><td>かなり射手寄り。条件が噛み合えば高火力だが崩れやすい。</td></tr>
+</table>
+<p>どれが最適かは英雄・専用装備・世代で変わります。考え方の詳細はガイド記事で解説しています。</p>
+
+<h2>よくある質問（FAQ）</h2>
+<div class="ta-faq"><dl>
+  <dt>結局どの比率がいちばん強いですか？</dt>
+  <dd>編成と相手によって変わります。だからこそ、自分の兵数で横並び比較できる本ツールが役立ちます。</dd>
+  <dt>射手を100%にしてはダメですか？</dt>
+  <dd>前衛がゼロだとペナルティが出やすく、総ダメージで損をしがちです。少量の歩兵・槍兵を混ぜる構成が無難です。</dd>
+</dl></div>
+
+<h2>関連ツール・ガイド</h2>
+<div class="ta-links">
+  <a href="../bear-hunt/index.html">熊狩ダメージ・シミュレーター</a>
+  <a href="../left-hero/index.html">左英雄チェッカー</a>
+  <a href="../damage-doctor/index.html">ダメージが伸びない原因診断</a>
+  <a href="../../guides/troop-ratio.html">兵士比率の考え方（ガイド）</a>
+</div>
+  <div class="ta-meta">
+    <strong>運営者</strong>：じゃすみん（1567サーバー / 同盟「bst」盟主）　|　<strong>連絡先</strong>：<a href="https://x.com/tegetege_m" target="_blank" rel="noopener">X @tegetege_m</a> ・ <a href="../../contact.html">お問い合わせ</a><br>
+    <strong>最終更新</strong>：2026年6月　|　ホワイトアウトサバイバルを実際にプレイし、ゲーム内での検証と公開情報をもとに作成しています。<br>
+    ※ 本ツールはファンメイドの非公式コンテンツです。数値・判定は公開情報と実測に基づく推定であり、運営の内部仕様の完全な再現ではありません。仕様はアップデートで変わることがあります。Whiteout Survival は Century Games の商標であり、当サイトは同社と提携・公認関係にありません。
+  </div>
+</section>
 <div id="foot"></div>
 
-<script src="../../assets/config.js?v=85"></script>
-<script src="../../assets/toolkit.js?v=85"></script>
+<script src="../../assets/config.js?v=86"></script>
+<script src="../../assets/toolkit.js?v=87"></script>
 <script>
 document.getElementById('nav').innerHTML = WOS_NAV(2);
 document.getElementById('foot').innerHTML = WOS_FOOT(2);

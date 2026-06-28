@@ -21,7 +21,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
 <link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/tools/damage-doctor/index.html">
 <link rel="alternate" hreflang="en" href="https://whitesim-lab.com/tools/damage-doctor/index.html?lang=en">
-<link rel="stylesheet" href="../../assets/site.css?v=85">
+<link rel="stylesheet" href="../../assets/site.css?v=86">
 <link rel="icon" type="image/svg+xml" href="../../favicon.svg?v=85">
 <link rel="icon" type="image/png" href="../../favicon.png?v=85">
 <link rel="shortcut icon" href="../../favicon.ico?v=85">
@@ -58,10 +58,53 @@
   <a href="../bear-hunt/index.html">→ ダメージを数値で試算</a>
 </div>
 </div>
+
+<section class="tool-article">
+<h2>ダメージが伸びない原因診断とは</h2>
+<p class="ta-lead">「今回の熊狩り、なぜかダメージが低かった……」——その原因を、<strong>いくつかの質問に答えるだけで切り分ける</strong>非公式の診断ツールです。左英雄の選定ミス・兵士比率・集結主（リーダー）の選び方・回転率・専用装備など、<strong>当てはまりやすい原因と具体的な対処</strong>を提示します。</p>
+
+<h2>使い方</h2>
+<ol>
+  <li>表示される質問に「はい／いいえ」などで答えます。</li>
+  <li>回答に応じて、当てはまる可能性の高い原因が絞り込まれます。</li>
+  <li>原因ごとの対処法と、関連する専用ツール・ガイドへの導線が表示されます。</li>
+</ol>
+
+<h2>診断でよく挙がる主な原因</h2>
+<ul>
+  <li><strong>左英雄（集結主）の選定ミス</strong>：第1遠征スキルが集結向きでない。→「左英雄チェッカー」で判定。</li>
+  <li><strong>兵士比率が噛み合っていない</strong>：射手全振りなどで前衛が薄い。→「兵士比率シミュレータ」で比較。</li>
+  <li><strong>集結主・参加タイミング</strong>：集結のまとめ役や、参加の回転率（回数）が不足。</li>
+  <li><strong>専用装備・天賦が未整備</strong>：伸びしろが装備側にある。</li>
+</ul>
+<p>原因が分かったら、本体の「熊狩ダメージ・シミュレーター」で改善後の編成を試算すると、効果を数値で確認できます。</p>
+
+<h2>よくある質問（FAQ）</h2>
+<div class="ta-faq"><dl>
+  <dt>診断結果は必ず当たりますか？</dt>
+  <dd>あくまで原因の切り分けを助けるものです。複数の原因が重なることもあるため、提示された対処を一つずつ試してください。</dd>
+  <dt>初心者でも使えますか？</dt>
+  <dd>はい。専門用語が分からなくても、質問に答えるだけで当てはまりやすい原因が分かります。用語は各ガイドで補足しています。</dd>
+</dl></div>
+
+<h2>関連ツール・ガイド</h2>
+<div class="ta-links">
+  <a href="../left-hero/index.html">左英雄チェッカー</a>
+  <a href="../troop-ratio/index.html">兵士比率シミュレータ</a>
+  <a href="../bear-hunt/index.html">熊狩ダメージ・シミュレーター</a>
+  <a href="../../guides/damage-not-growing.html">ダメージが伸びない原因（ガイド）</a>
+  <a href="../../guides/beginner-faq.html">初心者向けFAQ</a>
+</div>
+  <div class="ta-meta">
+    <strong>運営者</strong>：じゃすみん（1567サーバー / 同盟「bst」盟主）　|　<strong>連絡先</strong>：<a href="https://x.com/tegetege_m" target="_blank" rel="noopener">X @tegetege_m</a> ・ <a href="../../contact.html">お問い合わせ</a><br>
+    <strong>最終更新</strong>：2026年6月　|　ホワイトアウトサバイバルを実際にプレイし、ゲーム内での検証と公開情報をもとに作成しています。<br>
+    ※ 本ツールはファンメイドの非公式コンテンツです。数値・判定は公開情報と実測に基づく推定であり、運営の内部仕様の完全な再現ではありません。仕様はアップデートで変わることがあります。Whiteout Survival は Century Games の商標であり、当サイトは同社と提携・公認関係にありません。
+  </div>
+</section>
 <div id="foot"></div>
 
-<script src="../../assets/config.js?v=85"></script>
-<script src="../../assets/toolkit.js?v=85"></script>
+<script src="../../assets/config.js?v=86"></script>
+<script src="../../assets/toolkit.js?v=87"></script>
 <script>
 document.getElementById('nav').innerHTML = WOS_NAV(2);
 document.getElementById('foot').innerHTML = WOS_FOOT(2);

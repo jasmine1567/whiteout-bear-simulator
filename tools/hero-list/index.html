@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="ja" id="htmlroot">
+<head>
+<meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Y8YMCVQDMG"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent','default',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'});
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',region:['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH'],wait_for_update:500});
+  gtag('js', new Date());
+  gtag('config', 'G-Y8YMCVQDMG');
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>熊狩り 英雄一覧・データベース｜全62英雄を世代・兵種・スキルで検索 | ホワサバ ツールラボ</title>
+<meta name="description" content="ホワイトアウトサバイバル熊狩り(Bear Hunt)の全62英雄を一覧化したデータベース。世代(常設〜第16世代)・兵種(歩兵/槍兵/弓兵)・レアリティ・集結主スキル/乗り手スキルで絞り込み検索。お気に入り登録、世代別の育成の考え方も掲載。">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
+<link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/tools/hero-list/">
+<link rel="stylesheet" href="../../assets/site.css?v=86">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg?v=85">
+<link rel="icon" type="image/png" href="../../favicon.png?v=85">
+<link rel="shortcut icon" href="../../favicon.ico?v=85">
+<link rel="apple-touch-icon" href="../../favicon.png?v=85">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ホワサバ ツールラボ">
+<meta property="og:title" content="熊狩り 英雄一覧・データベース｜全62英雄を世代・兵種・スキルで検索">
+<meta property="og:description" content="ホワサバ熊狩りの全62英雄を世代・兵種・レアリティ・スキルで検索。お気に入り登録、世代別育成の考え方も。">
+<meta property="og:url" content="https://whitesim-lab.com/tools/hero-list/">
+<meta property="og:image" content="https://whitesim-lab.com/favicon.png?v=85">
+<meta name="twitter:card" content="summary">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4593324513914979" crossorigin="anonymous"></script>
+<link rel="canonical" href="https://whitesim-lab.com/tools/hero-list/">
+<style>
+  .hl-wrap{max-width:1080px}
+  .hl-intro{font-size:14.5px;color:#3a4150;line-height:1.85;margin:8px 0 16px}
+  .hl-stats{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+  .hl-stat{background:#fff;border:1px solid #e5e7f2;border-radius:10px;padding:7px 13px;font-size:13px;color:#1d2233;font-weight:700}
+  .hl-stat b{color:#e85d12;font-size:15px;margin-right:3px}
+  .hl-controls{position:sticky;top:0;z-index:5;background:#faf7f2;border:1px solid #ecdcc0;border-radius:12px;padding:11px 13px;margin:10px 0 16px;box-shadow:0 2px 6px rgba(40,30,10,.04)}
+  .hl-search{width:100%;box-sizing:border-box;padding:9px 12px;border:1px solid #d8c4a0;border-radius:9px;font-size:14px;margin-bottom:9px;font-family:inherit}
+  .hl-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:6px 0}
+  .hl-row .lab{font-size:11.5px;font-weight:800;color:#8a7a5a;min-width:42px}
+  .hl-chip{border:1px solid #d8c4a0;background:#fff;color:#5a4a2e;border-radius:999px;padding:5px 11px;font-size:12px;cursor:pointer;font-weight:700;font-family:inherit}
+  .hl-chip:hover{background:#fff3e2}
+  .hl-chip.on{background:#e85d12;color:#fff;border-color:#e85d12}
+  .hl-reset{margin-left:auto;border:none;background:none;color:#b5791a;font-weight:800;font-size:12px;cursor:pointer;text-decoration:underline}
+  .hl-count{font-size:12.5px;color:#6b7385;margin:4px 0 12px;font-weight:700}
+  .hero-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:12px;margin:8px 0 20px}
+  .hero-card{position:relative;background:#fff;border:1px solid #e5e7f2;border-radius:13px;padding:13px 14px 12px;box-shadow:0 1px 3px rgba(28,34,80,.05)}
+  .hero-fav{position:absolute;top:9px;right:9px;border:none;background:none;font-size:19px;line-height:1;color:#d9b84a;cursor:pointer;padding:2px}
+  .hero-fav.on{color:#f5a623}
+  .hc-head{display:flex;align-items:baseline;gap:7px;padding-right:26px}
+  .hc-name{font-size:16px;font-weight:800;color:#1d2233}
+  .hc-en{font-size:11px;color:#9aa0b0;font-weight:600}
+  .hc-badges{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 9px}
+  .hc-badges span{font-size:11px;font-weight:800;border-radius:6px;padding:2px 7px}
+  .b-cls.inf{background:#e8f0fb;color:#2563a8}.b-cls.lan{background:#eafaf0;color:#1d8a4e}.b-cls.mks{background:#fdeede;color:#c2710f}
+  .b-gen{background:#f0eefb;color:#6a52b8}
+  .b-rar.r-ssr{background:#fff3d6;color:#b5791a}.b-rar.r-sr{background:#e9f0fb;color:#3a6fb0}.b-rar.r-r{background:#eef0f4;color:#6b7385}
+  .hc-skills{margin:0}
+  .hc-skills>div{display:flex;gap:8px;margin:5px 0;font-size:12.5px;line-height:1.5}
+  .hc-skills dt{flex:none;width:74px;color:#8a7a5a;font-weight:800}
+  .hc-skills dd{margin:0;color:#2b313c}
+  .hl-hidden{display:none!important}
+  .hl-empty{padding:24px;text-align:center;color:#8a8f9c;font-size:14px}
+  .hl-soon{border:1px dashed #d8c4a0;background:#fffaf1;border-radius:12px;padding:16px 18px;margin:16px 0;color:#6b5a36}
+  .hl-soon h3{margin:0 0 6px;color:#b5791a}
+  @media(max-width:560px){.hero-grid{grid-template-columns:1fr}.hc-skills dt{width:66px}}
+</style>
+</head>
+<body>
+<div id="nav"></div>
+<div class="wrap wide hl-wrap">
+<div class="crumb"><a href="../../index.html">ホーム</a> &gt; 英雄一覧・データベース</div>
+
+<h1 style="font-size:23px;margin:6px 0 4px">熊狩り 英雄一覧・データベース <span class="acc">全62英雄</span></h1>
+<p class="hl-intro">ホワイトアウトサバイバルの<strong>熊狩り（Bear Hunt）に関わる全62英雄</strong>を、世代・兵種・レアリティ・スキルでまとめたデータベースです。各英雄の<strong>集結主スキル（左に置いたとき全体へ効く効果）</strong>と<strong>乗り手スキル（集結に参加するときの効果）</strong>を並べて確認でき、編成を組む前の下調べに使えます。下の検索・絞り込みで、手持ちや狙っている英雄をすぐに探せます。</p>
+
+<div class="hl-stats">
+  <span class="hl-stat"><b>62</b>英雄</span>
+  <span class="hl-stat"><b>17</b>世代区分</span>
+  <span class="hl-stat"><b>49</b>SSR</span>
+  <span class="hl-stat">歩兵<b style="margin-left:4px">20</b></span>
+  <span class="hl-stat">槍兵<b style="margin-left:4px">21</b></span>
+  <span class="hl-stat">弓兵<b style="margin-left:4px">21</b></span>
+</div>
+
+<div class="hl-controls" id="hlControls">
+  <input type="text" class="hl-search" id="hlSearch" placeholder="英雄名で検索（例：ナタリア / natalia）">
+  <div class="hl-row"><span class="lab">兵種</span><button class="hl-chip" data-f="cls" data-v="inf">歩兵</button><button class="hl-chip" data-f="cls" data-v="lan">槍兵</button><button class="hl-chip" data-f="cls" data-v="mks">弓兵</button><span class="lab" style="margin-left:8px">レア</span><button class="hl-chip" data-f="rar" data-v="SSR">SSR</button><button class="hl-chip" data-f="rar" data-v="SR">SR</button><button class="hl-chip" data-f="rar" data-v="R">R</button><button class="hl-chip" data-f="fav" data-v="1">★お気に入り</button><button class="hl-reset" id="hlReset">リセット</button></div>
+  <div class="hl-row"><span class="lab">世代</span><button class="hl-chip" data-f="gen" data-v="0">常設</button><button class="hl-chip" data-f="gen" data-v="1">第1世代</button><button class="hl-chip" data-f="gen" data-v="2">第2世代</button><button class="hl-chip" data-f="gen" data-v="3">第3世代</button><button class="hl-chip" data-f="gen" data-v="4">第4世代</button><button class="hl-chip" data-f="gen" data-v="5">第5世代</button><button class="hl-chip" data-f="gen" data-v="6">第6世代</button><button class="hl-chip" data-f="gen" data-v="7">第7世代</button><button class="hl-chip" data-f="gen" data-v="8">第8世代</button><button class="hl-chip" data-f="gen" data-v="9">第9世代</button><button class="hl-chip" data-f="gen" data-v="10">第10世代</button><button class="hl-chip" data-f="gen" data-v="11">第11世代</button><button class="hl-chip" data-f="gen" data-v="12">第12世代</button><button class="hl-chip" data-f="gen" data-v="13">第13世代</button><button class="hl-chip" data-f="gen" data-v="14">第14世代</button><button class="hl-chip" data-f="gen" data-v="15">第15世代</button><button class="hl-chip" data-f="gen" data-v="16">第16世代</button></div>
+</div>
+<div class="hl-count" id="hlCount"></div>
+
+<div class="hero-grid" id="heroGrid">
+      <article class="hero-card" data-gen="0" data-cls="inf" data-rar="SR" data-id="sergey" data-name="セルゲイ sergey sergey">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="sergey">☆</button>
+        <div class="hc-head"><span class="hc-name">セルゲイ</span><span class="hc-en">Sergey</span></div>
+        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">常設</span><span class="b-rar r-sr">SR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>—</dd></div>
+          <div><dt>乗り手スキル</dt><dd>—</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="0" data-cls="lan" data-rar="SR" data-id="jessie" data-name="ジェシー jessie jessie">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="jessie">☆</button>
+        <div class="hc-head"><span class="hc-name">ジェシー</span><span class="hc-en">Jessie</span></div>
+        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">常設</span><span class="b-rar r-sr">SR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>与ダメ25(完全武装)</dd></div>
+          <div><dt>乗り手スキル</dt><dd>与ダメ+5→25%(完全武装)</dd></div>
+          
+          <div><dt>参考値</dt><dd>実測攻撃 140.11</dd></div>
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="0" data-cls="lan" data-rar="SR" data-id="patrick" data-name="パトリック patrick patrick">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="patrick">☆</button>
+        <div class="hc-head"><span class="hc-name">パトリック</span><span class="hc-en">Patrick</span></div>
+        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">常設</span><span class="b-rar r-sr">SR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>攻撃+25%(カロリー吸収)</dd></div>
+          <div><dt>乗り手スキル</dt><dd>—</dd></div>
+          
+          <div><dt>参考値</dt><dd>実測攻撃 140.11</dd></div>
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="0" data-cls="lan" data-rar="SR" data-id="lingxue" data-name="リンセツ ling xue lingxue">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="lingxue">☆</button>
+        <div class="hc-head"><span class="hc-name">リンセツ</span><span class="hc-en">Ling Xue</span></div>
+        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">常設</span><span class="b-rar r-sr">SR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>—</dd></div>
+          <div><dt>乗り手スキル</dt><dd>—</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="0" data-cls="lan" data-rar="SR" data-id="lumak" data-name="ルム・ボーガン lumak bokan lumak">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="lumak">☆</button>
+        <div class="hc-head"><span class="hc-name">ルム・ボーガン</span><span class="hc-en">Lumak Bokan</span></div>
+        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">常設</span><span class="b-rar r-sr">SR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>—</dd></div>
+          <div><dt>乗り手スキル</dt><dd>—</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="0" data-cls="mks" data-rar="SR" data-id="gina" data-name="ジーナ gina gina">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="gina">☆</button>
+        <div class="hc-head"><span class="hc-name">ジーナ</span><span class="hc-en">Gina</span></div>
+        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">常設</span><span class="b-rar r-sr">SR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>—</dd></div>
+          <div><dt>乗り手スキル</dt><dd>—</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="0" data-cls="mks" data-rar="SR" data-id="jasser" data-name="ジャセル jasser jasser">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="jasser">☆</button>
+        <div class="hc-head"><span class="hc-name">ジャセル</span><span class="hc-en">Jasser</span></div>
+        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">常設</span><span class="b-rar r-sr">SR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>与ダメ25(戦術演習)</dd></div>
+          <div><dt>乗り手スキル</dt><dd>与ダメ+5→25%(戦術演習)</dd></div>
+          
+          <div><dt>参考値</dt><dd>実測攻撃 140.11</dd></div>
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="0" data-cls="mks" data-rar="SR" data-id="seoyoon" data-name="ソユン seo-yoon seoyoon">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="seoyoon">☆</button>
+        <div class="hc-head"><span class="hc-name">ソユン</span><span class="hc-en">Seo-yoon</span></div>
+        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">常設</span><span class="b-rar r-sr">SR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>攻撃25(征伐の陣太鼓)</dd></div>
+          <div><dt>乗り手スキル</dt><dd>攻撃+5→25%(征伐の陣太鼓)</dd></div>
+          
+          <div><dt>参考値</dt><dd>実測攻撃 140.11</dd></div>
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="0" data-cls="mks" data-rar="SR" data-id="bahiti" data-name="バシティ bahiti bahiti">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="bahiti">☆</button>
+        <div class="hc-head"><span class="hc-name">バシティ</span><span class="hc-en">Bahiti</span></div>
+        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">常設</span><span class="b-rar r-sr">SR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>50%で与ダメ+50%</dd></div>
+          <div><dt>乗り手スキル</dt><dd>—</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="0" data-cls="inf" data-rar="R" data-id="smith" data-name="スミス smith smith">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="smith">☆</button>
+        <div class="hc-head"><span class="hc-name">スミス</span><span class="hc-en">Smith</span></div>
+        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">常設</span><span class="b-rar r-r">R</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>—</dd></div>
+          <div><dt>乗り手スキル</dt><dd>—</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="0" data-cls="inf" data-rar="R" data-id="eugene" data-name="ユージーン eugene eugene">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="eugene">☆</button>
+        <div class="hc-head"><span class="hc-name">ユージーン</span><span class="hc-en">Eugene</span></div>
+        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">常設</span><span class="b-rar r-r">R</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>—</dd></div>
+          <div><dt>乗り手スキル</dt><dd>—</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="0" data-cls="lan" data-rar="R" data-id="charlie" data-name="チャーリー charlie charlie">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="charlie">☆</button>
+        <div class="hc-head"><span class="hc-name">チャーリー</span><span class="hc-en">Charlie</span></div>
+        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">常設</span><span class="b-rar r-r">R</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>—</dd></div>
+          <div><dt>乗り手スキル</dt><dd>—</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="0" data-cls="mks" data-rar="R" data-id="cloris" data-name="クラリス cloris cloris">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="cloris">☆</button>
+        <div class="hc-head"><span class="hc-name">クラリス</span><span class="hc-en">Cloris</span></div>
+        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">常設</span><span class="b-rar r-r">R</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>—</dd></div>
+          <div><dt>乗り手スキル</dt><dd>—</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="1" data-cls="inf" data-rar="SSR" data-id="jeronimo" data-name="ジェロニモ jeronimo jeronimo">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="jeronimo">☆</button>
+        <div class="hc-head"><span class="hc-name">ジェロニモ</span><span class="hc-en">Jeronimo</span></div>
+        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">第1世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>与ダメ25/攻撃25/4T毎与ダメ30/殺傷15</dd></div>
+          <div><dt>乗り手スキル</dt><dd>与ダメ+5→25%(決起集会)</dd></div>
+          <div><dt>専用装備バフ</dt><dd>集結攻撃+5→15%(真実の術)</dd></div>
+          <div><dt>参考値</dt><dd>実測攻撃 260.2</dd></div>
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="1" data-cls="inf" data-rar="SSR" data-id="natalia" data-name="ナタリア natalia natalia">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="natalia">☆</button>
+        <div class="hc-head"><span class="hc-name">ナタリア</span><span class="hc-en">Natalia</span></div>
+        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">第1世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>攻撃25/与ダメ25/攻撃10</dd></div>
+          <div><dt>乗り手スキル</dt><dd>—</dd></div>
+          <div><dt>専用装備バフ</dt><dd>集結殺傷+5→15%</dd></div>
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="1" data-cls="lan" data-rar="SSR" data-id="molly" data-name="ジャスミン molly molly">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="molly">☆</button>
+        <div class="hc-head"><span class="hc-name">ジャスミン</span><span class="hc-en">Molly</span></div>
+        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">第1世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>50%で与ダメ50/固定与ダメ25</dd></div>
+          <div><dt>乗り手スキル</dt><dd>—</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="1" data-cls="mks" data-rar="SSR" data-id="zinman" data-name="ジンマン zinman zinman">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="zinman">☆</button>
+        <div class="hc-head"><span class="hc-name">ジンマン</span><span class="hc-en">Zinman</span></div>
+        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">第1世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>—</dd></div>
+          <div><dt>乗り手スキル</dt><dd>—</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="2" data-cls="inf" data-rar="SSR" data-id="flint" data-name="フリント flint flint">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="flint">☆</button>
+        <div class="hc-head"><span class="hc-name">フリント</span><span class="hc-en">Flint</span></div>
+        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">第2世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>攻撃25/殺傷25</dd></div>
+          <div><dt>乗り手スキル</dt><dd>炎上20%/3T(期待+20%)</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="2" data-cls="lan" data-rar="SSR" data-id="philly" data-name="フレンダー philly philly">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="philly">☆</button>
+        <div class="hc-head"><span class="hc-name">フレンダー</span><span class="hc-en">Philly</span></div>
+        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">第2世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>攻撃15</dd></div>
+          <div><dt>乗り手スキル</dt><dd>攻撃+15%</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="2" data-cls="mks" data-rar="SSR" data-id="alonso" data-name="アロンゾ alonso alonso">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="alonso">☆</button>
+        <div class="hc-head"><span class="hc-name">アロンゾ</span><span class="hc-en">Alonso</span></div>
+        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">第2世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>50%で与ダメ50/40%で殺傷50</dd></div>
+          <div><dt>乗り手スキル</dt><dd>—</dd></div>
+          <div><dt>専用装備バフ</dt><dd>集結殺傷+5→15%</dd></div>
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="3" data-cls="inf" data-rar="SSR" data-id="logan" data-name="ローガン logan logan">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="logan">☆</button>
+        <div class="hc-head"><span class="hc-name">ローガン</span><span class="hc-en">Logan</span></div>
+        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">第3世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>—</dd></div>
+          <div><dt>乗り手スキル</dt><dd>追撃20%/3T(期待+20%)</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="3" data-cls="lan" data-rar="SSR" data-id="mia" data-name="ミア mia mia">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="mia">☆</button>
+        <div class="hc-head"><span class="hc-name">ミア</span><span class="hc-en">Mia</span></div>
+        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">第3世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>50%被ダメ+50/50%与ダメ+50</dd></div>
+          <div><dt>乗り手スキル</dt><dd>50%で被ダメ+10→50%(不幸の連鎖)</dd></div>
+          <div><dt>専用装備バフ</dt><dd>集結攻撃+5→15%(宿命の集結)</dd></div>
+          <div><dt>参考値</dt><dd>実測攻撃 290.23</dd></div>
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="3" data-cls="mks" data-rar="SSR" data-id="greg" data-name="グレッグ greg greg">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="greg">☆</button>
+        <div class="hc-head"><span class="hc-name">グレッグ</span><span class="hc-en">Greg</span></div>
+        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">第3世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>20%で全軍ダメ40/3T(正義の剣)</dd></div>
+          <div><dt>乗り手スキル</dt><dd>20%で全軍ダメ+8→40%/3T(正義の剣)</dd></div>
+          
+          <div><dt>参考値</dt><dd>実測攻撃 290.23</dd></div>
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="4" data-cls="inf" data-rar="SSR" data-id="ahmose" data-name="アクモス ahmose ahmose">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="ahmose">☆</button>
+        <div class="hc-head"><span class="hc-name">アクモス</span><span class="hc-en">Ahmose</span></div>
+        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">第4世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>—</dd></div>
+          <div><dt>乗り手スキル</dt><dd>—</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="4" data-cls="lan" data-rar="SSR" data-id="reina" data-name="レイナ reina reina">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="reina">☆</button>
+        <div class="hc-head"><span class="hc-name">レイナ</span><span class="hc-en">Reina</span></div>
+        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">第4世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>通常攻撃30/槍25%で200%追撃</dd></div>
+          <div><dt>乗り手スキル</dt><dd>通常攻撃ダメ+30%(troop限定)</dd></div>
+          <div><dt>専用装備バフ</dt><dd>集結殺傷+5→15%</dd></div>
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="4" data-cls="mks" data-rar="SSR" data-id="lynn" data-name="リオン lynn lynn">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="lynn">☆</button>
+        <div class="hc-head"><span class="hc-name">リオン</span><span class="hc-en">Lynn</span></div>
+        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">第4世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>40%で与ダメ50</dd></div>
+          <div><dt>乗り手スキル</dt><dd>40%で与ダメ+50%(期待+20%)</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="5" data-cls="inf" data-rar="SSR" data-id="hector" data-name="ヘクトー hector hector">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="hector">☆</button>
+        <div class="hc-head"><span class="hc-name">ヘクトー</span><span class="hc-en">Hector</span></div>
+        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">第5世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>盾優先:与ダメ減衰(盾200/弓50%)+25%追撃</dd></div>
+          <div><dt>乗り手スキル</dt><dd>—</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="5" data-cls="lan" data-rar="SSR" data-id="nora" data-name="ノラ nora nora">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="nora">☆</button>
+        <div class="hc-head"><span class="hc-name">ノラ</span><span class="hc-en">Nora</span></div>
+        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">第5世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>—</dd></div>
+          <div><dt>乗り手スキル</dt><dd>盾弓:与ダメ+15%</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="5" data-cls="mks" data-rar="SSR" data-id="gwen" data-name="グエン gwen gwen">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="gwen">☆</button>
+        <div class="hc-head"><span class="hc-name">グエン</span><span class="hc-en">Gwen</span></div>
+        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">第5世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>敵被ダメ25</dd></div>
+          <div><dt>乗り手スキル</dt><dd>敵被ダメ+25%</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="6" data-cls="inf" data-rar="SSR" data-id="wuming" data-name="無名 wu ming wuming">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="wuming">☆</button>
+        <div class="hc-head"><span class="hc-name">無名</span><span class="hc-en">Wu Ming</span></div>
+        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">第6世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>—</dd></div>
+          <div><dt>乗り手スキル</dt><dd>—</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="6" data-cls="lan" data-rar="SSR" data-id="renee" data-name="レネ renee renee">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="renee">☆</button>
+        <div class="hc-head"><span class="hc-name">レネ</span><span class="hc-en">Renee</span></div>
+        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">第6世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>—</dd></div>
+          <div><dt>乗り手スキル</dt><dd>槍:3T毎に200%追撃</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="6" data-cls="mks" data-rar="SSR" data-id="wayne" data-name="ウェイン wayne wayne">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="wayne">☆</button>
+        <div class="hc-head"><span class="hc-name">ウェイン</span><span class="hc-en">Wayne</span></div>
+        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">第6世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>4T毎100%追加攻撃</dd></div>
+          <div><dt>乗り手スキル</dt><dd>4T毎に100%追加攻撃(+20%)</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="7" data-cls="inf" data-rar="SSR" data-id="edith" data-name="エディス edith edith">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="edith">☆</button>
+        <div class="hc-head"><span class="hc-name">エディス</span><span class="hc-en">Edith</span></div>
+        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">第7世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>—</dd></div>
+          <div><dt>乗り手スキル</dt><dd>槍:与ダメ+20%</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="7" data-cls="lan" data-rar="SSR" data-id="gordon" data-name="ゴードン gordon gordon">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="gordon">☆</button>
+        <div class="hc-head"><span class="hc-name">ゴードン</span><span class="hc-en">Gordon</span></div>
+        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">第7世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>—</dd></div>
+          <div><dt>乗り手スキル</dt><dd>槍:2回毎に100%追撃</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="7" data-cls="mks" data-rar="SSR" data-id="bradley" data-name="ブラッドリー bradley bradley">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="bradley">☆</button>
+        <div class="hc-head"><span class="hc-name">ブラッドリー</span><span class="hc-en">Bradley</span></div>
+        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">第7世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>攻撃25/4T毎与ダメ30(戦局洞察)</dd></div>
+          <div><dt>乗り手スキル</dt><dd>攻撃+5→25%(老兵の誇り)</dd></div>
+          
+          <div><dt>参考値</dt><dd>実測攻撃 650.52</dd></div>
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="8" data-cls="inf" data-rar="SSR" data-id="gatot" data-name="ガト gatot gatot">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="gatot">☆</button>
+        <div class="hc-head"><span class="hc-name">ガト</span><span class="hc-en">Gatot</span></div>
+        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">第8世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>—</dd></div>
+          <div><dt>乗り手スキル</dt><dd>—</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="8" data-cls="lan" data-rar="SSR" data-id="sonya" data-name="ソニヤ sonya sonya">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="sonya">☆</button>
+        <div class="hc-head"><span class="hc-name">ソニヤ</span><span class="hc-en">Sonya</span></div>
+        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">第8世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>与ダメ20/周期火力/槍強化</dd></div>
+          <div><dt>乗り手スキル</dt><dd>与ダメ+20%</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="8" data-cls="mks" data-rar="SSR" data-id="hendrik" data-name="ヘンドリック hendrik hendrik">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="hendrik">☆</button>
+        <div class="hc-head"><span class="hc-name">ヘンドリック</span><span class="hc-en">Hendrik</span></div>
+        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">第8世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>敵防御-25%(被ダメ増)</dd></div>
+          <div><dt>乗り手スキル</dt><dd>敵防御-25%(被ダメ増)</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="9" data-cls="inf" data-rar="SSR" data-id="magnus" data-name="マグヌス magnus magnus">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="magnus">☆</button>
+        <div class="hc-head"><span class="hc-name">マグヌス</span><span class="hc-en">Magnus</span></div>
+        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">第9世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>攻撃25/弓与ダメ10</dd></div>
+          <div><dt>乗り手スキル</dt><dd>攻撃+25%</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="9" data-cls="lan" data-rar="SSR" data-id="fred" data-name="フレッド fred fred">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="fred">☆</button>
+        <div class="hc-head"><span class="hc-name">フレッド</span><span class="hc-en">Fred</span></div>
+        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">第9世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>—</dd></div>
+          <div><dt>乗り手スキル</dt><dd>—</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="9" data-cls="mks" data-rar="SSR" data-id="xura" data-name="シュラ xura xura">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="xura">☆</button>
+        <div class="hc-head"><span class="hc-name">シュラ</span><span class="hc-en">Xura</span></div>
+        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">第9世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>—</dd></div>
+          <div><dt>乗り手スキル</dt><dd>—</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="10" data-cls="inf" data-rar="SSR" data-id="gregory" data-name="グレゴリー gregory gregory">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="gregory">☆</button>
+        <div class="hc-head"><span class="hc-name">グレゴリー</span><span class="hc-en">Gregory</span></div>
+        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">第10世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>—</dd></div>
+          <div><dt>乗り手スキル</dt><dd>—</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="10" data-cls="lan" data-rar="SSR" data-id="freya" data-name="フレイヤ freya freya">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="freya">☆</button>
+        <div class="hc-head"><span class="hc-name">フレイヤ</span><span class="hc-en">Freya</span></div>
+        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">第10世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>—</dd></div>
+          <div><dt>乗り手スキル</dt><dd>—</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="10" data-cls="mks" data-rar="SSR" data-id="blanchette" data-name="ブランシュ blanchette blanchette">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="blanchette">☆</button>
+        <div class="hc-head"><span class="hc-name">ブランシュ</span><span class="hc-en">Blanchette</span></div>
+        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">第10世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>殺傷25/3T毎弓75%追撃</dd></div>
+          <div><dt>乗り手スキル</dt><dd>殺傷+25%</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="11" data-cls="inf" data-rar="SSR" data-id="eleonora" data-name="エリオノーラ eleonora eleonora">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="eleonora">☆</button>
+        <div class="hc-head"><span class="hc-name">エリオノーラ</span><span class="hc-en">Eleonora</span></div>
+        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">第11世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>—</dd></div>
+          <div><dt>乗り手スキル</dt><dd>—</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="11" data-cls="lan" data-rar="SSR" data-id="lloyd" data-name="ロイド lloyd lloyd">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="lloyd">☆</button>
+        <div class="hc-head"><span class="hc-name">ロイド</span><span class="hc-en">Lloyd</span></div>
+        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">第11世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>—</dd></div>
+          <div><dt>乗り手スキル</dt><dd>—</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="11" data-cls="mks" data-rar="SSR" data-id="rufus" data-name="ルーファス rufus rufus">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="rufus">☆</button>
+        <div class="hc-head"><span class="hc-name">ルーファス</span><span class="hc-en">Rufus</span></div>
+        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">第11世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>攻撃25/弓与ダメ60</dd></div>
+          <div><dt>乗り手スキル</dt><dd>攻撃+25%</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="12" data-cls="inf" data-rar="SSR" data-id="hervor" data-name="ヘルヴィル hervor hervor">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="hervor">☆</button>
+        <div class="hc-head"><span class="hc-name">ヘルヴィル</span><span class="hc-en">Hervor</span></div>
+        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">第12世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>殺傷25</dd></div>
+          <div><dt>乗り手スキル</dt><dd>殺傷+25%</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="12" data-cls="lan" data-rar="SSR" data-id="karol" data-name="カロール karol karol">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="karol">☆</button>
+        <div class="hc-head"><span class="hc-name">カロール</span><span class="hc-en">Karol</span></div>
+        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">第12世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>—</dd></div>
+          <div><dt>乗り手スキル</dt><dd>—</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="12" data-cls="mks" data-rar="SSR" data-id="ligeia" data-name="ライジーア ligeia ligeia">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="ligeia">☆</button>
+        <div class="hc-head"><span class="hc-name">ライジーア</span><span class="hc-en">Ligeia</span></div>
+        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">第12世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>—</dd></div>
+          <div><dt>乗り手スキル</dt><dd>—</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="13" data-cls="inf" data-rar="SSR" data-id="gisela" data-name="ギーゼラ gisela gisela">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="gisela">☆</button>
+        <div class="hc-head"><span class="hc-name">ギーゼラ</span><span class="hc-en">Gisela</span></div>
+        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">第13世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>—</dd></div>
+          <div><dt>乗り手スキル</dt><dd>—</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="13" data-cls="lan" data-rar="SSR" data-id="flora" data-name="フローラ flora flora">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="flora">☆</button>
+        <div class="hc-head"><span class="hc-name">フローラ</span><span class="hc-en">Flora</span></div>
+        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">第13世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>—</dd></div>
+          <div><dt>乗り手スキル</dt><dd>—</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="13" data-cls="mks" data-rar="SSR" data-id="vulcanus" data-name="ウルカヌス vulcanus vulcanus">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="vulcanus">☆</button>
+        <div class="hc-head"><span class="hc-name">ウルカヌス</span><span class="hc-en">Vulcanus</span></div>
+        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">第13世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>—</dd></div>
+          <div><dt>乗り手スキル</dt><dd>—</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="14" data-cls="inf" data-rar="SSR" data-id="elif" data-name="エリーフ elif elif">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="elif">☆</button>
+        <div class="hc-head"><span class="hc-name">エリーフ</span><span class="hc-en">Elif</span></div>
+        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">第14世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>—</dd></div>
+          <div><dt>乗り手スキル</dt><dd>—</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="14" data-cls="lan" data-rar="SSR" data-id="dominic" data-name="ドミニク dominic dominic">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="dominic">☆</button>
+        <div class="hc-head"><span class="hc-name">ドミニク</span><span class="hc-en">Dominic</span></div>
+        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">第14世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>—</dd></div>
+          <div><dt>乗り手スキル</dt><dd>—</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="14" data-cls="mks" data-rar="SSR" data-id="cara" data-name="カーラ cara cara">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="cara">☆</button>
+        <div class="hc-head"><span class="hc-name">カーラ</span><span class="hc-en">Cara</span></div>
+        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">第14世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>—</dd></div>
+          <div><dt>乗り手スキル</dt><dd>—</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="15" data-cls="inf" data-rar="SSR" data-id="hank" data-name="ハンク hank hank">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="hank">☆</button>
+        <div class="hc-head"><span class="hc-name">ハンク</span><span class="hc-en">Hank</span></div>
+        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">第15世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>—</dd></div>
+          <div><dt>乗り手スキル</dt><dd>—</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="15" data-cls="lan" data-rar="SSR" data-id="estrella" data-name="エステラ estrella estrella">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="estrella">☆</button>
+        <div class="hc-head"><span class="hc-name">エステラ</span><span class="hc-en">Estrella</span></div>
+        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">第15世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>—</dd></div>
+          <div><dt>乗り手スキル</dt><dd>—</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="15" data-cls="mks" data-rar="SSR" data-id="viveca" data-name="ヴィヴィカ viveca viveca">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="viveca">☆</button>
+        <div class="hc-head"><span class="hc-name">ヴィヴィカ</span><span class="hc-en">Viveca</span></div>
+        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">第15世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>—</dd></div>
+          <div><dt>乗り手スキル</dt><dd>—</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="16" data-cls="inf" data-rar="SSR" data-id="seigel" data-name="シガー seigel seigel">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="seigel">☆</button>
+        <div class="hc-head"><span class="hc-name">シガー</span><span class="hc-en">Seigel</span></div>
+        <div class="hc-badges"><span class="b-cls inf">歩兵</span><span class="b-gen">第16世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>盾兵攻撃-20%(永夜の堅城/熊では微減)</dd></div>
+          <div><dt>乗り手スキル</dt><dd>—</dd></div>
+          
+          <div><dt>参考値</dt><dd>実測攻撃 2131.7</dd></div>
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="16" data-cls="lan" data-rar="SSR" data-id="ursar" data-name="ウルタール ursar ursar">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="ursar">☆</button>
+        <div class="hc-head"><span class="hc-name">ウルタール</span><span class="hc-en">Ursar</span></div>
+        <div class="hc-badges"><span class="b-cls lan">槍兵</span><span class="b-gen">第16世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>—</dd></div>
+          <div><dt>乗り手スキル</dt><dd>—</dd></div>
+          
+          
+        </dl>
+      </article>
+      <article class="hero-card" data-gen="16" data-cls="mks" data-rar="SSR" data-id="aisling" data-name="アシュリン aisling aisling">
+        <button class="hero-fav" type="button" aria-label="お気に入りに追加" data-id="aisling">☆</button>
+        <div class="hc-head"><span class="hc-name">アシュリン</span><span class="hc-en">Aisling</span></div>
+        <div class="hc-badges"><span class="b-cls mks">弓兵</span><span class="b-gen">第16世代</span><span class="b-rar r-ssr">SSR</span></div>
+        <dl class="hc-skills">
+          <div><dt>集結主スキル</dt><dd>与ダメ20/3T毎弓与ダメ150/3T毎弓追撃40</dd></div>
+          <div><dt>乗り手スキル</dt><dd>与ダメ+4→20%(密林の戦歌)</dd></div>
+          
+          <div><dt>参考値</dt><dd>実測攻撃 2131.7</dd></div>
+        </dl>
+      </article>
+</div>
+<div class="hl-empty hl-hidden" id="hlEmpty">条件に合う英雄が見つかりませんでした。フィルタをリセットしてください。</div>
+
+<div class="hl-soon">
+  <h3>🗳️ 人気英雄投票（近日公開予定）</h3>
+  <p style="margin:0;font-size:13.5px;line-height:1.7">「いま強いと思う英雄」「育てて良かった英雄」をみんなで投票できる機能を準備中です。現在は各カードの<strong>★ボタンでお気に入り登録</strong>（端末内に保存）ができます。お気に入りは上の「★お気に入り」で絞り込めます。将来的に、このお気に入りデータをもとにした<strong>人気ランキング・世代別の人気英雄</strong>へ発展させる予定です。</p>
+</div>
+
+<section class="tool-article" style="max-width:none">
+  <h2>このデータベースの見方</h2>
+  <p>各カードには、英雄の<strong>兵種・世代・レアリティ</strong>と、熊狩りで重要になる<strong>2種類のスキル</strong>を載せています。熊狩りは「誰を集結主（左）にするか」と「どの英雄で集結に乗るか」でダメージが変わるため、この2つを分けて確認できるようにしています。</p>
+
+  <h3>兵種（歩兵・槍兵・弓兵）</h3>
+  <p>ホワイトアウトサバイバルの部隊は<strong>歩兵（20体）・槍兵（21体）・弓兵／射手（21体）</strong>の3兵種に分かれます。熊狩りでは射手の火力が中心になりますが、前衛の歩兵・槍兵をゼロにすると不利になる場面があるため、比率のバランスが重要です。比率の最適化は<a href="../troop-ratio/index.html">兵士比率シミュレータ</a>で比較できます。</p>
+
+  <h3>世代（常設・第1〜第16世代）</h3>
+  <p>英雄は実装時期ごとに「世代」で分類されます。<strong>常設</strong>は最初から入手できる基本英雄、それ以降は順次追加された英雄で、<strong>新しい世代ほどスキルが強力になる傾向</strong>があります。ただし、入手難易度や手持ちとの相性もあるため、最新世代だけを追えばよいわけではありません。自分の世代帯で現実的に狙える英雄を選ぶのが基本です。</p>
+
+  <h3>レアリティ（R・SR・SSR）</h3>
+  <p>レアリティは<strong>R＜SR＜SSR</strong>の順に高くなり、熊狩りの主力は基本的に<strong>SSR（49体）</strong>です。R・SRは序盤の繋ぎや特定スキル要員として使われることがあります。</p>
+
+  <h3>集結主スキルと乗り手スキルの違い（重要）</h3>
+  <p>熊狩りの集結で<strong>全員に効くのは、集結主（編成のいちばん左）の英雄が持つ効果</strong>です。一方、集結に参加する「乗り手」側は、英雄によって効果が乗る・乗らないが分かれます。「強い英雄を入れたのに伸びない」原因の多くは、この<strong>左英雄（集結主）の選定ミス</strong>です。自分の編成で左に置くべき英雄は<a href="../left-hero/index.html">左英雄チェッカー</a>で判定できます。</p>
+  <p>本データベースでは、各英雄の「集結主スキル」と「乗り手スキル」を分けて表示しているので、<strong>左に置く候補</strong>と<strong>乗り手として優秀な候補</strong>を見分けやすくなっています。なお、表示しているスキル値は2026年6月時点の調査・実測に基づく整理であり、効果量はアップデートで変わることがあります。</p>
+
+  <h2>世代別・育成の考え方</h2>
+  <p>「どの英雄から育てるべきか」は、所持状況・世代帯・課金度合いで変わります。基本の優先順位は次のとおりです。</p>
+  <ul>
+    <li><strong>まず集結主候補を1体仕上げる</strong>：全体に効く集結主スキルは影響が大きいため、左に置ける強い英雄を最優先で育てると全体の底上げになります。</li>
+    <li><strong>次に主力兵種の乗り手を厚くする</strong>：射手中心の編成なら、乗り手スキルが優秀な英雄を揃えます。</li>
+    <li><strong>世代は「現実的に狙える範囲」で</strong>：最新世代は強力ですが入手が難しいことも多いため、自分の世代帯で確保できる英雄を軸に組み立てます。</li>
+  </ul>
+  <p>無課金・微課金での具体的な投資先は、<a href="../../guides/f2p-damage.html">無課金で熊狩りダメージを伸ばす方法</a>・<a href="../../guides/light-spender.html">微課金の投資先ランキング</a>で詳しく解説しています。シリルなど個別英雄の評価は<a href="../../guides/cyril-talent.html">シリルの天賦検証</a>も参考にしてください。<em>（世代ごとのおすすめ英雄ピックは、今後この欄に追記していく予定です。）</em></p>
+
+  <h2>よくある質問（FAQ）</h2>
+  <div class="ta-faq"><dl>
+    <dt>このデータはいつ時点のものですか？</dt>
+    <dd>2026年6月時点の公式情報・実測をもとに整理した全62英雄です。新英雄の追加や調整があれば順次更新します。</dd>
+    <dt>スキルの数値は正確ですか？</dt>
+    <dd>公開情報と実測に基づく整理で、運営の内部値の完全な再現ではありません。編成比較の目安としてご利用ください。正確なダメージ試算は<a href="../bear-hunt/index.html">熊狩ダメージ・シミュレーター</a>へ。</dd>
+    <dt>お気に入りは他の端末にも反映されますか？</dt>
+    <dd>現在は使用中の端末（ブラウザ）内にのみ保存されます。アカウント連携はありません。</dd>
+  </dl></div>
+
+  <h2>関連ツール・ガイド</h2>
+  <div class="ta-links">
+    <a href="../bear-hunt/index.html">熊狩ダメージ・シミュレーター</a>
+    <a href="../left-hero/index.html">左英雄チェッカー</a>
+    <a href="../troop-ratio/index.html">兵士比率シミュレータ</a>
+    <a href="../../guides/leader-formation.html">集結主・編成ガイド</a>
+    <a href="../../guides/bear-hunt-guide.html">熊狩り攻略ガイド</a>
+  </div>
+  <div class="ta-meta">
+    <strong>運営者</strong>：じゃすみん（1567サーバー / 同盟「bst」盟主）　|　<strong>連絡先</strong>：<a href="https://x.com/tegetege_m" target="_blank" rel="noopener">X @tegetege_m</a> ・ <a href="../../contact.html">お問い合わせ</a><br>
+    <strong>最終更新</strong>：2026年6月　|　英雄マスタは公式Wiki・公式タイムライン等の調査（計62英雄）を正規化したものです。<br>
+    ※ 本ページはファンメイドの非公式コンテンツです。数値・スキルは公開情報と実測に基づく整理であり、内部仕様の完全な再現ではありません。アップデートで変わることがあります。Whiteout Survival は Century Games の商標であり、当サイトは同社と提携・公認関係にありません。
+  </div>
+</section>
+
+<div id="foot"></div>
+</div>
+<script src="../../assets/config.js?v=86"></script><script src="../../assets/toolkit.js?v=87"></script>
+<script>
+  document.getElementById('nav').innerHTML = window.WOS_NAV(2);
+  document.getElementById('foot').innerHTML = window.WOS_FOOT(2);
+  (function(){
+    var grid=document.getElementById('heroGrid'), cards=[].slice.call(grid.querySelectorAll('.hero-card'));
+    var search=document.getElementById('hlSearch'), countEl=document.getElementById('hlCount'), emptyEl=document.getElementById('hlEmpty');
+    var FAVKEY='wos_hero_fav';
+    function getFav(){ try{return JSON.parse(localStorage.getItem(FAVKEY)||'[]');}catch(e){return [];} }
+    function setFav(a){ try{localStorage.setItem(FAVKEY,JSON.stringify(a));}catch(e){} }
+    var fav=getFav();
+    // init fav stars
+    cards.forEach(function(c){ var b=c.querySelector('.hero-fav'); if(fav.indexOf(b.getAttribute('data-id'))>=0){b.classList.add('on');b.textContent='★';} });
+    var active={cls:null,rar:null,gen:null,fav:false};
+    function apply(){
+      var q=(search.value||'').trim().toLowerCase(); var shown=0;
+      cards.forEach(function(c){
+        var ok=true;
+        if(active.cls && c.getAttribute('data-cls')!==active.cls)ok=false;
+        if(active.rar && c.getAttribute('data-rar')!==active.rar)ok=false;
+        if(active.gen!==null && c.getAttribute('data-gen')!==String(active.gen))ok=false;
+        if(active.fav && !c.querySelector('.hero-fav').classList.contains('on'))ok=false;
+        if(q && c.getAttribute('data-name').indexOf(q)<0)ok=false;
+        c.classList.toggle('hl-hidden',!ok); if(ok)shown++;
+      });
+      countEl.textContent='表示中：'+shown+' / '+cards.length+' 英雄';
+      emptyEl.classList.toggle('hl-hidden',shown!==0);
+    }
+    document.querySelectorAll('.hl-chip').forEach(function(ch){
+      ch.addEventListener('click',function(){
+        var f=ch.getAttribute('data-f'), v=ch.getAttribute('data-v');
+        if(f==='fav'){ active.fav=!active.fav; ch.classList.toggle('on',active.fav); apply(); return; }
+        var same=(String(active[f])===v);
+        document.querySelectorAll('.hl-chip[data-f="'+f+'"]').forEach(function(x){x.classList.remove('on');});
+        if(same){ active[f]=(f==='gen'?null:null); } else { active[f]=v; ch.classList.add('on'); }
+        apply();
+      });
+    });
+    search.addEventListener('input',apply);
+    document.getElementById('hlReset').addEventListener('click',function(){
+      active={cls:null,rar:null,gen:null,fav:false}; search.value='';
+      document.querySelectorAll('.hl-chip').forEach(function(x){x.classList.remove('on');}); apply();
+    });
+    grid.addEventListener('click',function(e){
+      var b=e.target.closest('.hero-fav'); if(!b)return;
+      var id=b.getAttribute('data-id'), arr=getFav(), i=arr.indexOf(id);
+      if(i>=0){arr.splice(i,1);b.classList.remove('on');b.textContent='☆';} else {arr.push(id);b.classList.add('on');b.textContent='★';}
+      setFav(arr); if(active.fav)apply();
+    });
+    apply();
+  })();
+</script>
+</body>
+</html>

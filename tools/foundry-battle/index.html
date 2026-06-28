@@ -19,7 +19,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
 <link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/tools/foundry-battle/index.html">
 <link rel="alternate" hreflang="en" href="https://whitesim-lab.com/tools/foundry-battle/index.html?lang=en">
-<link rel="stylesheet" href="../../assets/site.css?v=85">
+<link rel="stylesheet" href="../../assets/site.css?v=86">
 <style>
   /* ===== 兵器工場争奪戦ツール(アイスブルー基調・スコープ .fs) ===== */
   .fs{ --fbg:#e9f2f8; --fpanel:#fff; --fpanel2:#f1f7fb; --fline:#d4e2ee; --ftxt:#22323f; --fink:#1a2a37; --fmut:#6c8295;
@@ -444,13 +444,66 @@
 <div class="relbar" id="relbar"></div>
 
 </div>
+
+<section class="tool-article">
+<h2>兵器工場争奪戦 フィールドツールとは</h2>
+<p class="ta-lead">兵器工場争奪戦は、フィールド上の施設を占領してポイントを稼ぐ陣取りイベントです。本ツールは2つのモードで構成されます。<strong>作戦シミュレータ</strong>でチーム編成とフェーズごとの担当（どの施設を誰が取るか）を計画し、<strong>模擬戦シミュレータ</strong>で敵の動きを加えて、占領ポイント・バフ・優勢/劣勢の推移をリアルタイムに試算できます。作った作戦は共有リンクで仲間に配れます。</p>
+
+<h2>使い方</h2>
+<ol>
+  <li><strong>作戦シミュレータ</strong>：チーム（最大8）とリーダー名を設定し、フェーズごとに担当拠点を割り当てます。「ゲーム開始」で時間を進め、各フェーズの動きを確認します。</li>
+  <li><strong>模擬戦シミュレータ</strong>：作戦どおりに自軍が自動で動き、敵の強さ（格下／同格／格上）を選ぶと敵も自動で攻防します。占領ポイントの推移や戦況アドバイスが表示されます。</li>
+  <li><strong>共有</strong>：右上の「共有」からURLをコピーすると、相手の画面でも同じ作戦が再現されます。</li>
+</ol>
+
+<h2>イベントの基本ルール（ツールの前提）</h2>
+<table class="ta-table">
+  <tr><th>項目</th><th>目安</th></tr>
+  <tr><td>試合時間</td><td>60分</td></tr>
+  <tr><td>準備時間</td><td>開始〜3分（移転・攻撃ともに不可）</td></tr>
+  <tr><td>中央施設の開放</td><td>18分ごろ</td></tr>
+  <tr><td>武器工房（四隅）の出現</td><td>23分ごろ</td></tr>
+  <tr><td>占拠にかかる時間</td><td>約120秒</td></tr>
+  <tr><td>被占領時</td><td>その施設の蓄積ポイントの半分が散逸（軍事施設資材として分配）</td></tr>
+</table>
+<p>※ 数値はゲーム内での実測・公開情報に基づく目安です。アップデートで変わる場合があります。</p>
+
+<h2>結果の見方・活用のコツ</h2>
+<ul>
+  <li><strong>高得点拠点を守る</strong>：ポイントが溜まった拠点ほど奪われると痛手。模擬戦の「戦況アドバイス」が守り/奪い返しのタイミングを示します。</li>
+  <li><strong>敵の強さで難易度調整</strong>：同格・格上・格下で敵の動きが変わります。本番で想定される相手に合わせて検証しましょう。</li>
+  <li><strong>事前合意に使う</strong>：共有リンクで全員が同じ作戦を見てから挑むと、無駄な被りや放置が減ります。</li>
+</ul>
+
+<h2>よくある質問（FAQ）</h2>
+<div class="ta-faq"><dl>
+  <dt>実際のイベントと完全に同じ挙動ですか？</dt>
+  <dd>いいえ。あくまで作戦立案と試算のための非公式シミュレーションです。細かな仕様は実際のゲームが優先されます。</dd>
+  <dt>スマホでも使えますか？</dt>
+  <dd>はい。短縮表示や大きな再生ボタンなど、スマホ向けに最適化しています。</dd>
+  <dt>作った作戦を同盟で共有できますか？</dt>
+  <dd>「共有」からURLをコピーして配るだけで、同じ作戦が相手の画面でも開けます。</dd>
+</dl></div>
+
+<h2>関連ツール・ガイド</h2>
+<div class="ta-links">
+  <a href="../king-castle/index.html">王城戦エリア配置管理ツール</a>
+  <a href="../bear-hunt/index.html">熊狩ダメージ・シミュレーター</a>
+  <a href="../../guides/bear-hunt-guide.html">攻略ガイド一覧</a>
+</div>
+  <div class="ta-meta">
+    <strong>運営者</strong>：じゃすみん（1567サーバー / 同盟「bst」盟主）　|　<strong>連絡先</strong>：<a href="https://x.com/tegetege_m" target="_blank" rel="noopener">X @tegetege_m</a> ・ <a href="../../contact.html">お問い合わせ</a><br>
+    <strong>最終更新</strong>：2026年6月　|　ホワイトアウトサバイバルを実際にプレイし、ゲーム内での検証と公開情報をもとに作成しています。<br>
+    ※ 本ツールはファンメイドの非公式コンテンツです。数値・判定は公開情報と実測に基づく推定であり、運営の内部仕様の完全な再現ではありません。仕様はアップデートで変わることがあります。Whiteout Survival は Century Games の商標であり、当サイトは同社と提携・公認関係にありません。
+  </div>
+</section>
 <div id="foot"></div>
 
 <div id="modalHost"></div>
 <div class="fb-toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="../../assets/config.js?v=85"></script>
-<script src="../../assets/toolkit.js?v=85"></script>
+<script src="../../assets/config.js?v=86"></script>
+<script src="../../assets/toolkit.js?v=87"></script>
 <script>
   try{
     document.getElementById('nav').innerHTML = window.WOS_NAV(2);
