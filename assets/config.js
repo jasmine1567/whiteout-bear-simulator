@@ -16,8 +16,8 @@ window.WOS_LANG = (function(){
     if(q==='en'||q==='ja'){ localStorage.setItem('wos_lang',q); return q; }
     var s=localStorage.getItem('wos_lang'); if(s) return s;
   }catch(e){}
-  // ブラウザ言語から初期判定(日本語以外は英語)
-  try{ if((navigator.language||'').toLowerCase().indexOf('ja')!==0) return 'en'; }catch(e){}
+  // 既定はサイトの正規言語=日本語。英語は ?lang=en か言語トグルで明示選択した時のみ。
+  // (英訳が全ページ完了するまで、クローラ/初見訪問者には canonical と一致する日本語を表示する)
   return 'ja';
 })();
 window.WOS_setLang = function(l){
