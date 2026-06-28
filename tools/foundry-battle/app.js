@@ -465,7 +465,7 @@ function enemyAceIds(){ var N=aceCount();
   var held=BUILDINGS.filter(function(b){ return M.owners[b.id]==='Red'||(M.capturing[b.id]&&M.capturing[b.id].by==='Red'); }).sort(function(a,b){ return (bValue(b)+(M.bank[b.id]||0))-(bValue(a)+(M.bank[a.id]||0)); }).slice(0,N).map(function(b){return b.id;});
   return held;
 }
-function aceLabel(rank){ return (M.diff==='strong'?'格上':'')+'エース'+rank; }
+function aceLabel(rank){ return EN?((M.diff==='strong'?'Elite ':'')+'Ace '+rank):((M.diff==='strong'?'格上':'')+'エース'+rank); }
 
 function renderMock(){
   renderScnBar();
@@ -529,7 +529,7 @@ function renderMockMap(){
     div.setAttribute('data-bid',b.id); div.setAttribute('role','button'); div.setAttribute('tabindex','0');
     // 占領者名 / 敵エース
     var occLab='';
-    if(o==='Blue'&&!cap){ var ld=scnLeaderOf(b.id); var key=keymap[b.id]; if(ld)occLab='<span class="fs-leadtag" style="background:'+bc+'">'+(key?'★1軍 ':'')+esc(ld)+'</span>'; else if(key)occLab='<span class="fs-leadtag" style="background:'+bc+'">★1軍</span>'; }
+    if(o==='Blue'&&!cap){ var ld=scnLeaderOf(b.id); var key=keymap[b.id]; if(ld)occLab='<span class="fs-leadtag" style="background:'+bc+'">'+(key?(EN?'★1st ':'★1軍 '):'')+esc(ld)+'</span>'; else if(key)occLab='<span class="fs-leadtag" style="background:'+bc+'">'+(EN?'★1st':'★1軍')+'</span>'; }
     else { var redAssoc=(o==='Red')||(cap&&cap.by==='Red'); if(redAssoc){ var ai=aces.indexOf(b.id); if(ai>=0)occLab='<span class="fs-leadtag ace" style="background:#cf2e22">'+esc(aceLabel(ai+1))+'</span>'; } }
     if(occLab)div.className+=' hasocc';
     var occName=locked?T('未開放','locked'):(cap?(ownerName(cap.by)+MS.cap):(o==='Blue'?(scnLeaderOf(b.id)||ownerName(o)):(o==='Red'?(aces.indexOf(b.id)>=0?aceLabel(aces.indexOf(b.id)+1):ownerName(o)):ownerName(o))));
@@ -557,16 +557,16 @@ function mockTimeCard(){ var rem=Math.max(0,GAME.EVENT*60-M.elapsed);
 function computeAdvice(){
   var out=[], keymap=allyKeyset(), aces=enemyAceIds();
   // 1) 防衛: 自軍の重要拠点(高得点 or 1軍)が敵に占拠開始されている
-  BUILDINGS.forEach(function(b){ if(M.owners[b.id]==='Blue'&&M.capturing[b.id]&&M.capturing[b.id].by==='Red'&&((M.bank[b.id]||0)>=1000||keymap[b.id])){ out.push({key:'def'+b.id,act:'defend',bid:b.id,prio:(M.bank[b.id]||0)+9000,text:'⚠ '+bname(b)+'('+fmtN(M.bank[b.id]||0)+'pt)が奪われそう。'+(keymap[b.id]?'1軍で死守！':'守りを増やすか、奪われたら即奪回を。')}); } });
+  BUILDINGS.forEach(function(b){ if(M.owners[b.id]==='Blue'&&M.capturing[b.id]&&M.capturing[b.id].by==='Red'&&((M.bank[b.id]||0)>=1000||keymap[b.id])){ out.push({key:'def'+b.id,act:'defend',bid:b.id,prio:(M.bank[b.id]||0)+9000,text:T('⚠ '+bname(b)+'('+fmtN(M.bank[b.id]||0)+'pt)が奪われそう。'+(keymap[b.id]?'1軍で死守！':'守りを増やすか、奪われたら即奪回を。'),'⚠ '+bname(b)+' ('+fmtN(M.bank[b.id]||0)+'pt) is about to be taken. '+(keymap[b.id]?'Hold it with your 1st team!':'Add defenders, or retake it at once if lost.'))}); } });
   // 2) 奪回: 敵の高得点拠点(奪えば敵を半減)
   BUILDINGS.filter(function(b){ return M.owners[b.id]==='Red'&&!M.capturing[b.id]&&(M.bank[b.id]||0)>=3000; }).sort(function(a,b){return M.bank[b.id]-M.bank[a.id];}).slice(0,1).forEach(function(b){ var ace=aces.indexOf(b.id)>=0;
-    out.push({key:'take'+b.id,act:'capture',bid:b.id,prio:(M.bank[b.id]||0)+ (ace?0:2000),text:'敵の'+bname(b)+'は'+fmtN(M.bank[b.id]||0)+'pt。'+(ace?(M.diff==='strong'?'格上エースが死守中。複数チームで集中攻撃を。':'敵エース拠点。集中攻撃で奪えば大きく削れる。'):'奪えば敵ポイントを半減できる。')}); });
+    out.push({key:'take'+b.id,act:'capture',bid:b.id,prio:(M.bank[b.id]||0)+ (ace?0:2000),text:T('敵の'+bname(b)+'は'+fmtN(M.bank[b.id]||0)+'pt。'+(ace?(M.diff==='strong'?'格上エースが死守中。複数チームで集中攻撃を。':'敵エース拠点。集中攻撃で奪えば大きく削れる。'):'奪えば敵ポイントを半減できる。'),'Enemy '+bname(b)+' holds '+fmtN(M.bank[b.id]||0)+'pt. '+(ace?(M.diff==='strong'?'An Elite Ace is defending — focus several teams on it.':'Enemy ace site — focus fire to take it for a big swing.'):'Taking it halves the enemy points.'))}); });
   // 3) 確保: 未占領の高価値拠点
-  BUILDINGS.filter(function(b){ return visibleAt(b,M.elapsed)&&!lockedAt(b,M.elapsed)&&M.owners[b.id]===null; }).sort(function(a,b){return bValue(b)-bValue(a);}).slice(0,1).forEach(function(b){ out.push({key:'cap'+b.id,act:'capture',bid:b.id,prio:bValue(b)/3,text:'未占領の'+bname(b)+'を確保しましょう。'}); });
+  BUILDINGS.filter(function(b){ return visibleAt(b,M.elapsed)&&!lockedAt(b,M.elapsed)&&M.owners[b.id]===null; }).sort(function(a,b){return bValue(b)-bValue(a);}).slice(0,1).forEach(function(b){ out.push({key:'cap'+b.id,act:'capture',bid:b.id,prio:bValue(b)/3,text:T('未占領の'+bname(b)+'を確保しましょう。','Secure the open '+bname(b)+'.')}); });
   // 4) 武器工房の出現
-  if(M.elapsed>=GAME.WORKSHOP*60-40&&M.elapsed<GAME.WORKSHOP*60+90){ out.push({key:'ws',act:'info',bid:0,prio:500,text:'まもなく四隅に武器工房が出現。弾薬確保の準備を。'}); }
+  if(M.elapsed>=GAME.WORKSHOP*60-40&&M.elapsed<GAME.WORKSHOP*60+90){ out.push({key:'ws',act:'info',bid:0,prio:500,text:T('まもなく四隅に武器工房が出現。弾薬確保の準備を。','Weapon workshops appear at the corners soon — get ready to grab ammo.')}); }
   // 5) 1軍拠点の確認(序盤)
-  if(M.elapsed<GAME.CENTRAL*60){ var keyArr=Object.keys(keymap).map(Number).filter(function(id){return M.owners[id]!=='Blue';}); if(keyArr.length){ var b=BMAP[keyArr[0]]; out.push({key:'key'+b.id,act:'capture',bid:b.id,prio:4000,text:'まず1軍の要所「'+bname(b)+'」を確保して守りを固めましょう。'}); } }
+  if(M.elapsed<GAME.CENTRAL*60){ var keyArr=Object.keys(keymap).map(Number).filter(function(id){return M.owners[id]!=='Blue';}); if(keyArr.length){ var b=BMAP[keyArr[0]]; out.push({key:'key'+b.id,act:'capture',bid:b.id,prio:4000,text:T('まず1軍の要所「'+bname(b)+'」を確保して守りを固めましょう。','First secure your 1st-team key site "'+bname(b)+'" and firm up your defense.')}); } }
   out.sort(function(a,b){return b.prio-a.prio;});
   return out.slice(0,3);
 }
