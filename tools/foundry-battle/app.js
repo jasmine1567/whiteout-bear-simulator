@@ -18,7 +18,7 @@ function toast(m){ var t=$('toast'); t.textContent=m; t.classList.add('show'); c
 function track(a,p){ try{ if(window.gtag)gtag('event',a,Object.assign({tool:'foundry_battle'},p||{})); }catch(e){} }
 
 /* ===== ゲーム共通仕様(分) ===== */
-var GAME={ EVENT:60, PREP:3, CENTRAL:18, WORKSHOP:23, CAP_SEC:120, REENTRY_SEC:720 };
+var GAME={ EVENT:60, PREP:3, CENTRAL:18, WORKSHOP:23, CAP_SEC:120, REENTRY_SEC:720, RALLY_SEC:300, MARCH_SEC:45, NMARCH_SEC:30 };
 var SCATTER=0.5;
 
 /* ===== バフ定義 ===== */
@@ -161,8 +161,8 @@ function sampleScenario(){
     ]
   };
 }
-function planDefaults(){ var sc=sampleScenario(); return { scenarios:[sc], currentId:sc.id, teams:sc.teams, phases:sc.phases, view:'home', editTeamId:null, editPhaseId:'p1', clock:{elapsed:0,running:false}, speed:10, selectedBuildingId:null }; }
-function normScenario(sc){ if(!sc.teams)sc.teams=[]; if(!sc.phases)sc.phases=[]; sc.teams.forEach(function(t){if(t.leader==null)t.leader='';}); sc.phases.forEach(function(p){if(!p.assign)p.assign={}; if(p.desc==null)p.desc='';}); return sc; }
+function planDefaults(){ var sc=sampleScenario(); return { scenarios:[sc], currentId:sc.id, teams:sc.teams, phases:sc.phases, view:'home', editTeamId:null, editPhaseId:'p1', editMode:'assign', clock:{elapsed:0,running:false}, speed:10, selectedBuildingId:null }; }
+function normScenario(sc){ if(!sc.teams)sc.teams=[]; if(!sc.phases)sc.phases=[]; sc.teams.forEach(function(t){if(t.leader==null)t.leader=''; if(!t.behavior)t.behavior='balance';}); sc.phases.forEach(function(p){if(!p.assign)p.assign={}; if(p.desc==null)p.desc=''; if(!p.prio)p.prio={};}); return sc; }
 function planLoad(){ try{ var r=localStorage.getItem(KEYP); if(r){ var s=JSON.parse(r);
   if(s.scenarios&&s.scenarios.length){ s.scenarios.forEach(normScenario);
     var st={ scenarios:s.scenarios, currentId:(s.scenarios.some(function(x){return x.id===s.currentId;})?s.currentId:s.scenarios[0].id),
@@ -237,12 +237,13 @@ function renderPlanMap(){
     var bc=holder?holder.color:'#9fb6c8';
     var tag = b.openMin===GAME.CENTRAL?('<span class="tag">'+T('18分開放','+18m')+'</span>') : b.appear?('<span class="tag">'+T('23分出現','+23m')+'</span>') : '';
     var lead = (holder&&holder.leader)?('<span class="fs-leadtag" style="background:'+bc+'">'+esc(holder.leader)+'</span>'):'';
-    var cls='fs-tile'+(b.big?' big':'')+(sel?' sel':'')+(lead?' hasocc':'');
+    var isPrio=!!(ph&&ph.prio&&ph.prio[String(b.id)]);
+    var cls='fs-tile'+(b.big?' big':'')+(sel?' sel':'')+(lead?' hasocc':'')+(isPrio?' prio':'');
     if(isEditTeam && holder && !mine) cls+=' dim';
     var div=document.createElement('div'); div.className=cls; div.style.left=b.x+'%'; div.style.top=b.y+'%';
     div.setAttribute('data-bid',b.id); div.setAttribute('role','button'); div.setAttribute('tabindex','0');
     div.setAttribute('aria-label','#'+b.num+' '+bname(b)+(holder?('｜'+holder.name):''));
-    div.innerHTML='<div class="fs-dia" style="border-color:'+bc+'"><div class="fs-occ" style="background:'+bc+';opacity:'+(holder?'':'0')+'"></div><div class="bld"></div><div class="fs-badge">'+esc(b.num)+'</div></div>'+lead+tag+pillHTML(b);
+    div.innerHTML='<div class="fs-dia" style="border-color:'+bc+'"><div class="fs-occ" style="background:'+bc+';opacity:'+(holder?'':'0')+'"></div><div class="bld"></div><div class="fs-badge">'+esc(b.num)+'</div></div>'+lead+tag+(isPrio?'<span class="fs-star">⭐</span>':'')+pillHTML(b);
     tiles.appendChild(div);
   });
   // オーバーレイ
@@ -252,7 +253,9 @@ function renderPlanMap(){
   ovTR.innerHTML=''; 
   // 編集中チームの筆インジケータ
   var et=P.editTeamId&&pTeam(P.editTeamId);
-  brushInd.innerHTML = et ? '<div class="fs-brush"><span class="dot" style="background:'+et.color+'"></span>'+T('割当中','Editing')+'：'+esc(et.name)+' — '+T('拠点クリックで担当ON/OFF','click tiles')+'</div>' : '';
+  brushInd.innerHTML = et ? (P.editMode==='prio'
+    ? '<div class="fs-brush"><span class="dot" style="background:#b5791a"></span>⭐'+T('重要ターゲット指定中 — 拠点クリックでON/OFF','Marking priority targets — click tiles')+'</div>'
+    : '<div class="fs-brush"><span class="dot" style="background:'+et.color+'"></span>'+T('割当中','Editing')+'：'+esc(et.name)+' — '+T('拠点クリックで担当ON/OFF','click tiles')+'</div>') : '';
 }
 
 function renderPlanPanel(){
@@ -304,11 +307,15 @@ function planTimeCard(){
 }
 
 /* --- 編集: チーム一覧 --- */
+var BEH_DEF=[['aggro','⚔','攻撃','Attack'],['balance','⚖','バランス','Balance'],['hold','🛡','防衛','Hold'],['harvest','⛏','工房','Harvest']];
+function behRow(t){ return '<div class="fs-behrow" data-id="'+t.id+'">'+BEH_DEF.map(function(d){ return '<button class="'+((t.behavior||'balance')===d[0]?'on':'')+'" data-beh="'+d[0]+'" title="'+behTip(d[0])+'">'+d[1]+(EN?d[3]:d[2])+'</button>'; }).join('')+'</div>'; }
+function behTip(k){ return {aggro:T('担当確保後、敵の高得点拠点へ積極的に集結','After securing targets, rallies enemy high-value sites'),balance:T('担当確保→⭐に参加→中立を確保','Secure targets → join ⭐ → grab neutrals'),hold:T('担当拠点に駐屯して守りを固める(被攻撃の成功率を下げる)','Garrison own targets; enemy attacks on them succeed less'),harvest:T('武器工房(弾薬)を最優先で確保','Prioritizes weapon workshops (ammo)')}[k]; }
 function planTeamsCard(){
   var rows=P.teams.map(function(t){
     var cnt=0; P.phases.forEach(function(p){ for(var k in p.assign){ if(p.assign[k]===t.id)cnt++; } });
     return '<div class="fs-team" data-id="'+t.id+'"><input type="color" value="'+t.color+'" class="tc"><input type="text" value="'+esc(t.name)+'" class="tn" maxlength="18"><span class="cnt">'+cnt+'</span><button class="del">×</button></div>'+
       '<div class="fs-leadrow"><span class="lab">'+T('終結主','Leader')+'</span><input type="text" class="ld" value="'+esc(t.leader||'')+'" placeholder="'+T('リーダー名','Leader')+'" maxlength="16" data-id="'+t.id+'"></div>'+
+      behRow(t)+
       '<button class="fs-editbtn" data-id="'+t.id+'">'+T('このチームの作戦を編集 →','Edit this team\u2019s plan →')+'</button>';
   }).join('');
   var add=P.teams.length>=MAX_TEAMS?'<span class="add" style="opacity:.5;cursor:default">'+T('最大8','Max 8')+'</span>':'<span class="add" id="addTeam">'+T('＋追加','＋Add')+'</span>';
@@ -332,7 +339,12 @@ function teamPlanPanel(){
   var mine=Object.keys(ep.assign).filter(function(k){return ep.assign[k]===t.id;}).map(function(k){ return esc(bname(BMAP[+k])); });
   return '<div class="fs-card"><h3><span style="display:inline-flex;align-items:center;gap:7px"><span style="width:12px;height:12px;border-radius:3px;background:'+t.color+'"></span>'+esc(t.name)+'</span><span class="add" id="backTeams">← '+T('一覧へ','Back')+'</span></h3>'+
     '<div class="fs-team" data-id="'+t.id+'" style="padding-top:0"><input type="color" value="'+t.color+'" class="tc"><input type="text" value="'+esc(t.name)+'" class="tn" maxlength="18"></div>'+
-    '<div class="fs-leadrow"><span class="lab">'+T('終結主','Leader')+'</span><input type="text" class="ld" value="'+esc(t.leader||'')+'" placeholder="'+T('リーダー名','Leader')+'" maxlength="16" data-id="'+t.id+'"></div></div>'+
+    '<div class="fs-leadrow"><span class="lab">'+T('終結主','Leader')+'</span><input type="text" class="ld" value="'+esc(t.leader||'')+'" placeholder="'+T('リーダー名','Leader')+'" maxlength="16" data-id="'+t.id+'"></div>'+
+    '<span class="lab" style="font:700 10px \'Noto Sans JP\';color:var(--fmut)">'+T('行動パターン(模擬戦で使用)','Behavior (used in mock battle)')+'</span>'+behRow(t)+'</div>'+
+    '<div class="fs-card"><h3>'+T('マップクリックの動作','Map click mode')+'</h3><div class="fs-modrow">'+
+      '<button id="mdAssign" class="'+(P.editMode!=='prio'?'on':'')+'">'+T('担当拠点を割当','Assign targets')+'</button>'+
+      '<button id="mdPrio" class="'+(P.editMode==='prio'?'on':'')+'">⭐'+T('重要ターゲット','Priority')+'</button></div>'+
+      '<div class="fs-hint">'+(P.editMode==='prio'?T('拠点クリックで⭐重要ターゲットをON/OFF。模擬戦では待機チームが最大3チームで合同集結し、格上拠点の奪還を狙います。','Click tiles to toggle ⭐. In the mock battle, up to 3 idle teams joint-rally these to crack elite-held sites.'):T('拠点クリックでこのチームの担当をON/OFF。','Click tiles to toggle this team\u2019s targets.'))+'</div></div>'+
     '<div class="fs-card"><h3>'+T('フェーズを選択','Pick phase')+'</h3><div class="fs-plist">'+phs+'</div>'+
       '<span class="fs-pedit lab" style="display:block;margin-bottom:5px">'+T('このフェーズの作戦内容','Plan for this phase')+'</span>'+
       '<textarea id="peDesc" class="fs-pedit" style="width:100%;min-height:54px;border:1px solid var(--fline);border-radius:7px;padding:6px 8px;font:500 12px \'Noto Sans JP\'">'+esc(ep.desc||'')+'</textarea>'+
@@ -352,6 +364,11 @@ function planWire(){
   Array.prototype.forEach.call(document.querySelectorAll('.fs-leadrow .ld'),function(inp){ inp.addEventListener('input',function(e){ var t=pTeam(inp.getAttribute('data-id')); if(t)t.leader=e.target.value; planSave(); }); });
   Array.prototype.forEach.call(document.querySelectorAll('.fs-editbtn'),function(b){ b.addEventListener('click',function(){ P.editTeamId=b.getAttribute('data-id'); P.selectedBuildingId=null; renderPlan(); }); });
   var bk=$('backTeams'); if(bk)bk.addEventListener('click',function(){ P.editTeamId=null; renderPlan(); });
+  Array.prototype.forEach.call(document.querySelectorAll('.fs-behrow'),function(row){ var tid=row.getAttribute('data-id');
+    Array.prototype.forEach.call(row.querySelectorAll('button'),function(btn){ btn.addEventListener('click',function(){ var t=pTeam(tid); if(!t)return; t.behavior=btn.getAttribute('data-beh');
+      Array.prototype.forEach.call(row.querySelectorAll('button'),function(x){x.classList.remove('on');}); btn.classList.add('on'); planSave(); }); }); });
+  var ma=$('mdAssign'); if(ma)ma.addEventListener('click',function(){ P.editMode='assign'; renderPlan(); });
+  var mp=$('mdPrio'); if(mp)mp.addEventListener('click',function(){ P.editMode='prio'; renderPlan(); });
   // phases
   var ap=$('addPhase'); if(ap)ap.addEventListener('click',function(){ var id='p'+Date.now().toString(36); P.phases.push({id:id,name:(EN?'Phase ':'フェーズ')+(P.phases.length+1),time:Math.min(60,(pPhasesSorted().slice(-1)[0]||{time:0}).time+5),desc:'',assign:{}}); P.editPhaseId=id; renderPlan(); });
   Array.prototype.forEach.call(document.querySelectorAll('.fs-prow'),function(row){ row.addEventListener('click',function(){ P.editPhaseId=row.getAttribute('data-id'); renderPlan(); }); });
@@ -362,7 +379,9 @@ function planWire(){
   var delp=$('delPhase'); if(delp)delp.addEventListener('click',function(){ if(P.phases.length<=1)return; P.phases=P.phases.filter(function(p){return p.id!==P.editPhaseId;}); P.editPhaseId=P.phases[0].id; renderPlan(); });
 }
 function planSoft(){ renderPlanMap(); planSave(); }
-function planToggleAssign(bid){ var ep=pPhaseById(P.editPhaseId); if(ep.assign[String(bid)]===P.editTeamId)delete ep.assign[String(bid)]; else ep.assign[String(bid)]=P.editTeamId; renderPlanMap(); var host=document.querySelector('.fs-hint b'); if(host){ renderPlanPanel(); } planSave(); }
+function planToggleAssign(bid){ var ep=pPhaseById(P.editPhaseId); if(!ep.prio)ep.prio={};
+  if(P.editMode==='prio'){ if(ep.prio[String(bid)])delete ep.prio[String(bid)]; else ep.prio[String(bid)]=1; renderPlanMap(); planSave(); return; }
+  if(ep.assign[String(bid)]===P.editTeamId)delete ep.assign[String(bid)]; else ep.assign[String(bid)]=P.editTeamId; renderPlanMap(); var host=document.querySelector('.fs-hint b'); if(host){ renderPlanPanel(); } planSave(); }
 
 var planClockT=null;
 function planTogglePlay(){
@@ -389,11 +408,11 @@ function refreshPlanHomeCards(){ if(P.view!=='home')return;
 /* =====================================================================
    ================= 模擬戦シミュレータ (MOCK) =================
    ===================================================================== */
-var KEYM='wos_fb_mock_v5';
-function mockBlank(){ var o={owners:{},capturing:{},occSec:{},bank:{},harvestProg:{},harvestDone:{},firstTaken:{}};
+var KEYM='wos_fb_mock_v6';
+function mockBlank(){ var o={owners:{},capturing:{},occSec:{},bank:{},harvestProg:{},harvestDone:{},firstTaken:{},rallies:[],focus:{},aces:{}};
   BUILDINGS.forEach(function(b){ o.owners[b.id]=null; o.capturing[b.id]=null; o.occSec[b.id]=0; o.bank[b.id]=0; o.harvestProg[b.id]=0; o.harvestDone[b.id]=false; o.firstTaken[b.id]=false; }); return o; }
 function mockDefaults(){ return Object.assign(mockBlank(),{ score:{Blue:0,Red:0}, bullets:{Blue:0,Red:0}, elapsed:0, playing:false, speed:10, ended:false, brush:'Red', capTimed:true, self:{inField:true,reentryRemain:0}, auto:true, diff:'even', lastDecide:0, scenarioId:'sample', recovery:0.5, advice:[], aces:{} }); }
-function mockLoad(){ try{ var r=localStorage.getItem(KEYM); if(r){ var s=JSON.parse(r); var m=Object.assign(mockDefaults(),s,{playing:false}); if(typeof m.recovery!=='number')m.recovery=0.5; if(!Array.isArray(m.advice))m.advice=[]; if(!m.aces)m.aces={}; return m; } }catch(e){} return mockDefaults(); }
+function mockLoad(){ try{ var r=localStorage.getItem(KEYM); if(r){ var s=JSON.parse(r); var m=Object.assign(mockDefaults(),s,{playing:false}); if(typeof m.recovery!=='number')m.recovery=0.5; if(!Array.isArray(m.advice))m.advice=[]; if(!m.aces)m.aces={}; if(!Array.isArray(m.rallies))m.rallies=[]; if(!m.focus)m.focus={}; return m; } }catch(e){} return mockDefaults(); }
 var M=mockLoad();
 if(!P.scenarios.some(function(s){return s.id===M.scenarioId;})) M.scenarioId=P.currentId;
 function mockSave(){ try{ localStorage.setItem(KEYM, JSON.stringify(M)); }catch(e){} }
@@ -406,9 +425,9 @@ function ownerName(o){ return o==='Blue'?MS.blue:o==='Red'?MS.red:MS.npc; }
 
 /* Undo/Redo */
 var mUndo=[],mRedo=[];
-function mSnap(){ return JSON.parse(JSON.stringify({owners:M.owners,capturing:M.capturing,occSec:M.occSec,bank:M.bank,harvestProg:M.harvestProg,harvestDone:M.harvestDone,score:M.score,bullets:M.bullets})); }
+function mSnap(){ return JSON.parse(JSON.stringify({owners:M.owners,capturing:M.capturing,occSec:M.occSec,bank:M.bank,harvestProg:M.harvestProg,harvestDone:M.harvestDone,score:M.score,bullets:M.bullets,rallies:M.rallies,focus:M.focus,aces:M.aces})); }
 function mPush(){ mUndo.push(mSnap()); if(mUndo.length>60)mUndo.shift(); mRedo=[]; }
-function mRestore(s){ ['owners','capturing','occSec','bank','harvestProg','harvestDone','score','bullets'].forEach(function(k){ M[k]=s[k]; }); renderMock(); }
+function mRestore(s){ ['owners','capturing','occSec','bank','harvestProg','harvestDone','score','bullets','rallies','focus','aces'].forEach(function(k){ M[k]=s[k]; }); renderMock(); }
 function mockUndo(){ if(!mUndo.length)return; mRedo.push(mSnap()); mRestore(mUndo.pop()); }
 function mockRedo(){ if(!mRedo.length)return; mUndo.push(mSnap()); mRestore(mRedo.pop()); }
 
@@ -430,15 +449,19 @@ function mScatter(id,prev,by){ var b=BMAP[id], r=(typeof M.recovery==='number'?M
 }
 function mStartCapture(id,by){ var b=BMAP[id], prev=M.owners[id], isSteal=!!(prev&&prev!==by);
   if(isSteal){ mScatter(id,prev,by); }   /* 占拠"開始"の瞬間に散逸＋テロップ */
+  if(!M.evlog)M.evlog=[]; M.evlog.push({t:Math.round(M.elapsed),ev:isSteal?'steal':'occ',bid:id,by:by}); if(M.evlog.length>300)M.evlog.shift();
   if(M.capTimed){ var ct=captureTime(by,isSteal); M.capturing[id]={by:by,remain:ct,total:ct}; } else { mFinalize(id,by); }
 }
 function mFinalize(id,by){ var b=BMAP[id]; M.owners[id]=by; M.capturing[id]=null; M.occSec[id]=0;
+  if(!M.evlog)M.evlog=[]; M.evlog.push({t:Math.round(M.elapsed),ev:'own',bid:id,by:by}); if(M.evlog.length>300)M.evlog.shift();
   M.bank[id]=0;                                  /* 占領完了＝施設の獲得ポイントは0スタート */
   if(by && b.init>0 && !M.firstTaken[id]){ M.score[by]+=b.init; M.firstTaken[id]=true; } } /* 初回支配ボーナスは“初回占領”のみ */
 function mAbandon(id){ var b=BMAP[id]; M.owners[id]=null; M.capturing[id]=null; M.occSec[id]=0; M.bank[id]=0; if(b.cat==='res'){ M.harvestProg[id]=0; M.harvestDone[id]=false; } }
 
 function mockApply(id){ var b=BMAP[id]; if(!visibleAt(b,M.elapsed))return; if(lockedAt(b,M.elapsed)){ toast(MS.toLocked); return; } if(M.ended)return;
-  var br=M.brush; mPush();
+  var br=M.brush;
+  if(br==='focus'){ if(M.focus[id]){ delete M.focus[id]; toast(T('⭐集中攻撃を解除：','⭐ Focus off: ')+bname(b)); } else { M.focus[id]=1; toast(T('⭐集中攻撃に指定：','⭐ Focus on: ')+bname(b)+T('（待機チームが合同集結します）',' (idle teams will joint-rally)')); } renderMockMap(); mockSave(); return; }
+  mPush();
   if(br==='clear'){ mAbandon(id); }
   else { if(M.owners[id]===br&&!M.capturing[id]){ mUndo.pop(); return; } mStartCapture(id,br); }
   updateAdvice(); renderMock();
@@ -459,13 +482,9 @@ function teamCountM(){ return Math.max(1,(mockScenario().teams||[]).length); }
 /* 自軍1軍(キー拠点): 各チームが担当する中で最も価値の高い拠点 */
 function allyKeyMap(){ var am=scnAssignMap(), best={}; for(var k in am){ var tid=am[k], b=BMAP[+k]; if(!b)continue; var v=bValue(b); if(!best[tid]||v>best[tid].v)best[tid]={bid:+k,v:v}; } var map={}; for(var t in best)map[best[t].bid]=t; return map; } // bid -> teamId(1軍)
 function allyKeyset(){ return allyKeyMap(); }
-/* 敵エースの配置: 敵が保持する高価値拠点 上位N (N=チーム数)。格上は最重要N拠点を死守 */
-function aceCount(){ return M.diff==='strong'?5:teamCountM(); }
-function enemyAceIds(){ var N=aceCount();
-  var held=BUILDINGS.filter(function(b){ return M.owners[b.id]==='Red'||(M.capturing[b.id]&&M.capturing[b.id].by==='Red'); }).sort(function(a,b){ return (bValue(b)+(M.bank[b.id]||0))-(bValue(a)+(M.bank[a.id]||0)); }).slice(0,N).map(function(b){return b.id;});
-  return held;
-}
-function aceLabel(rank){ return EN?((M.diff==='strong'?'Elite ':'')+'Ace '+rank):((M.diff==='strong'?'格上':'')+'エース'+rank); }
+/* 敵エース: 強さ順(1軍〜)に価値上位拠点を担当・防衛する(配置はensureAcesで管理) */
+function aceCount(){ return M.diff==='strong'?6:(M.diff==='even'?teamCountM():0); }
+function aceLabel(rank){ return EN?((M.diff==='strong'?'Elite ':'Ace ')+'Army '+rank):((M.diff==='strong'?'格上':'エース')+rank+'軍'); }
 
 function renderMock(){
   renderScnBar();
@@ -495,7 +514,8 @@ function renderMockHeader(){
       '<div class="fs-tg"><span class="lb">'+T('手動で占拠','Manual')+'</span>'+
         '<button class="fs-tbtn b'+(M.brush==='Blue'?' on':'')+'" data-br="Blue"><span class="d" style="background:#2256c8"></span>'+MS.blue+'</button>'+
         '<button class="fs-tbtn r'+(M.brush==='Red'?' on':'')+'" data-br="Red"><span class="d" style="background:#cf2e22"></span>'+MS.red+'</button>'+
-        '<button class="fs-tbtn'+(M.brush==='clear'?' on':'')+'" data-br="clear">'+T('解除','Clear')+'</button></div>'+
+        '<button class="fs-tbtn'+(M.brush==='clear'?' on':'')+'" data-br="clear">'+T('解除','Clear')+'</button>'+
+        '<button class="fs-tbtn st'+(M.brush==='focus'?' on':'')+'" data-br="focus" title="'+T('複数チームで集中攻撃する拠点を指定','Mark for joint focus rallies')+'">⭐'+T('集中攻撃','Focus')+'</button></div>'+
       '<div class="fs-tg"><span class="lb">'+T('一括','Bulk')+'</span><button class="fs-tbtn b" id="mAllB">'+T('全自軍','All B')+'</button><button class="fs-tbtn r" id="mAllR">'+T('全敵軍','All R')+'</button><button class="fs-tbtn" id="mClear">'+T('全解除','Clear')+'</button></div>'+
       '<div class="fs-tg"><span class="lb">'+T('手動操作','Edit')+'</span><button class="fs-tbtn" id="mUndo"'+(mUndo.length?'':' disabled')+'>↶ '+T('戻す','Undo')+'</button><button class="fs-tbtn" id="mRedo"'+(mRedo.length?'':' disabled')+'>'+T('やり直し','Redo')+' ↷</button></div>'+
     '</div>';
@@ -522,26 +542,40 @@ function renderMockBar(){
 
 function renderMockMap(){
   tiles.innerHTML='';
-  var keymap=allyKeyset(), aces=enemyAceIds();
+  ensureAces();
+  var keymap=allyKeyset(), prios=prioTargets();
   BUILDINGS.forEach(function(b){ if(!visibleAt(b,M.elapsed))return;
     var o=M.owners[b.id],cap=M.capturing[b.id],shown=cap?cap.by:o,bc=ownerColor(shown),locked=lockedAt(b,M.elapsed);
+    var ar=aceRankAt(b.id), redAssoc=(o==='Red')||(cap&&cap.by==='Red');
+    var aceHere=ar>0&&redAssoc;
+    var isPrio=prios.indexOf(b.id)>=0;
+    var rls=M.rallies.filter(function(r){ return r.bid===b.id; });
     var div=document.createElement('div'); div.className='fs-tile'+(b.big?' big':'')+(locked?' locked':''); div.style.left=b.x+'%'; div.style.top=b.y+'%';
+    if(aceHere&&M.diff==='strong')div.className+=(ar<=3?' acehard':' acesoft');
+    if(isPrio)div.className+=' prio'+(o==='Red'?' prio-hot':'');
+    if(rls.length)div.className+=' hasrally';
     div.setAttribute('data-bid',b.id); div.setAttribute('role','button'); div.setAttribute('tabindex','0');
     // 占領者名 / 敵エース
     var occLab='';
     if(o==='Blue'&&!cap){ var ld=scnLeaderOf(b.id); var key=keymap[b.id]; if(ld)occLab='<span class="fs-leadtag" style="background:'+bc+'">'+(key?(EN?'★1st ':'★1軍 '):'')+esc(ld)+'</span>'; else if(key)occLab='<span class="fs-leadtag" style="background:'+bc+'">'+(EN?'★1st':'★1軍')+'</span>'; }
-    else { var redAssoc=(o==='Red')||(cap&&cap.by==='Red'); if(redAssoc){ var ai=aces.indexOf(b.id); if(ai>=0)occLab='<span class="fs-leadtag ace" style="background:#cf2e22">'+esc(aceLabel(ai+1))+'</span>'; } }
+    else if(aceHere){ occLab='<span class="fs-leadtag ace" style="background:#cf2e22">'+(M.diff==='strong'&&ar<=3?'⛨ ':'')+esc(aceLabel(ar))+'</span>'; }
     if(occLab)div.className+=' hasocc';
-    var occName=locked?T('未開放','locked'):(cap?(ownerName(cap.by)+MS.cap):(o==='Blue'?(scnLeaderOf(b.id)||ownerName(o)):(o==='Red'?(aces.indexOf(b.id)>=0?aceLabel(aces.indexOf(b.id)+1):ownerName(o)):ownerName(o))));
-    div.setAttribute('aria-label','#'+b.num+' '+bname(b)+'｜'+occName);
+    var aceAria=aceHere&&M.diff==='strong'?(EN?(ar<=3?' | Elite army '+ar+' garrisons here: nearly impossible to retake alone.':' | Elite army '+ar+': retakable with multiple joint rallies.'):(ar<=3?'｜格上'+ar+'軍が防衛中：単独での奪還はほぼ不可能':'｜格上'+ar+'軍：複数の合同集結なら奪還可能')):'';
+    var occName=locked?T('未開放','locked'):(cap?(ownerName(cap.by)+MS.cap):(o==='Blue'?(scnLeaderOf(b.id)||ownerName(o)):(aceHere?aceLabel(ar):ownerName(o))));
+    div.setAttribute('aria-label','#'+b.num+' '+bname(b)+'｜'+occName+aceAria);
     var ring='';
     if(cap){ ring=ringSVG(ownerColor(cap.by),1-cap.remain/cap.total); }
     else if(b.cat==='res'&&o){ ring=ringSVG(M.harvestDone[b.id]?'#2faa54':'#f59f3a',Math.min(1,M.harvestProg[b.id]/b.harvest)); }
     var ptlab='';
     if(o&&!cap){ if(b.cat==='res'){ var amo=M.harvestDone[b.id]?b.yield:Math.round((M.harvestProg[b.id]/b.harvest)*b.yield); ptlab='<span class="fs-pts" style="background:'+bc+'">🔫'+fmtN(amo)+'</span>'; } else { ptlab='<span class="fs-pts" style="background:'+bc+'">'+fmtN(M.bank[b.id]||0)+'</span>'; } }
+    // 集結/行軍バッジ(攻撃側の色)
+    var rlab='';
+    if(rls.length){ var r0=rls[0], rc=ownerColor(r0.by), ph=r0.phase==='gather'?T('集結','Rally'):T('行軍','March');
+      rlab='<span class="fs-rally" style="background:'+rc+'">⚔'+(r0.n>1?'×'+r0.n:'')+(rls.length>1?'+'+(rls.length-1):'')+' '+ph+' '+mmss(r0.remain)+'</span>'; }
+    var star=isPrio?'<span class="fs-star">⭐</span>':'';
     div.innerHTML=ring+'<div class="fs-dia" style="border-color:'+bc+'"><div class="fs-occ" style="background:'+bc+';opacity:'+(shown?'':'0')+'"></div><div class="bld"></div>'+
       '<div class="fs-badge" style="background:radial-gradient(circle at 38% 32%,'+(shown?bc:'#2f7fb0')+','+(shown?bc:'#145079')+');opacity:'+(locked?'.3':'1')+'">'+esc(b.num)+'</div></div>'+
-      occLab+ptlab+(locked?'<span class="lockico">🔒</span>':'')+pillHTML(b);
+      occLab+ptlab+rlab+star+(locked?'<span class="lockico">🔒</span>':'')+pillHTML(b);
     tiles.appendChild(div);
   });
   var ph=M.elapsed<GAME.PREP*60?T('準備','Prep'):M.elapsed<GAME.CENTRAL*60?T('中央以外 攻撃可','Outer'):M.elapsed<GAME.WORKSHOP*60?T('全施設 攻撃可','All'):T('工房出現','Workshops');
@@ -555,12 +589,15 @@ function mockTimeCard(){ var rem=Math.max(0,GAME.EVENT*60-M.elapsed);
   return '<div class="fs-card" id="evCard"><h3>'+T('ゲーム時間','Match time')+'</h3><div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:700 11px \'Noto Sans JP\';color:var(--fmut)">'+ruleText(M.elapsed)+'</span><span class="fs-raj" style="font:900 18px \'Rajdhani\'">'+(M.ended?MS.toEnd:T('残り','Left')+' '+mmss(rem))+'</span></div>'+timelineHTML(M.elapsed)+'</div>'; }
 /* ===== 戦況アドバイス ===== */
 function computeAdvice(){
-  var out=[], keymap=allyKeyset(), aces=enemyAceIds();
+  var out=[], keymap=allyKeyset(), prios=prioTargets();
   // 1) 防衛: 自軍の重要拠点(高得点 or 1軍)が敵に占拠開始されている
   BUILDINGS.forEach(function(b){ if(M.owners[b.id]==='Blue'&&M.capturing[b.id]&&M.capturing[b.id].by==='Red'&&((M.bank[b.id]||0)>=1000||keymap[b.id])){ out.push({key:'def'+b.id,act:'defend',bid:b.id,prio:(M.bank[b.id]||0)+9000,text:T('⚠ '+bname(b)+'('+fmtN(M.bank[b.id]||0)+'pt)が奪われそう。'+(keymap[b.id]?'1軍で死守！':'守りを増やすか、奪われたら即奪回を。'),'⚠ '+bname(b)+' ('+fmtN(M.bank[b.id]||0)+'pt) is about to be taken. '+(keymap[b.id]?'Hold it with your 1st team!':'Add defenders, or retake it at once if lost.'))}); } });
   // 2) 奪回: 敵の高得点拠点(奪えば敵を半減)
-  BUILDINGS.filter(function(b){ return M.owners[b.id]==='Red'&&!M.capturing[b.id]&&(M.bank[b.id]||0)>=3000; }).sort(function(a,b){return M.bank[b.id]-M.bank[a.id];}).slice(0,1).forEach(function(b){ var ace=aces.indexOf(b.id)>=0;
-    out.push({key:'take'+b.id,act:'capture',bid:b.id,prio:(M.bank[b.id]||0)+ (ace?0:2000),text:T('敵の'+bname(b)+'は'+fmtN(M.bank[b.id]||0)+'pt。'+(ace?(M.diff==='strong'?'格上エースが死守中。複数チームで集中攻撃を。':'敵エース拠点。集中攻撃で奪えば大きく削れる。'):'奪えば敵ポイントを半減できる。'),'Enemy '+bname(b)+' holds '+fmtN(M.bank[b.id]||0)+'pt. '+(ace?(M.diff==='strong'?'An Elite Ace is defending — focus several teams on it.':'Enemy ace site — focus fire to take it for a big swing.'):'Taking it halves the enemy points.'))}); });
+  BUILDINGS.filter(function(b){ return M.owners[b.id]==='Red'&&!M.capturing[b.id]&&(M.bank[b.id]||0)>=3000; }).sort(function(a,b){return M.bank[b.id]-M.bank[a.id];}).slice(0,1).forEach(function(b){ var ar=aceRankAt(b.id);
+    var hard=M.diff==='strong'&&ar>=1&&ar<=3, soft=M.diff==='strong'&&ar>=4, marked=prios.indexOf(b.id)>=0;
+    var ja=hard?('格上'+ar+'軍が死守中。奪うなら⭐重要ターゲットに指定して複数集結を(それでも困難)。'):soft?('格上'+ar+'軍の拠点。⭐指定で複数集結すれば奪還可能。'):(ar?('敵エース拠点。⭐集中攻撃で奪えば大きく削れる。'):'奪えば敵ポイントを半減できる。');
+    var en=hard?('Elite army '+ar+' is dug in — mark it ⭐ for a joint rally (still tough).'):soft?('Elite army '+ar+' site — mark it ⭐ and joint-rally to retake.'):(ar?('Enemy ace site — mark ⭐ and focus-fire for a big swing.'):'Taking it halves the enemy points.');
+    out.push({key:'take'+b.id,act:'capture',bid:b.id,prio:(M.bank[b.id]||0)+(ar?0:2000)+(marked?-1500:0),text:T('敵の'+bname(b)+'は'+fmtN(M.bank[b.id]||0)+'pt。'+ja,'Enemy '+bname(b)+' holds '+fmtN(M.bank[b.id]||0)+'pt. '+en)}); });
   // 3) 確保: 未占領の高価値拠点
   BUILDINGS.filter(function(b){ return visibleAt(b,M.elapsed)&&!lockedAt(b,M.elapsed)&&M.owners[b.id]===null; }).sort(function(a,b){return bValue(b)-bValue(a);}).slice(0,1).forEach(function(b){ out.push({key:'cap'+b.id,act:'capture',bid:b.id,prio:bValue(b)/3,text:T('未占領の'+bname(b)+'を確保しましょう。','Secure the open '+bname(b)+'.')}); });
   // 4) 武器工房の出現
@@ -595,9 +632,9 @@ function mockAdviceCard(){
 
 function mockAutoCard(){
   function db(k,lab){ return '<button class="'+(M.diff===k?'on':'')+'" data-d="'+k+'"'+(M.auto?'':' disabled')+'>'+lab+'</button>'; }
-  var dtxt={ weak:T('格下：拠点はほぼ自軍が確保できる。ただし高得点になった拠点を順に集中攻撃。武器工房は積極的に奪いに来る。','Weaker: you take most; enemy focus-fires high-point sites and grabs workshops.'),
-    even:T('同格：敵も同数のエースを持つ。各チームの1軍が守る拠点は維持できるが、それ以外は奪われやすい。','Even: enemy has the same number of aces; your 1st-team key points hold, the rest are vulnerable.'),
-    strong:T('格上：敵エースが最重要N拠点を死守(複数チームでやっと崩せる)。高得点が溜まると集中攻撃してくる。','Stronger: enemy aces lock the top sites; you need several teams to break one. They focus-fire big banks.') }[M.diff]||'';
+  var dtxt={ weak:T('格下：拠点はほぼ自軍が確保できる。敵は集結1本で工房や高得点拠点を狙う程度。','Weaker: you take most sites; the enemy runs a single rally at workshops or big banks.'),
+    even:T('同格：敵もチーム数ぶんの集結主を持つ。自軍1軍が守る拠点は狙われないが、それ以外は集結攻撃で奪い合いに。','Even: enemy fields as many rally leads as you; your 1st-team key sites are left alone, everything else is contested.'),
+    strong:T('格上：敵1〜6軍が価値上位の拠点を防衛。1〜3軍(⛨)は単独ではほぼ奪還不可、4〜6軍は⭐指定の合同集結(2〜3チーム)で奪還可能。さらに自軍と同格の敵集結主1人がこちらの拠点へ集結攻撃してくる。','Stronger: elite armies 1–6 garrison the top sites. Armies 1–3 (⛨) are nearly untakeable solo; 4–6 fall to ⭐ joint rallies of 2–3 teams. One enemy rally lead of your strength also attacks your sites.') }[M.diff]||'';
   return '<div class="fs-card" id="autoCard"><h3>'+T('敵の自動シミュレーション','Enemy auto-sim')+'<span class="add" id="autoTgl" style="'+(M.auto?'background:var(--facc);color:#fff;border-color:var(--facc)':'')+'">'+(M.auto?T('自動 ON','Auto ON'):T('自動 OFF','Auto OFF'))+'</span></h3>'+
     '<div class="fs-hint"><b style="color:var(--facc)">'+T('自軍は上で選んだ作戦シナリオの通りに自動行動します。','Your side auto-follows the chosen scenario above.')+'</b> '+T('敵は、自動OFFなら手動占拠、ONなら下の強さに応じて自動で攻防します。','Enemy is manual when off, or auto at the strength below.')+'</div>'+
     '<div class="fs-diffrow'+(M.auto?'':' off')+'">'+db('weak',T('格下','Weaker'))+db('even',T('同格','Even'))+db('strong',T('格上','Stronger'))+'</div>'+
@@ -619,30 +656,34 @@ function mockBuffCard(){ var B=buffsFor('Blue'),R=buffsFor('Red');
     rw(T('駐屯兵 負傷','Injury'),B.inj?'10%':'—',R.inj?'10%':'—')+'</div></div>';
 }
 function mockListCard(){
-  var aces=enemyAceIds(), keymap=allyKeyset();
+  var keymap=allyKeyset();
   var rows=BUILDINGS.filter(function(b){return visibleAt(b,M.elapsed);}).map(function(b){ var o=M.owners[b.id],cap=M.capturing[b.id],locked=lockedAt(b,M.elapsed),col=cap?cap.by:o;
     var who='';
-    if(!locked&&!cap){ if(o==='Blue'){ var ld=scnLeaderOf(b.id); who=(keymap[b.id]?'★':'')+(ld||MS.blue); } else if(o==='Red'){ var ai=aces.indexOf(b.id); who=ai>=0?aceLabel(ai+1):MS.red; } }
+    if(!locked&&!cap){ if(o==='Blue'){ var ld=scnLeaderOf(b.id); who=(keymap[b.id]?'★':'')+(ld||MS.blue); } else if(o==='Red'){ var ar=aceRankAt(b.id); who=ar>0?((M.diff==='strong'&&ar<=3?'⛨':'')+aceLabel(ar)):MS.red; } }
     var sub=locked?(T('解放','opens ')+b.openMin+T('分','m')):cap?(MS.cap+' '+mmss(cap.remain)):(o?(b.cat==='res'?('🔫'+fmtN(M.harvestDone[b.id]?b.yield:Math.round((M.harvestProg[b.id]/b.harvest)*b.yield))):(fmtN(M.bank[b.id]||0)+'pt')):(b.pts?('+'+b.pts+'/'+T('分','m')):(b.cat==='res'?(fmtN(b.yield)+'🔫'):'—')));
     return '<div class="fs-fr '+(col==='Blue'?'b':col==='Red'?'r':'')+(locked?' lk':'')+'" data-bid="'+b.id+'" role="button" tabindex="0"><span class="dot" style="background:'+ownerColor(col)+'"></span><span class="fn">'+(locked?'🔒':'')+'#'+b.num+' '+esc(bname(b))+(who?' <small style="color:'+ownerColor(col)+';font-weight:700">['+esc(who)+']</small>':'')+'</span><span class="fp">'+sub+'</span></div>';
   }).join('');
   return '<div class="fs-card" id="lsCard"><h3>'+T('施設一覧','Facilities')+'</h3><div class="fs-flist">'+rows+'</div></div>';
 }
 function mockSetCard(){ return '<div class="fs-card"><h3>'+T('詳細設定','Settings')+'</h3><div class="fs-set">'+
+  '<label>'+T('集結時間(秒)','Rally (s)')+'<input type="number" id="csRally" value="'+GAME.RALLY_SEC+'" min="0"></label>'+
+  '<label>'+T('行軍時間(秒)','March (s)')+'<input type="number" id="csMarch" value="'+GAME.MARCH_SEC+'" min="1"></label>'+
   '<label>'+T('占拠時間(秒)','Capture (s)')+'<input type="number" id="csCap" value="'+GAME.CAP_SEC+'" min="1"></label>'+
   '<label>'+T('軍事施設資材 獲得率(%)','Resource recovery (%)')+'<input type="number" id="csRec" value="'+Math.round((M.recovery||0)*100)+'" min="0" max="100"></label>'+
   '<label>'+T('試合時間','Match')+'<span class="fixed">60:00 ('+T('固定','fixed')+')</span></label>'+
   '<label>'+T('再入場','Re-entry')+'<span class="fixed">12:00 ('+T('固定','fixed')+')</span></label></div>'+
-  '<div class="fs-hint" style="margin-top:8px">'+T('奪われると施設ポイントの半分が散逸。散逸分のうち獲得率ぶんを元所有者が回収し、残りが敵軍へ加算されます。','When stolen, half the facility points scatter; you recover the recovery-rate share, the rest goes to the enemy.')+'</div></div>'; }
+  '<div class="fs-hint" style="margin-top:8px">'+T('占領中の拠点への攻撃は「集結(5分)＋行軍」を経て着弾します(中立拠点は行軍のみ)。着弾時に守備側との強さ関係で成否が決まり、失敗すると撃退されます。手動占拠(自軍/敵軍ブラシ)は検証用にこの待ち時間を省略します。奪われると施設ポイントの半分が散逸します。','Attacks on held sites land after a rally (5 min) + march (neutral sites need only the march). Success is decided on landing vs the defender; failed rallies are repelled. Manual brushes skip the wait for sandboxing. Half of a stolen site\u2019s points scatter.')+'</div></div>'; }
 
 function mockWire(){
   var lc=$('lsCard'); if(lc)lc.addEventListener('click',function(e){ var r=e.target.closest('.fs-fr'); if(r)mockApply(+r.getAttribute('data-bid')); });
   var ag=$('autoTgl'); if(ag)ag.addEventListener('click',function(){ M.auto=!M.auto; renderMockPanel(); mockSave(); });
-  Array.prototype.forEach.call(document.querySelectorAll('.fs-diffrow button'),function(b){ b.addEventListener('click',function(){ if(!M.auto)return; M.diff=b.getAttribute('data-d'); renderMockPanel(); mockSave(); }); });
+  Array.prototype.forEach.call(document.querySelectorAll('.fs-diffrow button'),function(b){ b.addEventListener('click',function(){ if(!M.auto)return; M.diff=b.getAttribute('data-d'); M.aces={}; renderMock(); }); });
   var rec=$('csRec'); if(rec)rec.addEventListener('change',function(e){ var v=parseInt(e.target.value,10); if(isNaN(v))v=50; v=Math.max(0,Math.min(100,v)); M.recovery=v/100; e.target.value=v; mockSave(); });
   var eb=$('exitBtn'); if(eb)eb.addEventListener('click',function(){ M.self.inField=false; M.self.reentryRemain=GAME.REENTRY_SEC; renderMockPanel(); mockSave(); });
   var rb=$('reBtn'); if(rb)rb.addEventListener('click',function(){ if(M.self.reentryRemain<=0){ M.self.inField=true; renderMockPanel(); mockSave(); } });
   var cap=$('csCap'); if(cap)cap.addEventListener('change',function(e){ var v=parseInt(e.target.value,10); if(v>0)GAME.CAP_SEC=v; });
+  var rl=$('csRally'); if(rl)rl.addEventListener('change',function(e){ var v=parseInt(e.target.value,10); if(v>=0)GAME.RALLY_SEC=v; });
+  var mc=$('csMarch'); if(mc)mc.addEventListener('change',function(e){ var v=parseInt(e.target.value,10); if(v>0)GAME.MARCH_SEC=v; });
 }
 
 /* 自動意思決定 */
@@ -650,71 +691,160 @@ function countCapturing(side){ var n=0; BUILDINGS.forEach(function(b){ if(M.capt
 function bValue(b){ return b.init + b.pts*8 + (b.buff?2000:0); }
 /* 施設に貯まっているポイントが高いほど、奪う価値が高い(相手のポイントを半減できる) */
 function liveValue(b){ return bValue(b) + (M.bank[b.id]||0)*1.5; }
-function decide(){
-  var N=teamCountM(), keymap=allyKeyset(); // 自軍1軍拠点(bid->teamId)
-  var aceHomes=enemyAceIds();             // 敵エースが現在守る拠点(価値上位N)
-  var isAceHome=function(id){ return aceHomes.indexOf(id)>=0; };
-  var isAllyKey=function(id){ return !!keymap[id]; };
-  var plan=allyTargets(), inPlan=function(id){return plan.indexOf(id)>=0;};
-
-  // ===== 自軍 =====
-  var allySlots=Math.min(6, P.teams.length+2) - countCapturing('Blue');
-  if(allySlots>0){
-    var targets=BUILDINGS.filter(function(b){ if(!visibleAt(b,M.elapsed)||lockedAt(b,M.elapsed))return false; if(M.owners[b.id]==='Blue')return false; if(M.capturing[b.id])return false;
-        var isRed=M.owners[b.id]==='Red';
-        // 自軍は: 作戦目標 / 未占領 / (敵保持なら)自分の要所か高得点拠点のみ奪い返す
-        var retake=isRed&&(inPlan(b.id)||keymap[b.id]||(M.bank[b.id]||0)>=4000);
-        if(!(inPlan(b.id)||M.owners[b.id]===null||retake))return false;
-        // 格上: 敵エース拠点は複数チーム集中時のみ(=低確率)しか崩せない
-        if(M.diff==='strong'&&isRed&&isAceHome(b.id)){ var rank=aceHomes.indexOf(b.id); // 0,1=1-2軍(死守) / 2+=3-5軍(協力で突破可)
-          var p=rank<2?0.05:0.30; if(!(Math.random()<p))return false; }
-        return true; })
-      .sort(function(a,b){ var pa=inPlan(a.id)?1:0, pb=inPlan(b.id)?1:0; if(pa!==pb)return pb-pa; return liveValue(b)-liveValue(a); });
-    for(var i=0;i<targets.length&&allySlots>0;i++){ mStartCapture(targets[i].id,'Blue'); allySlots--; }
-  }
-  if(!M.auto)return;
-
-  // ===== 敵(難易度) =====
-  var cfg={ weak:{slots:2}, even:{slots:N+1}, strong:{slots:Math.max(6,N+2)} }[M.diff]||{slots:N};
-  var enSlots=cfg.slots - countCapturing('Red');
-  if(enSlots<=0)return;
-  var cands=BUILDINGS.filter(function(b){ if(!visibleAt(b,M.elapsed)||lockedAt(b,M.elapsed))return false; if(M.owners[b.id]==='Red')return false; if(M.capturing[b.id])return false;
-    var bk=M.bank[b.id]||0, isBlue=M.owners[b.id]==='Blue', isNull=M.owners[b.id]===null;
-    if(M.diff==='even'){ // 自軍1軍拠点は奪わない(未占領でも避ける) → 1軍は守れる。それ以外は奪う
-      if(isAllyKey(b.id))return false; return true;
-    }
-    if(M.diff==='strong'){ // 何でも狙う。高得点は集中攻撃
-      return true;
-    }
-    // weak: 拠点は殆ど自軍が確保。敵は高得点拠点を順に集中攻撃 + 武器工房(武器攻防)を積極奪取
-    if(isAllyKey(b.id))return false;
-    if(b.cat==='res')return true;            // 武器工房は積極的に
-    if(isBlue&&bk>=2500)return true;          // 高得点化した自軍拠点を集中攻撃
-    return false;                              // それ以外(未占領含む)は基本狙わない=自軍が確保
-  }).sort(function(a,b){
-    var ba=M.bank[a.id]||0, bb=M.bank[b.id]||0, na=M.owners[a.id]===null?1:0, nb=M.owners[b.id]===null?1:0;
-    if(M.diff==='strong'){ // エース帰巣(未確保のエース拠点)最優先→高得点→価値
-      var ha=isAceHome(a.id)&&M.owners[a.id]!=='Red'?1:0, hb=isAceHome(b.id)&&M.owners[b.id]!=='Red'?1:0;
-      return (hb*1e7+bb*3+bValue(b)) - (ha*1e7+ba*3+bValue(a));
-    }
-    if(M.diff==='weak'){ // 高得点を順に + 工房優先
-      var wa=a.cat==='res'?1:0, wb=b.cat==='res'?1:0;
-      return (bb*4+wb*4000+nb*1500) - (ba*4+wa*4000+na*1500);
-    }
-    // even: 未占領優先→価値
-    return (bb*2+nb*4000+bValue(b)) - (ba*2+na*4000+bValue(a));
+/* ===== 集結・行軍エンジン ===== */
+function bidOK(b){ return visibleAt(b,M.elapsed)&&!lockedAt(b,M.elapsed); }
+function incoming(bid,side){ return M.rallies.some(function(r){ return r.bid===bid&&(!side||r.by===side); }); }
+function teamBusy(tid){ return M.rallies.some(function(r){ return r.by==='Blue'&&(r.team==='T'+tid||(r.members&&r.members.indexOf(tid)>=0)); }); }
+function actorBusy(side,key){ return M.rallies.some(function(r){ return r.by===side&&r.team===key; }); }
+function launchRally(by,key,bid,n,members,pOverride){ M.rallies.push({by:by,team:key,bid:bid,n:n||1,members:members||null,p:pOverride||null,phase:'gather',remain:GAME.RALLY_SEC,total:GAME.RALLY_SEC}); }
+function launchMarch(by,key,bid){ M.rallies.push({by:by,team:key,bid:bid,n:1,phase:'march',remain:GAME.NMARCH_SEC,total:GAME.NMARCH_SEC}); }
+function aceRankAt(bid){ for(var r in M.aces){ if(M.aces[r]===bid)return +r; } return 0; }
+function prioTargets(){ var set={}, el=M.elapsed, phs=mockScenario().phases.slice().sort(function(a,b){return a.time-b.time;});
+  phs.forEach(function(p){ if(p.time*60<=el&&p.prio){ for(var k in p.prio)set[k]=1; } });
+  for(var k2 in M.focus){ if(M.focus[k2])set[k2]=1; }
+  return Object.keys(set).map(Number); }
+function holdTeamAt(bid){ var tid=scnAssignMap()[String(bid)]; if(!tid)return false; var t=(mockScenario().teams||[]).find(function(x){return x.id===tid;}); return !!(t&&t.behavior==='hold'); }
+/* 攻撃成功率(着弾時判定) */
+function successProb(r){ var bid=r.bid, n=r.n||1, def=M.owners[bid];
+  if(!def||def===r.by) return 1;
+  if(r.p) return r.p;
+  if(r.by==='Blue'){ var ar=aceRankAt(bid);
+    if(M.diff==='strong'){
+      if(ar>=1&&ar<=3) return n>=3?0.40:(n===2?0.20:0.05);   // 格上1〜3軍: 単独ほぼ不可/複数でも困難
+      if(ar>=4)        return n>=3?0.85:(n===2?0.70:0.30);   // 格上4〜6軍: 複数集結で奪還可
+      return 0.85; }
+    if(M.diff==='even') return ar?(n>=2?0.75:0.45):0.85;
+    return 0.95; }
+  // 敵→自軍: 1軍拠点は守りやすい / 防衛重視チームの担当はさらに堅い
+  var key=allyKeyset()[bid], base=key?0.40:0.75;
+  if(holdTeamAt(bid))base*=0.55;
+  if(M.diff==='weak')base*=0.65;
+  return base; }
+function resolveRally(r){ var b=BMAP[r.bid]; if(!b||!bidOK(b))return;
+  var o=M.owners[r.bid], cap=M.capturing[r.bid];
+  if(o===r.by&&!cap)return;                              // 既に自陣営
+  if(cap&&cap.by===r.by)return;                          // 自陣営が占拠中
+  if(!o&&!cap){ mStartCapture(r.bid,r.by); return; }     // 中立: そのまま占拠開始
+  var p=successProb(r);
+  if(Math.random()<p){ mStartCapture(r.bid,r.by); }
+  else { toast(EN?('🛡 Attack on '+bname(b)+' repelled!'):('🛡 '+bname(b)+'への集結攻撃は撃退された！')); }
+}
+function tickRallies(dt){ var done=[];
+  M.rallies.forEach(function(r){ var b=BMAP[r.bid];
+    var o=M.owners[r.bid];
+    if(o===r.by&&!M.capturing[r.bid]){ done.push(r); return; }  // 目標が自陣営化→解散
+    r.remain-=dt;
+    if(r.remain<=0){ if(r.phase==='gather'){ r.phase='march'; r.remain=GAME.MARCH_SEC; r.total=GAME.MARCH_SEC; } else { resolveRally(r); done.push(r); } }
   });
-  for(var j=0;j<cands.length&&enSlots>0;j++){ mStartCapture(cands[j].id,'Red'); enSlots--; }
+  if(done.length)M.rallies=M.rallies.filter(function(r){ return done.indexOf(r)<0; });
+}
+/* エースの配置(強さ順に価値上位拠点を担当) */
+function ensureAces(){ var N=aceCount(); if(!N){ M.aces={}; return; }
+  var open=BUILDINGS.filter(bidOK).sort(function(a,b){ return bValue(b)-bValue(a); }).slice(0,N);
+  var map={}; open.forEach(function(b,i){ map[i+1]=b.id; }); M.aces=map; }
 
-  // 取りこぼし防止: 未占領の解放済み拠点は即どちらかが確保(枠制限なし・速攻占領)
-  BUILDINGS.forEach(function(b){ if(!visibleAt(b,M.elapsed)||lockedAt(b,M.elapsed))return; if(M.owners[b.id]!==null||M.capturing[b.id])return;
-    var toAlly = inPlan(b.id)||isAllyKey(b.id)||M.diff==='weak'; // 作戦目標/1軍/格下は自軍、その他は敵が確保
-    mStartCapture(b.id, toAlly?'Blue':'Red');
+/* 自動意思決定 */
+function decide(){
+  var strong=M.diff==='strong', even=M.diff==='even', weak=M.diff==='weak';
+  var keymap=allyKeyset(), teams=mockScenario().teams||[];
+  var plan=allyTargets(), inPlan=function(id){return plan.indexOf(id)>=0;};
+  var am=scnAssignMap();
+  ensureAces();
+
+  // ===== 自軍: チーム毎に1集結スロット =====
+  var idle=[];
+  teams.forEach(function(t){ if(teamBusy(t.id))return;
+    var mine=[]; for(var k in am){ if(am[k]===t.id)mine.push(+k); }
+    var need=mine.filter(function(id){ var b=BMAP[id]; if(!b||!bidOK(b))return false;
+      if(M.owners[id]==='Blue'&&!(M.capturing[id]&&M.capturing[id].by==='Red'))return false;
+      if(M.capturing[id]&&M.capturing[id].by==='Blue')return false;
+      if(incoming(id,'Blue'))return false; return true; })
+      .sort(function(a,b){ return liveValue(BMAP[b])-liveValue(BMAP[a]); });
+    if(need.length){ var tgt=need[0], ar0=aceRankAt(tgt);
+      if(M.owners[tgt]===null&&!M.capturing[tgt]){ launchMarch('Blue','T'+t.id,tgt); return; }
+      if(strong&&ar0>=1&&ar0<=3){ idle.push(t); return; } // 格上1〜3軍は単独集結しない→合同待ち
+      launchRally('Blue','T'+t.id,tgt,1); return; }
+    idle.push(t);
+  });
+  // ⭐重要ターゲット: 待機チームで合同集結(最大3)
+  var prios=prioTargets().filter(function(id){ var b=BMAP[id]; return b&&bidOK(b)&&M.owners[id]==='Red'&&!incoming(id,'Blue'); })
+    .sort(function(a,b){ return liveValue(BMAP[b])-liveValue(BMAP[a]); });
+  if(prios.length&&idle.length){ var tgt2=prios[0];
+    var joiners=idle.filter(function(t){ return t.behavior!=='hold'; });
+    if(!joiners.length)joiners=idle.slice();
+    joiners.sort(function(a,b){ return (b.behavior==='aggro'?1:0)-(a.behavior==='aggro'?1:0); });
+    var grp=joiners.slice(0,3);
+    if(grp.length){ launchRally('Blue','J'+tgt2,tgt2,grp.length,grp.map(function(t){return t.id;}));
+      idle=idle.filter(function(t){ return grp.indexOf(t)<0; }); } }
+  // 残り待機チームの行動パターン
+  idle.forEach(function(t){
+    var beh=t.behavior||'balance';
+    if(beh==='hold')return; // 防衛重視: 担当拠点に駐屯(守備補正はsuccessProbで反映)
+    var pick=null;
+    if(beh==='harvest'){ pick=BUILDINGS.filter(function(b){ return b.cat==='res'&&bidOK(b)&&M.owners[b.id]!=='Blue'&&!M.capturing[b.id]&&!incoming(b.id); })
+      .sort(function(a,b){ return liveValue(b)-liveValue(a); })[0]; }
+    if(!pick){ // 中立の高価値
+      pick=BUILDINGS.filter(function(b){ return bidOK(b)&&M.owners[b.id]===null&&!M.capturing[b.id]&&!incoming(b.id); })
+        .sort(function(a,b){ return bValue(b)-bValue(a); })[0]; }
+    if(!pick&&beh==='aggro'){ // 攻撃重視: 敵の高得点拠点へ(格上1〜3軍は単独回避)
+      pick=BUILDINGS.filter(function(b){ if(!bidOK(b)||M.owners[b.id]!=='Red'||M.capturing[b.id]||incoming(b.id,'Blue'))return false;
+        var ar=aceRankAt(b.id); return !(strong&&ar>=1&&ar<=3); })
+        .sort(function(a,b){ return liveValue(b)-liveValue(a); })[0]; }
+    if(pick){ if(M.owners[pick.id]===null)launchMarch('Blue','T'+t.id,pick.id); else launchRally('Blue','T'+t.id,pick.id,1); }
+  });
+  if(!M.auto){ neutralSweep(); return; }
+
+  // ===== 敵 =====
+  if(strong||even){ // エース: 自分の担当拠点を確保・奪還
+    var N=aceCount();
+    for(var rk=1;rk<=N;rk++){ var home=M.aces[rk]; if(!home)continue; var b=BMAP[home]; if(!bidOK(b))continue;
+      if(actorBusy('Red','A'+rk))continue;
+      var o=M.owners[home], cap=M.capturing[home];
+      if((o==='Red'&&!cap)||(cap&&cap.by==='Red'))continue;
+      if(incoming(home,'Red'))continue;
+      if(o===null&&!cap){ launchMarch('Red','A'+rk,home); }
+      else { var pr=strong?(rk<=3?0.92:0.72):0.75; launchRally('Red','A'+rk,home,1,null,pr); }
+    }
+  }
+  if(strong){ // 同格の敵集結主が1人、自軍拠点へ集結攻撃
+    if(!actorBusy('Red','L')){
+      var tg=BUILDINGS.filter(function(b){ return bidOK(b)&&M.owners[b.id]==='Blue'&&!M.capturing[b.id]&&!incoming(b.id,'Red'); })
+        .sort(function(a,b){ return (M.bank[b.id]||0)*2+bValue(b) - ((M.bank[a.id]||0)*2+bValue(a)); })[0];
+      if(tg)launchRally('Red','L',tg.id,1);
+    }
+  }
+  if(even){ // 同格: チーム数ぶんの敵集結主(自軍1軍拠点は狙わない)
+    var EN_N=teamCountM();
+    for(var ei=1;ei<=EN_N;ei++){ if(actorBusy('Red','E'+ei))continue;
+      var tg2=BUILDINGS.filter(function(b){ if(!bidOK(b)||M.capturing[b.id]||incoming(b.id))return false;
+          if(M.owners[b.id]==='Red')return false; if(keymap[b.id])return false; return true; })
+        .sort(function(a,b){ var na=M.owners[a.id]===null?1:0, nb=M.owners[b.id]===null?1:0; return (nb*4000+(M.bank[b.id]||0)*2+bValue(b)) - (na*4000+(M.bank[a.id]||0)*2+bValue(a)); })[0];
+      if(tg2){ if(M.owners[tg2.id]===null)launchMarch('Red','E'+ei,tg2.id); else launchRally('Red','E'+ei,tg2.id,1); } }
+  }
+  if(weak){ // 格下: 集結1本のみ。工房と高得点拠点を狙う
+    if(!actorBusy('Red','E1')){
+      var tg3=BUILDINGS.filter(function(b){ if(!bidOK(b)||M.capturing[b.id]||incoming(b.id))return false;
+          if(M.owners[b.id]==='Red')return false; if(keymap[b.id])return false;
+          if(b.cat==='res')return true; return M.owners[b.id]==='Blue'&&(M.bank[b.id]||0)>=2500; })
+        .sort(function(a,b){ var wa=a.cat==='res'?1:0, wb=b.cat==='res'?1:0; return (wb*4000+(M.bank[b.id]||0)*3) - (wa*4000+(M.bank[a.id]||0)*3); })[0];
+      if(tg3){ if(M.owners[tg3.id]===null)launchMarch('Red','E1',tg3.id); else launchRally('Red','E1',tg3.id,1,null,0.6); } }
+  }
+  neutralSweep();
+}
+/* 取りこぼし防止: 中立拠点へは行軍(30秒)で確保に向かう */
+function neutralSweep(){
+  BUILDINGS.forEach(function(b){ if(!bidOK(b))return; if(M.owners[b.id]!==null||M.capturing[b.id])return; if(incoming(b.id))return;
+    var toAlly=inPlanSweep(b.id)||!!allyKeyset()[b.id]||M.diff==='weak';
+    if(!M.auto&&!toAlly)return; // 自動OFF時は敵の自発行動なし
+    launchMarch(toAlly?'Blue':'Red','S'+b.id,b.id);
   });
 }
+function inPlanSweep(id){ return allyTargets().indexOf(id)>=0; }
 
 var mockStepT=null;
 function mockStep(){ if(MODE!=='mock'||!M.playing||M.ended||!scenarioReady(mockScenario().phases))return; var dt=0.1*M.speed; M.elapsed+=dt;
+  // 集結・行軍の進行
+  tickRallies(dt);
   // 占拠進行
   BUILDINGS.forEach(function(b){ var cap=M.capturing[b.id]; if(cap){ cap.remain-=dt; if(cap.remain<=0)mFinalize(b.id,cap.by); } });
   // 生産(占拠中は停止)
@@ -726,6 +856,7 @@ function mockStep(){ if(MODE!=='mock'||!M.playing||M.ended||!scenarioReady(mockS
   // 意思決定(1ゲーム秒ごと)
   if(M.elapsed-M.lastDecide>=1){ M.lastDecide=M.elapsed; decide(); updateAdvice(); }
   if(M.elapsed>=GAME.EVENT*60){ M.elapsed=GAME.EVENT*60; M.ended=true; M.playing=false; toast(MS.toEnd); renderMockHeader(); }
+  var ck=document.querySelector('.fs-clock'); if(ck)ck.textContent=mmss(M.elapsed);
   renderMockBar(); renderMockMap();
   var ev=$('evCard'); if(ev)ev.outerHTML=mockTimeCard();
   var ac=$('autoCard'); var advc=document.querySelector('.fs-advisecard'); if(advc)advc.outerHTML=mockAdviceCard();
@@ -745,17 +876,17 @@ function buildStatic(){
   $('helpgrid').innerHTML=[
     [T('① 作戦を立てる','① Plan'),T('「作戦」→「チーム編集」でチーム(最大8)と終結主を設定。各チームの「作戦を編集」でフェーズ毎の担当拠点を割り当てます。','Set up to 8 teams & leaders, then edit each team\u2019s per-phase targets.')],
     [T('② 再生で確認','② Play'),T('「ホーム」でゲーム開始を押すと時計が進み、各フェーズの作戦内容がバナーに表示。拠点クリックで情報確認。','Press Start on Home; phases play out over time. Click buildings for info.')],
-    [T('③ 模擬戦で敵を加える','③ Mock'),T('自軍は作戦どおり自動行動。敵を手動占拠、または自動シミュ(格下/同格/格上)で攻防を再現します。','Ally follows the plan; play the enemy manually or auto (weaker/even/stronger).')],
+    [T('③ 模擬戦で敵を加える','③ Mock'),T('自軍は作戦どおり自動行動。敵は自動シミュ(格下/同格/格上)。占領中の拠点への攻撃は実戦同様「集結5分＋行軍」後に着弾します。⭐集中攻撃ブラシで合同集結の狙い先を指定できます。','Ally follows the plan; enemy plays auto (weaker/even/stronger). Attacks on held sites land after a 5-min rally + march, like the real game. Use the ⭐ brush to focus joint rallies.')],
     [T('④ 共有','④ Share'),T('右上「共有」でURLをコピー。相手の画面で同じ作戦が再現され、模擬戦にも反映されます。','Copy the share URL; it reproduces your plan and feeds the mock battle.')]
   ].map(function(p){ return '<div class="fb-help"><b>'+p[0]+'</b><br>'+p[1]+'</div>'; }).join('');
   $('dataNote').textContent=T('番号→施設 / 初回支配ポイント / 毎分: ','No.→facility / first-cap / per-min: ')+
     BUILDINGS.filter(function(b){return b.cat!=='res';}).map(function(b){ return '#'+b.num+'='+bname(b)+'('+fmtN(b.init)+'/+'+b.pts+')'; }).join(' / ')+
-    T('。試合60分・0-3分準備・3-18分は中央以外・18分で中央開放・23分に武器工房④が四隅出現。占拠120秒。被占領は"占拠開始"時にポイント半分散逸。再入場12分固定。数値は app.js の BUILDINGS / GAME で調整可。',
-      '. 60-min match; 0-3 prep; 18 central opens; 23 four workshops; 120s capture; half scatters at capture start; 12-min re-entry. Edit BUILDINGS/GAME in app.js.');
+    T('。試合60分・0-3分準備・3-18分は中央以外・18分で中央開放・23分に武器工房④が四隅出現。占拠120秒。占領中拠点への攻撃は集結5分＋行軍45秒後に着弾(中立は行軍30秒のみ)。被占領は"占拠開始"時にポイント半分散逸。再入場12分固定。数値は app.js の BUILDINGS / GAME で調整可。',
+      '. 60-min match; 0-3 prep; 18 central opens; 23 four workshops; 120s capture; attacks on held sites land after 5-min rally + 45s march (neutral: 30s march only); half scatters at capture start; 12-min re-entry. Edit BUILDINGS/GAME in app.js.');
   $('relbar').innerHTML='<a href="../bear-hunt/index.html">'+T('→ 熊狩シミュレーター','→ Bear Hunt')+'</a><a href="../troop-ratio/index.html">'+T('→ 兵士比率シミュ','→ Troop Ratio')+'</a><a href="../king-castle/index.html">'+T('→ 王城戦','→ Castle Battle')+'</a><a href="../../guides/bear-hunt-guide.html">'+T('→ 攻略ガイド','→ Guides')+'</a>';
   if(EN){ $('htmlroot').lang='en'; document.title='Foundry Battle Field Tool | Whiteout Tools Lab'; $('crumb').innerHTML='<a href="../../index.html?lang=en">Home</a> &gt; Foundry Battle'; }
 }
-function init(){ var loaded=tryLoadShare(); buildStatic(); renderModeBar(); render(); if(loaded)toast(T('共有された作戦を読み込みました','Loaded shared plan'));
+function init(){ try{window.__fb={M:M,GAME:GAME};}catch(e){} var loaded=tryLoadShare(); buildStatic(); renderModeBar(); render(); if(loaded)toast(T('共有された作戦を読み込みました','Loaded shared plan'));
   mockStepT=setInterval(mockStep,100); }
 if(document.readyState!=='loading') init(); else document.addEventListener('DOMContentLoaded',init);
 })();

@@ -317,6 +317,31 @@
   .fs-adv-item .gd{ flex:none; background:#16a34a; color:#fff; font:900 10px 'Rajdhani'; padding:3px 8px; border-radius:7px; letter-spacing:.5px; box-shadow:0 2px 7px rgba(22,163,74,.45); }
   @keyframes advgood{ 0%{transform:scale(.96)} 55%{transform:scale(1.03)} 100%{transform:scale(1)} }
   .fs-leadtag.ace{ font-weight:800; box-shadow:0 1px 6px rgba(207,46,34,.5); border-color:#fff; }
+  /* === 格上エースのオーラ === */
+  @keyframes fsAceHard{ 0%,100%{ box-shadow:0 0 0 3px rgba(207,46,34,.40),0 0 14px 4px rgba(207,46,34,.55); } 50%{ box-shadow:0 0 0 6px rgba(207,46,34,.20),0 0 24px 9px rgba(207,46,34,.85); } }
+  .fs-tile.acehard .fs-dia{ animation:fsAceHard 1.5s ease-in-out infinite; border-color:#cf2e22 !important; }
+  .fs-tile.acesoft .fs-dia{ box-shadow:0 0 0 3px rgba(207,46,34,.25),0 0 10px 3px rgba(207,46,34,.45); }
+  /* === ⭐重要ターゲット === */
+  .fs-star{ position:absolute; top:-13px; right:-10px; z-index:6; font-size:13px; filter:drop-shadow(0 1px 2px rgba(150,110,0,.55)); }
+  .fs-tile.big .fs-star{ top:-15px; right:-11px; font-size:15px; }
+  @keyframes fsStarPulse{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.3); } }
+  .fs-tile.prio-hot .fs-star{ animation:fsStarPulse 1.1s infinite; }
+  .fs-tile.prio .fs-dia{ outline:2px dashed #d9a41f; outline-offset:3px; }
+  /* === 集結/行軍バッジ === */
+  .fs-rally{ position:absolute; top:calc(100% + 3px); left:50%; transform:translateX(-50%); z-index:5; white-space:nowrap; font:800 8.5px 'Noto Sans JP'; color:#fff; border-radius:6px; padding:1px 5px; border:1px solid rgba(255,255,255,.8); box-shadow:0 1px 5px rgba(0,0,0,.35); }
+  .fs-tile.hasrally .fs-leadtag{ top:calc(100% + 19px); }
+  .fs-tile.hasrally .fs-pill{ top:calc(100% + 21px); }
+  .fs-tile.hasrally.hasocc .fs-pill{ top:calc(100% + 37px); }
+  /* === 行動パターン(チーム) === */
+  .fs-behrow{ display:flex; gap:4px; margin:4px 0 8px; }
+  .fs-behrow button{ flex:1; font:700 10px 'Noto Sans JP'; border:1px solid var(--fline); background:#fff; border-radius:7px; padding:4px 2px; cursor:pointer; color:var(--ftxt); }
+  .fs-behrow button.on{ background:var(--facc); border-color:var(--facc); color:#fff; }
+  /* === 割当/⭐モード切替 === */
+  .fs-modrow{ display:flex; gap:6px; margin:2px 0 8px; }
+  .fs-modrow button{ flex:1; font:700 11px 'Noto Sans JP'; border:1px solid var(--fline); background:#fff; border-radius:8px; padding:7px 4px; cursor:pointer; color:var(--ftxt); }
+  .fs-modrow button.on{ background:#b5791a; border-color:#b5791a; color:#fff; }
+  .fs-tbtn.st.on{ background:#b5791a; border-color:#b5791a; color:#fff; }
+
 
   /* ===== トランスポート(再生/速度/最初から) ===== */
   .fs-transport{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
