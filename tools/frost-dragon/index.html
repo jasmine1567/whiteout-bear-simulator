@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Y8YMCVQDMG"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent','default',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'});
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',region:['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH'],wait_for_update:500});
+  gtag('js', new Date());
+  gtag('config', 'G-Y8YMCVQDMG');
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>霜竜イベント 同盟配置計算ツール｜総力集計・ボーダー自動判定 | ホワサバ ツールラボ</title>
+<meta name="description" content="ホワイトアウトサバイバル「霜竜イベント」のサーバー内配置計算ツール。参加希望同盟の人数・総力を入力すると、最大3つの入れ物（集合先同盟）にどの同盟が入ればボーダー(上位100位)を超えられるかを自動計算。分割指示・共有テキスト生成に対応。">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
+<link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/tools/frost-dragon/">
+<link rel="alternate" hreflang="en" href="https://whitesim-lab.com/tools/frost-dragon/?lang=en">
+<link rel="stylesheet" href="../../assets/site.css?v=88">
+<script>(function(){try{var l=new URLSearchParams(location.search).get("lang")||localStorage.getItem("wos_lang")||"ja";if(l!=="en")l="ja";document.documentElement.setAttribute("data-wos-lang",l);}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg?v=85">
+<link rel="icon" type="image/png" href="../../favicon.png?v=85">
+<link rel="shortcut icon" href="../../favicon.ico?v=85">
+<link rel="apple-touch-icon" href="../../favicon.png?v=85">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ホワサバ ツールラボ">
+<meta property="og:title" content="霜竜イベント 同盟配置計算ツール｜総力集計・ボーダー自動判定">
+<meta property="og:description" content="参加希望同盟の人数・総力を入力するだけで、どの同盟がどの入れ物に入ればボーダーを超えられるかを自動計算。分割指示・共有テキストにも対応。">
+<meta property="og:url" content="https://whitesim-lab.com/tools/frost-dragon/">
+<meta property="og:image" content="https://whitesim-lab.com/favicon.png?v=85">
+<meta name="twitter:card" content="summary">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4593324513914979" crossorigin="anonymous"></script>
+<link rel="canonical" href="https://whitesim-lab.com/tools/frost-dragon/">
+<style>
+  /* ===== 霜竜 配置計算ツール（アイスブルー基調・自己完結スコープ .fd） ===== */
+  /* site.css の i18n ルールと同等（単体プレビュー時の保険。site.css側と重複しても無害） */
+  .i18n-en{display:none}
+  html[data-wos-lang="en"] .i18n-en{display:block}
+  html[data-wos-lang="en"] .i18n-ja{display:none}
+  .i18n-en-inline{display:none}
+  html[data-wos-lang="en"] .i18n-en-inline{display:inline}
+  html[data-wos-lang="en"] .i18n-ja-inline{display:none}
+
+  .fd{ --fbg:#e9f2f8; --fpanel:#fff; --fpanel2:#f1f7fb; --fline:#d4e2ee; --ftxt:#22323f; --fink:#1a2a37; --fmut:#6c8295;
+       --facc:#1696c2; --facc2:#0e7ea8; --fsoft:#f5f9fc; --fok:#1d9e6f; --fng:#d0524a; --fwarn:#b97a12;
+       color:var(--ftxt); border-radius:18px; overflow:hidden; border:1px solid #cfe0ec;
+       box-shadow:0 14px 40px rgba(60,100,140,.16); margin:14px 0 22px;
+       background:radial-gradient(58% 70% at 50% -8%, #fff, transparent 62%),
+                  radial-gradient(42% 64% at 0% 48%, rgba(56,194,224,.14), transparent 60%),
+                  radial-gradient(42% 64% at 100% 48%, rgba(56,140,224,.10), transparent 60%),
+                  linear-gradient(180deg,#f4fafd 0%,#e2eef7 100%); }
+  .fd *{ box-sizing:border-box; }
+  .fd-inner{ padding:16px 16px 20px; }
+  @media(max-width:520px){ .fd-inner{ padding:12px 10px 16px; } }
+
+  /* ヘッダー行（タイトル＋ガイドボタン） */
+  .fd-head{ display:flex; flex-wrap:wrap; align-items:center; gap:10px 14px; padding:13px 16px;
+    background:rgba(255,255,255,.92); border-bottom:1px solid var(--fline); }
+  .fd-title{ margin-right:auto; }
+  .fd-title .t{ font-weight:800; font-size:19px; letter-spacing:.03em; color:var(--fink); }
+  .fd-title .s{ display:block; font-size:12px; color:var(--fmut); margin-top:2px; }
+  .fd-guide-btn{
+    display:inline-flex; align-items:center; gap:7px;
+    background:linear-gradient(120deg,#1696c2,#38b7dd); color:#fff; border:none; cursor:pointer;
+    font-weight:800; font-size:14px; letter-spacing:.04em;
+    padding:11px 18px; border-radius:999px;
+    box-shadow:0 4px 14px rgba(22,150,194,.35);
+    transition:transform .1s, box-shadow .15s;
+  }
+  .fd-guide-btn:hover{ box-shadow:0 6px 18px rgba(22,150,194,.45); }
+  .fd-guide-btn:active{ transform:scale(.97); }
+
+  /* セクションカード */
+  .fd-card{ background:var(--fpanel); border:1px solid var(--fline); border-radius:14px;
+    padding:14px 14px 16px; margin-bottom:14px; box-shadow:0 3px 10px rgba(70,110,150,.08); }
+  .fd-card h2{ font-size:15px; font-weight:800; color:var(--fink); letter-spacing:.03em;
+    display:flex; align-items:center; gap:8px; margin:0 0 11px; }
+  .fd-step{ background:var(--facc); color:#fff; font-size:11px; font-weight:800;
+    border-radius:6px; padding:2px 8px; letter-spacing:.08em; flex:none; }
+  .fd-hint{ font-size:11.5px; color:var(--fmut); line-height:1.7; margin-top:7px; }
+
+  /* 入力 */
+  .fd label{ display:block; font-size:12px; color:var(--fmut); margin-bottom:4px; font-weight:700; }
+  .fd input[type=text]{ width:100%; background:var(--fsoft); border:1px solid #c6d9e8; border-radius:10px;
+    color:var(--fink); font-size:16px; padding:10px 12px; outline:none; transition:border-color .15s, background .15s; }
+  .fd input[type=text]:focus{ border-color:var(--facc); background:#fff; }
+  .fd input::placeholder{ color:#a3b8c8; }
+  .fd-pv{ font-size:12px; color:var(--facc2); min-height:16px; margin-top:3px; font-weight:700; }
+  .fd-pv.bad{ color:var(--fng); }
+  .fd-grid2{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .fd-grid3{ display:grid; grid-template-columns:1.3fr .8fr 1fr auto; gap:8px; align-items:start; }
+  @media(max-width:520px){
+    .fd-grid3{ grid-template-columns:1fr 1fr; background:var(--fpanel2); border:1px solid var(--fline);
+      border-radius:12px; padding:10px; }
+    .fd-grid3 > div:first-child{ grid-column:1 / -1; }
+  }
+
+  /* セグメント切替（入れ物 1/2/3） */
+  .fd-seg{ display:flex; background:var(--fsoft); border:1px solid #c6d9e8; border-radius:10px; overflow:hidden; }
+  .fd-seg button{ flex:1; padding:11px 4px; font-size:14px; font-weight:800; letter-spacing:.02em;
+    background:transparent; color:var(--fmut); border:none; cursor:pointer; transition:background .15s,color .15s; }
+  .fd-seg button.on{ background:var(--facc); color:#fff; }
+
+  /* 入れ物ブロック */
+  .fd-vessel{ border:1px solid #c9dcea; border-left:4px solid var(--facc); border-radius:12px;
+    padding:12px; margin-top:12px; background:var(--fpanel2); }
+  .fd-vessel[data-v="1"]{ border-left-color:#1d9e6f; }
+  .fd-vessel[data-v="2"]{ border-left-color:#8a63d2; }
+  .fd-vessel h3{ font-size:13.5px; margin:0 0 10px; font-weight:800; color:var(--facc2); letter-spacing:.03em; }
+  .fd-vessel[data-v="1"] h3{ color:#177a56; }
+  .fd-vessel[data-v="2"] h3{ color:#6c4bb0; }
+
+  /* 参加希望行 */
+  .fd-approw{ margin-bottom:10px; }
+  .fd-del{ background:#fff; border:1px solid #c6d9e8; color:var(--fmut); border-radius:10px;
+    width:42px; height:42px; font-size:16px; cursor:pointer; flex:none; align-self:end; }
+  .fd-del:hover{ border-color:var(--fng); color:var(--fng); }
+  @media(max-width:520px){ .fd-del{ width:100%; height:34px; font-size:13px; grid-column:1 / -1; } }
+  .fd-add{ width:100%; margin-top:2px; padding:11px; background:#fff; border:1.5px dashed #9cc3da;
+    border-radius:10px; color:var(--facc2); font-size:14px; font-weight:800; cursor:pointer; }
+  .fd-add:hover{ border-color:var(--facc); background:var(--fsoft); }
+
+  /* 計算ボタン */
+  .fd-calc{ width:100%; padding:15px; font-size:16.5px; font-weight:800; letter-spacing:.12em;
+    background:linear-gradient(120deg,#0e7ea8,#1696c2 55%,#38b7dd); color:#fff; border:none; border-radius:14px;
+    cursor:pointer; box-shadow:0 6px 18px rgba(22,150,194,.35); transition:transform .1s; }
+  .fd-calc:active{ transform:scale(.985); }
+
+  /* 結果 */
+  #fdResult{ display:none; }
+  .fd-rv{ border:1px solid #c9dcea; border-radius:12px; padding:13px; margin-top:12px; background:#fff; }
+  .fd-rv-head{ display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:6px; }
+  .fd-rv-name{ font-size:15px; font-weight:800; color:var(--fink); }
+  .fd-badge{ font-size:12px; font-weight:800; padding:4px 11px; border-radius:999px; letter-spacing:.03em; flex:none; }
+  .fd-badge.ok{ background:rgba(29,158,111,.1); color:var(--fok); border:1px solid rgba(29,158,111,.45); }
+  .fd-badge.ng{ background:rgba(208,82,74,.08); color:var(--fng); border:1px solid rgba(208,82,74,.45); }
+  .fd-rl{ list-style:none; margin:6px 0; padding:0; }
+  .fd-rl li{ display:flex; justify-content:space-between; gap:8px; padding:7px 2px;
+    border-bottom:1px dashed #dbe7f0; font-size:14px; }
+  .fd-rl li:last-child{ border-bottom:none; }
+  .fd-rl .w{ font-weight:700; color:var(--fink); }
+  .fd-rl .st{ color:var(--fmut); font-size:13px; white-space:nowrap; }
+  .fd-rt{ margin-top:8px; padding-top:8px; border-top:1px solid var(--fline);
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:4px; font-size:14px; font-weight:800; }
+  .fd-rt .num{ color:var(--facc2); }
+  .fd-rt .slot{ color:var(--fmut); font-weight:700; }
+  .fd-split{ margin-top:12px; border:1px solid rgba(185,122,18,.5); border-radius:12px;
+    background:rgba(242,183,92,.1); padding:12px 14px; }
+  .fd-split h4{ color:var(--fwarn); font-size:13.5px; margin:0 0 6px; letter-spacing:.04em; }
+  .fd-split p{ font-size:14px; line-height:1.9; margin:0; }
+  .fd-warn{ margin-top:12px; border:1px solid rgba(208,82,74,.4); border-radius:12px;
+    background:rgba(208,82,74,.06); padding:12px 14px; font-size:13.5px; line-height:1.8; color:#a13c36; }
+  .fd-info{ margin-top:12px; border:1px solid var(--fline); border-radius:12px;
+    background:var(--fsoft); padding:11px 14px; font-size:13px; line-height:1.8; color:var(--fmut); }
+
+  /* 共有 */
+  .fd textarea{ width:100%; min-height:230px; margin-top:10px; background:var(--fsoft);
+    border:1px solid #c6d9e8; border-radius:10px; color:var(--fink); font-size:13px; line-height:1.7;
+    padding:12px; font-family:inherit; resize:vertical; }
+  .fd-sharebtns{ display:flex; gap:10px; margin-top:10px; }
+  .fd-sharebtns button{ flex:1; padding:13px; font-size:14.5px; font-weight:800; border-radius:12px;
+    cursor:pointer; letter-spacing:.04em; }
+  #fdCopy{ background:var(--facc); color:#fff; border:none; }
+  #fdCopy.copied{ background:var(--fok); }
+  #fdShare{ background:#fff; border:1.5px solid var(--facc); color:var(--facc2); }
+
+  /* ===== 使い方ガイド（モーダル） ===== */
+  .fd-modal{ position:fixed; inset:0; z-index:1000; display:none; }
+  .fd-modal.open{ display:block; }
+  .fd-modal-bg{ position:absolute; inset:0; background:rgba(15,35,55,.55); }
+  .fd-modal-panel{ position:relative; max-width:640px; margin:4vh auto; max-height:92vh; overflow:auto;
+    background:#fff; border-radius:18px; box-shadow:0 20px 60px rgba(0,0,0,.3); padding:0 0 20px;
+    border:1px solid #cfe0ec; -webkit-overflow-scrolling:touch; }
+  @media(max-width:680px){ .fd-modal-panel{ margin:0; max-height:100vh; height:100%; border-radius:0; } }
+  .fd-modal-head{ position:sticky; top:0; z-index:2; display:flex; align-items:center; gap:10px;
+    background:linear-gradient(120deg,#0e7ea8,#1696c2); color:#fff; padding:15px 18px; }
+  .fd-modal-head .tt{ font-size:16.5px; font-weight:800; letter-spacing:.05em; margin-right:auto; }
+  .fd-modal-close{ background:rgba(255,255,255,.18); border:none; color:#fff; font-size:17px;
+    width:36px; height:36px; border-radius:999px; cursor:pointer; flex:none; }
+  .fd-modal-body{ padding:16px 18px 4px; }
+  .fd-gstep{ display:flex; gap:13px; padding:14px 0; border-bottom:1px dashed #dbe7f0; }
+  .fd-gstep:last-child{ border-bottom:none; }
+  .fd-gnum{ flex:none; width:34px; height:34px; border-radius:999px; background:#f5f9fc;
+    border:2px solid #1696c2; color:#0e7ea8; font-weight:800; font-size:15px;
+    display:flex; align-items:center; justify-content:center; }
+  .fd-gbody{ min-width:0; }
+  .fd-gbody h4{ margin:4px 0 6px; font-size:14.5px; font-weight:800; color:#1a2a37; }
+  .fd-gbody p{ margin:0; font-size:13.5px; line-height:1.85; color:#3a4a58; }
+  .fd-gpic{ margin-top:9px; background:#f5f9fc; border:1px solid #dbe7f0; border-radius:10px;
+    padding:8px 10px; display:flex; justify-content:center; }
+  .fd-gpic svg{ max-width:100%; height:auto; }
+  .fd-gtip{ margin:12px 0 6px; background:rgba(242,183,92,.12); border:1px solid rgba(185,122,18,.4);
+    border-radius:10px; padding:10px 13px; font-size:13px; line-height:1.8; color:#8a5c0e; }
+
+  @media (prefers-reduced-motion: no-preference){
+    .fd-modal.open .fd-modal-panel{ animation:fdPop .22s ease; }
+    @keyframes fdPop{ from{ opacity:0; transform:translateY(10px);} to{ opacity:1; transform:none;} }
+  }
+
+  /* ===== 解説記事 ===== */
+  .fd-article{ margin:26px 0 10px; font-size:14.5px; line-height:1.95; color:#3a4150; }
+  .fd-article h2{ font-size:19px; margin:26px 0 10px; color:#1a2a37; }
+  .fd-article h3{ font-size:16px; margin:20px 0 8px; color:#1a2a37; }
+  .fd-article ul{ padding-left:1.3em; }
+  .fd-article .fd-meta{ background:#f7f9fc; border:1px solid #e3eaf2; border-radius:10px;
+    padding:11px 14px; font-size:12.5px; line-height:1.9; color:#5a6a78; margin-top:18px; }
+</style>
+</head>
+<body>
+<div id="nav"></div>
+
+<div class="wrap">
+
+<h1 style="margin:18px 0 4px;">
+  <span class="i18n-ja-inline">霜竜イベント 同盟配置計算ツール</span><span class="i18n-en-inline">Frost Dragon Alliance Placement Calculator</span>
+</h1>
+<p class="note" style="margin:0 0 4px;">
+  <span class="i18n-ja-inline">参加希望同盟の総力を集計し、どの同盟がどの「入れ物」に入ればエントリーボーダー（上位100位）を超えられるかを自動計算します。</span><span class="i18n-en-inline">Aggregate the power of applicant alliances and automatically work out which alliance should merge into which "host" so every host clears the entry border (top 100).</span>
+</p>
+
+<div id="updbox"></div>
+
+<div class="fd" id="fdApp">
+  <div class="fd-head">
+    <div class="fd-title">
+      <span class="t">❄ <span class="i18n-ja-inline">霜竜 配置計算</span><span class="i18n-en-inline">Frost Dragon Planner</span></span>
+      <span class="s"><span class="i18n-ja-inline">総力集計・ボーダー判定・分割指示</span><span class="i18n-en-inline">Power totals, border check &amp; split orders</span></span>
+    </div>
+    <button type="button" class="fd-guide-btn" id="fdGuideBtn" aria-haspopup="dialog">
+      📖 <span class="i18n-ja-inline">使い方ガイド</span><span class="i18n-en-inline">How to use</span>
+    </button>
+  </div>
+
+  <div class="fd-inner">
+
+    <!-- STEP 1: ボーダー -->
+    <section class="fd-card">
+      <h2><span class="fd-step">STEP 1</span><span class="i18n-ja-inline">参加ボーダーを設定</span><span class="i18n-en-inline">Set the entry border</span></h2>
+      <label for="fdBorder"><span class="i18n-ja-inline">エントリー可能ライン（100位の総力目安）</span><span class="i18n-en-inline">Entry line (approx. power of rank 100)</span></label>
+      <input type="text" id="fdBorder" inputmode="decimal" placeholder="">
+      <div class="fd-pv" id="fdBorderPv"></div>
+      <div class="fd-hint">
+        <span class="i18n-ja-inline">「30億」「5億5000万」のような単位付きでも、数字だけでもOKです。</span><span class="i18n-en-inline">You can type "3B", "550M" or plain digits — units are parsed automatically.</span>
+      </div>
+    </section>
+
+    <!-- STEP 2: 入れ物 -->
+    <section class="fd-card">
+      <h2><span class="fd-step">STEP 2</span><span class="i18n-ja-inline">入れ物（集合先の同盟）</span><span class="i18n-en-inline">Hosts (alliances everyone gathers into)</span></h2>
+      <div class="fd-seg" id="fdSeg">
+        <button type="button" data-n="1" class="on"><span class="i18n-ja-inline">1同盟で参加</span><span class="i18n-en-inline">1 alliance</span></button>
+        <button type="button" data-n="2"><span class="i18n-ja-inline">2同盟で参加</span><span class="i18n-en-inline">2 alliances</span></button>
+        <button type="button" data-n="3"><span class="i18n-ja-inline">3同盟で参加</span><span class="i18n-en-inline">3 alliances</span></button>
+      </div>
+      <div id="fdVessels"></div>
+      <div class="fd-hint">
+        <span class="i18n-ja-inline">空き人数 ＝ 同盟の上限人数から現在の人数を引いた「あと何人入れるか」。</span><span class="i18n-en-inline">Free slots = alliance member cap minus current members ("how many more can join").</span>
+      </div>
+    </section>
+
+    <!-- STEP 3: 参加希望同盟 -->
+    <section class="fd-card">
+      <h2><span class="fd-step">STEP 3</span><span class="i18n-ja-inline">参加希望の同盟（入れ物以外）</span><span class="i18n-en-inline">Applicant alliances (other than hosts)</span></h2>
+      <div id="fdAppList"></div>
+      <button type="button" class="fd-add" id="fdAddApp">＋ <span class="i18n-ja-inline">同盟を追加</span><span class="i18n-en-inline">Add alliance</span></button>
+      <div class="fd-hint">
+        <span class="i18n-ja-inline">同盟ごとに「移動してくる人数」と「その人たちの合計総力」を入力してください。</span><span class="i18n-en-inline">For each alliance, enter how many members will move and their combined power.</span>
+      </div>
+    </section>
+
+    <button type="button" class="fd-calc" id="fdCalc">
+      <span class="i18n-ja-inline">配置を計算する ❄</span><span class="i18n-en-inline">Calculate placement ❄</span>
+    </button>
+
+    <!-- 結果 -->
+    <section class="fd-card" id="fdResult" aria-live="polite">
+      <h2><span class="fd-step"><span class="i18n-ja-inline">結果</span><span class="i18n-en-inline">RESULT</span></span><span class="i18n-ja-inline">配置指示</span><span class="i18n-en-inline">Placement orders</span></h2>
+      <div id="fdResultBody"></div>
+
+      <h2 style="margin-top:20px;"><span class="fd-step"><span class="i18n-ja-inline">共有</span><span class="i18n-en-inline">SHARE</span></span><span class="i18n-ja-inline">指示テキスト（コピーしてチャットへ）</span><span class="i18n-en-inline">Order text (copy &amp; paste to chat)</span></h2>
+      <textarea id="fdShareText" readonly></textarea>
+      <div class="fd-sharebtns">
+        <button type="button" id="fdCopy">📋 <span class="i18n-ja-inline">コピー</span><span class="i18n-en-inline">Copy</span></button>
+        <button type="button" id="fdShare">↗ <span class="i18n-ja-inline">共有</span><span class="i18n-en-inline">Share</span></button>
+      </div>
+    </section>
+
+  </div><!-- /.fd-inner -->
+</div><!-- /.fd -->
+
+<div id="ad1" class="ad-slot"></div>
+
+<!-- ===== 使い方ガイド（初期非表示のモーダル） ===== -->
+<div class="fd-modal" id="fdGuide" role="dialog" aria-modal="true" aria-labelledby="fdGuideTitle" aria-hidden="true">
+  <div class="fd-modal-bg" data-close="1"></div>
+  <div class="fd-modal-panel">
+    <div class="fd-modal-head">
+      <span class="tt" id="fdGuideTitle">📖 <span class="i18n-ja-inline">使い方ガイド</span><span class="i18n-en-inline">How to use</span></span>
+      <button type="button" class="fd-modal-close" data-close="1" aria-label="閉じる / Close">✕</button>
+    </div>
+    <div class="fd-modal-body">
+
+      <div class="fd-gstep">
+        <div class="fd-gnum">1</div>
+        <div class="fd-gbody">
+          <h4><span class="i18n-ja-inline">ボーダーを入力</span><span class="i18n-en-inline">Enter the border</span></h4>
+          <p><span class="i18n-ja-inline">エントリーに必要な総力（上位100位のライン）を入力します。「30億」のような単位付きでOK。前回イベントの100位あたりの総力が目安です。</span><span class="i18n-en-inline">Enter the power needed to qualify (the rank-100 line). Units like "3B" are fine. The rank-100 power from the previous event is a good estimate.</span></p>
+          <div class="fd-gpic">
+            <svg viewBox="0 0 360 62" width="360" height="62" role="img" aria-hidden="true">
+              <rect x="6" y="14" width="230" height="36" rx="9" fill="#fff" stroke="#1696c2" stroke-width="2"/>
+              <text x="20" y="38" font-size="16" fill="#0e7ea8" font-weight="700">30億 / 3B</text>
+              <text x="250" y="38" font-size="14" fill="#6c8295">←</text>
+              <line x1="6" y1="56" x2="236" y2="56" stroke="#d0524a" stroke-width="2" stroke-dasharray="6 4"/>
+              <text x="245" y="60" font-size="11" fill="#d0524a" font-weight="700">TOP 100</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="fd-gstep">
+        <div class="fd-gnum">2</div>
+        <div class="fd-gbody">
+          <h4><span class="i18n-ja-inline">入れ物の数と情報を入力</span><span class="i18n-en-inline">Set up your hosts</span></h4>
+          <p><span class="i18n-ja-inline">サーバーのみんなが集まる同盟＝「入れ物」を選びます（1〜3同盟）。それぞれの「空き人数」と「現在の総力」を入力してください。</span><span class="i18n-en-inline">Pick 1–3 "host" alliances that everyone will gather into, then enter each host's free slots and current power.</span></p>
+          <div class="fd-gpic">
+            <svg viewBox="0 0 360 84" width="360" height="84" role="img" aria-hidden="true">
+              <g>
+                <rect x="10" y="10" width="100" height="62" rx="10" fill="#fff" stroke="#1696c2" stroke-width="2"/>
+                <text x="60" y="32" font-size="12" fill="#0e7ea8" text-anchor="middle" font-weight="700">① ABC</text>
+                <text x="60" y="50" font-size="11" fill="#6c8295" text-anchor="middle"><tspan class="i18n-ja-inline">空き40</tspan><tspan class="i18n-en-inline">40 slots</tspan></text>
+                <text x="60" y="65" font-size="11" fill="#6c8295" text-anchor="middle">12億</text>
+              </g>
+              <g>
+                <rect x="130" y="10" width="100" height="62" rx="10" fill="#fff" stroke="#1d9e6f" stroke-width="2"/>
+                <text x="180" y="32" font-size="12" fill="#177a56" text-anchor="middle" font-weight="700">② XYZ</text>
+                <text x="180" y="50" font-size="11" fill="#6c8295" text-anchor="middle"><tspan class="i18n-ja-inline">空き55</tspan><tspan class="i18n-en-inline">55 slots</tspan></text>
+                <text x="180" y="65" font-size="11" fill="#6c8295" text-anchor="middle">9億</text>
+              </g>
+              <g opacity=".45">
+                <rect x="250" y="10" width="100" height="62" rx="10" fill="#fff" stroke="#8a63d2" stroke-width="2" stroke-dasharray="5 4"/>
+                <text x="300" y="45" font-size="12" fill="#6c4bb0" text-anchor="middle" font-weight="700">③ ?</text>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="fd-gstep">
+        <div class="fd-gnum">3</div>
+        <div class="fd-gbody">
+          <h4><span class="i18n-ja-inline">参加希望の同盟を入力</span><span class="i18n-en-inline">Enter applicant alliances</span></h4>
+          <p><span class="i18n-ja-inline">入れ物以外で参加したい同盟を、同盟ごとに「移動する人数」と「その総力」で追加します。行はいくつでも増やせます。</span><span class="i18n-en-inline">Add every alliance that wants in (other than hosts), with how many members will move and their combined power. Add as many rows as you need.</span></p>
+          <div class="fd-gpic">
+            <svg viewBox="0 0 360 66" width="360" height="66" role="img" aria-hidden="true">
+              <rect x="8" y="8" width="344" height="22" rx="6" fill="#fff" stroke="#c6d9e8"/>
+              <text x="18" y="23" font-size="12" fill="#22323f" font-weight="700">DEF</text>
+              <text x="150" y="23" font-size="12" fill="#6c8295"><tspan class="i18n-ja-inline">25人</tspan><tspan class="i18n-en-inline">25</tspan></text>
+              <text x="240" y="23" font-size="12" fill="#6c8295">8億</text>
+              <rect x="8" y="36" width="344" height="22" rx="6" fill="#fff" stroke="#c6d9e8"/>
+              <text x="18" y="51" font-size="12" fill="#22323f" font-weight="700">GHI</text>
+              <text x="150" y="51" font-size="12" fill="#6c8295"><tspan class="i18n-ja-inline">18人</tspan><tspan class="i18n-en-inline">18</tspan></text>
+              <text x="240" y="51" font-size="12" fill="#6c8295">6億</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="fd-gstep">
+        <div class="fd-gnum">4</div>
+        <div class="fd-gbody">
+          <h4><span class="i18n-ja-inline">計算 → 結果をコピーして共有</span><span class="i18n-en-inline">Calculate → copy &amp; share the result</span></h4>
+          <p><span class="i18n-ja-inline">「配置を計算する」を押すと、どの同盟がどの入れ物に入るべきかを自動で振り分けます。全入れ物がボーダーを超えられない場合は、<b>どこかの同盟を分割する指示（総力で配分）</b>も自動で作ります。結果の下の指示テキストをコピーして、そのままサーバーチャットに貼れます。</span><span class="i18n-en-inline">Hit "Calculate placement" and the tool assigns each alliance to a host. If the borders can't all be cleared as-is, it also generates a <b>split order (allocated by power)</b> for one alliance. Copy the order text below the result and paste it straight into server chat.</span></p>
+          <div class="fd-gpic">
+            <svg viewBox="0 0 360 96" width="360" height="96" role="img" aria-hidden="true">
+              <defs>
+                <marker id="fdArrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#1696c2"/></marker>
+                <marker id="fdArrow2" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#1d9e6f"/></marker>
+              </defs>
+              <rect x="12" y="12" width="70" height="26" rx="7" fill="#fff" stroke="#c6d9e8"/><text x="47" y="29" font-size="12" fill="#22323f" text-anchor="middle" font-weight="700">DEF</text>
+              <rect x="12" y="58" width="70" height="26" rx="7" fill="#fff" stroke="#c6d9e8"/><text x="47" y="75" font-size="12" fill="#22323f" text-anchor="middle" font-weight="700">GHI</text>
+              <path d="M86 25 C130 25 130 34 166 38" fill="none" stroke="#1696c2" stroke-width="2.4" marker-end="url(#fdArrow)"/>
+              <path d="M86 71 C130 71 130 60 166 56" fill="none" stroke="#1d9e6f" stroke-width="2.4" marker-end="url(#fdArrow2)"/>
+              <rect x="172" y="18" width="92" height="28" rx="9" fill="#fff" stroke="#1696c2" stroke-width="2"/><text x="218" y="36" font-size="12" fill="#0e7ea8" text-anchor="middle" font-weight="700">① ABC</text>
+              <rect x="172" y="52" width="92" height="28" rx="9" fill="#fff" stroke="#1d9e6f" stroke-width="2"/><text x="218" y="70" font-size="12" fill="#177a56" text-anchor="middle" font-weight="700">② XYZ</text>
+              <text x="272" y="36" font-size="13" fill="#1d9e6f" font-weight="800">✅ 32億</text>
+              <text x="272" y="70" font-size="13" fill="#1d9e6f" font-weight="800">✅ 31億</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="fd-gtip">
+        💡 <span class="i18n-ja-inline"><b>分割指示が出たら:</b> 指定された総力（例: 約19億ぶん）に近くなるように、その同盟の中で移動メンバーを選んでください。人数はあくまで目安で、総力ベースで合わせるのが確実です。</span><span class="i18n-en-inline"><b>When a split order appears:</b> pick members from that alliance so the moved power roughly matches the stated amount (e.g. ~1.9B). Member counts are only a guide — matching by power is what matters.</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ===== 解説記事 ===== -->
+<article class="fd-article">
+  <div class="i18n-ja">
+    <h2>霜竜イベントの「入れ物」戦略とは</h2>
+    <p>霜竜イベントは同盟単位でエントリーし、<b>エントリー可能なサーバーの中で同盟総力の上位100位以内</b>に入る必要があります。多くのサーバーでは単独同盟のままだと総力が足りないため、サーバー内の有志が1〜2同盟（強豪サーバーなら3同盟）に集まってボーダー超えを目指す「入れ物」戦略が定番です。</p>
+    <p>このとき悩ましいのが「誰がどこに入れば全部の入れ物がボーダーを超えるのか」という振り分けです。人数上限（空き枠）と総力の両方を満たす組み合わせを手計算で探すのは大変で、集計係の負担になりがちです。本ツールはその振り分けを総当たりで探索し、<b>全入れ物がボーダーを超え、できるだけ多くの人が参加でき、各入れ物の余裕がバランスする</b>配置を自動で提示します。</p>
+    <h3>分割指示について</h3>
+    <p>同盟の並べ替えだけではどうしてもボーダーを超えられない場合、ツールはどこか1つの同盟を分割して複数の入れ物に配分する案を探します。分割は<b>総力ベース</b>で指示されます（例:「約19億ぶんを入れ物①へ、約21億ぶんを入れ物②へ」）。人数は総力密度から計算した目安なので、実際のメンバー選びは総力の合計を優先して調整してください。</p>
+    <h3>使うときのコツ</h3>
+    <ul>
+      <li>ボーダーは前回イベントの100位ラインより少し余裕をもたせた値にすると安全です。</li>
+      <li>入れ物の「空き人数」は、抜ける予定のメンバーがいるなら差し引いた実質値を入れてください。</li>
+      <li>参加希望の総力は「実際に移動する人だけの合計」で集計するのが正確です。</li>
+      <li>結果はそのままコピーしてサーバーチャットや同盟チャットに貼り付けられます。</li>
+    </ul>
+  </div>
+  <div class="i18n-en">
+    <h2>The "host alliance" strategy for the Frost Dragon event</h2>
+    <p>Entry to the Frost Dragon event is per alliance, and you must rank within the <b>top 100 by alliance power among eligible servers</b>. On most servers a single alliance can't reach that line alone, so players gather into one or two host alliances (three on very strong servers) to clear the border together.</p>
+    <p>The hard part is deciding who goes where so that <em>every</em> host clears the border while respecting member caps. This tool brute-force searches those assignments and proposes a placement where <b>all hosts clear the border, as many members as possible participate, and the safety margins are balanced</b>.</p>
+    <h3>About split orders</h3>
+    <p>When no re-arrangement of whole alliances can clear every border, the tool looks for a plan that splits exactly one alliance across hosts. Splits are stated <b>by power</b> (e.g. "move ~1.9B of power to Host ① and ~2.1B to Host ②"); member counts are only estimates derived from average power per member, so pick actual members by matching total power.</p>
+    <h3>Tips</h3>
+    <ul>
+      <li>Set the border slightly above the previous event's rank-100 line for safety.</li>
+      <li>Enter each host's <em>effective</em> free slots (subtract members who plan to leave).</li>
+      <li>Count applicant power using only the members who will actually move.</li>
+      <li>The result text can be pasted straight into server or alliance chat.</li>
+    </ul>
+  </div>
+
+  <div class="fd-meta">
+    <span class="i18n-ja-inline"><strong>運営者</strong>: じゃすみん（1567サーバー / 同盟「bst」盟主）　|　<strong>お問い合わせ</strong>: <a href="https://x.com/tegetege_m" target="_blank" rel="noopener">X @tegetege_m</a> · <a href="../../contact.html">お問い合わせ</a><br>
+    <strong>最終更新</strong>: 2026年7月　|　実プレイでの検証と公開情報をもとに作成しています。<br>
+    ※ 本ツールはファンによる非公式ツールです。数値・判定は目安であり、イベント仕様はアップデートで変わることがあります。Whiteout Survival は Century Games の商標です。</span><span class="i18n-en-inline"><strong>Operator</strong>: Jasmine (Server 1567 / leader of alliance "bst")　|　<strong>Contact</strong>: <a href="https://x.com/tegetege_m" target="_blank" rel="noopener">X @tegetege_m</a> · <a href="../../contact.html">Contact</a><br>
+    <strong>Last updated</strong>: July 2026　|　Built from in-game testing and public information.<br>
+    * This is a fan-made, unofficial tool. Figures are estimates; event specs may change with updates. Whiteout Survival is a trademark of Century Games.</span>
+  </div>
+</article>
+
+</div><!-- /.wrap -->
+<div id="foot"></div>
+
+<script src="../../assets/config.js?v=88"></script>
+<script src="../../assets/toolkit.js?v=88"></script>
+<script>
+  try{
+    document.getElementById('nav').innerHTML = window.WOS_NAV(2);
+    document.getElementById('foot').innerHTML = window.WOS_FOOT(2);
+    document.getElementById('updbox').innerHTML = window.WOS_UPDATEBOX({date:'2026-07-04',gen:16,note:'霜竜イベント 配置計算ツールを新規公開',note_en:'New: Frost Dragon placement calculator'});
+  }catch(e){}
+</script>
+<script src="app.js?v=1"></script>
+<script>
+(function(){
+  function mount(){
+    if(!window.WOS_mountAffiliate) return;
+    var f=document.getElementById('foot');
+    if(f) window.WOS_mountAffiliate(f,'before');
+  }
+  if(document.readyState!=='loading') mount();
+  else document.addEventListener('DOMContentLoaded', mount);
+})();
+</script>
+</body>
+</html>

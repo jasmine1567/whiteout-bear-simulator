@@ -18,7 +18,7 @@
 <meta name="description" id="pgdesc" content="ホワイトアウト・サバイバルの熊狩り(Bear Hunt)攻略。ダメージシミュレーターを中心に、左英雄チェッカー・兵士比率比較・指揮官タイプ診断など遊べる無料ツールと11本の攻略記事。">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://docs.google.com; object-src 'none'; base-uri 'none'">
 <link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/"><link rel="alternate" hreflang="en" href="https://whitesim-lab.com/?lang=en">
-<link rel="stylesheet" href="assets/site.css?v=87">
+<link rel="stylesheet" href="assets/site.css?v=88">
 <script>(function(){try{var l=new URLSearchParams(location.search).get("lang")||localStorage.getItem("wos_lang")||"ja";if(l!=="en")l="ja";document.documentElement.setAttribute("data-wos-lang",l);}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
 <link rel="icon" type="image/svg+xml" href="favicon.svg?v=85">
 <link rel="icon" type="image/png" href="favicon.png?v=85">
@@ -142,6 +142,7 @@
     <li><a href="tools/damage-doctor/index.html">ダメージが伸びない原因診断</a> … 質問に答えるだけで、ダメージが低い原因と対処を切り分け。</li>
     <li><a href="tools/commander-type/index.html">指揮官タイプ診断</a> … 6問であなたの熊狩りスタイルを6タイプに診断。Xでシェア可能。</li>
     <li><a href="tools/foundry-battle/index.html">兵器工場争奪戦 フィールドツール</a> … 作戦計画＋敵を加えた模擬戦で、占領ポイントの推移を試算・共有。</li>
+    <li><a href="tools/frost-dragon/index.html">霜竜イベント 同盟配置計算ツール</a> … 参加希望同盟をどの「入れ物」に入れれば全部ボーダーを超えられるか自動計算。分割指示も総力ベースで出力。</li>
     <li><a href="tools/king-castle/index.html">王城戦エリア配置管理ツール</a> … SvSのサーバー分割・同盟エリア・都市配置を地図で計画し共有。</li>
   </ul>
 
@@ -182,6 +183,7 @@
     <li><a href="tools/damage-doctor/index.html">Damage Doctor</a> … answer a few questions to find why your damage is low.</li>
     <li><a href="tools/commander-type/index.html">Commander Type Quiz</a> … 6 questions sort your Bear Hunt style into 6 types. Shareable on X.</li>
     <li><a href="tools/foundry-battle/index.html">Foundry Battle field tool</a> … plan operations + run a mock battle to estimate capture points, and share.</li>
+    <li><a href="tools/frost-dragon/index.html">Frost Dragon Placement Calculator</a> … auto-assigns applicant alliances to host alliances so every host clears the entry border. Split orders by power included.</li>
     <li><a href="tools/king-castle/index.html">Castle Battle Area Planner</a> … plan SvS server splits, alliance areas and city placement on a map and share.</li>
   </ul>
   <h2>For deeper reading (guides)</h2>
@@ -210,9 +212,10 @@
 <div id="about-sec"></div>
 </div>
 <div id="foot"></div>
-<script src="assets/config.js?v=87"></script><script src="assets/toolkit.js?v=87"></script>
+<script src="assets/config.js?v=88"></script><script src="assets/toolkit.js?v=88"></script>
 <script>
 var PLAY = [
+  ["tools/frost-dragon/index.html", "霜竜イベント 配置計算", "Frost Dragon Placement", "参加同盟をどの入れ物に入れるか自動計算", "Auto-assign alliances to clear the border", "❄", "tt-c3", "新", "New"],
   ["tools/foundry-battle/index.html", "兵器工場争奪戦ツール", "Foundry Battle Tool", "作戦プランニングと占領ポイント試算の2モード", "Op planner + mock battle point sim", "🏭", "tt-c2", "新", "New"],
   ["tools/hero-list/index.html", "英雄一覧・データベース", "Hero Database", "全62英雄を世代・兵種・スキルで検索", "Search all 62 heroes", "📖", "tt-c1", "新", "New"],
   ["tools/left-hero/index.html", "左英雄チェッカー", "Left-Hero Checker", "乗りで効く英雄を一発判定", "Instantly check your left hero", "🔍", "tt-c3", null, null],
