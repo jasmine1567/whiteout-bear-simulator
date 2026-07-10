@@ -162,13 +162,13 @@ window.WOS_SUPPORT = { enabled: true };
     var t = window.t || function(a){ return a; };
     return '<aside class="wos-sup-inline">'
       +'<div class="txt">'
-      +'<span class="ttl">'+t('このツール、役に立ちましたか？','Did this help?')+'</span>'
-      +'<p>'+t('個人で作って無料公開しています。「使えたよ」のひとことが、次のツールを作る力になります。',
-              'Made and shared for free by one person. A quick "this helped!" keeps the next tool coming.')+'</p>'
-      +'<span class="free">'+t('※ メッセージだけでも送れます','* Messages are welcome on their own')+'</span>'
+      +'<span class="ttl">'+t('お役に立てましたか？😊','Did it help? 😊')+'</span>'
+      +'<p>'+t('作者のじゃすみんです。「助かった！」のひとことをもらえると、飛び上がって喜びます。次のツールを作る元気になります！',
+              'Hi, I\'m Jasmine, the creator! Even a quick "thanks!" makes my day — and fuels the next tool.')+'</p>'
+      +'<span class="free">'+t('※ 無料のメッセージだけでも本当にうれしいです','* A free message alone genuinely makes me happy')+'</span>'
       +'</div>'
       +'<a class="wos-sup-btn" data-support="result" target="_blank" rel="noopener" href="'+url()+'">'
-      +'💬 '+t('感想を送る','Send a message')+'</a></aside>';
+      +'💬 '+t('ひとこと送る','Say hi')+'</a></aside>';
   };
 
   /* 2) フッター前カード */
@@ -176,16 +176,16 @@ window.WOS_SUPPORT = { enabled: true };
     if(!ok()) return '';
     var t = window.t || function(a){ return a; };
     return '<aside class="wos-sup">'
-      +'<div class="wos-sup-h"><span class="ic">❄</span><span>'
-      +t('このサイトについて','About this site')+'</span></div>'
-      +'<p>'+t('ホワサバ ツールラボは個人が趣味で運営していて、ツールも攻略記事もすべて無料で公開しています。'
-             +'「使えたよ」「ここが助かった」——そんなひとことが届くと、次のツールを作る力になります。',
-              'Whiteout Tools Lab is a personal hobby project, and every tool and guide here is free. '
-             +'A quick "this helped!" is what keeps the next tool coming.')+'</p>'
+      +'<div class="wos-sup-h"><span class="ic">👋</span><span>'
+      +t('作った人より','From the creator')+'</span></div>'
+      +'<p>'+t('こんにちは、じゃすみんです！このサイトは、1567サーバーでホワサバを遊びながらコツコツひとりで作っています。'
+             +'ツールも記事もぜんぶ無料。「使ってるよ！」のひとことが届くと、本当にうれしくて次のツールがはかどります。よかったら気軽にどうぞ！',
+              'Hi, I\'m Jasmine! I build this site solo while playing WoS on server 1567. '
+             +'Everything here is free — and a quick "I use this!" honestly makes my day and speeds up the next tool. Feel free to drop by!')+'</p>'
       +'<div class="wos-sup-body">'
       +'<a class="wos-sup-btn" data-support="footer" target="_blank" rel="noopener" href="'+url()+'">'
       +'💬 '+t('応援メッセージを送る','Send a message')+'</a>'
-      +'<span class="wos-sup-free">'+t('メッセージだけでも送れます','Messages are welcome on their own')+'</span>'
+      +'<span class="wos-sup-free">'+t('メッセージだけでも大歓迎！','Messages alone are more than welcome!')+'</span>'
       +'</div></aside>';
   };
 

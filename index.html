@@ -18,7 +18,7 @@
 <meta name="description" id="pgdesc" content="ホワイトアウト・サバイバルの熊狩り(Bear Hunt)攻略。ダメージシミュレーターを中心に、左英雄チェッカー・兵士比率比較・指揮官タイプ診断など遊べる無料ツールと11本の攻略記事。">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://docs.google.com; object-src 'none'; base-uri 'none'">
 <link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/"><link rel="alternate" hreflang="en" href="https://whitesim-lab.com/?lang=en">
-<link rel="stylesheet" href="assets/site.css?v=92">
+<link rel="stylesheet" href="assets/site.css?v=93">
 <script>(function(){try{var l=new URLSearchParams(location.search).get("lang")||localStorage.getItem("wos_lang")||"ja";if(l!=="en")l="ja";document.documentElement.setAttribute("data-wos-lang",l);}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
 <link rel="icon" type="image/svg+xml" href="favicon.svg?v=85">
 <link rel="icon" type="image/png" href="favicon.png?v=85">
@@ -107,12 +107,39 @@
     </div>
   </div>
 </a>
+<a class="hero-flag fb-flag" id="fbLink" href="tools/foundry-battle/index.html">
+  <div class="hf-in">
+    <div class="hf-text">
+      <span class="hf-badge" id="fbBadge"></span>
+      <div class="hf-title" id="fbTitle"></div>
+      <div class="hf-desc" id="fbDesc"></div>
+      <div class="hf-feats" id="fbFeats"></div>
+      <span class="hf-cta" id="fbCta"></span>
+    </div>
+    <div class="hf-visual">
+      <div class="hf-bear" aria-hidden="true">🏭</div>
+      <div class="hf-minibars">
+        <div class="hf-mb" style="width:85%;animation-delay:0s"></div>
+        <div class="hf-mb" style="width:65%;animation-delay:.3s"></div>
+        <div class="hf-mb" style="width:75%;animation-delay:.6s"></div>
+      </div>
+    </div>
+  </div>
+</a>
 </div>
+<style>
+  /* 主要3ツール: 3枚目(兵器工場)は横長で全幅に。ツール本体と同じアイスブルー系で差別化 */
+  .feature-2 .fb-flag{grid-column:1/-1;
+    background:linear-gradient(135deg,#e7f4fa 0%,#f2fafd 100%);
+    border:1px solid #cfe4f0;box-shadow:0 10px 30px rgba(60,140,190,.12)}
+  .feature-2 .fb-flag:hover{border-color:#1696c2}
+  .feature-2 .fb-flag .hf-mb{background:linear-gradient(90deg,#38b7dd,#1696c2)}
+</style>
 
 <div class="ad-slot"></div>
 
-<!-- 華やかツール -->
-<div class="sec-head"><span class="sh-ico">🎮</span><span class="sh-t" id="playT"></span><span class="sh-line"></span></div>
+<!-- その他のツール -->
+<div class="sec-head" id="tools"><span class="sh-ico">🎮</span><span class="sh-t" id="playT"></span><span class="sh-line"></span></div>
 <div class="tool-grid" id="playGrid"></div>
 
 
@@ -212,11 +239,10 @@
 <div id="about-sec"></div>
 </div>
 <div id="foot"></div>
-<script src="assets/config.js?v=92"></script><script src="assets/toolkit.js?v=92"></script>
+<script src="assets/config.js?v=93"></script><script src="assets/toolkit.js?v=93"></script>
 <script>
 var PLAY = [
   ["tools/frost-dragon/index.html", "霜竜イベント 配置計算", "Frost Dragon Placement", "参加同盟をどの入れ物に入れるか自動計算", "Auto-assign alliances to clear the border", "❄", "tt-c3", "新", "New"],
-  ["tools/foundry-battle/index.html", "兵器工場争奪戦ツール", "Foundry Battle Tool", "作戦プランニングと占領ポイント試算の2モード", "Op planner + mock battle point sim", "🏭", "tt-c2", "新", "New"],
   ["tools/hero-list/index.html", "英雄一覧・データベース", "Hero Database", "全62英雄を世代・兵種・スキルで検索", "Search all 62 heroes", "📖", "tt-c1", "新", "New"],
   ["tools/left-hero/index.html", "左英雄チェッカー", "Left-Hero Checker", "乗りで効く英雄を一発判定", "Instantly check your left hero", "🔍", "tt-c3", null, null],
   ["tools/troop-ratio/index.html", "兵士比率シミュレータ", "Troop Ratio Simulator", "比率を変えるとバーが動く!", "Bars move as you tweak ratios!", "📊", "tt-c4", null, null],
@@ -264,7 +290,7 @@ var READ = [{ "ico": "🔰", "tj": "はじめての方へ", "te": "Getting Start
   if (EN) document.getElementById('flagLink').href = 'tools/bear-hunt/index.html?lang=en';
 
   // 華やかツール
-  document.getElementById('playT').textContent = EN ? 'Play with the tools' : '遊べるツール';
+  document.getElementById('playT').textContent = EN ? 'More tools' : 'その他のツール';
   document.getElementById('playGrid').innerHTML = PLAY.map(function(p) {
     var href = p[0] + (EN ? '?lang=en' : '');
     var name = EN ? p[2] : p[1],
@@ -291,6 +317,20 @@ var READ = [{ "ico": "🔰", "tj": "はじめての方へ", "te": "Getting Start
   document.getElementById('kcFeats').innerHTML = kcFeats.map(function(f) { return '<span class="hf-feat">✓ ' + f + '</span>'; }).join('');
   document.getElementById('kcCta').innerHTML = (EN ? 'Open the Planner' : 'ツールを使う') + ' →';
   if (EN) document.getElementById('kcLink').href = 'tools/king-castle/index.html?lang=en';
+
+  // 兵器工場戦ツール
+  document.getElementById('fbBadge').textContent = EN ? '◆ EVENT TOOL' : '◆ イベントツール';
+  document.getElementById('fbTitle').innerHTML = EN ?
+    '🏭 Foundry Battle<br><span class="acc">Field Simulator</span>' :
+    '🏭 兵器工場争奪戦<br><span class="acc">シミュレーター</span>';
+  document.getElementById('fbDesc').textContent = EN ?
+    'Plan operations on the foundry map and run a mock battle with enemies to estimate how capture points evolve. Share the plan with your alliance.' :
+    '兵器工場マップで作戦を計画し、敵を加えた模擬戦で占領ポイントの推移を試算。作戦はそのまま同盟に共有できます。';
+  var fbFeats = EN ? ['Op planner', 'Mock battle', 'Point simulation', 'Share'] :
+    ['作戦プランニング', '模擬戦', 'ポイント試算', '共有'];
+  document.getElementById('fbFeats').innerHTML = fbFeats.map(function(f) { return '<span class="hf-feat">✓ ' + f + '</span>'; }).join('');
+  document.getElementById('fbCta').innerHTML = (EN ? 'Open the Simulator' : 'ツールを使う') + ' →';
+  if (EN) document.getElementById('fbLink').href = 'tools/foundry-battle/index.html?lang=en';
 
   // 読み物アコーディオン
   document.getElementById('readT').textContent = EN ? 'Reading material' : 'じっくり読む攻略記事';
