@@ -5,7 +5,7 @@ paths=["/",
  "/tools/left-hero/","/tools/troop-ratio/","/tools/damage-doctor/","/tools/commander-type/","/tools/hero-list/",
  "/guides/bear-hunt-guide.html","/guides/beginner-faq.html","/guides/troop-ratio.html","/guides/left-hero.html",
  "/guides/leader-formation.html","/guides/damage-not-growing.html","/guides/common-myths.html","/guides/cyril-talent.html",
- "/guides/f2p-damage.html","/guides/light-spender.html","/guides/how-to-use.html",
+ "/guides/f2p-damage.html","/guides/light-spender.html","/guides/how-to-use.html","/guides/cyril-expert.html",
  "/about.html","/recruit.html","/changelog.html","/privacy.html","/terms.html","/contact.html"]
 def en(p): return "/en/" if p=="/" else "/en"+p
 def alts(p):

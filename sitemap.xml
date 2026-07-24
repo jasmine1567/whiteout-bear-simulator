@@ -210,6 +210,16 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://whitesim-lab.com/en/guides/how-to-use.html"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://whitesim-lab.com/guides/how-to-use.html"/>
   </url>
+  <url><loc>https://whitesim-lab.com/guides/cyril-expert.html</loc><lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/guides/cyril-expert.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://whitesim-lab.com/en/guides/cyril-expert.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://whitesim-lab.com/guides/cyril-expert.html"/>
+  </url>
+  <url><loc>https://whitesim-lab.com/en/guides/cyril-expert.html</loc><lastmod>2026-07-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/guides/cyril-expert.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://whitesim-lab.com/en/guides/cyril-expert.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://whitesim-lab.com/guides/cyril-expert.html"/>
+  </url>
   <url><loc>https://whitesim-lab.com/about.html</loc><lastmod>2026-07-24</lastmod>
     <xhtml:link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/about.html"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://whitesim-lab.com/en/about.html"/>

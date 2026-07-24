@@ -81,6 +81,7 @@
       'bear-hunt-guide.html':'How Bear Hunt damage works',
       'beginner-faq.html':'Bear Hunt beginner FAQ',
       'common-myths.html':'7 common Bear Hunt myths',
+      'cyril-expert.html':'Cyrille deep-dive: all skills & priority',
       'cyril-talent.html':'How strong is Cyrille? Talent test',
       'damage-not-growing.html':"Why your damage isn't growing",
       'f2p-damage.html':'Grow Bear Hunt damage as F2P',
@@ -110,7 +111,7 @@
     if((location.pathname||'').indexOf('/guides/')<0) return;
     var PUB={
       'bear-hunt-guide.html':'2026-06-21','beginner-faq.html':'2026-06-21','common-myths.html':'2026-06-21',
-      'cyril-talent.html':'2026-06-21','damage-not-growing.html':'2026-06-21','f2p-damage.html':'2026-06-21',
+      'cyril-expert.html':'2026-07-24','cyril-talent.html':'2026-06-21','damage-not-growing.html':'2026-06-21','f2p-damage.html':'2026-06-21',
       'how-to-use.html':'2026-06-21','leader-formation.html':'2026-06-21','left-hero.html':'2026-06-21',
       'light-spender.html':'2026-06-21','troop-ratio.html':'2026-06-21'
     };
