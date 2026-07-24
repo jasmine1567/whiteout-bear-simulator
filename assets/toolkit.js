@@ -75,32 +75,59 @@
       document.removeEventListener('click',fire,true); document.removeEventListener('input',fire,true); }
     document.addEventListener('click',fire,true); document.addEventListener('input',fire,true);
   })();
-  /* 関連記事(.relposts)の英訳 + ?lang=en 付与 */
+  /* ===== 関連記事(.relposts)・関連ツール(.relbar)の言語統一 =====
+     静的HTMLの表記に関わらず、ページの言語(パスで確定)に合わせて
+     見出し・記事タイトル・ツール名を置き換える。
+     日本語ページに英語タイトルが出る問題(言語分離以前からの仕様)の恒久対策。 */
   (function(){
+    /* 記事ファイル名 → [日本語タイトル, 英語タイトル] */
     var TT={
-      'bear-hunt-guide.html':'How Bear Hunt damage works',
-      'beginner-faq.html':'Bear Hunt beginner FAQ',
-      'common-myths.html':'7 common Bear Hunt myths',
-      'cyril-expert.html':'Cyrille deep-dive: all skills & priority',
-      'cyril-talent.html':'How strong is Cyrille? Talent test',
-      'damage-not-growing.html':"Why your damage isn't growing",
-      'f2p-damage.html':'Grow Bear Hunt damage as F2P',
-      'how-to-use.html':'How to use the Damage Simulator',
-      'leader-formation.html':'Best rally leader formation & heroes',
-      'left-hero.html':'Left heroes & the 4-slot rule',
-      'light-spender.html':'Best spends for light spenders',
-      'troop-ratio.html':"What's the right troop ratio?"
+      'bear-hunt-guide.html':['熊狩行動のダメージの仕組みを徹底解説','How Bear Hunt damage works (full guide)'],
+      'beginner-faq.html':['熊狩り初心者FAQ:よくある疑問に全部答えます','Bear Hunt beginner FAQ'],
+      'common-myths.html':['熊狩りのよくある勘違い7選','7 common Bear Hunt myths'],
+      'cyril-expert.html':['シリル徹底研究:全スキルと育成優先度','Cyrille deep-dive: all skills & priority'],
+      'cyril-talent.html':['シリルは熊狩りでどこまで強い?天賦を数字で検証','How strong is Cyrille? Talent verified'],
+      'damage-not-growing.html':['ダメージが伸びない原因まとめと対処',"Why your damage isn't growing, and fixes"],
+      'f2p-damage.html':['無課金で熊狩りダメージを伸ばす方法','How to grow Bear Hunt damage as F2P'],
+      'how-to-use.html':['熊狩シミュレーターの使い方','How to use the Damage Simulator'],
+      'leader-formation.html':['集結主におすすめの編成と英雄の選び方','Rally leader: recommended formations & heroes'],
+      'left-hero.html':['熊狩りの左英雄とは?乗りで使うべき英雄と4枠ルール','What is the left hero? Heroes to use & the 4-slot rule'],
+      'light-spender.html':['微課金で熊狩りを伸ばす投資先ランキング','Light-spender investment ranking'],
+      'troop-ratio.html':['熊狩りの兵士比率は何が正解?主要比率を徹底比較',"What's the right troop ratio? Major ratios compared"]
     };
+    /* ツールディレクトリ名 → [日本語名, 英語名] (relbar内の表記ゆれ修正用) */
+    var TOOLS={
+      'bear-hunt':['熊狩ダメージ・シミュレーター','Bear Hunt Simulator'],
+      'left-hero':['左英雄チェッカー','Left-Hero Checker'],
+      'troop-ratio':['兵士比率シミュレータ','Troop Ratio Simulator'],
+      'damage-doctor':['ダメージが伸びない原因診断','Damage Doctor'],
+      'commander-type':['指揮官タイプ診断','Commander Type Quiz'],
+      'hero-list':['英雄一覧・データベース','Hero Database'],
+      'king-castle':['王城戦エリア配置管理','Castle Battle Planner'],
+      'foundry-battle':['兵器工場争奪戦シミュレーター','Foundry Battle Simulator'],
+      'frost-dragon':['霜竜イベント配置計算','Frost Dragon Placement']
+    };
+    var IDX=EN?1:0;
+    var hasJa=function(t){ return /[぀-ヿ一-鿿]/.test(t||''); };
     function run(){
-      if(!EN) return;
-      var h=document.querySelector('.relposts-h'); if(h) h.textContent='Related articles';
+      /* 見出しとaria-label */
+      var h=document.querySelector('.relposts-h'); if(h) h.textContent=EN?'Related articles':'関連記事';
+      var nav=document.querySelector('.relposts'); if(nav) nav.setAttribute('aria-label',EN?'Related articles':'関連記事');
+      /* 関連記事: 常に現在言語のタイトルへ置換 */
       Array.prototype.forEach.call(document.querySelectorAll('.relposts a'),function(a){
         var href=a.getAttribute('href')||'', file=href.split('/').pop().split('?')[0].split('#')[0];
-        if(TT[file]) a.textContent=TT[file];
-        /* 英語ページは /en/ 配下にあるため、相対リンクは同ツリー内に解決される。
-           クエリ言語指定(?lang=en)は不要になったので付与しない。 */
+        if(TT[file]) a.textContent=TT[file][IDX];
       });
-      var nav=document.querySelector('.relposts'); if(nav) nav.setAttribute('aria-label','Related articles');
+      /* 関連ツールバー: 言語が食い違っている場合のみ置換(意図的なラベルは温存) */
+      Array.prototype.forEach.call(document.querySelectorAll('.relbar a'),function(a){
+        var href=a.getAttribute('href')||'';
+        var m=href.match(/tools\/([^\/]+)\//);
+        var t=a.textContent||'';
+        var mismatch = EN ? hasJa(t) : !hasJa(t);
+        if(m && TOOLS[m[1]] && mismatch){ a.textContent='→ '+TOOLS[m[1]][IDX]; return; }
+        var file=href.split('/').pop().split('?')[0].split('#')[0];
+        if(TT[file] && mismatch){ a.textContent='→ '+TT[file][IDX]; }
+      });
     }
     if(document.readyState!=='loading') run(); else document.addEventListener('DOMContentLoaded',run);
   })();
