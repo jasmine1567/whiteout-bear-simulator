@@ -15,8 +15,12 @@
       ? '<a id="langtgl" href="#" onclick="WOS_setLang(\'ja\');return false" style="margin-left:auto;color:var(--ember)">日本語</a>'
       : '<a id="langtgl" href="#" onclick="WOS_setLang(\'en\');return false" style="margin-left:auto;color:var(--ember)">English</a>';
   }
+  /* 言語別ルートを基準にした絶対パスでリンクを生成(日本語=/ , 英語=/en/)。
+     共有アセット(CSS/JS/画像)は常にルート直下の /assets を参照する。
+     引数 depth は後方互換のため受け取るが未使用。 */
+  var B = (window.WOS_BASE || '');
   window.WOS_NAV = function(depth){
-    var d='../'.repeat(depth);
+    var d = B + '/';
     return SPRITE+'<nav class="sitenav"><div class="in">'
       +'<a class="brand" href="'+d+'index.html">'+NAV.brand.replace(/^🐻\s*/,'<span class="logo"><svg class="ic"><use href="#ic-paw"></use></svg></span> ')+'</a>'
       +'<a href="'+d+'tools/bear-hunt/index.html">'+NAV.sim+'</a>'
@@ -25,17 +29,17 @@
       +'<a href="'+d+'index.html#tools">'+NAV.tools+'</a>'
       +'<a href="'+d+'guides/bear-hunt-guide.html">'+NAV.guide+'</a>'
       +langLink()
-      +'<a class="nav-owner" href="'+d+'about.html" aria-label="'+(EN?'About the creator':'運営者について')+'"><img src="'+d+'assets/owner.png" alt="'+(EN?'Creator':'運営者')+'" onerror="this.style.display=\'none\'"></a>'
+      +'<a class="nav-owner" href="'+d+'about.html" aria-label="'+(EN?'About the creator':'運営者について')+'"><img src="/assets/owner.png" alt="'+(EN?'Creator':'運営者')+'" onerror="this.style.display=\'none\'"></a>'
       +'</div></nav>';
   };
   window.WOS_FOOT = function(depth){
-    var d='../'.repeat(depth);
+    var d = B + '/';
     var f = EN ? {
-      home:"Home", sim:"Bear Hunt Simulator", guide:"Guides", about:"About",
+      home:"Home", sim:"Bear Hunt Simulator", guide:"Guides", about:"About", changelog:"Changelog",
       privacy:"Privacy Policy", terms:"Terms", contact:"Contact",
       note:"This is a fan-made, unofficial strategy site. Whiteout Survival is a trademark of Century Games; this site is not affiliated with the developer or operator."
     } : {
-      home:"ホーム", sim:"熊狩シミュレーター", guide:"攻略ガイド", about:"運営者情報",
+      home:"ホーム", sim:"熊狩シミュレーター", guide:"攻略ガイド", about:"運営者情報", changelog:"更新履歴",
       privacy:"プライバシーポリシー", terms:"利用規約", contact:"お問い合わせ",
       note:"本サイトはファンメイドの非公式攻略サイトです。Whiteout Survival は Century Games の商標であり、当サイトは開発元・運営元とは一切関係ありません。"
     };
@@ -47,6 +51,7 @@
       +'<a href="'+d+'index.html#tools">'+NAV.tools+'</a>'
       +'<a href="'+d+'guides/bear-hunt-guide.html">'+f.guide+'</a>'
       +'<a href="'+d+'about.html">'+f.about+'</a>'
+      +'<a href="'+d+'changelog.html">'+f.changelog+'</a>'
       +'<a href="'+d+'privacy.html">'+f.privacy+'</a>'
       +'<a href="'+d+'terms.html">'+f.terms+'</a>'
       +'<a href="'+d+'contact.html">'+f.contact+'</a>'
@@ -91,10 +96,91 @@
       Array.prototype.forEach.call(document.querySelectorAll('.relposts a'),function(a){
         var href=a.getAttribute('href')||'', file=href.split('/').pop().split('?')[0].split('#')[0];
         if(TT[file]) a.textContent=TT[file];
-        if(href && href.indexOf('lang=')<0) a.setAttribute('href', href+(href.indexOf('?')<0?'?':'&')+'lang=en');
+        /* 英語ページは /en/ 配下にあるため、相対リンクは同ツリー内に解決される。
+           クエリ言語指定(?lang=en)は不要になったので付与しない。 */
       });
       var nav=document.querySelector('.relposts'); if(nav) nav.setAttribute('aria-label','Related articles');
     }
     if(document.readyState!=='loading') run(); else document.addEventListener('DOMContentLoaded',run);
+  })();
+
+  /* 記事(guides)への著者バイライン自動挿入: 執筆者・初回公開・最終更新・検証環境を表示。
+     #updbox の直後に1つだけ差し込む(日本語/英語はパスで確定)。 */
+  (function(){
+    if((location.pathname||'').indexOf('/guides/')<0) return;
+    var PUB={
+      'bear-hunt-guide.html':'2026-06-21','beginner-faq.html':'2026-06-21','common-myths.html':'2026-06-21',
+      'cyril-talent.html':'2026-06-21','damage-not-growing.html':'2026-06-21','f2p-damage.html':'2026-06-21',
+      'how-to-use.html':'2026-06-21','leader-formation.html':'2026-06-21','left-hero.html':'2026-06-21',
+      'light-spender.html':'2026-06-21','troop-ratio.html':'2026-06-21'
+    };
+    var UPD='2026-07-24';
+    function injectCss(){
+      if(document.getElementById('wos-byline-css')) return;
+      var s=document.createElement('style'); s.id='wos-byline-css';
+      s.textContent='.wos-byline{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;'
+        +'margin:10px 0 16px;padding:9px 13px;border:1px solid #e5e7f2;border-radius:10px;'
+        +'background:#faf9ff;color:#5b6276;font-size:12px;line-height:1.6}'
+        +'.wos-byline b{color:#1d2233;font-weight:700}'
+        +'.wos-byline a{color:#e85d12;text-decoration:none;font-weight:700}'
+        +'.wos-byline a:hover{text-decoration:underline}'
+        +'.wos-byline .sep{color:#c7cbe0}';
+      document.head.appendChild(s);
+    }
+    function run(){
+      if(document.querySelector('.wos-byline')) return;
+      var file=(location.pathname.split('/').pop()||'')||'index.html';
+      var pub=PUB[file]||'2026-06-21';
+      var base=(window.WOS_BASE||'');
+      var html = EN
+        ? '<div class="wos-byline">✍ Written by <a href="'+base+'/about.html"><b>Jasmine</b></a>'
+          +'<span class="sep">|</span>Published '+pub
+          +'<span class="sep">|</span>Last updated '+UPD
+          +'<span class="sep">|</span>Verified on Server 1567 (Whiteout Survival)</div>'
+        : '<div class="wos-byline">✍ 執筆：<a href="'+base+'/about.html"><b>じゃすみん</b></a>'
+          +'<span class="sep">|</span>初回公開：'+pub
+          +'<span class="sep">|</span>最終更新：'+UPD
+          +'<span class="sep">|</span>検証環境：1567サーバー</div>';
+      injectCss();
+      var anchor=document.getElementById('updbox');
+      var wrap=document.createElement('div'); wrap.innerHTML=html; var el=wrap.firstChild;
+      if(anchor && anchor.parentNode){ anchor.parentNode.insertBefore(el, anchor.nextSibling); }
+      else { var w=document.querySelector('div.wrap'); if(w) w.insertBefore(el, w.firstChild); }
+    }
+    if(document.readyState!=='loading') run(); else document.addEventListener('DOMContentLoaded',run);
+  })();
+
+  /* ツールページ共通の注意書き: 計算結果が推定値であること・検証環境・最終更新・出典方針を明示。
+     .wrap 末尾(フッター前)に1つだけ差し込む。各ツールのJSには触れない。 */
+  (function(){
+    if((location.pathname||'').indexOf('/tools/')<0) return;
+    function injectCss(){
+      if(document.getElementById('wos-toolnote-css')) return;
+      var s=document.createElement('style'); s.id='wos-toolnote-css';
+      s.textContent='.wos-toolnote{margin:18px 0 4px;padding:13px 15px;border:1px solid #e5e7f2;'
+        +'border-radius:12px;background:#faf9ff;color:#5b6276;font-size:12px;line-height:1.75}'
+        +'.wos-toolnote h3{margin:0 0 6px;font-size:12.5px;color:#1d2233}'
+        +'.wos-toolnote a{color:#e85d12;text-decoration:none;font-weight:700}'
+        +'.wos-toolnote a:hover{text-decoration:underline}';
+      document.head.appendChild(s);
+    }
+    function run(){
+      if(document.querySelector('.wos-toolnote')) return;
+      var wrap=document.querySelector('div.wrap'); if(!wrap) return;
+      var base=(window.WOS_BASE||'');
+      var html = EN
+        ? '<div class="wos-toolnote"><h3>About these results (please read)</h3>'
+          +'<p>This tool\'s output is an <b>estimate</b> based on public specs and community/our own verification — not a reproduction of the game\'s internal formulas. Absolute values contain error; use the calibration/measurement features to fit them to your own account. Results may change with game updates.</p>'
+          +'<p>Verification environment: Server 1567 (Whiteout Survival) · Last updated: 2026-07-24 · '
+          +'How our numbers are checked: <a href="'+base+'/about.html">About</a> · Change history: <a href="'+base+'/changelog.html">Changelog</a></p></div>'
+        : '<div class="wos-toolnote"><h3>計算結果についての注意（必ずお読みください）</h3>'
+          +'<p>このツールの計算結果は、公開仕様とコミュニティ／当サイトの検証にもとづく<b>推定値</b>であり、ゲーム内部の計算式をそのまま再現したものではありません。絶対値には誤差が含まれます。実測キャリブレーション機能で自分の環境に合わせてご利用ください。ゲームのアップデートにより結果が変わることがあります。</p>'
+          +'<p>検証環境：1567サーバー ／ 最終更新：2026-07-24 ／ '
+          +'数値の検証方法：<a href="'+base+'/about.html">運営者情報</a> ／ 変更の記録：<a href="'+base+'/changelog.html">更新履歴</a></p></div>';
+      injectCss();
+      var el=document.createElement('div'); el.innerHTML=html;
+      wrap.appendChild(el.firstChild);
+    }
+    if(document.readyState!=='loading') setTimeout(run,0); else document.addEventListener('DOMContentLoaded',function(){setTimeout(run,0);});
   })();
 })();

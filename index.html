@@ -17,13 +17,12 @@
 <title id="pgtitle">ホワサバ熊狩り攻略 計算ツール&データ解析 | ホワサバ ツールラボ</title>
 <meta name="description" id="pgdesc" content="ホワイトアウト・サバイバルの熊狩り(Bear Hunt)攻略。ダメージシミュレーターを中心に、左英雄チェッカー・兵士比率比較・指揮官タイプ診断など遊べる無料ツールと11本の攻略記事。">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://docs.google.com; object-src 'none'; base-uri 'none'">
-<link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/"><link rel="alternate" hreflang="en" href="https://whitesim-lab.com/?lang=en">
-<link rel="stylesheet" href="assets/site.css?v=93">
-<script>(function(){try{var l=new URLSearchParams(location.search).get("lang")||localStorage.getItem("wos_lang")||"ja";if(l!=="en")l="ja";document.documentElement.setAttribute("data-wos-lang",l);}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
-<link rel="icon" type="image/svg+xml" href="favicon.svg?v=85">
-<link rel="icon" type="image/png" href="favicon.png?v=85">
-<link rel="shortcut icon" href="favicon.ico?v=85">
-<link rel="apple-touch-icon" href="favicon.png?v=85">
+<link rel="stylesheet" href="/assets/site.css?v=93">
+<script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg?v=85">
+<link rel="icon" type="image/png" href="/favicon.png?v=85">
+<link rel="shortcut icon" href="/favicon.ico?v=85">
+<link rel="apple-touch-icon" href="/favicon.png?v=85">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ホワサバ ツールラボ">
 <meta property="og:title" content="ホワサバ熊狩り攻略 計算ツール&データ解析 | ホワサバ ツールラボ">
@@ -36,6 +35,7 @@
 {"@context":"https://schema.org","@type":"WebSite","name":"ホワサバ ツールラボ","alternateName":"Whiteout Tools Lab","url":"https://whitesim-lab.com/","description":"ホワイトアウト・サバイバルの熊狩り(Bear Hunt)攻略ツールと記事を提供する非公式ファンサイト。"}
 </script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4593324513914979" crossorigin="anonymous"></script>
+<link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/"><link rel="alternate" hreflang="en" href="https://whitesim-lab.com/en/"><link rel="alternate" hreflang="x-default" href="https://whitesim-lab.com/">
 <link rel="canonical" href="https://whitesim-lab.com/">
 <script type="application/ld+json">
 {
@@ -239,7 +239,7 @@
 <div id="about-sec"></div>
 </div>
 <div id="foot"></div>
-<script src="assets/config.js?v=93"></script><script src="assets/toolkit.js?v=93"></script>
+<script src="/assets/config.js?v=93"></script><script src="/assets/toolkit.js?v=93"></script>
 <script>
 var PLAY = [
   ["tools/frost-dragon/index.html", "霜竜イベント 配置計算", "Frost Dragon Placement", "参加同盟をどの入れ物に入れるか自動計算", "Auto-assign alliances to clear the border", "❄", "tt-c3", "新", "New"],
@@ -287,12 +287,12 @@ var READ = [{ "ico": "🔰", "tj": "はじめての方へ", "te": "Getting Start
   var feats = EN ? ['62 heroes', 'Upgrade ranking', 'Calibration', 'Damage range'] : ['全62英雄', '強化ランキング', '実測補正', 'ダメージ幅'];
   document.getElementById('hfFeats').innerHTML = feats.map(function(f) { return '<span class="hf-feat">✓ ' + f + '</span>'; }).join('');
   document.getElementById('hfCta').innerHTML = (EN ? 'Open the Simulator' : 'シミュレーターを使う') + ' →';
-  if (EN) document.getElementById('flagLink').href = 'tools/bear-hunt/index.html?lang=en';
+  if (EN) document.getElementById('flagLink').href = 'tools/bear-hunt/index.html';
 
   // 華やかツール
   document.getElementById('playT').textContent = EN ? 'More tools' : 'その他のツール';
   document.getElementById('playGrid').innerHTML = PLAY.map(function(p) {
-    var href = p[0] + (EN ? '?lang=en' : '');
+    var href = p[0] + (EN ? '' : '');
     var name = EN ? p[2] : p[1],
       desc = EN ? p[4] : p[3],
       badge = EN ? p[8] : p[7];
@@ -316,7 +316,7 @@ var READ = [{ "ico": "🔰", "tj": "はじめての方へ", "te": "Getting Start
     ['サーバー分割', '同盟エリア', '都市配置', '画像/X共有'];
   document.getElementById('kcFeats').innerHTML = kcFeats.map(function(f) { return '<span class="hf-feat">✓ ' + f + '</span>'; }).join('');
   document.getElementById('kcCta').innerHTML = (EN ? 'Open the Planner' : 'ツールを使う') + ' →';
-  if (EN) document.getElementById('kcLink').href = 'tools/king-castle/index.html?lang=en';
+  if (EN) document.getElementById('kcLink').href = 'tools/king-castle/index.html';
 
   // 兵器工場戦ツール
   document.getElementById('fbBadge').textContent = EN ? '◆ EVENT TOOL' : '◆ イベントツール';
@@ -330,14 +330,14 @@ var READ = [{ "ico": "🔰", "tj": "はじめての方へ", "te": "Getting Start
     ['作戦プランニング', '模擬戦', 'ポイント試算', '共有'];
   document.getElementById('fbFeats').innerHTML = fbFeats.map(function(f) { return '<span class="hf-feat">✓ ' + f + '</span>'; }).join('');
   document.getElementById('fbCta').innerHTML = (EN ? 'Open the Simulator' : 'ツールを使う') + ' →';
-  if (EN) document.getElementById('fbLink').href = 'tools/foundry-battle/index.html?lang=en';
+  if (EN) document.getElementById('fbLink').href = 'tools/foundry-battle/index.html';
 
   // 読み物アコーディオン
   document.getElementById('readT').textContent = EN ? 'Reading material' : 'じっくり読む攻略記事';
   document.getElementById('readNote').textContent = EN ? 'Optional deep-dives — open a category when you have time.' : '時間のあるときにどうぞ。気になるカテゴリだけ開けます。';
   document.getElementById('readCats').innerHTML = READ.map(function(c) {
     var items = c.items.map(function(it) {
-      var href = it[0] + (EN ? '?lang=en' : '');
+      var href = it[0] + (EN ? '' : '');
       var title = EN ? it[2] : it[1],
         badge = EN ? it[4] : it[3];
       return '<a class="cat-item" href="' + href + '"><div class="ci-title">' + title +
@@ -353,7 +353,7 @@ var READ = [{ "ico": "🔰", "tj": "はじめての方へ", "te": "Getting Start
   });
 
   document.getElementById('about-sec').innerHTML = EN ?
-    '<h2>About this site</h2><p>Our tools run on an estimation model from public specs and community verification. Absolute values have error, but the calibration feature fits them to your account. See <a href="about.html?lang=en">About</a> and <a href="terms.html?lang=en">Terms</a>.</p>' :
+    '<h2>About this site</h2><p>Our tools run on an estimation model from public specs and community verification. Absolute values have error, but the calibration feature fits them to your account. See <a href="about.html">About</a> and <a href="terms.html">Terms</a>.</p>' :
     '<h2>このサイトについて</h2><p>当サイトのツールは、公開仕様とコミュニティ検証に基づく推定モデルで動作します。絶対値には誤差がありますが、実測キャリブレーションで自分の環境に合わせられます。詳しくは<a href="about.html">運営者情報</a>と<a href="terms.html">利用規約</a>を。</p>';
   document.getElementById('nav').innerHTML = WOS_NAV(0);
   document.getElementById('foot').innerHTML = WOS_FOOT(0);

@@ -19,16 +19,14 @@
 <title id="pgtitle">お問い合わせ | ホワサバ ツールラボ</title>
 <meta name="description" id="pgdesc" content="ホワサバ ツールラボへのお問い合わせ方法。">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://docs.google.com; object-src 'none'; base-uri 'none'">
-<link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/contact.html">
-<link rel="alternate" hreflang="en" href="https://whitesim-lab.com/contact.html?lang=en">
-<link rel="stylesheet" href="assets/site.css?v=93">
-<script>(function(){try{var l=new URLSearchParams(location.search).get("lang")||localStorage.getItem("wos_lang")||"ja";if(l!=="en")l="ja";document.documentElement.setAttribute("data-wos-lang",l);}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
+<link rel="stylesheet" href="/assets/site.css?v=93">
+<script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
 
 <!-- ▼ AdSense承認後: コードスニペットを貼り付け ▼ -->
-<link rel="icon" type="image/svg+xml" href="favicon.svg?v=85">
-<link rel="icon" type="image/png" href="favicon.png?v=85">
-<link rel="shortcut icon" href="favicon.ico?v=85">
-<link rel="apple-touch-icon" href="favicon.png?v=85">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg?v=85">
+<link rel="icon" type="image/png" href="/favicon.png?v=85">
+<link rel="shortcut icon" href="/favicon.ico?v=85">
+<link rel="apple-touch-icon" href="/favicon.png?v=85">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ホワサバ ツールラボ">
 <meta property="og:title" content="お問い合わせ | ホワサバ ツールラボ">
@@ -37,6 +35,7 @@
 <meta property="og:image" content="https://whitesim-lab.com/favicon.png?v=85">
 <meta name="twitter:card" content="summary">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4593324513914979" crossorigin="anonymous"></script>
+<link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/contact.html"><link rel="alternate" hreflang="en" href="https://whitesim-lab.com/en/contact.html"><link rel="alternate" hreflang="x-default" href="https://whitesim-lab.com/contact.html">
 <link rel="canonical" href="https://whitesim-lab.com/contact.html">
 </head>
 <body>
@@ -45,7 +44,7 @@
 <div class="crumb" id="crumb"></div>
 <div id="bodyja" style="display:none"><h1>お問い合わせ</h1>
 <a class="owner-mini" href="about.html">
-  <img src="assets/owner.png" alt="じゃすみん" onerror="this.style.display='none'">
+  <img src="/assets/owner.png" alt="じゃすみん" onerror="this.style.display='none'">
   <div><div class="om-name">運営者: じゃすみん</div><div class="om-sub">1567サーバー 同盟bst 盟主 ・ プロフィールを見る →</div></div>
 </a>
 <p>当サイトへのご意見・ご要望・不具合報告・データ提供・権利に関するご連絡は、以下の方法で受け付けています。</p>
@@ -62,8 +61,8 @@
 <li>返信には数日いただく場合があります。あらかじめご了承ください。</li>
 </ul></div>
 <div id="bodyen" style="display:none"><h1>Contact</h1>
-<a class="owner-mini" href="about.html?lang=en">
-  <img src="assets/owner.png" alt="Jasmine" onerror="this.style.display='none'">
+<a class="owner-mini" href="about.html">
+  <img src="/assets/owner.png" alt="Jasmine" onerror="this.style.display='none'">
   <div><div class="om-name">Owner: Jasmine</div><div class="om-sub">Leader of alliance bst, Server 1567 ・ View profile →</div></div>
 </a>
 <p>For feedback, requests, bug reports, data contributions, or rights-related inquiries, please reach out via the following.</p>
@@ -82,15 +81,15 @@
 <div id="body"></div>
 </div>
 <div id="foot"></div>
-<script src="assets/config.js?v=93"></script>
-<script src="assets/toolkit.js?v=93"></script>
+<script src="/assets/config.js?v=93"></script>
+<script src="/assets/toolkit.js?v=93"></script>
 <script>
 (function(){
   var EN = (window.WOS_LANG==='en');
   document.getElementById('htmlroot').lang = EN?'en':'ja';
   document.getElementById('pgtitle').textContent = EN?'Contact | Whiteout Tools Lab':'お問い合わせ | ホワサバ ツールラボ';
   document.getElementById('pgdesc').content = EN?'How to contact Whiteout Tools Lab.':'ホワサバ ツールラボへのお問い合わせ方法。';
-  document.getElementById('crumb').innerHTML = EN?'<a href="index.html?lang=en">Home</a> &gt; Contact':'<a href="index.html">ホーム</a> &gt; お問い合わせ';
+  document.getElementById('crumb').innerHTML = EN?'<a href="index.html">Home</a> &gt; Contact':'<a href="index.html">ホーム</a> &gt; お問い合わせ';
   document.getElementById('body').innerHTML = document.getElementById(EN?'bodyen':'bodyja').innerHTML;
   document.getElementById('nav').innerHTML = WOS_NAV(0);
   document.getElementById('foot').innerHTML = WOS_FOOT(0);

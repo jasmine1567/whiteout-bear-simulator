@@ -10,20 +10,20 @@ window.SITE = {
   form: "https://docs.google.com/forms/d/e/1FAIpQLSfgqgKKPsBBryezhwaJPBCPCqVBcZZnV48lk-xHru0bTspeKg/viewform",
   hashtags: "ホワサバ,ホワイトアウトサバイバル"
 };
-/* ===== 言語管理(?lang=en または localStorage で切替) ===== */
-window.WOS_LANG = (function(){
-  try{
-    var q=new URLSearchParams(location.search).get('lang');
-    if(q==='en'||q==='ja'){ localStorage.setItem('wos_lang',q); return q; }
-    var s=localStorage.getItem('wos_lang'); if(s) return s;
-  }catch(e){}
-  // 既定はサイトの正規言語=日本語。英語は ?lang=en か言語トグルで明示選択した時のみ。
-  // (英訳が全ページ完了するまで、クローラ/初見訪問者には canonical と一致する日本語を表示する)
-  return 'ja';
-})();
+/* ===== 言語管理(URLパスで確定: /en/ 配下=英語、それ以外=日本語) =====
+   各言語は独立したURL(日本語=/ , 英語=/en/)で配信する。
+   言語はパスだけで決まり、localStorage/クエリには依存しない(canonical と常に一致)。 */
+window.WOS_BASE = (/^\/en(\/|$)/.test(location.pathname)) ? '/en' : '';
+window.WOS_LANG = (window.WOS_BASE === '/en') ? 'en' : 'ja';
+/* 言語トグル: 現在ページの対応言語URLへ遷移する */
 window.WOS_setLang = function(l){
-  try{ localStorage.setItem('wos_lang', l); }catch(e){}
-  var u=new URL(location.href); u.searchParams.set('lang', l); location.href=u.toString();
+  var p = location.pathname || '/';
+  var isEn = /^\/en(\/|$)/.test(p);
+  var target;
+  if(l === 'en'){ target = isEn ? p : ('/en' + (p === '/' ? '/' : p)); }
+  else { target = isEn ? (p.replace(/^\/en/, '') || '/') : p; }
+  if(!target) target = '/';
+  location.href = target + location.hash;
 };
 /* t(ja, en): 現在の言語の文字列を返す簡易ヘルパー */
 window.t = function(ja, en){ return window.WOS_LANG==='en' ? (en!==undefined?en:ja) : ja; };

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en" id="htmlroot"><head><meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Y8YMCVQDMG"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  // Consent Mode v2: 既定は許可、EEA/英国/スイスのみ同意取得まで拒否(CMPがupdateで上書き)
+  gtag('consent','default',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'});
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',region:['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH'],wait_for_update:500});
+  gtag('js', new Date());
+  gtag('config', 'G-Y8YMCVQDMG');
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pgtitle">ホワサバ熊狩り攻略 計算ツール&データ解析 | ホワサバ ツールラボ</title>
+<meta name="description" id="pgdesc" content="ホワイトアウト・サバイバルの熊狩り(Bear Hunt)攻略。ダメージシミュレーターを中心に、左英雄チェッカー・兵士比率比較・指揮官タイプ診断など遊べる無料ツールと11本の攻略記事。">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://docs.google.com; object-src 'none'; base-uri 'none'">
+<link rel="stylesheet" href="/assets/site.css?v=93">
+<script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg?v=85">
+<link rel="icon" type="image/png" href="/favicon.png?v=85">
+<link rel="shortcut icon" href="/favicon.ico?v=85">
+<link rel="apple-touch-icon" href="/favicon.png?v=85">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ホワサバ ツールラボ">
+<meta property="og:title" content="ホワサバ熊狩り攻略 計算ツール&データ解析 | ホワサバ ツールラボ">
+<meta property="og:description" content="ホワイトアウト・サバイバルの熊狩り(Bear Hunt)攻略。ダメージシミュレーターを中心に、左英雄チェッカー・兵士比率比較・指揮官タイプ診断など遊べる無料ツールと11本の攻略記事。">
+<meta property="og:url" content="https://whitesim-lab.com/en/">
+<meta property="og:image" content="https://whitesim-lab.com/assets/og-default.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://whitesim-lab.com/assets/og-default.png">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","name":"ホワサバ ツールラボ","alternateName":"Whiteout Tools Lab","url":"https://whitesim-lab.com/","description":"ホワイトアウト・サバイバルの熊狩り(Bear Hunt)攻略ツールと記事を提供する非公式ファンサイト。"}
+</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4593324513914979" crossorigin="anonymous"></script>
+<link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/"><link rel="alternate" hreflang="en" href="https://whitesim-lab.com/en/"><link rel="alternate" hreflang="x-default" href="https://whitesim-lab.com/">
+<link rel="canonical" href="https://whitesim-lab.com/en/">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://whitesim-lab.com/#website",
+      "url": "https://whitesim-lab.com/",
+      "name": "ホワサバ ツールラボ",
+      "alternateName": "Whiteout Tools Lab",
+      "description": "ホワイトアウトサバイバル(Whiteout Survival)の熊狩り・対人戦を数字で攻略する無料ツールと攻略ガイド。",
+      "inLanguage": "ja",
+      "publisher": { "@id": "https://whitesim-lab.com/#person" }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://whitesim-lab.com/#person",
+      "name": "じゃすみん",
+      "description": "ホワイトアウトサバイバル プレイヤー(1567サーバー / 同盟bst 盟主)。当サイトの運営・検証・執筆を担当。",
+      "url": "https://whitesim-lab.com/about.html",
+      "sameAs": ["https://x.com/tegetege_m"]
+    }
+  ]
+}
+</script>
+</head><body>
+<div id="nav"></div>
+<div class="wrap wide">
+<h1 id="hero-h1" style="font-size:22px;margin-bottom:4px">ホワイトアウト・サバイバル 熊狩り攻略</h1>
+<p class="lead" id="hero-lead" style="margin-bottom:8px">熊狩り(Bear Hunt)を攻略する無料ツール&amp;攻略集。数字で納得して、楽しく強くなろう。</p>
+
+<!-- メインツール2本(並列) -->
+<div class="feature-2">
+<a class="hero-flag" id="flagLink" href="tools/bear-hunt/index.html">
+  <div class="hf-in">
+    <div class="hf-text">
+      <span class="hf-badge" id="hfBadge"></span>
+      <div class="hf-title" id="hfTitle"></div>
+      <div class="hf-desc" id="hfDesc"></div>
+      <div class="hf-feats" id="hfFeats"></div>
+      <span class="hf-cta" id="hfCta"></span>
+    </div>
+    <div class="hf-visual">
+      <div class="hf-bear">🐻</div>
+      <div class="hf-minibars">
+        <div class="hf-mb" style="width:90%;animation-delay:0s"></div>
+        <div class="hf-mb" style="width:70%;animation-delay:.3s"></div>
+        <div class="hf-mb" style="width:80%;animation-delay:.6s"></div>
+      </div>
+    </div>
+  </div>
+</a>
+<a class="hero-flag kc-flag" id="kcLink" href="tools/king-castle/index.html">
+  <div class="hf-in">
+    <div class="hf-text">
+      <span class="hf-badge" id="kcBadge"></span>
+      <div class="hf-title" id="kcTitle"></div>
+      <div class="hf-desc" id="kcDesc"></div>
+      <div class="hf-feats" id="kcFeats"></div>
+      <span class="hf-cta" id="kcCta"></span>
+    </div>
+    <div class="hf-visual">
+      <div class="kc-diamond" aria-hidden="true">
+        <span class="kc-d kc-d-n"></span><span class="kc-d kc-d-e"></span>
+        <span class="kc-d kc-d-s"></span><span class="kc-d kc-d-w"></span>
+        <span class="kc-d kc-d-c"></span>
+      </div>
+    </div>
+  </div>
+</a>
+<a class="hero-flag fb-flag" id="fbLink" href="tools/foundry-battle/index.html">
+  <div class="hf-in">
+    <div class="hf-text">
+      <span class="hf-badge" id="fbBadge"></span>
+      <div class="hf-title" id="fbTitle"></div>
+      <div class="hf-desc" id="fbDesc"></div>
+      <div class="hf-feats" id="fbFeats"></div>
+      <span class="hf-cta" id="fbCta"></span>
+    </div>
+    <div class="hf-visual">
+      <div class="hf-bear" aria-hidden="true">🏭</div>
+      <div class="hf-minibars">
+        <div class="hf-mb" style="width:85%;animation-delay:0s"></div>
+        <div class="hf-mb" style="width:65%;animation-delay:.3s"></div>
+        <div class="hf-mb" style="width:75%;animation-delay:.6s"></div>
+      </div>
+    </div>
+  </div>
+</a>
+</div>
+<style>
+  /* 主要3ツール: 3枚目(兵器工場)は横長で全幅に。ツール本体と同じアイスブルー系で差別化 */
+  .feature-2 .fb-flag{grid-column:1/-1;
+    background:linear-gradient(135deg,#e7f4fa 0%,#f2fafd 100%);
+    border:1px solid #cfe4f0;box-shadow:0 10px 30px rgba(60,140,190,.12)}
+  .feature-2 .fb-flag:hover{border-color:#1696c2}
+  .feature-2 .fb-flag .hf-mb{background:linear-gradient(90deg,#38b7dd,#1696c2)}
+</style>
+
+<div class="ad-slot"></div>
+
+<!-- その他のツール -->
+<div class="sec-head" id="tools"><span class="sh-ico">🎮</span><span class="sh-t" id="playT"></span><span class="sh-line"></span></div>
+<div class="tool-grid" id="playGrid"></div>
+
+
+
+<!-- 読み物(アコーディオン・閉) -->
+<div class="read-sec">
+<div class="sec-head"><span class="sh-ico">📖</span><span class="sh-t" id="readT"></span><span class="sh-line"></span></div>
+<p style="font-size:12.5px;color:var(--muted);margin:-6px 0 12px" id="readNote"></p>
+<div id="readCats"></div>
+</div>
+
+<section class="tool-article" id="site-intro">
+<div class="i18n-ja">
+  <h2>「ホワサバ ツールラボ」について</h2>
+  <p class="ta-lead">当サイトは、スマホ向けストラテジーゲーム<strong>『ホワイトアウト・サバイバル（Whiteout Survival）』</strong>を遊ぶ日本語プレイヤーのための、<strong>無料の攻略ツール＆解説サイト</strong>です。とくに同盟イベント「<strong>熊狩り（Bear Hunt）</strong>」や対人戦（兵器工場争奪戦・王城戦）を、感覚ではなく<strong>数字で考えて攻略する</strong>ことをテーマにしています。運営は実際にプレイ中のプレイヤー（じゃすみん）が行っており、ゲーム内での検証と公開情報をもとに、すべて手作業で作成・更新しています。</p>
+
+  <h2>ホワイトアウトサバイバルの「熊狩り」とは</h2>
+  <p>熊狩りは、同盟のメンバーが協力して巨大な熊に「集結」し、与えたダメージの合計を競う定期イベントです。最終的なダメージは、<strong>どの英雄を集結主（左）に置くか・兵種の比率・専用装備・天賦</strong>などの組み合わせで大きく変わります。「強い英雄を入れたのに伸びない」「同じ戦力なのに人によって差が出る」といったことが起きやすく、<strong>正しい知識があるかどうかで結果が何倍も変わる</strong>のが熊狩りの面白さであり難しさです。当サイトのツールは、この「変わりやすさ」を試算・可視化して、ムダな課金や強化を避けながら効率よく伸ばすことを目的にしています。</p>
+
+  <h2>このサイトでできること（ツール一覧）</h2>
+  <p>すべて無料・登録不要で、スマホからも使えます。目的に合わせてお選びください。</p>
+  <ul>
+    <li><a href="tools/bear-hunt/index.html">熊狩ダメージ・シミュレーター</a> … 英雄・兵種・専用装備・天賦を設定し、集結1回のダメージを試算。編成A/Bの比較に。</li>
+    <li><a href="tools/hero-list/index.html">英雄一覧・データベース</a> … 全62英雄を世代・兵種・レアリティ・スキルで検索。お気に入り登録も。</li>
+    <li><a href="tools/left-hero/index.html">左英雄チェッカー</a> … 集結主（左英雄）が「乗りで効く」かを一発判定。第1遠征スキルの有効/無効を確認。</li>
+    <li><a href="tools/troop-ratio/index.html">兵士比率シミュレータ</a> … 10:30:60・10:10:80・1:1:8 などの比率を自分の兵数で横並び比較。</li>
+    <li><a href="tools/damage-doctor/index.html">ダメージが伸びない原因診断</a> … 質問に答えるだけで、ダメージが低い原因と対処を切り分け。</li>
+    <li><a href="tools/commander-type/index.html">指揮官タイプ診断</a> … 6問であなたの熊狩りスタイルを6タイプに診断。Xでシェア可能。</li>
+    <li><a href="tools/foundry-battle/index.html">兵器工場争奪戦 フィールドツール</a> … 作戦計画＋敵を加えた模擬戦で、占領ポイントの推移を試算・共有。</li>
+    <li><a href="tools/frost-dragon/index.html">霜竜イベント 同盟配置計算ツール</a> … 参加希望同盟をどの「入れ物」に入れれば全部ボーダーを超えられるか自動計算。分割指示も総力ベースで出力。</li>
+    <li><a href="tools/king-castle/index.html">王城戦エリア配置管理ツール</a> … SvSのサーバー分割・同盟エリア・都市配置を地図で計画し共有。</li>
+  </ul>
+
+  <h2>じっくり読みたい人へ（攻略ガイド）</h2>
+  <p>ツールの背景にある考え方を、文章で詳しく解説した記事も用意しています。</p>
+  <ul>
+    <li><a href="guides/bear-hunt-guide.html">熊狩行動のダメージの仕組みを徹底解説</a></li>
+    <li><a href="guides/beginner-faq.html">熊狩り初心者FAQ：よくある疑問に全部答えます</a></li>
+    <li><a href="guides/troop-ratio.html">熊狩りの兵士比率は何が正解？主要比率を徹底比較</a></li>
+    <li><a href="guides/left-hero.html">熊狩りの左英雄とは？乗りで使うべき英雄と4枠ルール</a></li>
+    <li><a href="guides/leader-formation.html">集結主におすすめの編成と英雄の選び方</a></li>
+    <li><a href="guides/damage-not-growing.html">ダメージが伸びない原因まとめと対処</a></li>
+    <li><a href="guides/common-myths.html">熊狩りのよくある勘違い7選</a></li>
+    <li><a href="guides/cyril-talent.html">シリルは熊狩りでどこまで強い？天賦を数字で検証</a></li>
+    <li><a href="guides/f2p-damage.html">無課金で熊狩りダメージを伸ばす方法</a></li>
+    <li><a href="guides/light-spender.html">微課金で熊狩りを伸ばす投資先ランキング</a></li>
+    <li><a href="guides/how-to-use.html">熊狩シミュレーターの使い方</a></li>
+  </ul>
+
+  <h2>運営者・サイトの方針</h2>
+  <p>運営者は <strong>じゃすみん（1567サーバー / 同盟「bst」盟主）</strong>です。広告や提携リンクを含む場合がありますが、内容は実プレイでの検証を優先し、読者が「数字で納得して」遊べることを第一に作っています。ご意見・誤りのご指摘は <a href="contact.html">お問い合わせ</a> または X（<a href="https://x.com/tegetege_m" target="_blank" rel="noopener">@tegetege_m</a>）までお気軽にどうぞ。<a href="about.html">運営者情報</a>・<a href="privacy.html">プライバシーポリシー</a>・<a href="terms.html">利用規約</a> もあわせてご確認ください。</p>
+  <div class="ta-meta">
+    ※ 当サイトはファンによる非公式の攻略サイトであり、Century Games および Whiteout Survival 運営とは提携・公認関係にありません。数値・判定は公開情報と実測に基づく推定で、内部仕様の完全な再現ではなく、アップデートで変わることがあります。Whiteout Survival は Century Games の商標です。最終更新：2026年6月。
+  </div>
+</div>
+<div class="i18n-en">
+  <h2>About "Whiteout Tools Lab"</h2>
+  <p class="ta-lead">This site is a <strong>free set of strategy tools and guides</strong> for Japanese-speaking — and now English-speaking — players of the mobile strategy game <strong>Whiteout Survival</strong>. Our theme is beating alliance events like <strong>Bear Hunt</strong> and PvP (Foundry Battle, Castle Battle) <strong>by the numbers</strong> rather than by feel. Everything is made and maintained by hand by an active player (Jasmine), based on in-game testing and public information.</p>
+  <h2>What is Bear Hunt in Whiteout Survival?</h2>
+  <p>Bear Hunt is a recurring event where alliance members rally a giant bear together and compete on total damage. Final damage shifts hugely with <strong>who you set as rally leader (left), your troop ratio, exclusive gear and talents</strong>. It's easy to see "I added a strong hero but it didn't help" or big gaps between players with similar power — which is exactly why <strong>the right knowledge can multiply your result</strong>. Our tools estimate and visualize that variability so you can grow efficiently and avoid wasted spending or upgrades.</p>
+  <h2>What you can do here (tools)</h2>
+  <p>All free, no sign-up, and mobile-friendly. Pick what fits your goal.</p>
+  <ul>
+    <li><a href="tools/bear-hunt/index.html">Bear Hunt Damage Simulator</a> … set heroes, troops, gear and talents to estimate one rally's damage. Great for A/B comparison.</li>
+    <li><a href="tools/hero-list/index.html">Hero Database</a> … search all 62 heroes by generation, class, rarity and skills. Favorites included.</li>
+    <li><a href="tools/left-hero/index.html">Left-Hero Checker</a> … instantly judge whether your left hero is effective when joining a rally.</li>
+    <li><a href="tools/troop-ratio/index.html">Troop Ratio Simulator</a> … compare 10:30:60 / 10:10:80 / 1:1:8 and more with your own counts.</li>
+    <li><a href="tools/damage-doctor/index.html">Damage Doctor</a> … answer a few questions to find why your damage is low.</li>
+    <li><a href="tools/commander-type/index.html">Commander Type Quiz</a> … 6 questions sort your Bear Hunt style into 6 types. Shareable on X.</li>
+    <li><a href="tools/foundry-battle/index.html">Foundry Battle field tool</a> … plan operations + run a mock battle to estimate capture points, and share.</li>
+    <li><a href="tools/frost-dragon/index.html">Frost Dragon Placement Calculator</a> … auto-assigns applicant alliances to host alliances so every host clears the entry border. Split orders by power included.</li>
+    <li><a href="tools/king-castle/index.html">Castle Battle Area Planner</a> … plan SvS server splits, alliance areas and city placement on a map and share.</li>
+  </ul>
+  <h2>For deeper reading (guides)</h2>
+  <p>We also have written guides explaining the thinking behind the tools.</p>
+  <ul>
+    <li><a href="guides/bear-hunt-guide.html">How Bear Hunt damage works (full guide)</a></li>
+    <li><a href="guides/beginner-faq.html">Bear Hunt beginner FAQ</a></li>
+    <li><a href="guides/troop-ratio.html">What's the right troop ratio? Major ratios compared</a></li>
+    <li><a href="guides/left-hero.html">What is the left hero? Heroes to use and the 4-slot rule</a></li>
+    <li><a href="guides/leader-formation.html">Rally leader: recommended formations and hero choice</a></li>
+    <li><a href="guides/damage-not-growing.html">Why your damage isn't growing, and fixes</a></li>
+    <li><a href="guides/common-myths.html">7 common Bear Hunt myths</a></li>
+    <li><a href="guides/cyril-talent.html">How strong is Cyril in Bear Hunt? Talent tested in numbers</a></li>
+    <li><a href="guides/f2p-damage.html">How to grow Bear Hunt damage as F2P</a></li>
+    <li><a href="guides/light-spender.html">Light-spender investment ranking for Bear Hunt</a></li>
+    <li><a href="guides/how-to-use.html">How to use the simulator</a></li>
+  </ul>
+  <h2>Operator &amp; policy</h2>
+  <p>This site is run by <strong>Jasmine (Server 1567 / leader of alliance "bst")</strong>. It may contain ads and affiliate links, but content prioritizes in-game testing so you can play "by the numbers." For feedback or corrections, reach us via <a href="contact.html">Contact</a> or X (<a href="https://x.com/tegetege_m" target="_blank" rel="noopener">@tegetege_m</a>). See also <a href="about.html">About</a>, <a href="privacy.html">Privacy Policy</a> and <a href="terms.html">Terms</a>.</p>
+  <div class="ta-meta">
+    * This is an unofficial, fan-made strategy site, not affiliated with or endorsed by Century Games or the Whiteout Survival team. Figures and judgments are estimates based on public information and measurement, not a reproduction of internal specs, and may change with updates. Whiteout Survival is a trademark of Century Games. Last updated: June 2026.
+  </div>
+</div>
+</section>
+
+<div id="about-sec"></div>
+</div>
+<div id="foot"></div>
+<script src="/assets/config.js?v=93"></script><script src="/assets/toolkit.js?v=93"></script>
+<script>
+var PLAY = [
+  ["tools/frost-dragon/index.html", "霜竜イベント 配置計算", "Frost Dragon Placement", "参加同盟をどの入れ物に入れるか自動計算", "Auto-assign alliances to clear the border", "❄", "tt-c3", "新", "New"],
+  ["tools/hero-list/index.html", "英雄一覧・データベース", "Hero Database", "全62英雄を世代・兵種・スキルで検索", "Search all 62 heroes", "📖", "tt-c1", "新", "New"],
+  ["tools/left-hero/index.html", "左英雄チェッカー", "Left-Hero Checker", "乗りで効く英雄を一発判定", "Instantly check your left hero", "🔍", "tt-c3", null, null],
+  ["tools/troop-ratio/index.html", "兵士比率シミュレータ", "Troop Ratio Simulator", "比率を変えるとバーが動く!", "Bars move as you tweak ratios!", "📊", "tt-c4", null, null],
+  ["tools/damage-doctor/index.html", "ダメージ原因診断", "Damage Doctor", "低い原因を質問で特定", "Find why your damage is low", "🩺", "tt-c5", null, null],
+  ["tools/commander-type/index.html", "指揮官タイプ診断", "Commander Type Quiz", "あなたは何タイプ?Xでシェア", "Your type? Share on X", "🎉", "tt-c2", "人気", "Popular"]
+];
+var READ = [{ "ico": "🔰", "tj": "はじめての方へ", "te": "Getting Started", "items": [
+    ["guides/beginner-faq.html", "熊狩り初心者FAQ", "Bear Hunt beginner FAQ", "新", "New"],
+    ["guides/how-to-use.html", "シミュレーターの使い方", "How to use the simulator", null, null],
+    ["guides/bear-hunt-guide.html", "ダメージの仕組みを徹底解説", "How damage works (full guide)", null, null]
+  ] }, { "ico": "⚔️", "tj": "編成・戦術", "te": "Formation & Tactics", "items": [
+    ["guides/left-hero.html", "左英雄とは?4枠ルール完全解説", "What is the left hero? 4-slot rule", null, null],
+    ["guides/troop-ratio.html", "兵士比率は何が正解?", "What troop ratio is best?", null, null],
+    ["guides/leader-formation.html", "集結主におすすめの編成", "Best rally-leader formations", null, null],
+    ["guides/common-myths.html", "よくある勘違い7選", "7 common myths", "新", "New"]
+  ] }, { "ico": "💰", "tj": "育成・課金", "te": "Progression & Spending", "items": [
+    ["guides/f2p-damage.html", "無課金でダメージを伸ばす方法", "Grow damage free-to-play", "新", "New"],
+    ["guides/light-spender.html", "微課金の投資先ランキング", "Light-spender investment ranking", "新", "New"],
+    ["guides/cyril-talent.html", "シリルはどこまで強い?天賦検証", "How strong is Cyrille? Talent verified", "新", "New"],
+    ["guides/damage-not-growing.html", "ダメージが伸びない原因まとめ", "Why damage isn't growing", null, null]
+  ] }];
+(function() {
+  var EN = (window.WOS_LANG === 'en');
+  document.getElementById('htmlroot').lang = EN ? 'en' : 'ja';
+  if (EN) {
+    document.getElementById('pgtitle').textContent = 'Whiteout Survival Bear Hunt Tools & Guides | Whiteout Tools Lab';
+    document.getElementById('pgdesc').content = 'Whiteout Survival Bear Hunt: a damage simulator plus left-hero checker, troop-ratio compare, a commander-type quiz, and 11 guides. Free.';
+  }
+  document.getElementById('hero-h1').innerHTML = EN ? 'Whiteout Survival — Bear Hunt' : 'ホワイトアウト・サバイバル 熊狩り攻略';
+  document.getElementById('hero-lead').textContent = EN ?
+    'Free tools and guides to crush the Bear Hunt event — decide by the numbers, and have fun doing it.' :
+    '熊狩り(Bear Hunt)を攻略する無料ツール&攻略集。数字で納得して、楽しく強くなろう。';
+
+  // 花形
+  document.getElementById('hfBadge').textContent = EN ? '★ FLAGSHIP TOOL' : '★ 看板ツール';
+  document.getElementById('hfTitle').innerHTML = EN ?
+    '🐻 Bear Hunt<br><span class="acc">Damage Simulator</span>' :
+    '🐻 熊狩ダメージ<br><span class="acc">シミュレーター</span>';
+  document.getElementById('hfDesc').textContent = EN ?
+    'Set your heroes, troops, gear and the Cyrille talent to estimate one rally\'s damage. 62 heroes, probability-skill ranges, and a ranked "what to upgrade next".' :
+    '英雄・兵士・専用装備・シリル天賦を設定して、集結1回のダメージを試算。全62英雄収録、確率スキルのダメージ幅、「次に強化すべき順」ランキングまで。';
+  var feats = EN ? ['62 heroes', 'Upgrade ranking', 'Calibration', 'Damage range'] : ['全62英雄', '強化ランキング', '実測補正', 'ダメージ幅'];
+  document.getElementById('hfFeats').innerHTML = feats.map(function(f) { return '<span class="hf-feat">✓ ' + f + '</span>'; }).join('');
+  document.getElementById('hfCta').innerHTML = (EN ? 'Open the Simulator' : 'シミュレーターを使う') + ' →';
+  if (EN) document.getElementById('flagLink').href = 'tools/bear-hunt/index.html';
+
+  // 華やかツール
+  document.getElementById('playT').textContent = EN ? 'More tools' : 'その他のツール';
+  document.getElementById('playGrid').innerHTML = PLAY.map(function(p) {
+    var href = p[0] + (EN ? '' : '');
+    var name = EN ? p[2] : p[1],
+      desc = EN ? p[4] : p[3],
+      badge = EN ? p[8] : p[7];
+    return '<a class="tool-tile ' + p[6] + '" href="' + href + '">' +
+      (badge ? '<span class="tt-badge">' + badge + '</span>' : '') +
+      '<span class="tt-ico">' + p[5] + '</span>' +
+      '<div class="tt-name">' + name + '</div>' +
+      '<div class="tt-desc">' + desc + '</div>' +
+      '<div class="tt-go">' + (EN ? 'TRY IT →' : 'あそぶ →') + '</div></a>';
+  }).join('');
+
+  // 王城戦ツール
+  document.getElementById('kcBadge').textContent = EN ? '◆ STRATEGY TOOL' : '◆ 戦略ツール';
+  document.getElementById('kcTitle').innerHTML = EN ?
+    '◆ Castle Battle<br><span class="acc">Area Planner</span>' :
+    '◆ 王城戦<br><span class="acc">エリア配置管理</span>';
+  document.getElementById('kcDesc').textContent = EN ?
+    'Plan your SvS server split, divide alliance areas by ratio, and place cities on the isometric castle map. Share as an image or on X.' :
+    '王城戦(SvS)のサーバー2分割、比率での同盟エリア分割、都市配置をひし形マップ上で計画。画像やXで共有できます。';
+  var kcFeats = EN ? ['Server split', 'Alliance areas', 'City placement', 'Image & X share'] :
+    ['サーバー分割', '同盟エリア', '都市配置', '画像/X共有'];
+  document.getElementById('kcFeats').innerHTML = kcFeats.map(function(f) { return '<span class="hf-feat">✓ ' + f + '</span>'; }).join('');
+  document.getElementById('kcCta').innerHTML = (EN ? 'Open the Planner' : 'ツールを使う') + ' →';
+  if (EN) document.getElementById('kcLink').href = 'tools/king-castle/index.html';
+
+  // 兵器工場戦ツール
+  document.getElementById('fbBadge').textContent = EN ? '◆ EVENT TOOL' : '◆ イベントツール';
+  document.getElementById('fbTitle').innerHTML = EN ?
+    '🏭 Foundry Battle<br><span class="acc">Field Simulator</span>' :
+    '🏭 兵器工場争奪戦<br><span class="acc">シミュレーター</span>';
+  document.getElementById('fbDesc').textContent = EN ?
+    'Plan operations on the foundry map and run a mock battle with enemies to estimate how capture points evolve. Share the plan with your alliance.' :
+    '兵器工場マップで作戦を計画し、敵を加えた模擬戦で占領ポイントの推移を試算。作戦はそのまま同盟に共有できます。';
+  var fbFeats = EN ? ['Op planner', 'Mock battle', 'Point simulation', 'Share'] :
+    ['作戦プランニング', '模擬戦', 'ポイント試算', '共有'];
+  document.getElementById('fbFeats').innerHTML = fbFeats.map(function(f) { return '<span class="hf-feat">✓ ' + f + '</span>'; }).join('');
+  document.getElementById('fbCta').innerHTML = (EN ? 'Open the Simulator' : 'ツールを使う') + ' →';
+  if (EN) document.getElementById('fbLink').href = 'tools/foundry-battle/index.html';
+
+  // 読み物アコーディオン
+  document.getElementById('readT').textContent = EN ? 'Reading material' : 'じっくり読む攻略記事';
+  document.getElementById('readNote').textContent = EN ? 'Optional deep-dives — open a category when you have time.' : '時間のあるときにどうぞ。気になるカテゴリだけ開けます。';
+  document.getElementById('readCats').innerHTML = READ.map(function(c) {
+    var items = c.items.map(function(it) {
+      var href = it[0] + (EN ? '' : '');
+      var title = EN ? it[2] : it[1],
+        badge = EN ? it[4] : it[3];
+      return '<a class="cat-item" href="' + href + '"><div class="ci-title">' + title +
+        (badge ? '<span class="ci-badge">' + badge + '</span>' : '') + '</div></a>';
+    }).join('');
+    return '<div class="cat"><div class="cat-head"><span class="cat-ico">' + c.ico + '</span>' +
+      '<div class="cat-meta"><div class="cat-title">' + (EN ? c.te : c.tj) + '</div></div>' +
+      '<span class="cat-arrow">▼</span></div>' +
+      '<div class="cat-body"><div class="cat-body-in">' + items + '</div></div></div>';
+  }).join('');
+  document.querySelectorAll('.cat-head').forEach(function(head) {
+    head.onclick = function() { head.parentNode.classList.toggle('open'); };
+  });
+
+  document.getElementById('about-sec').innerHTML = EN ?
+    '<h2>About this site</h2><p>Our tools run on an estimation model from public specs and community verification. Absolute values have error, but the calibration feature fits them to your account. See <a href="about.html">About</a> and <a href="terms.html">Terms</a>.</p>' :
+    '<h2>このサイトについて</h2><p>当サイトのツールは、公開仕様とコミュニティ検証に基づく推定モデルで動作します。絶対値には誤差がありますが、実測キャリブレーションで自分の環境に合わせられます。詳しくは<a href="about.html">運営者情報</a>と<a href="terms.html">利用規約</a>を。</p>';
+  document.getElementById('nav').innerHTML = WOS_NAV(0);
+  document.getElementById('foot').innerHTML = WOS_FOOT(0);
+})();
+</script></body></html>

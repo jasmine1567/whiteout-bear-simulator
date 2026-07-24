@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" id="htmlroot"><head><meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Y8YMCVQDMG"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  // Consent Mode v2: 既定は許可、EEA/英国/スイスのみ同意取得まで拒否(CMPがupdateで上書き)
+  gtag('consent','default',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'});
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',region:['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH'],wait_for_update:500});
+  gtag('js', new Date());
+  gtag('config', 'G-Y8YMCVQDMG');
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pgtitle">熊狩シミュレーターの使い方 | ホワサバ ツールラボ</title><meta name="description" id="pgdesc" content="熊狩ダメージ・シミュレーターの使い方を初心者向けに解説。ゲーム内のどの数値を入力するかをステップごとに説明。">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://docs.google.com; object-src 'none'; base-uri 'none'">
+<link rel="stylesheet" href="/assets/site.css?v=93">
+<script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script><link rel="icon" type="image/svg+xml" href="/favicon.svg?v=85">
+<link rel="icon" type="image/png" href="/favicon.png?v=85">
+<link rel="shortcut icon" href="/favicon.ico?v=85">
+<link rel="apple-touch-icon" href="/favicon.png?v=85">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ホワサバ ツールラボ">
+<meta property="og:title" content="熊狩シミュレーターの使い方 | ホワサバ ツールラボ">
+<meta property="og:description" content="熊狩ダメージ・シミュレーターの使い方を初心者向けに解説。ゲーム内のどの数値を入力するかをステップごとに説明。">
+<meta property="og:url" content="https://whitesim-lab.com/en/guides/how-to-use.html">
+<meta property="og:image" content="https://whitesim-lab.com/favicon.png?v=85">
+<meta name="twitter:card" content="summary">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4593324513914979" crossorigin="anonymous"></script>
+<link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/guides/how-to-use.html"><link rel="alternate" hreflang="en" href="https://whitesim-lab.com/en/guides/how-to-use.html"><link rel="alternate" hreflang="x-default" href="https://whitesim-lab.com/guides/how-to-use.html">
+<link rel="canonical" href="https://whitesim-lab.com/en/guides/how-to-use.html">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"熊狩シミュレーターの使い方","description":"熊狩ダメージ・シミュレーターの使い方を初心者向けに解説。ゲーム内のどの数値を入力するかをステップごとに説明。","image":"https://whitesim-lab.com/favicon.png?v=85","author":{"@type":"Organization","name":"ホワサバ ツールラボ"},"publisher":{"@type":"Organization","name":"ホワサバ ツールラボ","logo":{"@type":"ImageObject","url":"https://whitesim-lab.com/favicon.png?v=85"}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://whitesim-lab.com/guides/how-to-use.html"},"inLanguage":"ja"}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ホーム","item":"https://whitesim-lab.com/"},{"@type":"ListItem","position":2,"name":"攻略記事","item":"https://whitesim-lab.com/#read"},{"@type":"ListItem","position":3,"name":"熊狩シミュレーターの使い方","item":"https://whitesim-lab.com/guides/how-to-use.html"}]}</script>
+</head><body>
+<div id="nav"></div><div class="wrap"><div class="crumb" id="crumb"></div>
+<div id="updbox"></div>
+<div id="bodyja"><h1 id="art-h1">熊狩シミュレーターの<span class="acc">使い方</span></h1>
+<p class="lead">初めての方向けに、ゲーム内のどの画面を見て何を入力すればよいかを順番に解説します。所要時間は約1分です。</p>
+<ol class="steps">
+<li><b>STEP1: あなたのステータスを登録する。</b>ゲーム画面左上の領主アイコンをタップし、プロフィール内の「ステータス」を開きます。「部隊攻撃力」「部隊殺傷力」と、「盾兵攻撃力」「盾兵殺傷力」など兵種ごとの%が表示されているので、その数値をそのまま入力してください。研究・領主装備・チャーム・ペットなどの合算値が表示されているため、個別に足し算する必要はありません。兵種Tierは、いま熊狩に出している兵士の段階(T10、FC1など)を選びます。</li>
+<li><b>STEP2: 集結主の英雄を選ぶ。</b>まず「現在の世代」をサーバーの最新世代に合わせます(これより後の世代の英雄は選択肢に出ません)。盾・槍・弓の3枠をタップして、集結を立てる人が使う英雄を選びます。カード右上でスキルレベル(1〜5)、専用装備を持つ英雄は専用装備レベル(0〜10)を設定できます。枠の色はレアリティ(青=R、紫=SR、金=SSR)を表します。</li>
+<li><b>STEP3: 参加者の英雄を4人選ぶ。</b>集結に乗るメンバーのうち、バフ枠に採用される4人の「左端英雄」を選びます。与ダメ系・攻撃系・殺傷系・確率系など、スキルの種類をバラけさせると掛け算で伸びます。第1スキルが熊に効かない英雄は「熊スキルなし」と表示されます。</li>
+<li><b>STEP4: 兵士の数と比率、シリル天賦を設定する。</b>兵士の合計数を入力し、比率プリセット(10:30:60など)をタップすると自動で振り分けられます。自分の定番比率は「＋この比率を登録」で保存できます。シリルを育てている方は天賦「狩人の心得」のレベルを、罠の強化が最大でない同盟は罠強化ボーナスの%を設定してください。</li>
+</ol>
+<h2>結果の見方</h2>
+<ul>
+<li><b>予測ダメージポイント</b> — 1ラリーあたりの期待値です。</li>
+<li><b>ダメージ幅</b> — 確率発動スキル(50%で発動など)を選んでいる場合、全部不発のときの下限と全部発動のときの上限を表示します。</li>
+<li><b>つぎに強化すると伸びるもの</b> — 現在の設定を基準に「その1手で何%伸びるか」を自動計算したランキングです。育成の優先順位付けに使えます。</li>
+</ul>
+<div class="callout tip"><span class="ico">🎯</span><div><b>精度を上げたい場合(キャリブレーション):</b>「実測キャリブレーション」を開き、現在の設定と同じ条件で実際に行ったラリー1回分のダメージを入力して「自動補正する」を押してください。推定値と実測の比率から校正係数が計算され、以降の表示があなたの環境に合った絶対値になります。装備やペットを大きく更新したら再校正をおすすめします。</div></div>
+<h2>入力でつまずきやすいポイント</h2>
+<p>正確な結果を出すために、入力時によくある疑問を補足します。</p>
+<ul>
+<li><b>ステータスは「%表示」のものを入れる</b> — プロフィールの「部隊攻撃力」などは%で表示されています。実数ではなくその%の数字をそのまま入れてください(例:120%なら「120」)。0の項目は0と入力します。</li>
+<li><b>TierとFC(火結晶)は別々に選ぶ</b> — 兵種Tier(T1〜11)と火結晶レベル(FC0〜10)は独立した別軸です。たとえば「T10だがFC8まで上げている」「FC10だがT11はまだ」というケースも正しく入力できます。Tierとは別にFCも忘れず設定しましょう。</li>
+<li><b>ペット・バフアイテムは使うものだけ</b> — ホラアナライオン(攻撃)、サーベルタイガー(殺傷)、巨大カメレオン(敵防御ダウン)、2時間ブースト(攻撃/殺傷/防御ダウン)は、実際に使うものだけ入力します。使わない欄は0のままでOKです。</li>
+<li><b>専用装備Lvは英雄カードで設定</b> — 集結主の各英雄カードに専用装備Lv(0〜10)の欄があります。世代とLvに応じてステータス上昇が自動反映されます。</li>
+</ul>
+
+<h2>なぜ実測とズレることがあるのか</h2>
+<p>このツールは、公開仕様とコミュニティ検証に基づく「制約付き推定」モデルで動いています。ゲーム内部の正確な計算式は公開されていないため、補正なしの素の値は実際のポイントとズレることがあります。これは仕様であり、バグではありません。</p>
+<p>だからこそ用意しているのが<b>実測キャリブレーション</b>です。あなたの実測ポイントを1回入力すれば、ツールが自動で補正係数Cを算出し、以降はあなたの環境に合った絶対値で表示されます。一度校正すれば、英雄やペット、比率を変えたときの「相対的な伸び」を正確に比較できるようになります。まずは1回、実測値で校正してから使うのがおすすめです。</p>
+<div class="cta"><a class="btn" href="../tools/bear-hunt/index.html">🐻 シミュレーターを開く</a></div></div><div id="bodyen" style="display:none"><h1 id="art-h1">How to use the <span class="acc">Bear Hunt Simulator</span></h1>
+<p class="lead">For first-timers: a step-by-step guide to which in-game screens to check and what to enter. Takes about 1 minute.</p>
+<ol class="steps">
+<li><b>STEP 1: Enter your stats.</b> Tap the lord icon (top-left), open "Stats" in your profile. You'll see "Army Attack", "Army Lethality" and per-type values like "Infantry Attack/Lethality". Enter those numbers as-is — they already include research, gear, charms and pets, so no manual adding is needed. For troop Tier, pick the tier of the troops you currently send to Bear Hunt (T10, FC1, etc.).</li>
+<li><b>STEP 2: Pick the rally leader's heroes.</b> First set "Current generation" to your server's latest (heroes newer than this won't appear). Tap the Inf/Lancer/Mks slots to pick the heroes the leader uses. Set skill level (1-5) at the top-right of each card, and gear level (0-10) for heroes with exclusive gear. Frame color shows rarity (blue=R, purple=SR, gold=SSR).</li>
+<li><b>STEP 3: Pick 4 joiner heroes.</b> Choose the 4 "left heroes" of joiners that get buff slots. Spreading skill types (DMG / ATK / Lethality / proc) multiplies your output. Heroes whose first skill doesn't work on the bear show "No bear skill".</li>
+<li><b>STEP 4: Set troops, ratio and the Cyrille talent.</b> Enter total troops, then tap a ratio preset (e.g. 10:30:60) to auto-split. Save your go-to ratio with "+ Save this ratio". If you've leveled Cyrille, set the "Hunter's Heart" talent level; if your alliance's trap isn't maxed, set the trap upgrade bonus %.</li>
+</ol>
+<h2>Reading the result</h2>
+<ul>
+<li><b>Predicted damage points</b> — the average for one rally.</li>
+<li><b>Damage range</b> — if you picked probability skills (e.g. 50% chance), it shows the floor (all miss) and ceiling (all proc).</li>
+<li><b>What to upgrade next</b> — a ranking auto-computed from your current setup showing how much each single move raises damage. Use it to prioritize.</li>
+</ul>
+<div class="callout tip"><span class="ico">🎯</span><div><b>For more accuracy (calibration):</b> open "Real-measure calibration", enter the damage from one real rally done with the same setup, and press "Auto-calibrate". A calibration factor is computed from the ratio of estimate to measurement, so later figures become absolute values fitted to your account. Re-calibrate after big gear or pet updates.</div></div>
+<h2>Common input pitfalls</h2>
+<p>To get accurate results, here are some common input questions.</p>
+<ul>
+<li><b>Enter the "%" values</b> — profile values like "Army Attack" are shown as percentages. Enter that % number as-is (e.g. 120 for 120%), not a raw value. Enter 0 for any zero field.</li>
+<li><b>Select Tier and FC (Fire Crystal) separately</b> — troop Tier (T1-11) and Fire Crystal level (FC0-10) are independent axes. Cases like "T10 but raised to FC8" or "FC10 but no T11 yet" are entered correctly. Don't forget to set FC separately from Tier.</li>
+<li><b>Only the pets/buff items you use</b> — Cave Lion (attack), Saber-tooth Tiger (lethality), Giant Chameleon (enemy defense down), and 2-hour boosts (attack/lethality/defense-down) — only enter the ones you actually use. Leave unused fields at 0.</li>
+<li><b>Set exclusive gear Lv on the hero card</b> — each leader hero card has an exclusive-gear Lv field (0-10). Stat boosts apply automatically based on generation and level.</li>
+</ul>
+
+<h2>Why it can differ from your actual points</h2>
+<p>This tool runs on a "constraint-based estimate" model from public specs and community verification. Since the game's exact internal formula isn't published, the raw (uncorrected) value can differ from your actual points. This is by design, not a bug.</p>
+<p>That's exactly what <b>real-measure calibration</b> is for. Enter your measured points once and the tool auto-computes factor C, then shows absolute values fitted to your account. After calibrating once, you can accurately compare the "relative gains" from changing heroes, pets or ratios. We recommend calibrating with a real value first.</p>
+<div class="cta"><a class="btn" href="../tools/bear-hunt/index.html">🐻 Open the simulator</a></div></div>
+<div class="relbar" id="relbar"></div></div><nav class="relposts" aria-label="関連記事"><h2 class="relposts-h">Related articles</h2><ul><li><a href="bear-hunt-guide.html">How Bear Hunt damage works (full guide)</a></li><li><a href="beginner-faq.html">Bear Hunt beginner FAQ</a></li><li><a href="troop-ratio.html">What's the right troop ratio?</a></li><li><a href="damage-not-growing.html">Why your damage isn't growing, and fixes</a></li></ul></nav>
+<div id="foot"></div>
+<script src="/assets/config.js?v=93"></script><script src="/assets/toolkit.js?v=93"></script>
+<script>(function(){var EN=(window.WOS_LANG==="en");
+document.getElementById("htmlroot").lang=EN?"en":"ja";
+document.getElementById("pgtitle").textContent=EN?"How to use the Bear Hunt Simulator | Whiteout Tools Lab":"How to use the simulator | ホワサバ ツールラボ";
+document.getElementById("pgdesc").content=EN?"Beginner guide to the Bear Hunt damage simulator: which in-game values to enter, step by step.":"熊狩ダメージ・シミュレーターの使い方を初心者向けに解説。ゲーム内のどの数値を入力するかをステップごとに説明。";
+document.getElementById("crumb").innerHTML=EN?"<a href=\"../index.html\">Home</a> &gt; How to use":"<a href=\"../index.html\">ホーム</a> &gt; 使い方ガイド";
+document.getElementById("updbox").innerHTML=WOS_UPDATEBOX({date:"2026-06-15",gen:16,note:"STEP式の使い方",note_en:"Step-by-step guide"});
+if(EN){document.getElementById("bodyja").style.display="none";document.getElementById("bodyen").style.display="block";}
+document.getElementById("relbar").innerHTML='<a href="../tools/left-hero/index.html'+(EN?"":"")+'">'+(EN?"→ Left-Hero Checker":"→ Left-Hero Checker")+'</a>'+'<a href="../tools/troop-ratio/index.html'+(EN?"":"")+'">'+(EN?"→ Troop Ratio Simulator":"→ Troop Ratio Simulator")+'</a>'+'<a href="../tools/bear-hunt/index.html'+(EN?"":"")+'">'+(EN?"→ Damage Simulator":"→ Bear Hunt Simulator")+'</a>';
+document.getElementById("nav").innerHTML=WOS_NAV(1);
+document.getElementById("foot").innerHTML=WOS_FOOT(1);})();</script></body></html>

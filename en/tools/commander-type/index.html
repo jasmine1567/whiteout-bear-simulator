@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en" id="htmlroot">
+<head>
+<meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Y8YMCVQDMG"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  // Consent Mode v2: 既定は許可、EEA/英国/スイスのみ同意取得まで拒否(CMPがupdateで上書き)
+  gtag('consent','default',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'});
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',region:['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH'],wait_for_update:500});
+  gtag('js', new Date());
+  gtag('config', 'G-Y8YMCVQDMG');
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pgtitle">熊狩り指揮官タイプ診断｜あなたはどのタイプ? | ホワサバ ツールラボ</title>
+<meta name="description" id="pgdesc" content="6つの質問に答えるだけで、あなたの熊狩り指揮官タイプを診断。火力ロマン型・堅実最適化型・参謀型など全6タイプ。結果はXでシェアできます。ホワサバ熊狩りの診断コンテンツ。">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://docs.google.com; object-src 'none'; base-uri 'none'">
+<link rel="stylesheet" href="/assets/site.css?v=93">
+<script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
+<style>
+  .quiz-wrap{max-width:600px}
+  .progress{height:6px;background:var(--night);border-radius:3px;overflow:hidden;margin:14px 0 20px}
+  .progress .pf{height:100%;background:linear-gradient(90deg,var(--frost-dim),var(--ember));width:0%;transition:width .4s}
+  .qcard{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px}
+  .qnum{font-size:12px;color:var(--frost);font-weight:700;letter-spacing:.1em}
+  .qtext{font-size:18px;font-weight:800;margin:6px 0 16px;line-height:1.5}
+  .qopts{display:flex;flex-direction:column;gap:10px}
+  .qopt{text-align:left;background:var(--panel2);border:1px solid var(--line);color:var(--text);
+    border-radius:10px;padding:14px 16px;font-size:14px;cursor:pointer;transition:all .15s;line-height:1.5}
+  .qopt:hover{border-color:var(--frost);background:#f1ecff;transform:translateX(3px)}
+  .result{text-align:center;animation:fadein .5s}
+  @keyframes fadein{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .rtype{font-size:13px;color:var(--frost);font-weight:700;letter-spacing:.15em;margin-bottom:4px}
+  .rname{font-size:30px;font-weight:900;margin-bottom:6px;line-height:1.2}
+  .remoji{font-size:64px;line-height:1;margin:10px 0}
+  .rcard{background:linear-gradient(160deg,#f4f1ff,#f7f5ff);border:2px solid var(--frost);
+    border-radius:16px;padding:24px 20px;margin:16px 0}
+  .rdesc{font-size:14.5px;line-height:1.8;color:var(--text);margin:14px 0;text-align:left}
+  .rtraits{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:14px 0}
+  .rtrait{font-size:11px;background:var(--panel2);border:1px solid var(--frost-dim);color:var(--frost);
+    border-radius:20px;padding:4px 12px}
+  .rmatch{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:12px;
+    font-size:13px;margin:14px 0;text-align:left}
+  .rbtns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:18px}
+  .rbtns .btn{flex:0 1 auto}
+  .share-x{background:#1d9bf0;border-color:#1d9bf0;color:#fff}
+  .share-x:hover{background:#1a8cd8}
+  .barwrap{margin:16px 0;text-align:left}
+  .barwrap .bl{font-size:11px;color:var(--muted);display:flex;justify-content:space-between;margin-bottom:3px}
+  .barwrap .bt{height:10px;background:var(--night);border-radius:5px;overflow:hidden}
+  .barwrap .bf{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--frost-dim),var(--ember));transition:width .6s}
+</style>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg?v=85">
+<link rel="icon" type="image/png" href="/favicon.png?v=85">
+<link rel="shortcut icon" href="/favicon.ico?v=85">
+<link rel="apple-touch-icon" href="/favicon.png?v=85">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ホワサバ ツールラボ">
+<meta property="og:title" content="熊狩り指揮官タイプ診断｜あなたはどのタイプ? | ホワサバ ツールラボ">
+<meta property="og:description" content="6つの質問に答えるだけで、あなたの熊狩り指揮官タイプを診断。火力ロマン型・堅実最適化型・参謀型など全6タイプ。結果はXでシェアできます。ホワサバ熊狩りの診断コンテンツ。">
+<meta property="og:url" content="https://whitesim-lab.com/en/tools/commander-type/">
+<meta property="og:image" content="https://whitesim-lab.com/favicon.png?v=85">
+<meta name="twitter:card" content="summary">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4593324513914979" crossorigin="anonymous"></script>
+<link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/tools/commander-type/"><link rel="alternate" hreflang="en" href="https://whitesim-lab.com/en/tools/commander-type/"><link rel="alternate" hreflang="x-default" href="https://whitesim-lab.com/tools/commander-type/">
+<link rel="canonical" href="https://whitesim-lab.com/en/tools/commander-type/">
+</head>
+<body>
+<div id="nav"></div>
+<div class="wrap">
+<div class="crumb" id="crumb"></div>
+
+<h1 id="ph1">🐻 熊狩り<span class="acc">指揮官タイプ診断</span></h1>
+<p class="lead" id="plead">6つの質問に答えるだけで、あなたの熊狩りスタイルを6タイプに診断します。結果はXでシェアできます!</p>
+
+<div class="quiz-wrap">
+  <div class="progress" id="prog" style="display:none"><div class="pf" id="pf"></div></div>
+  <div id="quizArea"></div>
+</div>
+
+<div class="ad-slot"><!-- AdSense承認後 --></div>
+
+<div class="relbar" id="relbar"></div>
+</div>
+
+<section class="tool-article">
+<div class="i18n-ja">
+<h2>熊狩り指揮官タイプ診断とは</h2>
+<p class="ta-lead"><strong>6つの質問に答えるだけ</strong>で、あなたの熊狩りのプレイスタイルを<strong>6つの指揮官タイプ</strong>に分類する診断コンテンツです。結果はX（旧Twitter）でシェアでき、同盟の仲間と「あなたは何型？」と盛り上がれます。所要時間は約1分、無料です。</p>
+
+<h2>6つの指揮官タイプ</h2>
+<ul>
+  <li><strong>火力ロマン型</strong>：とにかく一撃の最大火力を追い求めるタイプ。</li>
+  <li><strong>堅実最適化型</strong>：効率と再現性を重視し、ムダなく伸ばすタイプ。</li>
+  <li><strong>参謀型</strong>：全体の作戦・段取りを考えるのが得意なタイプ。</li>
+  <li><strong>職人型</strong>：編成や数値の作り込みにこだわるタイプ。</li>
+  <li><strong>ムードメーカー型</strong>：同盟の雰囲気づくりや声かけが上手なタイプ。</li>
+  <li><strong>マイペース型</strong>：自分の楽しみ方を大切にする、肩の力が抜けたタイプ。</li>
+</ul>
+
+<h2>使い方</h2>
+<ol>
+  <li>6つの質問に、直感でいちばん近いものを選びます。</li>
+  <li>回答に応じてタイプが判定され、結果が表示されます。</li>
+  <li>「Xでシェア」から、ハッシュタグ付きで結果を投稿できます。</li>
+</ol>
+
+<h2>仕組み</h2>
+<p>占いではなく、各回答に<strong>タイプ別のスコア</strong>を割り当て、合計がもっとも高いタイプを表示する<strong>シンプルなスコアリング方式</strong>です。質問の答え方を変えれば結果も変わるので、何度でも試せます。自分の強み・弱みを知り、同盟内での役割分担を考えるきっかけにも使えます。</p>
+
+<h2>よくある質問（FAQ）</h2>
+<div class="ta-faq"><dl>
+  <dt>結果は固定ですか？</dt>
+  <dd>いいえ。回答が変われば結果も変わります。気軽に何度でも診断できます。</dd>
+  <dt>シェアは必須ですか？</dt>
+  <dd>任意です。結果は自分だけで楽しんでも、同盟で共有してもOKです。</dd>
+</dl></div>
+
+<h2>関連ツール・ガイド</h2>
+<div class="ta-links">
+  <a href="../bear-hunt/index.html">熊狩ダメージ・シミュレーター</a>
+  <a href="../damage-doctor/index.html">ダメージが伸びない原因診断</a>
+  <a href="../../guides/bear-hunt-guide.html">熊狩り攻略ガイド</a>
+</div>
+  <div class="ta-meta">
+    <strong>運営者</strong>：じゃすみん（1567サーバー / 同盟「bst」盟主）　|　<strong>連絡先</strong>：<a href="https://x.com/tegetege_m" target="_blank" rel="noopener">X @tegetege_m</a> ・ <a href="../../contact.html">お問い合わせ</a><br>
+    <strong>最終更新</strong>：2026年6月　|　ホワイトアウトサバイバルを実際にプレイし、ゲーム内での検証と公開情報をもとに作成しています。<br>
+    ※ 本ツールはファンメイドの非公式コンテンツです。数値・判定は公開情報と実測に基づく推定であり、運営の内部仕様の完全な再現ではありません。仕様はアップデートで変わることがあります。Whiteout Survival は Century Games の商標であり、当サイトは同社と提携・公認関係にありません。
+  </div>
+</div>
+<div class="i18n-en">
+<h2>What is the Commander Type Quiz?</h2>
+<p class="ta-lead">Answer <strong>6 quick questions</strong> and get sorted into one of <strong>6 Bear Hunt commander types</strong>. Share your result on X and compare with your alliance. It takes about a minute and is free.</p>
+<h2>The 6 commander types</h2>
+<ul>
+  <li><strong>Damage Dreamer</strong>: chases the biggest single hit above all.</li>
+  <li><strong>Steady Optimizer</strong>: values efficiency and repeatability, no waste.</li>
+  <li><strong>Strategist</strong>: good at planning the whole operation.</li>
+  <li><strong>Craftsman</strong>: loves fine-tuning setups and numbers.</li>
+  <li><strong>Mood Maker</strong>: great at keeping the alliance's spirits up.</li>
+  <li><strong>Free Spirit</strong>: plays their own way, relaxed about it.</li>
+</ul>
+<h2>How to use it</h2>
+<ol>
+  <li>Answer 6 questions with whatever feels closest.</li>
+  <li>Your type is calculated and shown.</li>
+  <li>Use "Share on X" to post your result with hashtags.</li>
+</ol>
+<h2>How it works</h2>
+<p>It's not fortune-telling — it's a <strong>simple scoring system</strong> that assigns points per type and shows your highest total. Change your answers and the result changes, so retake it anytime. It's a fun way to learn your strengths and think about roles within your alliance.</p>
+<h2>FAQ</h2>
+<div class="ta-faq"><dl>
+  <dt>Is the result fixed?</dt>
+  <dd>No — different answers give different results. Retake it freely.</dd>
+  <dt>Do I have to share?</dt>
+  <dd>No. Keep it to yourself or share with your alliance, up to you.</dd>
+</dl></div>
+<h2>Related tools &amp; guides</h2>
+<div class="ta-links">
+  <a href="../bear-hunt/index.html">Bear Hunt Damage Simulator</a>
+  <a href="../damage-doctor/index.html">Damage Doctor</a>
+  <a href="../../guides/bear-hunt-guide.html">Bear Hunt Guide</a>
+</div>
+  <div class="ta-meta">
+    <strong>Operator</strong>: Jasmine (Server 1567 / leader of alliance &quot;bst&quot;)　|　<strong>Contact</strong>: <a href="https://x.com/tegetege_m" target="_blank" rel="noopener">X @tegetege_m</a> · <a href="../../contact.html">Contact</a><br>
+    <strong>Last updated</strong>: June 2026　|　Written by an active Whiteout Survival player, based on in-game testing and public information.<br>
+    * This is a fan-made, unofficial tool. Figures are estimates based on public data and measurements, not a reproduction of the game's internal formulas. Specs may change with updates. Whiteout Survival is a trademark of Century Games; this site is not affiliated with or endorsed by it.
+  </div>
+</div>
+</section>
+<div id="foot"></div>
+
+<script src="/assets/config.js?v=93"></script>
+<script src="/assets/toolkit.js?v=93"></script>
+<script>
+var EN = (window.WOS_LANG==='en');
+document.getElementById('htmlroot').lang = EN?'en':'ja';
+
+// ===== 診断データ(JA/EN) =====
+// 各選択肢は6タイプ(A:火力ロマン B:堅実最適化 C:参謀 D:ムードメーカー E:職人 F:マイペース)に加点
+var TYPES = {
+  A:{ja:{name:'火力ロマン型',emoji:'💥',type:'POWER ROMANTIC',
+        desc:'とにかく一撃の大きさにロマンを感じるタイプ。数字がドカンと伸びる瞬間が何よりの快感で、最大火力編成を追い求めます。集結主として全力を出すのが似合います。',
+        traits:['ロマン砲','最大火力','集結主向き'],
+        match:'相性のいいツール:熊狩ダメージ・シミュレーターで限界火力を計算しよう。'},
+     en:{name:'The Power Romantic',emoji:'💥',type:'POWER ROMANTIC',
+        desc:'You feel the romance in one massive hit. The moment numbers spike is pure joy, and you chase max-damage builds. You shine as a rally leader going all-out.',
+        traits:['Big hits','Max damage','Leader type'],
+        match:'Best tool: compute your peak damage in the Bear Hunt Simulator.'}},
+  B:{ja:{name:'堅実最適化型',emoji:'📊',type:'OPTIMIZER',
+        desc:'感覚より数字で判断する堅実派。比率もスキルも「一番効率がいい答え」を求めて検証します。無駄を嫌い、コスパ最強の編成を組むのが得意です。',
+        traits:['データ重視','効率厨','検証好き'],
+        match:'相性のいいツール:兵士比率シミュレータで最適解を見つけよう。'},
+     en:{name:'The Optimizer',emoji:'📊',type:'OPTIMIZER',
+        desc:'You decide by numbers, not vibes. You verify ratios and skills for the most efficient answer, hate waste, and build the best cost-performance setups.',
+        traits:['Data-driven','Efficiency','Loves testing'],
+        match:'Best tool: find the optimal answer in the Troop Ratio Simulator.'}},
+  C:{ja:{name:'参謀型',emoji:'🧠',type:'STRATEGIST',
+        desc:'全体を見渡して同盟を勝たせる司令塔タイプ。誰がいつ乗るか、枠をどう埋めるかを設計するのが好き。自分の火力より「チーム合計の最大化」を考えます。',
+        traits:['全体最適','司令塔','枠管理'],
+        match:'相性のいいツール:左英雄チェッカーで4枠の最適配分を設計しよう。'},
+     en:{name:'The Strategist',emoji:'🧠',type:'STRATEGIST',
+        desc:'A commander who sees the whole board and makes the alliance win. You love designing who joins when and how slots fill, thinking about team-total over personal damage.',
+        traits:['Team optimum','Commander','Slot management'],
+        match:'Best tool: design the 4-slot allocation in the Left-Hero Checker.'}},
+  D:{ja:{name:'ムードメーカー型',emoji:'🎉',type:'MOOD MAKER',
+        desc:'同盟チャットを盛り上げる空気の中心。勝っても負けても楽しむのが一番で、みんなで熊を殴る時間そのものを愛しています。新人の面倒見もよく、同盟の宝です。',
+        traits:['盛り上げ役','みんな大好き','面倒見良し'],
+        match:'相性のいいコンテンツ:攻略ガイドを新人さんに共有してあげよう。'},
+     en:{name:'The Mood Maker',emoji:'🎉',type:'MOOD MAKER',
+        desc:'The heart of alliance chat. Win or lose, having fun comes first, and you love the time everyone spends hitting the bear together. Great with newcomers — a treasure to any alliance.',
+        traits:['Hype crew','Loved by all','Mentor'],
+        match:'Best content: share the guides with your newcomers.'}},
+  E:{ja:{name:'職人型',emoji:'🔧',type:'ARTISAN',
+        desc:'コツコツ育成と微調整を積み重ねる職人気質。専用装備のレベル、チャーム、シリル天賦…細部を1つずつ詰めるのが楽しい。地味だけど確実に強くなるタイプです。',
+        traits:['コツコツ','細部こだわり','育成好き'],
+        match:'相性のいいコンテンツ:微課金の投資先ランキングで伸びしろを確認。'},
+     en:{name:'The Artisan',emoji:'🔧',type:'ARTISAN',
+        desc:'A craftsman who stacks steady progression and fine-tuning. Gear levels, charms, Cyrille talent… you enjoy nailing each detail. Quiet, but reliably getting stronger.',
+        traits:['Steady','Detail-focused','Loves leveling'],
+        match:'Best content: check your upside in the Light-Spender ranking.'}},
+  F:{ja:{name:'マイペース型',emoji:'🍵',type:'EASYGOING',
+        desc:'ノルマもプレッシャーもなく、好きな時に好きなだけ楽しむタイプ。無理せず続けるのが一番のスタイル。ゆるく遊びながらも、参加するときはちゃんと貢献します。',
+        traits:['のんびり','無理しない','長続き'],
+        match:'相性のいい同盟:マイペースに楽しめる同盟「bst」をチェック!'},
+     en:{name:'The Easygoing',emoji:'🍵',type:'EASYGOING',
+        desc:'No quotas, no pressure — you enjoy it when you want, as much as you want. Sustainable play is your style, and you still contribute properly when you join.',
+        traits:['Relaxed','No burnout','Sustainable'],
+        match:'Best match: check out alliance "bst" where you can play at your own pace!'}}
+};
+
+var QUESTIONS = EN ? [
+  {q:'When the Bear Hunt event starts, your first thought is?',
+   o:[['Build for the biggest possible hit!','A'],['Recalculate the most efficient ratio','B'],
+      ['Coordinate who rallies in what order','C'],['Hype up the alliance chat','D']]},
+  {q:'How do you decide your troop ratio?',
+   o:[['Lean into max attack power','A'],['Compare numbers and pick the best','B'],
+      ['Whatever helps the team total','C'],['Honestly, I just go with the flow','F']]},
+  {q:'What do you spend resources on first?',
+   o:[['My leader attack hero for big damage','A'],['Whatever gives the best ROI','B'],
+      ['Bit by bit on gear and charms','E'],['I do not stress about spending','F']]},
+  {q:'Your role in the alliance is closest to?',
+   o:[['The ace striker','A'],['The data analyst','B'],
+      ['The commander/planner','C'],['The mood maker','D']]},
+  {q:'After a rally, you most want to check?',
+   o:[['My single biggest damage number','A'],['Whether my efficiency improved','B'],
+      ['The alliance total ranking','C'],['That everyone had fun','D']]},
+  {q:'Your ideal way to enjoy the game is?',
+   o:[['Chase the ceiling of power','A'],['Master the optimal play','B'],
+      ['Tinker with the details','E'],['Relax at my own pace','F']]}
+] : [
+  {q:'熊狩イベントが始まった時、まず考えるのは?',
+   o:[['とにかく一番デカい一撃を狙う編成!','A'],['一番効率のいい比率を計算し直す','B'],
+      ['誰がどの順で乗るか段取りを決める','C'],['同盟チャットを盛り上げる','D']]},
+  {q:'兵種比率はどう決める?',
+   o:[['最大攻撃力に全振り寄り','A'],['数字を比較して一番いいのを選ぶ','B'],
+      ['チーム合計に効くならなんでも','C'],['正直なんとなくで決めてる','F']]},
+  {q:'資源はまず何に使う?',
+   o:[['火力のため集結主の攻撃英雄','A'],['一番コスパのいいところ','B'],
+      ['装備やチャームをコツコツ','E'],['課金は気にせずゆるく','F']]},
+  {q:'同盟での自分の役回りに近いのは?',
+   o:[['エースアタッカー','A'],['データ分析担当','B'],
+      ['司令塔・作戦係','C'],['ムードメーカー','D']]},
+  {q:'ラリー後、一番見たいのは?',
+   o:[['自分の最大ダメージの数字','A'],['効率が上がったかどうか','B'],
+      ['同盟合計のランキング','C'],['みんなが楽しめたか','D']]},
+  {q:'理想の遊び方は?',
+   o:[['火力の限界を追い求める','A'],['最適解を極める','B'],
+      ['細部をいじり倒す','E'],['マイペースにのんびり','F']]}
+];
+
+var answers={A:0,B:0,C:0,D:0,E:0,F:0};
+var step=0;
+
+function showQ(){
+  document.getElementById('prog').style.display='block';
+  document.getElementById('pf').style.width=(step/QUESTIONS.length*100)+'%';
+  var q=QUESTIONS[step];
+  var html='<div class="qcard"><div class="qnum">'+(EN?'QUESTION ':'質問 ')+(step+1)+' / '+QUESTIONS.length+'</div>'
+    +'<div class="qtext">'+q.q+'</div><div class="qopts">';
+  q.o.forEach(function(o,i){ html+='<button class="qopt" data-t="'+o[1]+'">'+o[0]+'</button>'; });
+  html+='</div></div>';
+  document.getElementById('quizArea').innerHTML=html;
+  document.querySelectorAll('.qopt').forEach(function(b){
+    b.onclick=function(){ answers[b.dataset.t]++; step++;
+      if(step<QUESTIONS.length) showQ(); else showResult(); };
+  });
+}
+
+function showResult(){
+  document.getElementById('pf').style.width='100%';
+  // 最多タイプを決定(同点はA>B>C>D>E>F優先だが、より均等に)
+  var order=['A','B','C','D','E','F'], best=order[0];
+  order.forEach(function(k){ if(answers[k]>answers[best]) best=k; });
+  var T=TYPES[best][EN?'en':'ja'];
+  // 上位3タイプのスコアバー
+  var sorted=order.slice().sort(function(a,b){return answers[b]-answers[a];}).slice(0,3);
+  var maxv=answers[best]||1;
+  var bars=sorted.map(function(k){
+    var tt=TYPES[k][EN?'en':'ja'];
+    return '<div class="barwrap"><div class="bl"><span>'+tt.emoji+' '+tt.name+'</span><span>'+answers[k]+'</span></div>'
+      +'<div class="bt"><div class="bf" style="width:'+(answers[k]/maxv*100)+'%"></div></div></div>';
+  }).join('');
+
+  var siteUrl='https://whitesim-lab.com/tools/commander-type/'+(EN?'':'');
+  var shareText = EN
+    ? 'My Bear Hunt commander type is '+T.emoji+' '+T.name+'! What is yours?'
+    : '私の熊狩り指揮官タイプは '+T.emoji+' '+T.name+' でした! あなたは?';
+  var hashtags = EN ? 'WhiteoutSurvival,BearHunt' : 'ホワサバ,熊狩り';
+  var xUrl='https://twitter.com/intent/tweet?text='+encodeURIComponent(shareText)
+    +'&url='+encodeURIComponent(siteUrl)+'&hashtags='+encodeURIComponent(hashtags);
+
+  var html='<div class="result"><div class="rcard">'
+    +'<div class="rtype">'+(EN?'YOUR TYPE':'あなたのタイプは')+'</div>'
+    +'<div class="remoji">'+T.emoji+'</div>'
+    +'<div class="rname">'+T.name+'</div>'
+    +'<div class="rtraits">'+T.traits.map(function(x){return '<span class="rtrait">'+x+'</span>';}).join('')+'</div>'
+    +'<div class="rdesc">'+T.desc+'</div>'
+    +bars
+    +'<div class="rmatch">💡 '+T.match+'</div>'
+    +'<div class="rbtns">'
+    +'<a class="btn share-x" href="'+xUrl+'" target="_blank" rel="noopener noreferrer">'+(EN?'Share on 𝕏':'𝕏 でシェア')+'</a>'
+    +'<button class="btn ghost" id="retry">'+(EN?'Try again':'もう一度診断')+'</button>'
+    +'</div></div>'
+    +'<div class="rbtns" style="margin-top:8px">'
+    +'<a class="btn" href="../bear-hunt/index.html'+(EN?'':'')+'">'+(EN?'🐻 Open the Simulator':'🐻 シミュレーターを使う')+'</a>'
+    +'</div></div>';
+  document.getElementById('quizArea').innerHTML=html;
+  document.getElementById('prog').style.display='none';
+  document.getElementById('retry').onclick=function(){
+    answers={A:0,B:0,C:0,D:0,E:0,F:0}; step=0; showQ();
+  };
+}
+
+// ===== 静的テキストの言語切替 =====
+if(EN){
+  document.getElementById('pgtitle').textContent='Bear Hunt Commander Type Quiz | Whiteout Tools Lab';
+  document.getElementById('pgdesc').content='Answer 6 questions to find your Bear Hunt commander type — 6 archetypes. Share your result on X. A fun quiz for Whiteout Survival fans.';
+  document.getElementById('ph1').innerHTML='🐻 Bear Hunt <span class="acc">Commander Type Quiz</span>';
+  document.getElementById('plead').textContent='Answer 6 quick questions to discover your Bear Hunt style among 6 types. Share your result on X!';
+  document.getElementById('crumb').innerHTML='<a href="../../index.html">Home</a> &gt; Commander Type Quiz';
+}else{
+  document.getElementById('crumb').innerHTML='<a href="../../index.html">ホーム</a> &gt; 指揮官タイプ診断';
+}
+
+// 開始ボタン
+document.getElementById('quizArea').innerHTML=
+  '<div class="qcard" style="text-align:center">'
+  +'<div class="remoji" style="font-size:54px">🐻</div>'
+  +'<p style="font-size:14px;color:var(--muted);margin-bottom:16px">'
+  +(EN?'6 questions, about 30 seconds.':'質問は6問、約30秒で終わります。')+'</p>'
+  +'<button class="btn" id="startBtn" style="font-size:16px;padding:12px 28px">'
+  +(EN?'Start the quiz':'診断スタート')+'</button></div>';
+document.getElementById('startBtn').onclick=showQ;
+
+document.getElementById('relbar').innerHTML=
+  '<a href="../bear-hunt/index.html'+(EN?'':'')+'">'+(EN?'→ Damage Simulator':'→ 熊狩シミュレーター')+'</a>'
+  +'<a href="../left-hero/index.html'+(EN?'':'')+'">'+(EN?'→ Left-Hero Checker':'→ 左英雄チェッカー')+'</a>'
+  +'<a href="../../index.html'+(EN?'':'')+'">'+(EN?'→ Home':'→ ホームへ')+'</a>';
+document.getElementById('nav').innerHTML=WOS_NAV(2);
+document.getElementById('foot').innerHTML=WOS_FOOT(2);
+</script>
+</body>
+</html>

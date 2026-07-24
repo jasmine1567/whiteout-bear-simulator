@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja" id="htmlroot">
+<head>
+<meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,follow">
+<title id="pgtitle">ページが見つかりません (404) | ホワサバ ツールラボ</title>
+<meta name="description" content="お探しのページは見つかりませんでした。">
+<link rel="stylesheet" href="/assets/site.css?v=93">
+<script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg?v=85">
+<link rel="icon" type="image/png" href="/favicon.png?v=85">
+<link rel="shortcut icon" href="/favicon.ico?v=85">
+<link rel="apple-touch-icon" href="/favicon.png?v=85">
+</head>
+<body>
+<div id="nav"></div>
+<div class="wrap">
+<div id="bodyja" style="display:none;text-align:center">
+  <div style="font-size:64px;margin:24px 0 8px">🐻</div>
+  <h1>ページが見つかりません（404）</h1>
+  <p>お探しのページは、移動または削除された可能性があります。URLをご確認いただくか、以下からお進みください。</p>
+  <p style="margin-top:20px">
+    <a class="btn" href="/index.html">🏠 トップページへ</a>
+    <a class="btn" href="/index.html#tools">🎮 ツール一覧</a>
+    <a class="btn" href="/guides/bear-hunt-guide.html">📖 攻略ガイド</a>
+  </p>
+</div>
+<div id="bodyen" style="display:none;text-align:center">
+  <div style="font-size:64px;margin:24px 0 8px">🐻</div>
+  <h1>Page not found (404)</h1>
+  <p>The page you're looking for may have moved or been removed. Please check the URL, or continue from below.</p>
+  <p style="margin-top:20px">
+    <a class="btn" href="/en/index.html">🏠 Home</a>
+    <a class="btn" href="/en/index.html#tools">🎮 All tools</a>
+    <a class="btn" href="/en/guides/bear-hunt-guide.html">📖 Guides</a>
+  </p>
+</div>
+<div id="body"></div>
+</div>
+<div id="foot"></div>
+<script src="/assets/config.js?v=93"></script>
+<script src="/assets/toolkit.js?v=93"></script>
+<script>
+(function(){
+  var EN = (window.WOS_LANG==='en');
+  document.getElementById('htmlroot').lang = EN?'en':'ja';
+  document.getElementById('pgtitle').textContent = EN?'Page not found (404) | Whiteout Tools Lab':'ページが見つかりません (404) | ホワサバ ツールラボ';
+  document.getElementById('body').innerHTML = document.getElementById(EN?'bodyen':'bodyja').innerHTML;
+  document.getElementById('nav').innerHTML = WOS_NAV(0);
+  document.getElementById('foot').innerHTML = WOS_FOOT(0);
+})();
+</script>
+</body>
+</html>

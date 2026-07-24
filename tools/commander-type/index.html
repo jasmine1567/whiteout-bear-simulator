@@ -19,10 +19,8 @@
 <title id="pgtitle">熊狩り指揮官タイプ診断｜あなたはどのタイプ? | ホワサバ ツールラボ</title>
 <meta name="description" id="pgdesc" content="6つの質問に答えるだけで、あなたの熊狩り指揮官タイプを診断。火力ロマン型・堅実最適化型・参謀型など全6タイプ。結果はXでシェアできます。ホワサバ熊狩りの診断コンテンツ。">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://docs.google.com; object-src 'none'; base-uri 'none'">
-<link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/tools/commander-type/index.html">
-<link rel="alternate" hreflang="en" href="https://whitesim-lab.com/tools/commander-type/index.html?lang=en">
-<link rel="stylesheet" href="../../assets/site.css?v=93">
-<script>(function(){try{var l=new URLSearchParams(location.search).get("lang")||localStorage.getItem("wos_lang")||"ja";if(l!=="en")l="ja";document.documentElement.setAttribute("data-wos-lang",l);}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
+<link rel="stylesheet" href="/assets/site.css?v=93">
+<script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
 <style>
   .quiz-wrap{max-width:600px}
   .progress{height:6px;background:var(--night);border-radius:3px;overflow:hidden;margin:14px 0 20px}
@@ -56,10 +54,10 @@
   .barwrap .bt{height:10px;background:var(--night);border-radius:5px;overflow:hidden}
   .barwrap .bf{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--frost-dim),var(--ember));transition:width .6s}
 </style>
-<link rel="icon" type="image/svg+xml" href="../../favicon.svg?v=85">
-<link rel="icon" type="image/png" href="../../favicon.png?v=85">
-<link rel="shortcut icon" href="../../favicon.ico?v=85">
-<link rel="apple-touch-icon" href="../../favicon.png?v=85">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg?v=85">
+<link rel="icon" type="image/png" href="/favicon.png?v=85">
+<link rel="shortcut icon" href="/favicon.ico?v=85">
+<link rel="apple-touch-icon" href="/favicon.png?v=85">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ホワサバ ツールラボ">
 <meta property="og:title" content="熊狩り指揮官タイプ診断｜あなたはどのタイプ? | ホワサバ ツールラボ">
@@ -68,6 +66,7 @@
 <meta property="og:image" content="https://whitesim-lab.com/favicon.png?v=85">
 <meta name="twitter:card" content="summary">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4593324513914979" crossorigin="anonymous"></script>
+<link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/tools/commander-type/"><link rel="alternate" hreflang="en" href="https://whitesim-lab.com/en/tools/commander-type/"><link rel="alternate" hreflang="x-default" href="https://whitesim-lab.com/tools/commander-type/">
 <link rel="canonical" href="https://whitesim-lab.com/tools/commander-type/">
 </head>
 <body>
@@ -175,8 +174,8 @@
 </section>
 <div id="foot"></div>
 
-<script src="../../assets/config.js?v=93"></script>
-<script src="../../assets/toolkit.js?v=93"></script>
+<script src="/assets/config.js?v=93"></script>
+<script src="/assets/toolkit.js?v=93"></script>
 <script>
 var EN = (window.WOS_LANG==='en');
 document.getElementById('htmlroot').lang = EN?'en':'ja';
@@ -307,7 +306,7 @@ function showResult(){
       +'<div class="bt"><div class="bf" style="width:'+(answers[k]/maxv*100)+'%"></div></div></div>';
   }).join('');
 
-  var siteUrl='https://whitesim-lab.com/tools/commander-type/'+(EN?'?lang=en':'');
+  var siteUrl='https://whitesim-lab.com/tools/commander-type/'+(EN?'':'');
   var shareText = EN
     ? 'My Bear Hunt commander type is '+T.emoji+' '+T.name+'! What is yours?'
     : '私の熊狩り指揮官タイプは '+T.emoji+' '+T.name+' でした! あなたは?';
@@ -328,7 +327,7 @@ function showResult(){
     +'<button class="btn ghost" id="retry">'+(EN?'Try again':'もう一度診断')+'</button>'
     +'</div></div>'
     +'<div class="rbtns" style="margin-top:8px">'
-    +'<a class="btn" href="../bear-hunt/index.html'+(EN?'?lang=en':'')+'">'+(EN?'🐻 Open the Simulator':'🐻 シミュレーターを使う')+'</a>'
+    +'<a class="btn" href="../bear-hunt/index.html'+(EN?'':'')+'">'+(EN?'🐻 Open the Simulator':'🐻 シミュレーターを使う')+'</a>'
     +'</div></div>';
   document.getElementById('quizArea').innerHTML=html;
   document.getElementById('prog').style.display='none';
@@ -343,7 +342,7 @@ if(EN){
   document.getElementById('pgdesc').content='Answer 6 questions to find your Bear Hunt commander type — 6 archetypes. Share your result on X. A fun quiz for Whiteout Survival fans.';
   document.getElementById('ph1').innerHTML='🐻 Bear Hunt <span class="acc">Commander Type Quiz</span>';
   document.getElementById('plead').textContent='Answer 6 quick questions to discover your Bear Hunt style among 6 types. Share your result on X!';
-  document.getElementById('crumb').innerHTML='<a href="../../index.html?lang=en">Home</a> &gt; Commander Type Quiz';
+  document.getElementById('crumb').innerHTML='<a href="../../index.html">Home</a> &gt; Commander Type Quiz';
 }else{
   document.getElementById('crumb').innerHTML='<a href="../../index.html">ホーム</a> &gt; 指揮官タイプ診断';
 }
@@ -359,9 +358,9 @@ document.getElementById('quizArea').innerHTML=
 document.getElementById('startBtn').onclick=showQ;
 
 document.getElementById('relbar').innerHTML=
-  '<a href="../bear-hunt/index.html'+(EN?'?lang=en':'')+'">'+(EN?'→ Damage Simulator':'→ 熊狩シミュレーター')+'</a>'
-  +'<a href="../left-hero/index.html'+(EN?'?lang=en':'')+'">'+(EN?'→ Left-Hero Checker':'→ 左英雄チェッカー')+'</a>'
-  +'<a href="../../index.html'+(EN?'?lang=en':'')+'">'+(EN?'→ Home':'→ ホームへ')+'</a>';
+  '<a href="../bear-hunt/index.html'+(EN?'':'')+'">'+(EN?'→ Damage Simulator':'→ 熊狩シミュレーター')+'</a>'
+  +'<a href="../left-hero/index.html'+(EN?'':'')+'">'+(EN?'→ Left-Hero Checker':'→ 左英雄チェッカー')+'</a>'
+  +'<a href="../../index.html'+(EN?'':'')+'">'+(EN?'→ Home':'→ ホームへ')+'</a>';
 document.getElementById('nav').innerHTML=WOS_NAV(2);
 document.getElementById('foot').innerHTML=WOS_FOOT(2);
 </script>

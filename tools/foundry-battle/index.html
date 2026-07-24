@@ -17,10 +17,8 @@
 <title>兵器工場争奪戦 フィールド作戦シミュレータ｜作戦計画・模擬戦 | ホワサバ ツールラボ</title>
 <meta name="description" content="ホワイトアウトサバイバル「兵器工場争奪戦」のフィールドツール。作戦シミュレータでチーム編成とフェーズ別の行動を計画し、模擬戦シミュレータで敵の動きを加えて占領ポイント・バフをリアルタイム試算。結果は共有リンクで共有可能。">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
-<link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/tools/foundry-battle/index.html">
-<link rel="alternate" hreflang="en" href="https://whitesim-lab.com/tools/foundry-battle/index.html?lang=en">
-<link rel="stylesheet" href="../../assets/site.css?v=93">
-<script>(function(){try{var l=new URLSearchParams(location.search).get("lang")||localStorage.getItem("wos_lang")||"ja";if(l!=="en")l="ja";document.documentElement.setAttribute("data-wos-lang",l);}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
+<link rel="stylesheet" href="/assets/site.css?v=93">
+<script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
 <style>
   /* ===== 兵器工場争奪戦ツール(アイスブルー基調・スコープ .fs) ===== */
   .fs{ --fbg:#e9f2f8; --fpanel:#fff; --fpanel2:#f1f7fb; --fline:#d4e2ee; --ftxt:#22323f; --fink:#1a2a37; --fmut:#6c8295;
@@ -411,10 +409,10 @@
     .fs-leadtag,.fs-pts{ font-size:7.5px; max-width:52px; }
   }
 </style>
-<link rel="icon" type="image/svg+xml" href="../../favicon.svg?v=85">
-<link rel="icon" type="image/png" href="../../favicon.png?v=85">
-<link rel="shortcut icon" href="../../favicon.ico?v=85">
-<link rel="apple-touch-icon" href="../../favicon.png?v=85">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg?v=85">
+<link rel="icon" type="image/png" href="/favicon.png?v=85">
+<link rel="shortcut icon" href="/favicon.ico?v=85">
+<link rel="apple-touch-icon" href="/favicon.png?v=85">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ホワサバ ツールラボ">
 <meta property="og:title" content="兵器工場争奪戦 フィールド作戦シミュレータ">
@@ -423,6 +421,7 @@
 <meta property="og:image" content="https://whitesim-lab.com/favicon.png?v=85">
 <meta name="twitter:card" content="summary">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4593324513914979" crossorigin="anonymous"></script>
+<link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/tools/foundry-battle/"><link rel="alternate" hreflang="en" href="https://whitesim-lab.com/en/tools/foundry-battle/"><link rel="alternate" hreflang="x-default" href="https://whitesim-lab.com/tools/foundry-battle/">
 <link rel="canonical" href="https://whitesim-lab.com/tools/foundry-battle/">
 </head>
 <body>
@@ -577,8 +576,8 @@
 <div id="modalHost"></div>
 <div class="fb-toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="../../assets/config.js?v=93"></script>
-<script src="../../assets/toolkit.js?v=93"></script>
+<script src="/assets/config.js?v=93"></script>
+<script src="/assets/toolkit.js?v=93"></script>
 <script>
   try{
     document.getElementById('nav').innerHTML = window.WOS_NAV(2);
