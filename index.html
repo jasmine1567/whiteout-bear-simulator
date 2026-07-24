@@ -16,8 +16,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title id="pgtitle">ホワサバ熊狩り攻略 計算ツール&データ解析 | ホワサバ ツールラボ</title>
 <meta name="description" id="pgdesc" content="ホワイトアウト・サバイバルの熊狩り(Bear Hunt)攻略。ダメージシミュレーターを中心に、左英雄チェッカー・兵士比率比較・指揮官タイプ診断など遊べる無料ツールと11本の攻略記事。">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://docs.google.com; object-src 'none'; base-uri 'none'">
-<link rel="stylesheet" href="/assets/site.css?v=93">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://docs.google.com https://www.youtube-nocookie.com; object-src 'none'; base-uri 'none'">
+<link rel="stylesheet" href="/assets/site.css?v=94">
 <script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=85">
 <link rel="icon" type="image/png" href="/favicon.png?v=85">
@@ -151,6 +151,13 @@
 <div id="readCats"></div>
 </div>
 
+<style>
+  /* 公式メディア埋め込み(YouTube公式埋め込み機能を利用) */
+  .wos-media{margin:14px 0;border:1px solid #e5e7f2;border-radius:12px;overflow:hidden;background:#fff}
+  .wos-media .vid{position:relative;width:100%;padding-top:56.25%}
+  .wos-media iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .wos-media .cap{padding:8px 12px;font-size:11px;color:#6b7385;line-height:1.6;border-top:1px solid #f0f0f6}
+</style>
 <section class="tool-article" id="site-intro">
 <div class="i18n-ja">
   <h2>「ホワサバ ツールラボ」について</h2>
@@ -158,6 +165,11 @@
 
   <h2>ホワイトアウトサバイバルの「熊狩り」とは</h2>
   <p>熊狩りは、同盟のメンバーが協力して巨大な熊に「集結」し、与えたダメージの合計を競う定期イベントです。最終的なダメージは、<strong>どの英雄を集結主（左）に置くか・兵種の比率・専用装備・天賦</strong>などの組み合わせで大きく変わります。「強い英雄を入れたのに伸びない」「同じ戦力なのに人によって差が出る」といったことが起きやすく、<strong>正しい知識があるかどうかで結果が何倍も変わる</strong>のが熊狩りの面白さであり難しさです。当サイトのツールは、この「変わりやすさ」を試算・可視化して、ムダな課金や強化を避けながら効率よく伸ばすことを目的にしています。</p>
+
+  <h2>ゲームの雰囲気は公式動画で</h2>
+  <p>ホワサバをまだ遊んだことがない方・最新情報を映像で見たい方は、開発元の公式YouTubeチャンネルをどうぞ。ゲーム紹介や初心者向けガイドが公開されています。</p>
+  <div class="wos-media"><div class="vid"><iframe loading="lazy" src="https://www.youtube-nocookie.com/embed/videoseries?list=UULqmw1NCVY3xR494YT74WaA" title="ホワイトアウト・サバイバル【公式】 最新動画" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+  <div class="cap">出典：<a href="https://www.youtube.com/@WhiteoutSurvivalOfficial_JA" target="_blank" rel="noopener noreferrer">ホワイトアウト・サバイバル【公式】YouTubeチャンネル</a>の最新動画（YouTube公式の埋め込み機能で表示）。動画の著作権は Century Games に帰属します。</div></div>
 
   <h2>このサイトでできること（ツール一覧）</h2>
   <p>すべて無料・登録不要で、スマホからも使えます。目的に合わせてお選びください。</p>
@@ -201,6 +213,11 @@
   <p class="ta-lead">This site is a <strong>free set of strategy tools and guides</strong> for Japanese-speaking — and now English-speaking — players of the mobile strategy game <strong>Whiteout Survival</strong>. Our theme is beating alliance events like <strong>Bear Hunt</strong> and PvP (Foundry Battle, Castle Battle) <strong>by the numbers</strong> rather than by feel. Everything is made and maintained by hand by an active player (Jasmine), based on in-game testing and public information.</p>
   <h2>What is Bear Hunt in Whiteout Survival?</h2>
   <p>Bear Hunt is a recurring event where alliance members rally a giant bear together and compete on total damage. Final damage shifts hugely with <strong>who you set as rally leader (left), your troop ratio, exclusive gear and talents</strong>. It's easy to see "I added a strong hero but it didn't help" or big gaps between players with similar power — which is exactly why <strong>the right knowledge can multiply your result</strong>. Our tools estimate and visualize that variability so you can grow efficiently and avoid wasted spending or upgrades.</p>
+  <h2>Get a feel for the game — official videos</h2>
+  <p>New to Whiteout Survival, or want the latest in video form? The developer's official YouTube channel publishes game introductions and beginner guides.</p>
+  <div class="wos-media"><div class="vid"><iframe loading="lazy" src="https://www.youtube-nocookie.com/embed/videoseries?list=UULqmw1NCVY3xR494YT74WaA" title="Whiteout Survival Official (JA) latest videos" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+  <div class="cap">Source: latest videos from the <a href="https://www.youtube.com/@WhiteoutSurvivalOfficial_JA" target="_blank" rel="noopener noreferrer">official Whiteout Survival Japan YouTube channel</a>, shown via YouTube's official embed feature. Video copyright belongs to Century Games.</div></div>
+
   <h2>What you can do here (tools)</h2>
   <p>All free, no sign-up, and mobile-friendly. Pick what fits your goal.</p>
   <ul>
@@ -241,7 +258,7 @@
 <div id="about-sec"></div>
 </div>
 <div id="foot"></div>
-<script src="/assets/config.js?v=93"></script><script src="/assets/toolkit.js?v=93"></script>
+<script src="/assets/config.js?v=94"></script><script src="/assets/toolkit.js?v=94"></script>
 <script>
 var PLAY = [
   ["tools/frost-dragon/index.html", "霜竜イベント 配置計算", "Frost Dragon Placement", "参加同盟をどの入れ物に入れるか自動計算", "Auto-assign alliances to clear the border", "❄", "tt-c3", "新", "New"],

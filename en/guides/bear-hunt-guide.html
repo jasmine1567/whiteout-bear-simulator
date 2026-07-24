@@ -15,8 +15,8 @@
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title id="pgtitle">熊狩行動のダメージの仕組みを徹底解説 | ホワサバ ツールラボ</title><meta name="description" id="pgdesc" content="ホワサバ熊狩行動のダメージの仕組みを徹底解説。兵力・集結主・参加者4枠・兵種比率・シリル・専用装備までの総合ガイド。">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://docs.google.com; object-src 'none'; base-uri 'none'">
-<link rel="stylesheet" href="/assets/site.css?v=93">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com https://platform.twitter.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://docs.google.com https://platform.twitter.com https://syndication.twitter.com; object-src 'none'; base-uri 'none'">
+<link rel="stylesheet" href="/assets/site.css?v=94">
 <script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script><link rel="icon" type="image/svg+xml" href="/favicon.svg?v=85">
 <link rel="icon" type="image/png" href="/favicon.png?v=85">
 <link rel="shortcut icon" href="/favicon.ico?v=85">
@@ -67,7 +67,7 @@
 <p>もっとも誤解が多いのがここです。集結に参加する側は、編成の左端(1人目)に置いた英雄の「第1遠征スキル」だけが集結全体へのバフ候補になります。英雄のレベルや星は関係なく、見られるのはスキルレベルのみです。採用枠は4つで、基本は先着順、ただし後から参加した人のスキルレベルが採用済みのものより高い場合のみ入れ替わります。</p>
 <p>もう一つ重要なのは合成のされ方です。同じ種類のスキルは「足し算」、違う種類のスキルは「かけ算」で効きます。たとえば「全軍与ダメ+25%」を4人並べると合計+100%(2.0倍)ですが、「与ダメ+25%×2人」と「攻撃+25%×2人」に分けると1.5×1.5=2.25倍となり、同じスキルレベルでも約12%高くなります。与ダメ系・攻撃系・殺傷系・敵被ダメ系・確率系をバラけさせるのが理論上の最適です。</p>
 <h2>兵種比率はどう決めるべきか</h2>
-<p>熊は反撃しないため、本来は耐久役の盾兵は不要に思えます。しかし実測では「弓兵100%」はバランス編成より約2割ダメージが落ちることが確認されており、盾・槍を少量混ぜた方が伸びます。定番は盾10:槍30:弓60で、弓兵が足りない場合は槍兵に寄せる形が無難です。当サイトのシミュレーターは、この実測傾向(兵種ゼロのペナルティ)をモデルに組み込んでいます。</p>
+<p>熊は反撃しないため、本来は耐久役の盾兵は不要に思えます。しかし「弓兵100%」はバランス編成より約2割ダメージが落ちるとされており(攻略サイトの<a href="https://altema.jp/whiteoutsurvival/kumakari" target="_blank" rel="noopener noreferrer">アルテマの編成記事</a>にも「100%編成は60%比率より約2割低下」と同趣旨の記載があります)、盾・槍を少量混ぜた方が伸びます。定番は盾10:槍30:弓60で、弓兵が足りない場合は槍兵に寄せる形が無難です。当サイトのシミュレーターは、この実測傾向(兵種ゼロのペナルティ)をモデルに組み込んでいます。</p>
 <table>
 <tr><th>比率(盾:槍:弓)</th><th>特徴</th></tr>
 <tr><td>10:30:60</td><td>実測で評価の高い定番。迷ったらこれ</td></tr>
@@ -80,6 +80,24 @@
 <h2>結局なにから強化すればいい?</h2>
 <p>優先度は環境によって変わるため、一概には言えません。だからこそ当サイトの熊狩ダメージ・シミュレーターでは、現在のあなたの設定を基準に「攻撃+10%」「殺傷+10%」「Tierアップ」「シリル+1Lv」「英雄入れ替え」などを実際に計算し、「その1手で何%伸びるか」をランキング表示します。まずは自分のステータスを入れて試してみてください。</p>
 <div class="cta"><a class="btn" href="../tools/bear-hunt/index.html">🐻 シミュレーターを使ってみる</a></div>
+<h2>第三者の実測検証:何がどれだけ効くのか</h2>
+<p>当サイトのモデルとは別に、攻略サイトのアルテマが実際のゲーム内で「同じ条件から1要素ずつ変えて熊狩ダメージを測る」検証を公開しています(公式Xアカウントも紹介した記事です)。要因ごとの上昇率が具体的で、強化の優先順位を考えるうえで参考になるので、要点を引用します。数字は下の折りたたみから確認してください。</p>
+<details class="wos-acc"><summary>📊 検証データを見る:要因別のダメージ上昇率(アルテマ実測)</summary><div class="wos-acc-in">
+<p>初期条件は第4世代SR英雄(Lv80・星0)で698,518ダメージ。そこから1要素ずつ変えた場合の上昇率です。</p>
+<table>
+<tr><th>変更した要素</th><th>実測の上昇率</th></tr>
+<tr><td>英雄をSR→SSRに変更</td><td>約+210%</td></tr>
+<tr><td>火力バフスキル持ちを搭載</td><td>約+33%</td></tr>
+<tr><td>レジェンド装備を強化</td><td>約+16%</td></tr>
+<tr><td>英雄レベルを上げる</td><td>約+15%</td></tr>
+<tr><td>部隊バフアイテムを使用</td><td>約+10%</td></tr>
+<tr><td>領主装備を強化</td><td>約+3.7%</td></tr>
+<tr><td>ペットスキルを発動</td><td>約+1%</td></tr>
+</table>
+<p>各強化を組み合わせた最終結果は約+422%(8,716,271ダメージ)。「英雄の質(レアリティとスキル)が最も大きく、装備・レベルが中規模、ブースト系は上乗せ」という傾向は、当サイトのモデルおよび本文の優先順位ともよく一致しています。</p>
+<p style="font-size:11px;color:#6b7385">出典:<a href="https://altema.jp/whiteoutsurvival/kumakarikensyou" target="_blank" rel="noopener noreferrer">アルテマ「熊狩行動でダメージが出る方法を検証してみた」</a>(検証条件・詳細はリンク先参照)。数値は検証時点のもので、世代進行やアップデートで変わる可能性があります。</p>
+</div></details>
+<div class="tw-embed"><blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">⚔️イベント検証攻略記事のご紹介⚔️ 【熊狩行動でダメージが出る方法を検証してみた】…熊狩行動で様々な編制を試しダメージ値変化の状況を記事にまとめていただきました!✨ ダメージ上昇のヒントとしてご活用くださいね!</p>&mdash; ホワイトアウト・サバイバル(ホワサバ)【公式】 (@WOS_Japan) <a href="https://x.com/WOS_Japan/status/1866769908379660506">X で見る</a></blockquote></div>
 <h2>よくある質問(FAQ)</h2>
 <dl class="faq">
 <dt>Q. 参加者の英雄レベルや装備はダメージに影響しますか?</dt>
@@ -133,6 +151,24 @@
 <h2>So what should you upgrade first?</h2>
 <p>Priority depends on your account, so there's no single answer. That's exactly why our Bear Hunt damage simulator computes things like "ATK +10%", "Lethality +10%", "Tier up", "Cyrille +1 Lv" and "swap hero" from your current setup, and ranks how much each single move raises damage. Enter your stats and try it.</p>
 <div class="cta"><a class="btn" href="../tools/bear-hunt/index.html">🐻 Try the simulator</a></div>
+<h2>Third-party verification: what moves damage, and by how much</h2>
+<p>Separately from our model, Japanese strategy site Altema published an in-game test changing one factor at a time from the same baseline (the official WOS Japan X account featured the article). The per-factor gains are concrete and useful for prioritizing — open the panel below for the numbers.</p>
+<details class="wos-acc"><summary>📊 View the data: measured damage gain per factor (Altema)</summary><div class="wos-acc-in">
+<p>Baseline: Gen-4 SR heroes (Lv80, 0 stars) dealing 698,518 damage. Gains from changing one factor at a time:</p>
+<table>
+<tr><th>Factor changed</th><th>Measured gain</th></tr>
+<tr><td>Heroes SR → SSR</td><td>~+210%</td></tr>
+<tr><td>Damage-buff skills equipped</td><td>~+33%</td></tr>
+<tr><td>Legendary gear upgraded</td><td>~+16%</td></tr>
+<tr><td>Hero levels raised</td><td>~+15%</td></tr>
+<tr><td>Troop buff items used</td><td>~+10%</td></tr>
+<tr><td>Chief gear upgraded</td><td>~+3.7%</td></tr>
+<tr><td>Pet skill active</td><td>~+1%</td></tr>
+</table>
+<p>Combined, the upgrades reached ~+422% (8,716,271 damage). The pattern — hero quality (rarity & skills) largest, gear/levels mid-size, boosts on top — matches our model and this article's priority order well.</p>
+<p style="font-size:11px;color:#6b7385">Source: <a href="https://altema.jp/whiteoutsurvival/kumakarikensyou" target="_blank" rel="noopener noreferrer">Altema, "Bear Hunt damage verification" (JP)</a>. Values are as of the test and may shift with generations and updates.</p>
+</div></details>
+<div class="tw-embed"><blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">⚔️イベント検証攻略記事のご紹介⚔️ 【熊狩行動でダメージが出る方法を検証してみた】…ダメージ上昇のヒントとしてご活用くださいね!</p>&mdash; Whiteout Survival Japan (Official) (@WOS_Japan) <a href="https://x.com/WOS_Japan/status/1866769908379660506">View on X</a></blockquote></div>
 <h2>FAQ</h2>
 <dl class="faq">
 <dt>Q. Do joiner hero level or gear affect damage?</dt>
@@ -144,7 +180,7 @@
 </dl></div>
 <div class="relbar" id="relbar"></div></div><nav class="relposts" aria-label="関連記事"><h2 class="relposts-h">Related articles</h2><ul><li><a href="troop-ratio.html">What's the right troop ratio?</a></li><li><a href="leader-formation.html">Rally leader: recommended formations & heroes</a></li><li><a href="damage-not-growing.html">Why your damage isn't growing, and fixes</a></li><li><a href="cyril-talent.html">How strong is Cyril? Talent tested in numbers</a></li></ul></nav>
 <div id="foot"></div>
-<script src="/assets/config.js?v=93"></script><script src="/assets/toolkit.js?v=93"></script>
+<script src="/assets/config.js?v=94"></script><script src="/assets/toolkit.js?v=94"></script>
 <script>(function(){var EN=(window.WOS_LANG==="en");
 document.getElementById("htmlroot").lang=EN?"en":"ja";
 document.getElementById("pgtitle").textContent=EN?"How Bear Hunt damage works \u2014 a full guide | Whiteout Tools Lab":"熊狩行動のダメージの仕組みを徹底解説 | ホワサバ ツールラボ";
@@ -154,4 +190,5 @@ document.getElementById("updbox").innerHTML=WOS_UPDATEBOX({date:"2026-06-15",gen
 if(EN){document.getElementById("bodyja").style.display="none";document.getElementById("bodyen").style.display="block";}
 document.getElementById("relbar").innerHTML='<a href="../tools/left-hero/index.html'+(EN?"":"")+'">'+(EN?"→ Left-Hero Checker":"→ Left-Hero Checker")+'</a>'+'<a href="../tools/troop-ratio/index.html'+(EN?"":"")+'">'+(EN?"→ Troop Ratio Simulator":"→ Troop Ratio Simulator")+'</a>'+'<a href="../tools/bear-hunt/index.html'+(EN?"":"")+'">'+(EN?"→ Damage Simulator":"→ Bear Hunt Simulator")+'</a>';
 document.getElementById("nav").innerHTML=WOS_NAV(1);
-document.getElementById("foot").innerHTML=WOS_FOOT(1);})();</script></body></html>
+document.getElementById("foot").innerHTML=WOS_FOOT(1);})();</script><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</body></html>

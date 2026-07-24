@@ -151,6 +151,119 @@
     if(document.readyState!=='loading') run(); else document.addEventListener('DOMContentLoaded',run);
   })();
 
+  /* ===== 記事共通: 折りたたみUI + 出典・参考文献ボックス =====
+     - details.wos-acc : 重いデータ表を「見たい人だけ開く」ための共通アコーディオン
+     - .wos-srcbox     : 記事ごとの出典リスト(下のWOS_SOURCESマップから自動挿入)
+     出典は 公式 / 攻略サイト / コミュニティ / 当サイト検証 のバッジで区別する。 */
+  (function(){
+    function injectCss(){
+      if(document.getElementById('wos-src-css')) return;
+      var s=document.createElement('style'); s.id='wos-src-css';
+      s.textContent=
+        'details.wos-acc{border:1px solid #e5e7f2;border-radius:11px;background:#fbfaff;margin:12px 0;overflow:hidden}'
+        +'details.wos-acc>summary{cursor:pointer;padding:11px 14px;font-size:13px;font-weight:800;color:#1d2233;'
+        +'list-style:none;display:flex;align-items:center;gap:8px;user-select:none}'
+        +'details.wos-acc>summary::-webkit-details-marker{display:none}'
+        +'details.wos-acc>summary::after{content:"▼";margin-left:auto;font-size:10px;color:#6b7385;transition:transform .15s}'
+        +'details.wos-acc[open]>summary::after{transform:rotate(180deg)}'
+        +'details.wos-acc>summary:hover{background:#f4f3fb}'
+        +'details.wos-acc>.wos-acc-in{padding:2px 14px 12px;font-size:12.5px;line-height:1.8;color:#3b4254}'
+        +'details.wos-acc table{width:100%;border-collapse:collapse;margin:8px 0;font-size:12.5px}'
+        +'details.wos-acc th,details.wos-acc td{border:1px solid #e5e7f2;padding:6px 9px;text-align:left}'
+        +'details.wos-acc th{background:#f4f3fb;white-space:nowrap}'
+        +'details.wos-src{margin:18px 0 6px}'
+        +'.wos-src-ul{margin:4px 0;padding-left:0;list-style:none}'
+        +'.wos-src-ul li{margin:7px 0;font-size:12.5px;line-height:1.7}'
+        +'.wos-src-ul a{color:#e85d12;font-weight:700;text-decoration:none}'
+        +'.wos-src-ul a:hover{text-decoration:underline}'
+        +'.wos-src-k{display:inline-block;font-size:10px;font-weight:800;border-radius:4px;padding:1px 6px;margin-right:7px;vertical-align:1px}'
+        +'.wos-src-k.of{background:#dff1e2;color:#1c7a3d}'
+        +'.wos-src-k.st{background:#e3edff;color:#2b5cc7}'
+        +'.wos-src-k.cm{background:#f3e8ff;color:#7a3dc7}'
+        +'.wos-src-k.we{background:#ffe7d6;color:#c94e00}'
+        +'.wos-src-note{font-size:11px;color:#6b7385;margin:8px 0 0}'
+        +'.tw-embed{margin:14px 0}'
+        +'.tw-embed blockquote.twitter-tweet{border:1px solid #e5e7f2;border-radius:12px;padding:14px 16px;'
+        +'margin:10px 0;background:#fbfaff;font-size:13px;line-height:1.8;color:#333}'
+        +'.tw-embed blockquote.twitter-tweet a{color:#e85d12;word-break:break-all}';
+      document.head.appendChild(s);
+    }
+    /* 記事ファイル名 → 出典リスト。k: of=公式 / st=攻略サイト / cm=コミュニティ・X / we=当サイト */
+    var SRC={
+      'bear-hunt-guide.html':[
+        ['st','アルテマ「熊狩行動でダメージが出る方法を検証してみた」(公式Xでも紹介された実測検証)','Altema: Bear Hunt damage verification (featured by the official X account)','https://altema.jp/whiteoutsurvival/kumakarikensyou'],
+        ['of','ホワサバ公式X:上記検証記事の紹介ポスト','Official WOS Japan X: post featuring the verification article','https://x.com/WOS_Japan/status/1866769908379660506'],
+        ['st','アルテマ「熊狩行動のおすすめ英雄編成と兵士比率」','Altema: recommended Bear Hunt formations & troop ratio (JP)','https://altema.jp/whiteoutsurvival/kumakari']],
+      'troop-ratio.html':[
+        ['st','アルテマ「熊狩行動のおすすめ英雄編成と兵士比率」(10:30:60推奨・弓100%は約2割低下の記載)','Altema: Bear Hunt formations & ratio (recommends 10:30:60; notes ~20% drop at 100% archers)','https://altema.jp/whiteoutsurvival/kumakari'],
+        ['of','ホワサバ公式X:熊狩り検証記事の紹介ポスト','Official WOS Japan X: Bear Hunt verification feature','https://x.com/WOS_Japan/status/1866769908379660506'],
+        ['we','当サイト:兵士比率シミュレータ(自分の兵数で横並び比較)','This site: Troop Ratio Simulator','/tools/troop-ratio/index.html']],
+      'left-hero.html':[
+        ['st','アルテマ「熊狩行動のおすすめ英雄編成と兵士比率」(参加者は左端スロットのみ効果発揮の記載)','Altema: Bear Hunt formations (joiners: only the leftmost slot takes effect)','https://altema.jp/whiteoutsurvival/kumakari'],
+        ['of','ホワサバ公式X:ユーザー発信の熊狩り攻略紹介','Official WOS Japan X: community Bear Hunt guide feature','https://x.com/WOS_Japan/status/1753357597321912642'],
+        ['we','当サイト:左英雄チェッカー(乗りで効くかを一発判定)','This site: Left-Hero Checker','/tools/left-hero/index.html']],
+      'leader-formation.html':[
+        ['st','アルテマ「熊狩行動のおすすめ英雄編成と兵士比率」(集結主は3枠すべて火力バフ持ちを推奨)','Altema: Bear Hunt formations (rally leader: all 3 slots with damage-buff heroes)','https://altema.jp/whiteoutsurvival/kumakari'],
+        ['of','ホワサバ公式X:ユーザー発信の熊狩り攻略紹介','Official WOS Japan X: community Bear Hunt guide feature','https://x.com/WOS_Japan/status/1753357597321912642'],
+        ['we','当サイト:熊狩ダメージ・シミュレーター(編成A/B比較)','This site: Bear Hunt Damage Simulator','/tools/bear-hunt/index.html']],
+      'damage-not-growing.html':[
+        ['st','アルテマ「熊狩行動でダメージが出る方法を検証してみた」(要因別の実測上昇率)','Altema: damage verification (measured gain per factor)','https://altema.jp/whiteoutsurvival/kumakarikensyou'],
+        ['cm','まゆか【ホワサバ攻略】:ダメージが伸びない原因の解説動画(X)','Mayuka (JP strategy YouTuber): why damage stalls, on X','https://x.com/mayuka_wos/status/1821853719958581403'],
+        ['we','当サイト:ダメージが伸びない原因診断ツール','This site: Damage Doctor tool','/tools/damage-doctor/index.html']],
+      'f2p-damage.html':[
+        ['st','アルテマ「熊狩行動でダメージが出る方法を検証してみた」(課金に依らない上昇要素の実測)','Altema: damage verification (measured gains from non-paid factors)','https://altema.jp/whiteoutsurvival/kumakarikensyou'],
+        ['cm','かかち先生:熊狩り特化ペット育成ガイド(無課金・微課金向け/note)','Kakachi-sensei: Bear Hunt pet guide for F2P/light spenders (note, JP)','https://note.com/ocatyan_0227/n/ndf5970ff7ab9'],
+        ['we','当サイト:シリル徹底研究(無課金で+30%の狩人の心得)','This site: Cyrille deep-dive (+30% talent, free to level)','cyril-expert.html']],
+      'light-spender.html':[
+        ['st','アルテマ「熊狩行動でダメージが出る方法を検証してみた」(強化要素別の費用対効果の目安)','Altema: damage verification (cost-effectiveness reference per upgrade)','https://altema.jp/whiteoutsurvival/kumakarikensyou'],
+        ['cm','かかち先生:熊狩り特化ペット育成ガイド(note)','Kakachi-sensei: Bear Hunt pet guide (note, JP)','https://note.com/ocatyan_0227/n/ndf5970ff7ab9'],
+        ['we','当サイト:シリル徹底研究(専門家の育成優先度)','This site: Cyrille deep-dive (expert priority)','cyril-expert.html']],
+      'cyril-talent.html':[
+        ['of','ホワサバ公式wiki「シリル」(スキル・才能の一次情報)','Official WOS wiki: Cyrille (primary source)','https://www.whiteoutsurvival.wiki/ja/experts/%e3%82%b7%e3%83%aa%e3%83%ab/'],
+        ['st','アルテマ「シリルの評価とスキル」(総合9.0点)','Altema: Cyrille review (9.0/10)','https://altema.jp/whiteoutsurvival/siriru'],
+        ['we','当サイト:シリル徹底研究(全スキル一覧と育成優先度)','This site: Cyrille deep-dive (all skills & priority)','cyril-expert.html']],
+      'beginner-faq.html':[
+        ['st','アルテマ「熊狩行動のおすすめ英雄編成と兵士比率」','Altema: Bear Hunt formations & ratio (JP)','https://altema.jp/whiteoutsurvival/kumakari'],
+        ['cm','ロコのカンタン攻略ガイド「熊狩行動の攻略法(初心者&無課金向け)」','Roko: Bear Hunt basics for beginners (JP)','https://game.mariboshi.com/ws-kuma/'],
+        ['of','ホワサバ公式X:ユーザー発信の熊狩り攻略紹介','Official WOS Japan X: community guide feature','https://x.com/WOS_Japan/status/1753357597321912642']],
+      'common-myths.html':[
+        ['st','アルテマ「熊狩行動でダメージが出る方法を検証してみた」(俗説の検証に使える実測データ)','Altema: damage verification (measured data useful against myths)','https://altema.jp/whiteoutsurvival/kumakarikensyou'],
+        ['st','アルテマ「熊狩行動のおすすめ英雄編成と兵士比率」','Altema: Bear Hunt formations & ratio (JP)','https://altema.jp/whiteoutsurvival/kumakari']],
+      'how-to-use.html':[
+        ['we','当サイト:熊狩ダメージ・シミュレーター本体','This site: the Bear Hunt Damage Simulator','/tools/bear-hunt/index.html'],
+        ['st','アルテマ「熊狩行動のおすすめ英雄編成と兵士比率」(入力の参考になる編成の考え方)','Altema: formation thinking useful for inputs (JP)','https://altema.jp/whiteoutsurvival/kumakari']]
+    };
+    function run(){
+      if((location.pathname||'').indexOf('/guides/')<0) return;
+      if(document.querySelector('.wos-srcbox')) return;
+      var file=(location.pathname.split('/').pop()||'');
+      var list=SRC[file]; if(!list) return;
+      injectCss();
+      var K_JA={of:'公式',st:'攻略サイト',cm:'コミュニティ',we:'当サイト'};
+      var K_EN={of:'Official',st:'Strategy site',cm:'Community',we:'This site'};
+      var base=(window.WOS_BASE||'');
+      var items=list.map(function(s){
+        var kind=s[0], label=EN?s[2]:s[1], url=s[3];
+        if(url.charAt(0)==='/') url=base+url; /* サイト内絶対パスは言語ツリーに合わせる */
+        var cls={of:'of',st:'st',cm:'cm',we:'we'}[kind]||'st';
+        var ext=/^https?:/.test(url);
+        return '<li><span class="wos-src-k '+cls+'">'+(EN?K_EN[kind]:K_JA[kind])+'</span>'
+          +'<a href="'+url+'"'+(ext?' target="_blank" rel="noopener noreferrer"':'')+'>'+label+'</a></li>';
+      }).join('');
+      var box=document.createElement('details');
+      box.className='wos-acc wos-srcbox wos-src';
+      box.innerHTML='<summary>📚 '+(EN?'Sources & references':'出典・参考文献')+' ('+list.length+')</summary>'
+        +'<div class="wos-acc-in"><ul class="wos-src-ul">'+items+'</ul>'
+        +'<p class="wos-src-note">'+(EN
+          ?'Per site policy we distinguish official info, strategy sites, community voices and our own research. External content belongs to its authors.'
+          :'当サイトの方針として、公式情報・攻略サイト・コミュニティの声・当サイト検証を区別して表記しています。外部リンクの内容は各著作者に帰属します。')+'</p></div>';
+      var rel=document.querySelector('.relposts');
+      if(rel && rel.parentNode) rel.parentNode.insertBefore(box, rel);
+      else{ var w=document.querySelector('div.wrap'); if(w) w.appendChild(box); }
+    }
+    if(document.readyState!=='loading') run(); else document.addEventListener('DOMContentLoaded',run);
+  })();
+
   /* ツールページ共通の注意書き: 計算結果が推定値であること・検証環境・最終更新・出典方針を明示。
      .wrap 末尾(フッター前)に1つだけ差し込む。各ツールのJSには触れない。 */
   (function(){

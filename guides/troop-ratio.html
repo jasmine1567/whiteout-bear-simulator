@@ -19,7 +19,7 @@
 <title>【ホワサバ】熊狩りの兵士比率は何が正解?10:30:60・10:10:80・1:1:8を比較 | ホワサバ ツールラボ</title>
 <meta name="description" content="ホワサバ熊狩りの兵士比率を比較解説。10:30:60・10:10:80・1:1:8・弓100%の違いと、弓全振りが損な理由。あなたの兵数で最適比率を出すシミュレータ付き。">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
-<link rel="stylesheet" href="/assets/site.css?v=93">
+<link rel="stylesheet" href="/assets/site.css?v=94">
 <script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
 <!-- ▼ AdSense承認後: コードスニペットを貼り付け ▼ -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=85">
@@ -65,8 +65,8 @@
 <h2>なぜ弓100%が最適にならないのか</h2>
 <p>熊は反撃しないので耐久役は不要に思えますが、実際には弓全振りは損をします。理由は2つあります。</p>
 <p><b>理由1:兵数の逓減。</b>兵士の量はダメージに対して平方根的に効きます。1兵種に全部を集中させると、その兵種内で伸びが頭打ちになり、複数兵種に分散させた方が合計が伸びます。</p>
-<p><b>理由2:ゼロ兵種ペナルティ。</b>公開検証では、盾や槍がゼロの編成にはダメージの目減りが確認されています。少量でも混ぜておくことで、このペナルティを回避できます。</p>
-<p>この2点から、「弓に寄せるが全振りはしない」――つまり10:30:60や10:10:80のような<b>弓優勢の混成</b>が定番になっているわけです。</p>
+<p><b>理由2:ゼロ兵種ペナルティ。</b>盾や槍がゼロの編成にはダメージの目減りがあるとされています。攻略サイトの<a href="https://altema.jp/whiteoutsurvival/kumakari" target="_blank" rel="noopener noreferrer">アルテマの編成記事</a>にも「弓兵が多すぎると逆にダメージが落ちる仕様があり、100%編成は60%比率より約2割低下する」と明記されており、当サイトの推奨と一致しています。少量でも混ぜておくことで、このペナルティを回避できます。</p>
+<p>この2点から、「弓に寄せるが全振りはしない」――つまり10:30:60や10:10:80のような<b>弓優勢の混成</b>が定番になっているわけです。ちなみにアルテマの推奨も当サイトと同じ<b>盾10:槍30:弓60</b>が基本です。</p>
 
 <div class="ad-slot"><!-- AdSense承認後 --></div>
 
@@ -107,14 +107,14 @@
 <div class="callout"><b>📊 Raw troop damage by the numbers</b><br>Community "vacuum" tests (no other buffs) put lancers at ~80-90% and infantry at ~20-30% with marksman at 100%. Infantry damage is so low because infantry are meant as a "wall" with low attack stats. That's exactly why minimizing infantry is rational in Bear Hunt (no counterattack).</div>
 
 <h2>Example: how total damage moves when you change ratio</h2>
-<p>Compare sending 180k total as "0:0:100 (marksman only)" vs "10:30:60." Marksman-only looks like max damage, but (1) concentrating in one type triggers strong crowding decay (square-root effect), and (2) the zero-infantry/lancer penalty applies. As a result, a moderately spread 10:30:60 often gives higher total damage.</p>
+<p>Compare sending 180k total as "0:0:100 (marksman only)" vs "10:30:60." Marksman-only looks like max damage, but (1) concentrating in one type triggers strong crowding decay (square-root effect), and (2) the zero-infantry/lancer penalty applies. As a result, a moderately spread 10:30:60 often gives higher total damage. Japanese strategy site <a href="https://altema.jp/whiteoutsurvival/kumakari" target="_blank" rel="noopener noreferrer">Altema states the same</a>: 100% archers loses roughly 20% versus the 60% ratio, and their base recommendation is also 10:30:60.</p>
 <p>This is a "tendency that fits most people"; your exact optimum depends on your lethality stats. Advanced players fine-tune in 1-5% steps to find their peak. The Troop Ratio Simulator compares multiple ratios with your numbers at once.</p>
 <div class="cta"><a class="btn" href="../tools/troop-ratio/index.html">Compare your optimum</a></div></div><div class="relbar"><a href="../tools/left-hero/index.html">→ Left-Hero Checker</a><a href="../tools/troop-ratio/index.html">→ Troop Ratio Simulator</a><a href="../tools/damage-doctor/index.html">→ Damage Doctor</a><a href="../tools/bear-hunt/index.html">→ Bear Hunt Simulator</a></div>
 </div>
 <nav class="relposts" aria-label="関連記事"><h2 class="relposts-h">Related articles</h2><ul><li><a href="bear-hunt-guide.html">How Bear Hunt damage works (full guide)</a></li><li><a href="damage-not-growing.html">Why your damage isn't growing, and fixes</a></li><li><a href="left-hero.html">What is the left hero? Heroes to use & the 4-slot rule</a></li><li><a href="common-myths.html">7 common Bear Hunt myths</a></li></ul></nav>
 <div id="foot"></div>
-<script src="/assets/config.js?v=93"></script>
-<script src="/assets/toolkit.js?v=93"></script>
+<script src="/assets/config.js?v=94"></script>
+<script src="/assets/toolkit.js?v=94"></script>
 <script>
 document.getElementById('nav').innerHTML=WOS_NAV(1);
 document.getElementById('foot').innerHTML=WOS_FOOT(1);
