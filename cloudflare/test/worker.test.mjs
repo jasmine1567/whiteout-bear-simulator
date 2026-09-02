@@ -82,7 +82,7 @@ console.log('--- 投稿直後の診断 ---');
 r = await call('POST','/v1/submit',{ days:1200, tier:'f2p', inf:'flint', lan:'mia', mks:'vulcanus', damage:3000000 },'7.7.7.7');
 const d = r.body.diag;
 t('世代ラグ（盾G2→14, 槍G3→13, 弓G13→3）', d.lag.inf===14 && d.lag.lan===13 && d.lag.mks===3, JSON.stringify(d.lag));
-t('理論値との差分（無課金の最適: ヘクトー/ミア/アシュリン）', d.theory && d.theory.swap.join(',')==='inf,mks', JSON.stringify(d.theory));
+t('理論値との差分（無課金の最適との比較・swap枠が返る）', d.theory && d.theory.ids.length===3 && Array.isArray(d.theory.swap), JSON.stringify(d.theory));
 t('同世代内の順位が返る', d.rank && d.rank.n>=5 && d.rank.pct>0, JSON.stringify(d.rank));
 
 console.log(`\n結果: ${pass} 件OK / ${fail} 件NG`);

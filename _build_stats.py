@@ -27,7 +27,7 @@ const fs=require('fs'),vm=require('vm');const sb={console};sb.window=sb;vm.creat
 vm.runInContext(fs.readFileSync('assets/heroes.js','utf8'),sb);
 const GM=require('./assets/gen-map.js'), HP=require('./assets/hero-posts.js');
 const H=sb.window.WOS_HEROES.map(h=>({id:h.id,name:h.name,en:(sb.window.WOS_HERO_EN||{})[h.id]||h.id,cls:h.cls,gen:h.gen,rar:h.rar,acq:GM.acqOf(h),
-  leader:h.leader?h.leader.label:null, joiner:h.joiner?h.joiner.label:null, bearNoEffect:!!h.bearNoEffect, post:HP.url(h.id), search:HP.searchUrl(h.name)}));
+  leader:h.leader?h.leader.label:null, joiner:h.joiner?h.joiner.label:null, bearNoEffect:!!h.bearNoEffect, post:HP.url(h.id), search:HP.searchUrl(h.name), wiki:HP.wikiUrl(h)}));
 console.log(JSON.stringify({heroes:H,unlock:GM.UNLOCK,tiers:GM.TIERS,skillEn:sb.window.WOS_SKILL_EN||{}}));
 """], cwd=ROOT, capture_output=True, text=True, check=True)
 _d = json.loads(_dump.stdout)
@@ -225,12 +225,14 @@ def hero_eval(hid, g):
 def hero_card(hid, g, tr):
     h = HEROES[hid]
     (vc, vja, ven), items, (nj, ne) = hero_eval(hid, g)
+    wiki = f'<a class="hc-wiki" href="{h["wiki"]}" target="_blank" rel="noopener">📖 {tr("公式wikiで見る","Official wiki")}</a>'
     if h["post"]:
         x = (f'<blockquote class="twitter-tweet" data-lang="ja" data-dnt="true"><a href="{h["post"]}">'
-             f'{tr("公式X（@WOS_Japan）の英雄紹介を読み込み中…","Loading the official @WOS_Japan post…")}</a></blockquote>')
+             f'{tr("公式X（@WOS_Japan）の英雄紹介を読み込み中…","Loading the official @WOS_Japan post…")}</a></blockquote>{wiki}')
     else:
-        x = (f'<a class="hc-xlink" href="{h["search"]}" target="_blank" rel="noopener">𝕏 '
-             f'{tr("公式アカウントの英雄紹介を探す","Find the official hero post")}</a>')
+        x = (f'<a class="hc-xlink" href="{h["wiki"]}" target="_blank" rel="noopener">📖 '
+             f'{tr("公式wikiで英雄を見る（画像・スキル）","See this hero on the official wiki")}</a>'
+             f'<a class="hc-wiki" href="{h["search"]}" target="_blank" rel="noopener">𝕏 {tr("公式Xの紹介投稿を探す","Find the official X post")}</a>')
     lis = "".join(f"<li>{bi(ja, en)}</li>" for ja, en in items)
     note = f'<div class="note" style="margin-top:6px">{bi(nj, ne or nj)}</div>' if nj else ""
     return f"""<div class="hero-card">

@@ -115,7 +115,17 @@ window.WOS_HEROES = (function() {
       },
       syn: { lan: 0.03 },
     },
-    { id: "zinman", name: "ジンマン", cls: "mks", gen: 1, rar: "SSR" },
+    {
+      id: "zinman",
+      name: "ジンマン",
+      cls: "mks",
+      gen: 1,
+      rar: "SSR",
+      /* 集結主/乗りスキル: 公式wiki(whiteoutsurvival.wiki)の遠征スキル原文からモデル化 2026-09-02 */
+      gearNote: '防衛部隊攻撃+15%(熊補正なし)',
+      joiner: null,
+      leader: { label: '殺傷25(陣地戦の強者)', parts: [{ k: 'leth', v: 0.25 }] }
+    },
     {
       id: "flint",
       name: "フリント",
@@ -202,7 +212,17 @@ window.WOS_HEROES = (function() {
       leader: { label: "20%で全軍ダメ40/3T(正義の剣)", parts: [{ k: "chanceUptime", p: 0.2, dur: 3, v: 0.4 }] },
       syn: { mks: 0.04 },
     },
-    { id: "ahmose", name: "アクモス", cls: "inf", gen: 4, rar: "SSR" },
+    {
+      id: "ahmose",
+      name: "アクモス",
+      cls: "inf",
+      gen: 4,
+      rar: "SSR",
+      /* 集結主/乗りスキル: 公式wiki(whiteoutsurvival.wiki)の遠征スキル原文からモデル化 2026-09-02 */
+      gearNote: '防衛部隊HP+15%(熊補正なし)',
+      joiner: null,
+      leader: { label: '盾与ダメ100/盾攻撃毎60%追撃/被ダメ+25', parts: [{ k: 'tDmg', cls: 'inf', v: 1 }, { k: 'tPeriodic', cls: 'inf', per: 1, v: 0.6 }, { k: 'dmg', v: 0.25, tag: 'dtaken' }] }
+    },
     {
       id: "reina",
       name: "レイナ",
@@ -249,7 +269,7 @@ window.WOS_HEROES = (function() {
       gen: 5,
       rar: "SSR",
       joiner: { label: "盾弓:与ダメ+15%", parts: [{ k: "tDmg", cls: "im", v: 0.15 }] },
-      leader: null,
+      leader: { label: '盾弓与ダメ15/槍20%で100%追撃/5回毎与ダメ25', parts: [{ k: 'tDmg', cls: 'im', v: .15 }, { k: 'tChance', cls: 'lan', p: .2, v: 1 }, { k: 'uptime', per: 5, dur: 2, v: .25 }] },   /* 公式wikiの遠征スキル原文からモデル化 2026-09-02 */
     },
     {
       id: "gwen",
@@ -260,7 +280,17 @@ window.WOS_HEROES = (function() {
       joiner: { label: "敵被ダメ+25%(被ダメ枠)", parts: [{ k: "dmg", v: 0.25, tag: "dtaken" }] },
       leader: { label: "敵被ダメ25(被ダメ枠)", parts: [{ k: "dmg", v: 0.25, tag: "dtaken" }] },
     },
-    { id: "wuming", name: "無名", cls: "inf", gen: 6, rar: "SSR" },
+    {
+      id: "wuming",
+      name: "無名",
+      cls: "inf",
+      gen: 6,
+      rar: "SSR",
+      /* 集結主/乗りスキル: 公式wiki(whiteoutsurvival.wiki)の遠征スキル原文からモデル化 2026-09-02 */
+      gearNote: '防衛部隊防御+15%(熊補正なし)',
+      joiner: null,
+      leader: { label: '与ダメ20/スキルダメ25(≈+5)', parts: [{ k: 'dmg', v: 0.2 }, { k: 'dmg', v: 0.05 }] }
+    },
     {
       id: "renee",
       name: "レネ",
@@ -288,7 +318,7 @@ window.WOS_HEROES = (function() {
       gen: 7,
       rar: "SSR",
       joiner: { label: "槍:与ダメ+20%", parts: [{ k: "tDmg", cls: "lan", v: 0.2 }] },
-      leader: null,
+      leader: { label: '槍与ダメ20(攻守両立)', parts: [{ k: 'tDmg', cls: 'lan', v: .2 }] },   /* 公式wikiの遠征スキル原文からモデル化 2026-09-02 */
     },
     {
       id: "gordon",
@@ -318,7 +348,16 @@ window.WOS_HEROES = (function() {
       },
       syn: { mks: 0.08 },
     },
-    { id: "gatot", name: "ガト", cls: "inf", gen: 8, rar: "SSR" },
+    {
+      id: "gatot",
+      name: "ガト",
+      cls: "inf",
+      gen: 8,
+      rar: "SSR",
+      /* 集結主/乗りスキル: 公式wiki(whiteoutsurvival.wiki)の遠征スキル原文からモデル化 2026-09-02 */
+      bearNoEffect: true,
+      gearNote: '防衛部隊防御+15%(熊補正なし)'
+    },
     {
       id: "sonya",
       name: "ソニヤ",
@@ -362,10 +401,50 @@ window.WOS_HEROES = (function() {
       },
       syn: { inf: 0.03 },
     },
-    { id: "fred", name: "フレッド", cls: "lan", gen: 9, rar: "SSR" },
-    { id: "xura", name: "シュラ", cls: "mks", gen: 9, rar: "SSR" },
-    { id: "gregory", name: "グレゴリー", cls: "inf", gen: 10, rar: "SSR" },
-    { id: "freya", name: "フレイヤ", cls: "lan", gen: 10, rar: "SSR" },
+    {
+      id: "fred",
+      name: "フレッド",
+      cls: "lan",
+      gen: 9,
+      rar: "SSR",
+      /* 集結主/乗りスキル: 公式wiki(whiteoutsurvival.wiki)の遠征スキル原文からモデル化 2026-09-02 */
+      gear: { type: 'atk', min: 0.05, max: 0.15, label: '集結攻撃+5→15%(英傑の鼓舞)' },
+      joiner: null,
+      leader: { label: '槍:4回毎に100%追撃(校正)', parts: [{ k: 'tPeriodic', cls: 'lan', per: 4, v: 1 }] }
+    },
+    {
+      id: "xura",
+      name: "シュラ",
+      cls: "mks",
+      gen: 9,
+      rar: "SSR",
+      /* 集結主/乗りスキル: 公式wiki(whiteoutsurvival.wiki)の遠征スキル原文からモデル化 2026-09-02 */
+      gearNote: '防衛部隊攻撃+15%(熊補正なし)',
+      joiner: null,
+      leader: { label: '弓:2回毎50%追撃(校正)/被ダメ+12/弓与ダメ10', parts: [{ k: 'tPeriodic', cls: 'mks', per: 2, v: 0.5 }, { k: 'dmg', v: 0.125, tag: 'dtaken' }, { k: 'tDmg', cls: 'mks', v: 0.1 }] }
+    },
+    {
+      id: "gregory",
+      name: "グレゴリー",
+      cls: "inf",
+      gen: 10,
+      rar: "SSR",
+      /* 集結主/乗りスキル: 公式wiki(whiteoutsurvival.wiki)の遠征スキル原文からモデル化 2026-09-02 */
+      gearNote: '防衛部隊殺傷+15%(熊補正なし)',
+      joiner: { label: '攻撃+3→15%(灼熱の軍団)', parts: [{ k: 'atk', v: 0.15 }] },
+      leader: { label: '攻撃15/25%で会心(推定+50)', parts: [{ k: 'atk', v: 0.15 }, { k: 'chance', p: 0.25, v: 0.5 }] }
+    },
+    {
+      id: "freya",
+      name: "フレイヤ",
+      cls: "lan",
+      gen: 10,
+      rar: "SSR",
+      /* 集結主/乗りスキル: 公式wiki(whiteoutsurvival.wiki)の遠征スキル原文からモデル化 2026-09-02 */
+      gearNote: '防衛部隊防御+15%(熊補正なし)',
+      joiner: null,
+      leader: { label: '50%で50%追撃(校正)/盾弓与ダメ15', parts: [{ k: 'chance', p: 0.5, v: 0.5 }, { k: 'tDmg', cls: 'im', v: 0.15 }] }
+    },
     {
       id: "blanchette",
       name: "ブランシュ",
@@ -382,8 +461,28 @@ window.WOS_HEROES = (function() {
       },
       syn: { mks: 0.08 },
     },
-    { id: "eleonora", name: "エリオノーラ", cls: "inf", gen: 11, rar: "SSR" },
-    { id: "lloyd", name: "ロイド", cls: "lan", gen: 11, rar: "SSR" },
+    {
+      id: "eleonora",
+      name: "エリオノーラ",
+      cls: "inf",
+      gen: 11,
+      rar: "SSR",
+      /* 集結主/乗りスキル: 公式wiki(whiteoutsurvival.wiki)の遠征スキル原文からモデル化 2026-09-02 */
+      gearNote: '防衛部隊HP+15%(熊補正なし)',
+      joiner: null,
+      leader: { label: '弓与ダメ10/5回毎与ダメ25', parts: [{ k: 'tDmg', cls: 'mks', v: 0.1 }, { k: 'uptime', per: 5, dur: 2, v: 0.25 }] }
+    },
+    {
+      id: "lloyd",
+      name: "ロイド",
+      cls: "lan",
+      gen: 11,
+      rar: "SSR",
+      /* 集結主/乗りスキル: 公式wiki(whiteoutsurvival.wiki)の遠征スキル原文からモデル化 2026-09-02 */
+      gearNote: '防衛部隊攻撃+15%(熊補正なし)',
+      joiner: null,
+      leader: { label: '3T毎槍与ダメ150/40%で殺傷50', parts: [{ k: 'tUptime', cls: 'lan', per: 3, dur: 1, v: 1.5 }, { k: 'chanceLeth', p: 0.4, v: 0.5 }] }
+    },
     {
       id: "rufus",
       name: "ルーファス",
@@ -410,17 +509,126 @@ window.WOS_HEROES = (function() {
       leader: { label: "殺傷25", parts: [{ k: "leth", v: 0.25 }] },
       syn: { inf: 0.04 },
     },
-    { id: "karol", name: "カロール", cls: "lan", gen: 12, rar: "SSR" },
-    { id: "ligeia", name: "ライジーア", cls: "mks", gen: 12, rar: "SSR" },
-    { id: "gisela", name: "ギーゼラ", cls: "inf", gen: 13, rar: "SSR" },
-    { id: "flora", name: "フローラ", cls: "lan", gen: 13, rar: "SSR" },
-    { id: "vulcanus", name: "ウルカヌス", cls: "mks", gen: 13, rar: "SSR" },
-    { id: "elif", name: "エリーフ", cls: "inf", gen: 14, rar: "SSR" },
-    { id: "dominic", name: "ドミニク", cls: "lan", gen: 14, rar: "SSR" },
-    { id: "cara", name: "カーラ", cls: "mks", gen: 14, rar: "SSR" },
-    { id: "hank", name: "ハンク", cls: "inf", gen: 15, rar: "SSR" },
-    { id: "estrella", name: "エステラ", cls: "lan", gen: 15, rar: "SSR" },
-    { id: "viveca", name: "ヴィヴィカ", cls: "mks", gen: 15, rar: "SSR" },
+    {
+      id: "karol",
+      name: "カロール",
+      cls: "lan",
+      gen: 12,
+      rar: "SSR",
+      /* 集結主/乗りスキル: 公式wiki(whiteoutsurvival.wiki)の遠征スキル原文からモデル化 2026-09-02 */
+      gear: { type: 'atk', min: 0.05, max: 0.15, label: '集結攻撃+15%(フロックアサルト)' },
+      joiner: null,
+      leader: { label: '攻撃15(栄光の戦旗)', parts: [{ k: 'atk', v: 0.15 }] }
+    },
+    {
+      id: "ligeia",
+      name: "ライジーア",
+      cls: "mks",
+      gen: 12,
+      rar: "SSR",
+      /* 集結主/乗りスキル: 公式wiki(whiteoutsurvival.wiki)の遠征スキル原文からモデル化 2026-09-02 */
+      gearNote: '防衛部隊攻撃+15%(熊補正なし)',
+      joiner: { label: '敵防御-25%(スチールファング/防御down枠)', parts: [{ k: 'defdown', v: 0.25 }] },
+      leader: { label: '敵防御-25/弓:2回毎50%追撃(校正・重複分は不算入)/被ダメ+12', parts: [{ k: 'defdown', v: 0.25 }, { k: 'tPeriodic', cls: 'mks', per: 2, v: 0.5 }, { k: 'dmg', v: 0.125, tag: 'dtaken' }] }
+    },
+    {
+      id: "gisela",
+      name: "ギーゼラ",
+      cls: "inf",
+      gen: 13,
+      rar: "SSR",
+      /* 集結主/乗りスキル: 公式wiki(whiteoutsurvival.wiki)の遠征スキル原文からモデル化 2026-09-02 */
+      bearNoEffect: true,
+      gearNote: '防衛部隊攻撃+15%(熊補正なし)'
+    },
+    {
+      id: "flora",
+      name: "フローラ",
+      cls: "lan",
+      gen: 13,
+      rar: "SSR",
+      /* 集結主/乗りスキル: 公式wiki(whiteoutsurvival.wiki)の遠征スキル原文からモデル化 2026-09-02 */
+      gearNote: '防衛部隊HP+15%(熊補正なし)',
+      joiner: { label: '50%で被ダメ+10→50%(刺蔓の舞/被ダメ枠)', parts: [{ k: 'chance', p: 0.5, v: 0.5, tag: 'dtaken' }] },
+      leader: { label: '50%で被ダメ+50/槍与ダメ25', parts: [{ k: 'chance', p: 0.5, v: 0.5, tag: 'dtaken' }, { k: 'tDmg', cls: 'lan', v: 0.25 }] }
+    },
+    {
+      id: "vulcanus",
+      name: "ウルカヌス",
+      cls: "mks",
+      gen: 13,
+      rar: "SSR",
+      /* 集結主/乗りスキル: 公式wiki(whiteoutsurvival.wiki)の遠征スキル原文からモデル化 2026-09-02 */
+      gear: { type: 'atk', min: 0.05, max: 0.15, label: '集結攻撃+5→15%(王者の威厳)' },
+      joiner: null,
+      leader: { label: '5回毎100%追撃/被ダメ+15/3T毎弓攻撃60', parts: [{ k: 'periodic', per: 5, v: 1 }, { k: 'uptime', per: 5, dur: 1, v: 0.15, tag: 'dtaken' }, { k: 'tUptime', cls: 'mks', per: 3, dur: 1, v: 0.55 }] }
+    },
+    {
+      id: "elif",
+      name: "エリーフ",
+      cls: "inf",
+      gen: 14,
+      rar: "SSR",
+      /* 集結主/乗りスキル: 公式wiki(whiteoutsurvival.wiki)の遠征スキル原文からモデル化 2026-09-02 */
+      gearNote: '防衛部隊防御+15%(熊補正なし)',
+      joiner: null,
+      leader: { label: '攻撃15(千刃の陣)', parts: [{ k: 'atk', v: 0.15 }] }
+    },
+    {
+      id: "dominic",
+      name: "ドミニク",
+      cls: "lan",
+      gen: 14,
+      rar: "SSR",
+      /* 集結主/乗りスキル: 公式wiki(whiteoutsurvival.wiki)の遠征スキル原文からモデル化 2026-09-02 */
+      gear: { type: 'leth', min: 0.05, max: 0.15, label: '集結殺傷+5→15%(イマジンステージ)' },
+      joiner: { label: '与ダメ+4→20%(イリュージョン)', parts: [{ k: 'dmg', v: 0.2 }] },
+      leader: { label: '与ダメ20/槍攻撃毎60%追撃/被ダメ+5/盾弓与ダメ15', parts: [{ k: 'dmg', v: 0.2 }, { k: 'tPeriodic', cls: 'lan', per: 1, v: 0.6 }, { k: 'dmg', v: 0.05, tag: 'dtaken' }, { k: 'tDmg', cls: 'im', v: 0.15 }] }
+    },
+    {
+      id: "cara",
+      name: "カーラ",
+      cls: "mks",
+      gen: 14,
+      rar: "SSR",
+      /* 集結主/乗りスキル: 公式wiki(whiteoutsurvival.wiki)の遠征スキル原文からモデル化 2026-09-02 */
+      gearNote: '防衛部隊殺傷+15%(熊補正なし)',
+      joiner: null,
+      leader: { label: '通常攻撃30(Mech Pet)', parts: [{ k: 'ndmg', v: 0.3 }] }
+    },
+    {
+      id: "hank",
+      name: "ハンク",
+      cls: "inf",
+      gen: 15,
+      rar: "SSR",
+      /* 集結主/乗りスキル: 公式wiki(whiteoutsurvival.wiki)の遠征スキル原文からモデル化 2026-09-02 */
+      gearNote: '防衛部隊HP+15%(熊補正なし)',
+      joiner: { label: '殺傷+5→25%(レイジングロアー)', parts: [{ k: 'leth', v: 0.25 }] },
+      leader: { label: '殺傷25/5回毎与ダメ25', parts: [{ k: 'leth', v: 0.25 }, { k: 'uptime', per: 5, dur: 2, v: 0.25 }] }
+    },
+    {
+      id: "estrella",
+      name: "エステラ",
+      cls: "lan",
+      gen: 15,
+      rar: "SSR",
+      /* 集結主/乗りスキル: 公式wiki(whiteoutsurvival.wiki)の遠征スキル原文からモデル化 2026-09-02 */
+      gearNote: '防衛部隊攻撃+15%(熊補正なし)',
+      joiner: { label: '敵防御-25%(Corrosive Color/防御down枠)', parts: [{ k: 'defdown', v: 0.25 }] },
+      leader: { label: '敵防御-25/攻撃15/槍与ダメ25', parts: [{ k: 'defdown', v: 0.25 }, { k: 'atk', v: 0.15 }, { k: 'tDmg', cls: 'lan', v: 0.25 }] }
+    },
+    {
+      id: "viveca",
+      name: "ヴィヴィカ",
+      cls: "mks",
+      gen: 15,
+      rar: "SSR",
+      /* 集結主/乗りスキル: 公式wiki(whiteoutsurvival.wiki)の遠征スキル原文からモデル化 2026-09-02 */
+      gear: { type: 'leth', min: 0.05, max: 0.15, label: '集結殺傷+5→15%(夜明けの歌)' },
+      joiner: { label: '攻撃+5→25%(ナイトレギオン)', parts: [{ k: 'atk', v: 0.25 }] },
+      leader: { label: '攻撃25/弓20%で100%追撃/弓与ダメ10', parts: [{ k: 'atk', v: 0.25 }, { k: 'tChance', cls: 'mks', p: 0.2, v: 1 }, { k: 'tDmg', cls: 'mks', v: 0.1 }] }
+    },
     {
       id: "seigel",
       name: "シガー",
@@ -432,7 +640,17 @@ window.WOS_HEROES = (function() {
       joiner: null,
       leader: { label: "盾兵攻撃-20%(永夜の堅城/熊では微減)", parts: [{ k: "tAtk", cls: "inf", v: -0.2 }] },
     },
-    { id: "ursar", name: "ウルタール", cls: "lan", gen: 16, rar: "SSR" },
+    {
+      id: "ursar",
+      name: "ウルタール",
+      cls: "lan",
+      gen: 16,
+      rar: "SSR",
+      /* 集結主/乗りスキル: 公式wiki(whiteoutsurvival.wiki)の遠征スキル原文からモデル化 2026-09-02 */
+      gear: { type: 'atk', min: 0.05, max: 0.15, label: '集結攻撃+15%(暴風の戦鼓)' },
+      joiner: null,
+      leader: { label: '殺傷15(按分)/敵防御-15(按分)/槍:2回毎50%追撃(校正)/被ダメ+12', parts: [{ k: 'leth', v: 0.15 }, { k: 'defdown', v: 0.15 }, { k: 'tPeriodic', cls: 'lan', per: 2, v: 0.5 }, { k: 'dmg', v: 0.125, tag: 'dtaken' }] }
+    },
     {
       id: "aisling",
       name: "アシュリン",

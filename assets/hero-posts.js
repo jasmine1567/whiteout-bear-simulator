@@ -83,5 +83,10 @@
   };
   function url(id) { return POSTS[id] ? 'https://x.com/' + ACCOUNT + '/status/' + POSTS[id] : null; }
   function searchUrl(nameJa) { return 'https://x.com/search?q=' + encodeURIComponent('from:' + ACCOUNT + ' 英雄紹介 ' + nameJa) + '&f=live'; }
-  return { ACCOUNT: ACCOUNT, POSTS: POSTS, url: url, searchUrl: searchUrl };
+
+  /* 公式wiki（whiteoutsurvival.wiki / Century Games）の英雄ページ。日本語ページのスラッグは基本的に英雄名。例外だけ列挙 */
+  var WIKI = 'https://www.whiteoutsurvival.wiki/ja/heroes/';
+  var WIKI_SLUG = { wuming: '無名-2', seigel: 'seigel-5', ursar: 'ウルタール-2' };
+  function wikiUrl(hero) { if (!hero) return null; return WIKI + encodeURIComponent(WIKI_SLUG[hero.id] || hero.name) + '/'; }
+  return { ACCOUNT: ACCOUNT, POSTS: POSTS, url: url, searchUrl: searchUrl, wikiUrl: wikiUrl };
 });
