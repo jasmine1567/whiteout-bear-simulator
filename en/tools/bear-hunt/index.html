@@ -2491,7 +2491,7 @@ try {
     var L = (typeof u!=='undefined' && u.leader) ? u.leader : [];
     var byCls={};
     L.forEach(function(x){ if(!x) return; var hh=(typeof h==='function')?h(x.heroId):null; if(hh) byCls[hh.cls]={id:x.heroId, gear:x.gear||0}; });
-    var pre={ inf: byCls.inf&&byCls.inf.id, lan: byCls.lan&&byCls.lan.id, mks: byCls.mks&&byCls.mks.id,
+    var pre={ gen: num('curGen')||undefined, inf: byCls.inf&&byCls.inf.id, lan: byCls.lan&&byCls.lan.id, mks: byCls.mks&&byCls.mks.id,
       ratio: ratio, fc: num('fcLevel'), damage: num('observed'),
       gear: [byCls.inf&&byCls.inf.gear, byCls.lan&&byCls.lan.gear, byCls.mks&&byCls.mks.gear] };
     box.style.display='';

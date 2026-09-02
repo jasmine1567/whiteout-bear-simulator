@@ -41,12 +41,23 @@ function evalComp(ids, tier) {
 function solve(gen, tier) {
   const pool = cls => HEROES.filter(h => h.cls === cls && GM.usable(h, gen, tier));
   const out = [];
+  const best = { inf: {}, lan: {}, mks: {} };            /* 枠別: その英雄を置いたときの最高スコア */
   for (const a of pool('inf')) for (const b of pool('lan')) for (const c of pool('mks')) {
     if (GM.hallCount([a, b, c]) > tier.hallSlots) continue;
-    out.push({ ids: [a.id, b.id, c.id], score: evalComp([a.id, b.id, c.id], tier) });
+    const sc = evalComp([a.id, b.id, c.id], tier);
+    out.push({ ids: [a.id, b.id, c.id], score: sc });
+    if (!(best.inf[a.id] > sc)) best.inf[a.id] = sc;
+    if (!(best.lan[b.id] > sc)) best.lan[b.id] = sc;
+    if (!(best.mks[c.id] > sc)) best.mks[c.id] = sc;
   }
   out.sort((x, y) => y.score - x.score);
-  return { evaluated: out.length, top: out.slice(0, TOP_N) };
+  const top1 = out.length ? out[0].score : 1;
+  const slotRank = {};
+  for (const cls of ['inf', 'lan', 'mks']) {
+    slotRank[cls] = Object.entries(best[cls]).sort((x, y) => y[1] - x[1])
+      .map(([id, sc], i) => ({ id, rank: i + 1, index: Math.round(sc / top1 * 100) }));
+  }
+  return { evaluated: out.length, top: out.slice(0, TOP_N), slotRank };
 }
 
 const t0 = Date.now();
@@ -67,7 +78,7 @@ for (let g = 1; g <= GM.MAX; g++) {
     byTier: {} };
   for (const tk of GM.TIER_ORDER) {
     const r = solve(g, GM.TIERS[tk]);
-    entry.byTier[tk] = { evaluated: r.evaluated, top: r.top.map(t => ({ ids: t.ids, score: Math.round(t.score) })) };
+    entry.byTier[tk] = { evaluated: r.evaluated, top: r.top.map(t => ({ ids: t.ids, score: Math.round(t.score) })), slotRank: r.slotRank };
   }
   result.gens[g] = entry;
 }
@@ -85,6 +96,22 @@ for (let g = 1; g < GM.MAX; g++) {
   }
 }
 
+/* 英雄ごとの評価データ: 各世代環境・各課金帯での枠別順位（英雄評価と「何世代まで1位を保つか」に使う） */
+result.heroes = {};
+HEROES.forEach(h => {
+  if (h.gen === 0) return;
+  const rec = { id: h.id, cls: h.cls, gen: h.gen, acq: GM.acqOf(h),
+    leaderSkill: h.leader ? h.leader.label : null, joinerSkill: h.joiner ? h.joiner.label : null,
+    bearNoEffect: !!h.bearNoEffect, ranks: {} };
+  for (let g = h.gen; g <= GM.MAX; g++) {
+    rec.ranks[g] = {};
+    for (const tk of GM.TIER_ORDER) {
+      const sr = result.gens[g].byTier[tk].slotRank[h.cls].find(x => x.id === h.id);
+      rec.ranks[g][tk] = sr ? { rank: sr.rank, of: result.gens[g].byTier[tk].slotRank[h.cls].length, index: sr.index } : null;
+    }
+  }
+  result.heroes[h.id] = rec;
+});
 fs.writeFileSync(path.join(ROOT, 'assets/theory.json'), JSON.stringify(result, null, 1));
 /* Worker 用の軽量英雄マスタ（投稿の妥当性チェックに使う）も同時に出力して同期を保つ */
 fs.mkdirSync(path.join(ROOT, 'cloudflare/src'), { recursive: true });
