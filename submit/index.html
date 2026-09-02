@@ -15,8 +15,8 @@
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>熊狩り構成を投稿する｜世代別統計 | ホワサバ ツールラボ</title>
-<meta name="description" content="集結主の熊狩り構成（盾・槍・弓の英雄と兵種比率）を匿名で投稿。投稿するとすぐに、同世代内の順位・世代ラグ・課金帯別の理論最適との差が分かります。">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://api.whitesim-lab.com https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://challenges.cloudflare.com https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
+<meta name="description" content="集結主の熊狩り構成（盾・槍・弓の英雄）を匿名で投稿。投稿するとすぐに、同世代内の順位と課金帯別の理論最適との差が分かります。">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://api.whitesim-lab.com https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://platform.twitter.com https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://challenges.cloudflare.com https://platform.twitter.com https://syndication.twitter.com https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
 <link rel="stylesheet" href="/assets/site.css?v=96">
 <link rel="stylesheet" href="/assets/stats.css?v=96">
 <script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
@@ -27,7 +27,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ホワサバ ツールラボ">
 <meta property="og:title" content="熊狩り構成を投稿する｜世代別統計 | ホワサバ ツールラボ">
-<meta property="og:description" content="集結主の熊狩り構成（盾・槍・弓の英雄と兵種比率）を匿名で投稿。投稿するとすぐに、同世代内の順位・世代ラグ・課金帯別の理論最適との差が分かります。">
+<meta property="og:description" content="集結主の熊狩り構成（盾・槍・弓の英雄）を匿名で投稿。投稿するとすぐに、同世代内の順位と課金帯別の理論最適との差が分かります。">
 <meta property="og:url" content="https://whitesim-lab.com/submit/">
 <meta property="og:image" content="https://whitesim-lab.com/favicon.png?v=85">
 <meta name="twitter:card" content="summary">
@@ -41,9 +41,13 @@
 <div class="crumb"><a href="/index.html">ホーム</a> &gt; <a href="/stats/index.html">世代別統計</a> &gt; 構成を投稿</div>
 <h1>熊狩り構成を <span class="acc">投稿する</span></h1>
 <div id="updbox"></div>
-<p class="lead">3ステップで完了します。投稿すると<b>同じ世代の中での位置</b>と、<b>あなたの課金帯の理論最適構成との差</b>がその場で分かります。個人を特定する情報は送信されません。</p>
+<p class="lead">世代・課金帯・英雄3人を選ぶだけ。個人を特定する情報は送信されません。</p>
+<ul class="kv-list" style="margin-bottom:14px">
+<li>投稿するとすぐに、同じ世代の中での位置と、あなたの課金帯の理論最適との差が分かります</li>
+<li>投稿はブラウザに紐づいて保存され、次回は上書きになります</li>
+</ul>
 <div id="submit-form"><div class="skel"></div><div class="skel" style="width:60%"></div></div>
-<p class="note" style="margin-top:14px">熊狩ダメージ・シミュレーターで計算した構成は、シミュレーターの結果画面から1クリックで投稿できます。 <a href="/tools/bear-hunt/index.html">シミュレーターへ</a></p>
+<p class="note" style="margin-top:14px">熊狩ダメージ・シミュレーターの結果画面からも1クリックで投稿できます。 <a href="/tools/bear-hunt/index.html">シミュレーターへ</a></p>
 <div class="relbar">
   <a href="/stats/index.html">→ 世代別統計を見る</a>
   <a href="/stats/methodology.html">→ 集計方法と計算の前提</a>
@@ -54,6 +58,7 @@
 <script src="/assets/toolkit.js?v=96"></script>
 <script src="/assets/heroes.js?v=86"></script>
 <script src="/assets/gen-map.js?v=96"></script>
+<script src="/assets/hero-posts.js?v=96"></script>
 <script src="/assets/stats.js?v=96"></script>
 <script>
 document.getElementById('nav').innerHTML = WOS_NAV(2);
@@ -68,8 +73,8 @@ window.addEventListener("DOMContentLoaded", function() {
   document.getElementById("htmlroot").lang = "en";
   document.title = "Submit Your Bear Hunt Build | Whiteout Tools Lab";
   if (q("h1")) q("h1").innerHTML = "Submit your <span class=\"acc\">Bear Hunt build</span>";
-  if (q(".lead")) q(".lead").innerHTML = "Three steps. You immediately see <b>where you stand in your generation</b> and <b>how your build compares with the theoretical best for your tier</b>. Nothing identifying is sent.";
-  var TR = {"3ステップで完了します。投稿すると<b>同じ世代の中での位置</b>と、<b>あなたの課金帯の理論最適構成との差</b>がその場で分かります。個人を特定する情報は送信されません。": "Three steps. You immediately see <b>where you stand in your generation</b> and <b>how your build compares with the theoretical best for your tier</b>. Nothing identifying is sent.", "ホーム": "Home", "世代別統計": "Generation stats", "構成を投稿": "Submit", "熊狩り構成を": "Submit your", "投稿する": "Bear Hunt build", "熊狩ダメージ・シミュレーターで計算した構成は、シミュレーターの結果画面から1クリックで投稿できます。": "If you use the Bear Hunt Simulator, you can submit straight from its result panel.", "シミュレーターへ": "Open the simulator", "世代別統計を見る": "See generation stats", "集計方法と計算の前提": "Methodology"};
+  if (q(".lead")) q(".lead").innerHTML = "Pick your generation, tier and three heroes. Nothing identifying is sent.";
+  var TR = {"世代・課金帯・英雄3人を選ぶだけ。個人を特定する情報は送信されません。": "Pick your generation, tier and three heroes. Nothing identifying is sent.", "ホーム": "Home", "世代別統計": "Generation stats", "構成を投稿": "Submit", "熊狩り構成を": "Submit your", "投稿する": "Bear Hunt build", "投稿するとすぐに、同じ世代の中での位置と、あなたの課金帯の理論最適との差が分かります": "Right after submitting you see your rank in your generation and the gap to your tier’s theoretical best", "投稿はブラウザに紐づいて保存され、次回は上書きになります": "Saved to this browser; your next submission updates it", "熊狩ダメージ・シミュレーターの結果画面からも1クリックで投稿できます。": "You can also submit straight from the Bear Hunt Simulator's result panel.", "シミュレーターへ": "Open the simulator", "世代別統計を見る": "See generation stats", "集計方法と計算の前提": "Methodology"};
   function tr(s) { var k = s.replace(/\s+/g, " ").trim(); var ar = k.indexOf("→ ") === 0 ? "→ " : ""; var kk = k.slice(ar.length); return TR[kk] != null ? s.replace(kk, TR[kk]) : s; }
   var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
   var nodes = [], n;
@@ -79,6 +84,7 @@ window.addEventListener("DOMContentLoaded", function() {
     if (!/[\u3041-\u3096\u30a1-\u30f6\u4e00-\u9faf]/.test(v)) return;
     node.nodeValue = tr(v);
   });
+  document.querySelectorAll("[data-en]").forEach(function(el){ el.innerHTML = el.getAttribute("data-en"); });
   var crumb = document.querySelector(".crumb");
   if (crumb) crumb.innerHTML = "<a href=\"/en/index.html\">Home</a> &gt; <a href=\"/en/stats/index.html\">Generation stats</a> &gt; Submit";
 });

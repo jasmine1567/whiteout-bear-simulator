@@ -1,24 +1,28 @@
-# 世代ページの解説文（手書き）
+# 世代ページの手書きテキスト
 
-`gen-01.md` 〜 `gen-16.md` を置くと、`python3 _build_stats.py` 実行時に
-各世代ページの「この世代の見どころ」に流し込まれます。**無い世代は theory.json から自動生成した文で埋まります。**
+`python3 _build_stats.py` 実行時に読み込まれます。**無いものはデータから自動生成した文で埋まります。**
 
-## 書き方
-- 空行で段落。`**太字**` が使えます。それ以外のMarkdown記法は非対応。
-- 英語版を付ける場合は `---en---` の行で区切って、その下に英語を書きます。無ければ英語ページは自動文になります。
-- 1ページ200〜400字が目安。数字から読み取れることを一言添えるだけで十分です。
+## 1. 世代のポイント: `gen-01.md` 〜 `gen-16.md`
+「この世代のポイント」の自動カードを、手書きの内容に差し替えます。
+- `- ` で始まる行は箇条書き、それ以外は段落。`**太字**` が使えます。
+- 英語版は `---en---` の行で区切って下に。無ければ英語ページも日本語の内容になります。
 
-## 例（gen-16.md）
 ```
-第16世代環境では、石油王・中課金とも盾は依然として**ジェロニモ**が理論最適です。
-無課金・微課金は課金限定のジェロニモが使えないため、盾は**ヘクトー(G5)**で止めるのが最も効率的で、
-これは実際の採用率でもジェロニモに次ぐ人気と一致しています。
-
-弓はこの世代のルーレット英雄**アシュリン**が全課金帯で最適。乗り換えるべき枠は弓だけです。
-
+- 盾は**ジェロニモ**が依然として理論最適。無課金は**ヘクトー**で止めてOK
+- 弓はルーレットで取れる**アシュリン**へ乗り換え
 ---en---
-In Gen 16, **Jeronimo** remains the theoretical best infantry pick for mid spenders and whales.
-F2P players cannot obtain him, so **Hector (G5)** is the most efficient stop — matching his real pick rate.
-
-**Aisling**, this generation's roulette hero, is the best marksman for every tier. The only slot worth swapping is MKS.
+- **Jeronimo** is still the best INF. F2P can stop at **Hector**
+- Swap MKS to **Aisling** (roulette)
 ```
+
+## 2. 英雄の一言評価: `heroes/<id>.md`（例: `heroes/aisling.md`）
+英雄カードの判定リストの下に、補足として表示されます（自動の判定・順位はそのまま残ります）。
+id は `assets/heroes.js` の `id`（aisling, seigel, ursar など）。書式は上と同じ。
+
+## 3. 公式Xの投稿ID: `assets/hero-posts.js`
+英雄カードの埋め込みに使う投稿IDです。`null` の英雄は「公式アカウントの英雄紹介を探す」リンクになります。
+`https://x.com/WOS_Japan/status/1234567890` の数字部分を貼ると埋め込みに変わります。
+
+## 4. 集結主スキルの登録: `assets/heroes.js`
+`leader` が無い英雄は「評価保留（スキル未登録）」と表示され、理論順位は遠征ステータスだけで計算されます。
+`leader: { label: '...', parts: [...] }` を登録すると評価と順位に反映されます（`node _solve_theory.js` の再実行が必要）。

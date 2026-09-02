@@ -50,9 +50,12 @@ async function verifyTurnstile(env, token, ip) {
 /* ---------- 投稿の検証 ---------- */
 function validate(b) {
   const e = [];
-  const days = int(b.days, 0, 5000); if (days === null) e.push('days');
+  /* 世代は「gen（1〜MAX）」で受ける。互換のため「days（経過日数）」も受け付け、DB には経過日数で保存する */
+  let days = null, gen = null;
+  const g = int(b.gen, 1, GM.MAX);
+  if (g !== null) { gen = g; days = GM.UNLOCK[g]; }
+  else { days = int(b.days, 0, 5000); if (days === null) e.push('gen'); else gen = GM.genFromDays(days); }
   const tier = TIERS.has(b.tier) ? b.tier : null; if (!tier) e.push('tier');
-  const gen = days === null ? null : GM.genFromDays(days);
   const heroes = {};
   for (const c of CLS) {
     const h = byId[b[c]];

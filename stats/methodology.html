@@ -15,8 +15,8 @@
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>統計の集計方法と理論値の前提 | ホワサバ ツールラボ</title>
-<meta name="description" content="世代別統計の集計方法（対象期間・除外基準・公開基準）と、理論最適構成の計算前提（計算式・固定比率・課金帯モデル）を公開しています。">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://api.whitesim-lab.com https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://challenges.cloudflare.com https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
+<meta name="description" content="世代別統計の集計方法（対象期間・除外基準・公開基準）と、理論最適構成の計算前提（計算式・課金帯モデル・入手経路）。">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://api.whitesim-lab.com https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://platform.twitter.com https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://challenges.cloudflare.com https://platform.twitter.com https://syndication.twitter.com https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
 <link rel="stylesheet" href="/assets/site.css?v=96">
 <link rel="stylesheet" href="/assets/stats.css?v=96">
 <script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
@@ -27,7 +27,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ホワサバ ツールラボ">
 <meta property="og:title" content="統計の集計方法と理論値の前提 | ホワサバ ツールラボ">
-<meta property="og:description" content="世代別統計の集計方法（対象期間・除外基準・公開基準）と、理論最適構成の計算前提（計算式・固定比率・課金帯モデル）を公開しています。">
+<meta property="og:description" content="世代別統計の集計方法（対象期間・除外基準・公開基準）と、理論最適構成の計算前提（計算式・課金帯モデル・入手経路）。">
 <meta property="og:url" content="https://whitesim-lab.com/stats/methodology.html">
 <meta property="og:image" content="https://whitesim-lab.com/favicon.png?v=85">
 <meta name="twitter:card" content="summary">
@@ -41,35 +41,56 @@
 <div class="crumb"><a href="/index.html">ホーム</a> &gt; <a href="/stats/index.html">世代別統計</a> &gt; 集計方法</div>
 <h1>集計方法と <span class="acc">理論値の前提</span></h1>
 <div id="updbox"></div>
-<p class="lead">数字を出す以上、出し方を説明します。実測はどう集めてどう除外しているか、理論値は何を固定して何を比較しているか。</p>
+<p class="lead">数字の作り方をすべて公開しています。</p>
 
-<h2>1. 実測データ（みんなの投稿）</h2>
-<div class="card" style="font-size:13.5px">
-<p><b>集めているもの</b>：サーバー経過日数、課金帯、集結主の盾・槍・弓の英雄、兵種比率、（任意）1ラリーの記録ダメージ・火晶レベル・専用装備Lv。同盟名・ゲームIDなど個人を特定できる情報は集めていません。IPアドレスは塩付きハッシュのみ保存し、連投防止にだけ使います。</p>
-<p><b>世代の判定</b>：投稿者の申告ではなく、経過日数から下表で自動判定します。境界日数は推定値で、ズレが分かれば修正します（修正後は過去の投稿も再判定されます）。</p>
-<p><b>集計期間</b>：直近90日の投稿のみ。環境の変化に追随させるためです。</p>
-<p><b>公開基準</b>：世代ごとに10件未満は非公開、30件未満は「参考値」と表示。課金帯別の内訳は世代全体が30件以上、かつ各課金帯が10件以上のときだけ出します。</p>
-<p><b>除外</b>：ダメージは四分位範囲（IQR×1.5）の外側を外れ値として除外。英雄と兵種の不一致、未実装世代の英雄、比率の合計が100でないものは受付時に弾きます。同じブラウザ・同じ日からの再投稿は上書きです。</p>
-<p><b>偏り</b>：このサイトの利用者、つまり熊狩りに熱心なプレイヤーに偏ります。サーバー全体の平均ではありません。</p>
+<h2>1. 実測（みんなの投稿）</h2>
+<div class="point-grid">
+<div class="point"><div class="pt-h">集めているもの</div><ul>
+<li>サーバーの最新世代・課金帯（自己申告）</li>
+<li>集結主の盾・槍・弓の英雄</li>
+<li>任意：1ラリーのダメージ・火晶レベル・専用装備Lv</li>
+<li><b>集めないもの：</b>同盟名・ゲームID・お名前。IPは塩付きハッシュのみ（連投防止用）</li></ul></div>
+<div class="point"><div class="pt-h">公開の基準</div><ul>
+<li>集計対象は直近90日</li>
+<li>世代ごとに10件未満は非公開</li>
+<li>30件未満は「参考値」表示</li>
+<li>課金帯別の内訳は世代30件以上・各課金帯10件以上</li></ul></div>
+<div class="point"><div class="pt-h">除外・上書き</div><ul>
+<li>ダメージの外れ値は四分位範囲（1.5×IQR）で除外</li>
+<li>英雄と兵種の不一致、未実装世代の英雄は受付時に弾く</li>
+<li>同じブラウザ・同じ日からの再投稿は上書き</li></ul></div>
+<div class="point"><div class="pt-h">偏り</div><ul>
+<li>このサイトの利用者＝熊狩りに熱心な層に偏ります</li>
+<li>サーバー全体の平均ではありません</li></ul></div>
 </div>
 
 <h2>2. 理論最適構成</h2>
-<div class="card" style="font-size:13.5px">
-<p><b>計算式</b>：熊狩ダメージ・シミュレーターと同一の計算コア（assets/bear-calc.js）。係数はシミュレーターの上級者パラメータの初期値と同じです。</p>
-<p><b>比較しているもの</b>：その世代で入手できる英雄を盾×槍×弓で総当たりし、期待ダメージの高い順に並べています。兵種比率は 1:4:95 で固定、参加者は ジェシー・ジャセル・ソユン・ウェイン で固定です。英雄の遠征ステータスは加算しています（シミュレーターの「かんたん入力」とは前提が違います）。</p>
-<p><b>理論指数</b>：各課金帯の1位を100とした相対値。絶対値のダメージは環境差が大きく意味が薄いため出していません。</p>
-<p><b>課金帯モデル</b>：入手できる英雄と育成度を次のように置いています。数値は暫定で、実測が集まったら各課金帯の中央値に置き換えます。</p>
-<div style="overflow-x:auto"><table style="width:100%;font-size:12.5px;border-collapse:collapse"><thead><tr><th>課金帯</th><th>課金限定英雄</th><th>殿堂SSRの上限</th><th>専用装備Lv</th><th>火晶Lv</th><th>Tier</th><th>部隊攻撃/殺傷</th></tr></thead><tbody><tr><td>無課金・微課金</td><td>不可</td><td>1</td><td>1</td><td>2</td><td>T10</td><td>70% / 45%</td></tr><tr><td>中課金</td><td>可</td><td>2</td><td>5</td><td>5</td><td>T11</td><td>110% / 75%</td></tr><tr><td>石油王</td><td>可</td><td>3</td><td>10</td><td>8</td><td>T12</td><td>160% / 110%</td></tr></tbody></table></div>
-<p style="margin-top:8px"><b>入手経路</b>：各世代のラッキールーレット英雄（無課金でも入手可）は弓→盾→槍の順で1体ずつ。ナタリア・ジェロニモは初回チャージ／VIP限定。それ以外のSSRは英雄殿堂で時間をかけて集める前提です。</p>
-<p class="note">理論値はモデル上の推定であり、実戦の記録ではありません。絶対値には誤差があります。</p>
+<div class="point-grid">
+<div class="point"><div class="pt-h">計算のしかた</div><ul>
+<li>計算式は熊狩ダメージ・シミュレーターと同一（assets/bear-calc.js）</li>
+<li>その世代で入手できる英雄を 盾×槍×弓 で総当たり</li>
+<li>英雄の遠征ステータスを加算（シミュレーターの「かんたん入力」とは前提が違います）</li>
+<li>指数は各課金帯の1位を100とした相対値。絶対ダメージは出しません</li></ul></div>
+<div class="point"><div class="pt-h">固定しているもの</div><ul>
+<li>兵種比率：1:4:95（弓に大きく寄せた比率。ページには出しません）</li>
+<li>参加者（乗り）：ジェシー・ジャセル・ソユン・ウェイン</li>
+<li>係数：シミュレーターの上級者パラメータの初期値</li></ul></div>
+<div class="point" style="grid-column:1/-1"><div class="pt-h">課金帯モデル（暫定）</div>
+<div style="overflow-x:auto"><table style="width:100%;font-size:12.5px;border-collapse:collapse"><thead><tr><th>課金帯</th><th>課金限定英雄</th><th>殿堂SSRの上限</th><th>専用装備Lv</th><th>火晶Lv</th><th>Tier</th></tr></thead><tbody><tr><td>無課金・微課金</td><td>不可</td><td>1</td><td>1</td><td>2</td><td>T10</td></tr><tr><td>中課金</td><td>可</td><td>2</td><td>5</td><td>5</td><td>T11</td></tr><tr><td>石油王</td><td>可</td><td>3</td><td>10</td><td>8</td><td>T12</td></tr></tbody></table></div>
+<ul style="margin-top:8px"><li>ルーレット英雄（無課金でも入手可）は各世代1体、弓→盾→槍の順</li>
+<li>ナタリア・ジェロニモは初回チャージ／VIP限定</li>
+<li>実測が集まったら各課金帯の中央値に置き換えます</li></ul></div>
 </div>
+<p class="note">理論値はモデル上の推定であり、実戦の記録ではありません。</p>
 
-<h2>3. 世代の境界（経過日数）</h2>
-<div class="card"><div style="overflow-x:auto"><table style="font-size:12.5px;border-collapse:collapse;min-width:260px"><thead><tr><th>世代</th><th>解放日（目安）</th></tr></thead><tbody><tr><td>第1世代</td><td>0</td></tr><tr><td>第2世代</td><td>40</td></tr><tr><td>第3世代</td><td>120</td></tr><tr><td>第4世代</td><td>200</td></tr><tr><td>第5世代</td><td>280</td></tr><tr><td>第6世代</td><td>360</td></tr><tr><td>第7世代</td><td>440</td></tr><tr><td>第8世代</td><td>520</td></tr><tr><td>第9世代</td><td>600</td></tr><tr><td>第10世代</td><td>680</td></tr><tr><td>第11世代</td><td>760</td></tr><tr><td>第12世代</td><td>840</td></tr><tr><td>第13世代</td><td>920</td></tr><tr><td>第14世代</td><td>1000</td></tr><tr><td>第15世代</td><td>1080</td></tr><tr><td>第16世代</td><td>1160</td></tr></tbody></table></div>
+<h2>3. 世代の境界</h2>
+<div class="card"><p style="font-size:13px">投稿フォームでは世代を直接選びます。参考として、サーバー開設からの経過日数の目安を示します。</p>
+<div style="overflow-x:auto"><table style="font-size:12.5px;border-collapse:collapse;min-width:260px"><thead><tr><th>世代</th><th>解放日（目安）</th></tr></thead><tbody><tr><td>第1世代</td><td>0</td></tr><tr><td>第2世代</td><td>40</td></tr><tr><td>第3世代</td><td>120</td></tr><tr><td>第4世代</td><td>200</td></tr><tr><td>第5世代</td><td>280</td></tr><tr><td>第6世代</td><td>360</td></tr><tr><td>第7世代</td><td>440</td></tr><tr><td>第8世代</td><td>520</td></tr><tr><td>第9世代</td><td>600</td></tr><tr><td>第10世代</td><td>680</td></tr><tr><td>第11世代</td><td>760</td></tr><tr><td>第12世代</td><td>840</td></tr><tr><td>第13世代</td><td>920</td></tr><tr><td>第14世代</td><td>1000</td></tr><tr><td>第15世代</td><td>1080</td></tr><tr><td>第16世代</td><td>1160</td></tr></tbody></table></div>
 <p class="note">出典：スマホゲームNavi「英雄世代の解放スケジュール」、アルテマ「サーバー経過日数と各コンテンツの解放時期」。</p></div>
 
 <h2>4. 投稿の削除</h2>
-<div class="card" style="font-size:13.5px"><p>投稿時に発行される編集キー（ブラウザに保存）で上書き・削除ができます。ブラウザを変えた場合は、お問い合わせから編集キーの先頭6桁を添えてご連絡ください。 <a href="/contact.html">お問い合わせ</a></p></div>
+<div class="card" style="font-size:13.5px"><ul class="kv-list"><li>投稿時の編集キー（ブラウザに保存）で上書き・削除できます</li>
+<li>ブラウザを変えた場合は、編集キーの先頭6桁を添えて<a href="/contact.html">お問い合わせ</a></li></ul></div>
 
 <div class="relbar">
   <a href="/stats/index.html">→ 世代別統計トップ</a>
@@ -82,6 +103,7 @@
 <script src="/assets/toolkit.js?v=96"></script>
 <script src="/assets/heroes.js?v=86"></script>
 <script src="/assets/gen-map.js?v=96"></script>
+<script src="/assets/hero-posts.js?v=96"></script>
 <script src="/assets/stats.js?v=96"></script>
 <script>
 document.getElementById('nav').innerHTML = WOS_NAV(2);
@@ -96,8 +118,8 @@ window.addEventListener("DOMContentLoaded", function() {
   document.getElementById("htmlroot").lang = "en";
   document.title = "Methodology: How the Stats and Theoretical Builds Are Computed | Whiteout Tools Lab";
   if (q("h1")) q("h1").innerHTML = "Methodology: <span class=\"acc\">stats &amp; theory</span>";
-  if (q(".lead")) q(".lead").innerHTML = "Since we publish numbers, we explain how they are made: how live data is collected and filtered, and what the theoretical builds hold fixed.";
-  var TR = {"数字を出す以上、出し方を説明します。実測はどう集めてどう除外しているか、理論値は何を固定して何を比較しているか。": "Since we publish numbers, we explain how they are made: how live data is collected and filtered, and what the theoretical builds hold fixed.", "無課金・微課金": "F2P / light spender", "不可": "no", "中課金": "Mid spender", "可": "yes", "石油王": "Whale", "第1世代": "Gen 1", "第2世代": "Gen 2", "第3世代": "Gen 3", "第4世代": "Gen 4", "第5世代": "Gen 5", "第6世代": "Gen 6", "第7世代": "Gen 7", "第8世代": "Gen 8", "第9世代": "Gen 9", "第10世代": "Gen 10", "第11世代": "Gen 11", "第12世代": "Gen 12", "第13世代": "Gen 13", "第14世代": "Gen 14", "第15世代": "Gen 15", "第16世代": "Gen 16", "ホーム": "Home", "世代別統計": "Generation stats", "集計方法": "Methodology", "集計方法と": "Methodology:", "理論値の前提": "stats & theory", "1. 実測データ（みんなの投稿）": "1. Live data (user submissions)", "集めているもの": "What we collect", "サーバー経過日数、課金帯、集結主の盾・槍・弓の英雄、兵種比率、（任意）1ラリーの記録ダメージ・火晶レベル・専用装備Lv。同盟名・ゲームIDなど個人を特定できる情報は集めていません。IPアドレスは塩付きハッシュのみ保存し、連投防止にだけ使います。": "Days since server launch, spending tier, the three rally-leader heroes, troop ratio, and optionally damage per rally, Fire Crystal level, gear levels. No alliance names, game IDs or other identifying data. IP addresses are stored only as a salted hash for rate limiting.", "世代の判定": "Generation", "投稿者の申告ではなく、経過日数から下表で自動判定します。境界日数は推定値で、ズレが分かれば修正します（修正後は過去の投稿も再判定されます）。": "Derived from days since launch using the table below, not self-reported. Boundaries are estimates and may be corrected; past submissions are re-classified automatically.", "集計期間": "Window", "直近90日の投稿のみ。環境の変化に追随させるためです。": "Last 90 days only, so the stats track the current meta.", "公開基準": "Publication threshold", "世代ごとに10件未満は非公開、30件未満は「参考値」と表示。課金帯別の内訳は世代全体が30件以上、かつ各課金帯が10件以上のときだけ出します。": "Fewer than 10 per generation: hidden. Fewer than 30: marked indicative. Per-tier breakdowns require 30+ overall and 10+ in that tier.", "除外": "Filtering", "ダメージは四分位範囲（IQR×1.5）の外側を外れ値として除外。英雄と兵種の不一致、未実装世代の英雄、比率の合計が100でないものは受付時に弾きます。同じブラウザ・同じ日からの再投稿は上書きです。": "Damage outliers beyond 1.5×IQR are removed. Hero/class mismatches, unreleased heroes and ratios not summing to 100 are rejected. Re-submissions from the same browser or the same day overwrite the previous entry.", "偏り": "Bias", "このサイトの利用者、つまり熊狩りに熱心なプレイヤーに偏ります。サーバー全体の平均ではありません。": "The sample skews toward this site's users — engaged Bear Hunt players — and is not a server-wide average.", "2. 理論最適構成": "2. Theoretical best builds", "計算式": "Formula", "熊狩ダメージ・シミュレーターと同一の計算コア（assets/bear-calc.js）。係数はシミュレーターの上級者パラメータの初期値と同じです。": "The same calculation core as the Bear Hunt Simulator (assets/bear-calc.js), with the simulator's default advanced parameters.", "比較しているもの": "What is compared", "その世代で入手できる英雄を盾×槍×弓で総当たりし、期待ダメージの高い順に並べています。兵種比率は": "All obtainable INF × LAN × MKS combinations for the generation, ranked by expected damage. Troop ratio is fixed at ", "で固定、参加者は": "; joiners are fixed to ", "で固定です。英雄の遠征ステータスは加算しています（シミュレーターの「かんたん入力」とは前提が違います）。": "; hero expedition stats are added (unlike the simulator's simple-input mode).", "理論指数": "Index", "各課金帯の1位を100とした相対値。絶対値のダメージは環境差が大きく意味が薄いため出していません。": "Relative to the #1 build in each tier (=100). Absolute damage is not shown because it depends heavily on individual stats.", "課金帯モデル": "Spending-tier model", "入手できる英雄と育成度を次のように置いています。数値は暫定で、実測が集まったら各課金帯の中央値に置き換えます。": "Obtainable heroes and investment are assumed as follows. Values are provisional and will be replaced by measured medians.", "課金帯": "Tier", "課金限定英雄": "Paid-only heroes", "殿堂SSRの上限": "Hall SSR cap", "専用装備Lv": "Gear Lv", "火晶Lv": "FC Lv", "部隊攻撃/殺傷": "Army ATK/LETH", "入手経路": "Acquisition", "各世代のラッキールーレット英雄（無課金でも入手可）は弓→盾→槍の順で1体ずつ。ナタリア・ジェロニモは初回チャージ／VIP限定。それ以外のSSRは英雄殿堂で時間をかけて集める前提です。": "Each generation's roulette hero (F2P-obtainable) cycles MKS → INF → LAN. Natalia and Jeronimo are first-purchase/VIP only. Other SSRs are assumed to come from the Hall of Heroes over time.", "理論値はモデル上の推定であり、実戦の記録ではありません。絶対値には誤差があります。": "Theoretical values are model estimates, not measurements, and carry error.", "3. 世代の境界（経過日数）": "3. Generation boundaries (days)", "世代": "Gen", "解放日（目安）": "Unlock day (approx.)", "出典：スマホゲームNavi「英雄世代の解放スケジュール」、アルテマ「サーバー経過日数と各コンテンツの解放時期」。": "Sources: appmatch.jp generation schedule; altema.jp server-day unlock guide.", "4. 投稿の削除": "4. Deleting a submission", "投稿時に発行される編集キー（ブラウザに保存）で上書き・削除ができます。ブラウザを変えた場合は、お問い合わせから編集キーの先頭6桁を添えてご連絡ください。": "Your edit key (stored in your browser) lets you update or delete. If you switched browsers, contact us with the first 6 characters of the key.", "お問い合わせ": "Contact", "世代別統計トップ": "Generation stats", "構成を投稿する": "Submit your build", "プライバシーポリシー": "Privacy policy"};
+  if (q(".lead")) q(".lead").innerHTML = "Everything about how the numbers are made.";
+  var TR = {"数字の作り方をすべて公開しています。": "Everything about how the numbers are made.", "無課金・微課金": "F2P / light spender", "不可": "no", "中課金": "Mid spender", "可": "yes", "石油王": "Whale", "第1世代": "Gen 1", "第2世代": "Gen 2", "第3世代": "Gen 3", "第4世代": "Gen 4", "第5世代": "Gen 5", "第6世代": "Gen 6", "第7世代": "Gen 7", "第8世代": "Gen 8", "第9世代": "Gen 9", "第10世代": "Gen 10", "第11世代": "Gen 11", "第12世代": "Gen 12", "第13世代": "Gen 13", "第14世代": "Gen 14", "第15世代": "Gen 15", "第16世代": "Gen 16", "ホーム": "Home", "世代別統計": "Generation stats", "集計方法": "Methodology", "集計方法と": "Methodology:", "理論値の前提": "stats & theory", "1. 実測（みんなの投稿）": "1. Live data (submissions)", "集めているもの": "What we collect", "サーバーの最新世代・課金帯（自己申告）": "Latest generation on your server, spending tier (self-reported)", "集結主の盾・槍・弓の英雄": "The three rally-leader heroes", "任意：1ラリーのダメージ・火晶レベル・専用装備Lv": "Optional: damage per rally, FC level, gear levels", "集めないもの：": "Not collected: ", "同盟名・ゲームID・お名前。IPは塩付きハッシュのみ（連投防止用）": "alliance, game ID, name. IP only as a salted hash for rate limiting", "公開の基準": "Publication rules", "集計対象は直近90日": "Last 90 days only", "世代ごとに10件未満は非公開": "Fewer than 10 per generation: hidden", "30件未満は「参考値」表示": "Fewer than 30: marked indicative", "課金帯別の内訳は世代30件以上・各課金帯10件以上": "Per-tier breakdown needs 30+ overall and 10+ in the tier", "除外・上書き": "Filtering", "ダメージの外れ値は四分位範囲（1.5×IQR）で除外": "Damage outliers beyond 1.5×IQR removed", "英雄と兵種の不一致、未実装世代の英雄は受付時に弾く": "Hero/class mismatch and unreleased heroes rejected", "同じブラウザ・同じ日からの再投稿は上書き": "Same browser or same day: overwrite", "偏り": "Bias", "このサイトの利用者＝熊狩りに熱心な層に偏ります": "Skews toward this site’s users — engaged Bear Hunt players", "サーバー全体の平均ではありません": "Not a server-wide average", "2. 理論最適構成": "2. Theoretical best builds", "計算のしかた": "How it is computed", "計算式は熊狩ダメージ・シミュレーターと同一（assets/bear-calc.js）": "Same formula as the Bear Hunt Simulator (assets/bear-calc.js)", "その世代で入手できる英雄を 盾×槍×弓 で総当たり": "Brute force over all obtainable INF × LAN × MKS", "英雄の遠征ステータスを加算（シミュレーターの「かんたん入力」とは前提が違います）": "Hero expedition stats are added (unlike the simulator’s simple-input mode)", "指数は各課金帯の1位を100とした相対値。絶対ダメージは出しません": "Index relative to each tier’s #1 (=100). No absolute damage shown", "固定しているもの": "Held fixed", "兵種比率：": "Troop ratio: ", "（弓に大きく寄せた比率。ページには出しません）": " (heavily marksman-weighted, not shown)", "参加者（乗り）：": "Joiners: ", "係数：シミュレーターの上級者パラメータの初期値": "Coefficients: the simulator’s default advanced parameters", "課金帯モデル（暫定）": "Spending-tier model (provisional)", "課金帯": "Tier", "課金限定英雄": "Paid-only heroes", "殿堂SSRの上限": "Hall SSR cap", "専用装備Lv": "Gear Lv", "火晶Lv": "FC Lv", "ルーレット英雄（無課金でも入手可）は各世代1体、弓→盾→槍の順": "Roulette hero (F2P-obtainable): one per generation, cycling MKS → INF → LAN", "ナタリア・ジェロニモは初回チャージ／VIP限定": "Natalia and Jeronimo are first-purchase / VIP only", "実測が集まったら各課金帯の中央値に置き換えます": "Will be replaced by measured medians once data accumulates", "理論値はモデル上の推定であり、実戦の記録ではありません。": "Theoretical values are model estimates, not measurements.", "3. 世代の境界": "3. Generation boundaries", "投稿フォームでは世代を直接選びます。参考として、サーバー開設からの経過日数の目安を示します。": "The form asks for the generation directly. For reference, approximate days since server launch:", "世代": "Gen", "解放日（目安）": "Unlock day (approx.)", "出典：スマホゲームNavi「英雄世代の解放スケジュール」、アルテマ「サーバー経過日数と各コンテンツの解放時期」。": "Sources: appmatch.jp generation schedule; altema.jp server-day unlock guide.", "4. 投稿の削除": "4. Deleting a submission", "投稿時の編集キー（ブラウザに保存）で上書き・削除できます": "Your edit key (saved in your browser) lets you update or delete", "ブラウザを変えた場合は、編集キーの先頭6桁を添えて": "If you switched browsers, contact us with the first 6 characters of the key: ", "お問い合わせ": "Contact", "世代別統計トップ": "Generation stats", "構成を投稿する": "Submit your build", "プライバシーポリシー": "Privacy policy"};
   function tr(s) { var k = s.replace(/\s+/g, " ").trim(); var ar = k.indexOf("→ ") === 0 ? "→ " : ""; var kk = k.slice(ar.length); return TR[kk] != null ? s.replace(kk, TR[kk]) : s; }
   var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
   var nodes = [], n;
@@ -107,6 +129,7 @@ window.addEventListener("DOMContentLoaded", function() {
     if (!/[\u3041-\u3096\u30a1-\u30f6\u4e00-\u9faf]/.test(v)) return;
     node.nodeValue = tr(v);
   });
+  document.querySelectorAll("[data-en]").forEach(function(el){ el.innerHTML = el.getAttribute("data-en"); });
   var crumb = document.querySelector(".crumb");
   if (crumb) crumb.innerHTML = "<a href=\"/en/index.html\">Home</a> &gt; <a href=\"/en/stats/index.html\">Generation stats</a> &gt; Methodology";
 });
