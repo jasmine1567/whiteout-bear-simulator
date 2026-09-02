@@ -168,7 +168,7 @@
 <div id="foot"></div>
 
 <script src="/assets/config.js?v=95"></script>
-<script src="/assets/heroes.js?v=85"></script>
+<script src="/assets/heroes.js?v=86"></script>
 <script src="/assets/toolkit.js?v=95"></script>
 <script>
 document.getElementById('nav').innerHTML = WOS_NAV(2);
@@ -179,11 +179,14 @@ var selected = ['jessie','jasser','seoyoon','wayne'];
 
 function gen(){ return parseInt(document.getElementById('curGen').value)||16; }
 
+// 熊狩で乗りバフとして有効か（第1遠征スキルがあり、かつ熊で効果がある）
+function bearEff(h){ return !!(h && h.joiner && !h.bearNoEffect); }
+
 // joiner第1スキルの種類分類(同種=加算 / 異種=乗算)
 function kindOf(h){
-  if(!h.joiner) return null;
+  if(!bearEff(h)) return null;
   var p=h.joiner.parts[0];
-  if(p.k==='dmg') return 'dmg';
+  if(p.k==='dmg'||p.k==='ndmg') return 'dmg';   /* ndmg=通常攻撃ダメUP も与ダメUP系として扱う */
   if(p.k==='atk') return 'atk';
   if(p.k==='leth') return 'leth';
   if(p.k.indexOf('chance')===0||p.k==='periodic'||p.k==='uptime'||p.k.indexOf('t')===0) return 'proc:'+h.id;
@@ -197,7 +200,7 @@ function buildPicker(){
     html+='<div style="grid-column:1/-1;font-size:11px;letter-spacing:.2em;color:'+C.CLS[cls].c+';border-bottom:1px solid var(--line);padding-bottom:4px;margin-top:6px">'+WOS_clsFull(cls)+'</div>';
     H.filter(function(h){return h.cls===cls && h.gen<=g;}).forEach(function(h){
       var on=selected.indexOf(h.id)>=0;
-      var eff = h.joiner ? '<span class="ok">'+WOS_skillLabel(h.joiner.label)+'</span>' : '<span class="na">'+t('熊で効果なし','No bear effect')+'</span>';
+      var eff = bearEff(h) ? '<span class="ok">'+WOS_skillLabel(h.joiner.label)+'</span>' : '<span class="na">'+t('熊で効果なし','No bear effect')+'</span>';
       html+='<div class="hcard" data-id="'+h.id+'" style="cursor:pointer;'+(on?'outline:2px solid var(--ember)':'')+'">'
         +'<img src="'+WOS_ICON(h)+'" alt="'+(h.name||'')+'" style="border-color:'+C.RAR_HEX[h.rar]+'">'
         +'<div class="hn">'+WOS_heroName(h)+'</div><div class="hs">'+eff+'</div></div>';
@@ -221,7 +224,7 @@ function buildResult(){
 
   // 各枠の有効/無効
   chosen.forEach(function(h){
-    if(h.joiner){
+    if(bearEff(h)){
       html+='<div class="verdict good">✅ <b>'+WOS_heroName(h)+'</b> — '+WOS_skillLabel(h.joiner.label)+t(' が乗りで反映されます。',' applies as a joiner buff.')+'</div>';
     }else{
       html+='<div class="verdict bad">⚠ <b>'+WOS_heroName(h)+'</b> — '+t('第1遠征スキルが熊で効きません。他の英雄に替えるのがおすすめです。','First expedition skill has no bear effect. Consider swapping this slot.')+'</div>';
@@ -235,7 +238,7 @@ function buildResult(){
     var msg=Object.keys(kinds).filter(function(k){return kinds[k]>1;}).map(function(k){return KIND_LABEL[k]+' x'+kinds[k];}).join(', ');
     html+='<div class="verdict warn">🔁 '+t('同じ系統が重複しています','Same skill type is duplicated')+'('+msg+')。'+t('同種は足し算。別系統に散らすと掛け算が増えて伸びます。','Same type adds; spreading types multiplies for more total.')+'</div>';
   }
-  var effective = chosen.filter(function(h){return h.joiner;}).length;
+  var effective = chosen.filter(bearEff).length;
   if(effective<4){
     html+='<div class="verdict warn">📊 '+t('有効枠','Effective')+' '+effective+'/4。'+t('4枠すべて有効にすると集結バフが最大になります。','Fill all 4 with effective skills to maximize rally buffs.')+'</div>';
   }else if(!dup){
