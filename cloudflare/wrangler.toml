@@ -1,0 +1,29 @@
+# whitesim-lab.com 統計API（Cloudflare Workers + D1 + KV）
+name = "whitesim-stats"
+main = "src/index.js"
+compatibility_date = "2026-06-01"
+
+# 日次集計（UTC 20:00 = JST 05:00）
+[triggers]
+crons = ["0 20 * * *"]
+
+# D1: `wrangler d1 create whitesim-stats` の出力で database_id を置き換える
+[[d1_databases]]
+binding = "DB"
+database_name = "whitesim-stats"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"
+
+# KV: `wrangler kv namespace create STATS` の出力で id を置き換える
+[[kv_namespaces]]
+binding = "STATS"
+id = "REPLACE_WITH_KV_NAMESPACE_ID"
+
+[vars]
+ALLOWED_ORIGINS = "https://whitesim-lab.com,http://localhost:8000,http://127.0.0.1:8000"
+WINDOW_DAYS = "90"        # 集計対象: 直近90日
+MIN_PUBLISH = "10"        # n がこれ未満の世代は実測を非公開
+MIN_TIER_SPLIT = "30"     # n がこれ以上の世代だけ課金帯別の内訳を出す
+
+# シークレット（wrangler secret put で登録。toml には書かない）
+#   TURNSTILE_SECRET … Turnstile のシークレットキー
+#   CLIENT_SALT      … IP をハッシュ化するときの塩（ランダムな長い文字列）
