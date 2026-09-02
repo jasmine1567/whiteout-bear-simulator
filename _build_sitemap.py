@@ -1,12 +1,14 @@
 BASE="https://whitesim-lab.com"
-LASTMOD="2026-07-24"
+LASTMOD="2026-09-02"
 paths=["/",
  "/tools/bear-hunt/","/tools/king-castle/","/tools/foundry-battle/","/tools/frost-dragon/",
  "/tools/left-hero/","/tools/troop-ratio/","/tools/damage-doctor/","/tools/commander-type/","/tools/hero-list/",
  "/guides/bear-hunt-guide.html","/guides/beginner-faq.html","/guides/troop-ratio.html","/guides/left-hero.html",
  "/guides/leader-formation.html","/guides/damage-not-growing.html","/guides/common-myths.html","/guides/cyril-talent.html",
  "/guides/f2p-damage.html","/guides/light-spender.html","/guides/how-to-use.html","/guides/cyril-expert.html",
- "/about.html","/recruit.html","/changelog.html","/privacy.html","/terms.html","/contact.html"]
+ "/about.html","/recruit.html","/changelog.html","/privacy.html","/terms.html","/contact.html",
+ "/stats/","/stats/methodology.html","/submit/",
+ "/stats/gen-01/","/stats/gen-02/","/stats/gen-03/","/stats/gen-04/","/stats/gen-05/","/stats/gen-06/","/stats/gen-07/","/stats/gen-08/","/stats/gen-09/","/stats/gen-10/","/stats/gen-11/","/stats/gen-12/","/stats/gen-13/","/stats/gen-14/","/stats/gen-15/","/stats/gen-16/"]
 def en(p): return "/en/" if p=="/" else "/en"+p
 def alts(p):
     ja=BASE+p; e=BASE+en(p)

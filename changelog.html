@@ -18,7 +18,7 @@
 <title id="pgtitle">更新履歴 | ホワサバ ツールラボ</title>
 <meta name="description" id="pgdesc" content="ホワサバ ツールラボの更新履歴。ツールの追加・計算補正・データ更新・サイト構造の変更の記録。">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://docs.google.com; object-src 'none'; base-uri 'none'">
-<link rel="stylesheet" href="/assets/site.css?v=95">
+<link rel="stylesheet" href="/assets/site.css?v=96">
 <script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=85">
 <link rel="icon" type="image/png" href="/favicon.png?v=85">
@@ -42,6 +42,16 @@
 <div id="bodyja" style="display:none"><h1>更新履歴</h1>
 <p class="lead">ツールの追加、計算式の補正、データ更新、サイト構造の変更などを記録しています。ゲームのアップデートに合わせて、検証結果はこのページに追記していきます。</p>
 
+<div class="card">
+<h3>2026年9月2日</h3>
+<ul>
+<li>「<a href="stats/index.html">世代別統計</a>」を新設。利用者の投稿から集結主の熊狩り構成（盾・槍・弓）を世代ごとに集計し、課金帯別の理論最適構成と並べて公開。<a href="submit/index.html">投稿ページ</a>と、熊狩シミュレーターからの1クリック投稿を追加。</li>
+<li>熊狩ダメージ・シミュレーターの計算コアを共有モジュール（bear-calc.js）に切り出し。計算結果は従来と同一（回帰テスト2,113ケースで確認）。</li>
+<li>英雄マスタ（heroes.js）を最新のスキルデータに統一。左英雄チェッカーで、熊狩では効果のない英雄（レネ・ゴードン）を「熊で効果なし」と表示するよう修正。</li>
+<li>応援（OFUSE）導線を全ページから撤去。</li>
+<li>プライバシーポリシー・利用規約に統計データの取り扱いを追記。</li>
+</ul>
+</div>
 <div class="card">
 <h3>2026年7月24日</h3>
 <ul>
@@ -82,6 +92,16 @@
 <p class="lead">A record of new tools, formula calibrations, data updates and site-structure changes. Verification results are added here as the game updates.</p>
 
 <div class="card">
+<h3>September 2, 2026</h3>
+<ul>
+<li>Launched <a href="stats/index.html">Generation stats</a>: rally-leader Bear Hunt builds (INF/LAN/MKS) aggregated per generation from user submissions, shown alongside theoretical best builds per spending tier. Added a <a href="submit/index.html">submission page</a> and one-click submission from the simulator.</li>
+<li>Extracted the simulator's calculation core into a shared module (bear-calc.js). Results are unchanged (2,113-case regression test).</li>
+<li>Unified the hero master (heroes.js) to the latest skill data. Left-Hero Checker now marks heroes with no Bear Hunt effect (Renee, Gordon).</li>
+<li>Removed the OFUSE support links from all pages.</li>
+<li>Privacy policy and terms updated for submitted statistics.</li>
+</ul>
+</div>
+<div class="card">
 <h3>July 24, 2026</h3>
 <ul>
 <li>Published the guide "<a href="guides/cyril-expert.html">Cyrille deep-dive: every skill &amp; upgrade priority</a>" — full stats from the official wiki plus community opinions from X.</li>
@@ -120,8 +140,8 @@
 <div id="body"></div>
 </div>
 <div id="foot"></div>
-<script src="/assets/config.js?v=95"></script>
-<script src="/assets/toolkit.js?v=95"></script>
+<script src="/assets/config.js?v=96"></script>
+<script src="/assets/toolkit.js?v=96"></script>
 <script>
 (function(){
   var EN = (window.WOS_LANG==='en');

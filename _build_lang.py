@@ -12,6 +12,13 @@ def clean_path(rel):
     m = re.match(r"tools/([^/]+)/index\.html$", rel)
     if m:
         return f"/tools/{m.group(1)}/"
+    m = re.match(r"stats/([^/]+)/index\.html$", rel)
+    if m:
+        return f"/stats/{m.group(1)}/"
+    if rel == "stats/index.html":
+        return "/stats/"
+    if rel == "submit/index.html":
+        return "/submit/"
     return "/" + rel
 
 # root html files to process (exclude orphan bear-hunt-index.html)
@@ -20,6 +27,13 @@ ROOT_PAGES = ["index.html", "about.html", "privacy.html", "terms.html", "contact
 ROOT_PAGES += [f"guides/{os.path.basename(p)}" for p in sorted(glob.glob(os.path.join(ROOT, "guides", "*.html")))]
 ROOT_PAGES += [f"tools/{d}/index.html" for d in sorted(os.listdir(os.path.join(ROOT, "tools")))
                if os.path.isfile(os.path.join(ROOT, "tools", d, "index.html"))]
+# 統計セクション（_build_stats.py が生成）と投稿ページ
+if os.path.isdir(os.path.join(ROOT, "stats")):
+    ROOT_PAGES += ["stats/index.html", "stats/methodology.html"]
+    ROOT_PAGES += [f"stats/{d}/index.html" for d in sorted(os.listdir(os.path.join(ROOT, "stats")))
+                   if os.path.isfile(os.path.join(ROOT, "stats", d, "index.html"))]
+if os.path.isfile(os.path.join(ROOT, "submit", "index.html")):
+    ROOT_PAGES += ["submit/index.html"]
 
 OLD_LANG_SCRIPT = (
     '<script>(function(){try{var l=new URLSearchParams(location.search).get("lang")'
@@ -92,6 +106,9 @@ for name in ["about.html", "privacy.html", "terms.html", "contact.html", "index.
     shutil.copy2(os.path.join(ROOT, name), os.path.join(EN, name))
 shutil.copytree(os.path.join(ROOT, "guides"), os.path.join(EN, "guides"))
 shutil.copytree(os.path.join(ROOT, "tools"), os.path.join(EN, "tools"))
+for d in ["stats", "submit"]:
+    if os.path.isdir(os.path.join(ROOT, d)):
+        shutil.copytree(os.path.join(ROOT, d), os.path.join(EN, d))
 
 for rel in ROOT_PAGES:
     fp = os.path.join(EN, rel)

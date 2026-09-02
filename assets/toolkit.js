@@ -5,10 +5,10 @@
   var SPRITE = '<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="ic-paw" viewBox="0 0 24 24"><g fill="currentColor"><ellipse cx="12" cy="16" rx="6.5" ry="5.2"></ellipse><circle cx="5" cy="10.5" r="2.5"></circle><circle cx="19" cy="10.5" r="2.5"></circle><circle cx="8.7" cy="6" r="2.2"></circle><circle cx="15.3" cy="6" r="2.2"></circle></g></symbol><symbol id="ic-shield" viewBox="0 0 24 24"><path d="M12 3l7 2.6v5.2c0 4.3-2.9 7.4-7 8.6-4.1-1.2-7-4.3-7-8.6V5.6L12 3z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path></symbol><symbol id="ic-spear" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19L18 6"></path><path d="M18 6l-4 .3M18 6l-.3 4"></path><path d="M4.5 19.5l1.6-1.6"></path></g></symbol><symbol id="ic-bow" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4a9 9 0 000 16"></path><path d="M7 4v16"></path><path d="M4 12h15"></path><path d="M19 12l-3-2.2M19 12l-3 2.2"></path></g></symbol><symbol id="ic-share" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="12" r="2.4"></circle><circle cx="17.5" cy="6" r="2.4"></circle><circle cx="17.5" cy="18" r="2.4"></circle><path d="M8.1 10.9l7.3-3.8M8.1 13.1l7.3 3.8"></path></g></symbol><symbol id="ic-help" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M9.4 9.2a2.7 2.7 0 015.2 1c0 1.8-2.6 2.2-2.6 4"></path><path d="M12 17.4h.01"></path></g></symbol><symbol id="ic-target" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="8.5"></circle><circle cx="12" cy="12" r="4.6"></circle><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"></circle></g></symbol><symbol id="ic-bolt" viewBox="0 0 24 24"><path d="M13 2.5L5.5 13H11l-1.5 8.5L18.5 10H12.5L13 2.5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path></symbol><symbol id="ic-chart" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4v16h16"></path><path d="M7 15l3.5-3.8 2.8 2.4L20 7"></path><path d="M20 7h-3.4M20 7v3.4"></path></g></symbol><symbol id="ic-bookmark" viewBox="0 0 24 24"><path d="M6.5 4.5h11v15l-5.5-3.4-5.5 3.4v-15z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path></symbol><symbol id="ic-image" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="14" rx="2.5"></rect><circle cx="9" cy="10" r="1.6"></circle><path d="M5 18l4.5-4.5 3 2.6L16 12l3.5 3.6"></path></g></symbol><symbol id="ic-link" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M10 13.5a3.5 3.5 0 005 .2l2.7-2.7a3.5 3.5 0 00-5-5l-1.4 1.4"></path><path d="M14 10.5a3.5 3.5 0 00-5-.2L6.3 13a3.5 3.5 0 005 5l1.4-1.4"></path></g></symbol><symbol id="ic-chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"></path></symbol><symbol id="ic-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"></path></symbol><symbol id="ic-camera" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M4 8h3l1.4-2h7.2L17 8h3a1 1 0 011 1v9a1 1 0 01-1 1H4a1 1 0 01-1-1V9a1 1 0 011-1z"></path><circle cx="12" cy="13" r="3.2"></circle></g></symbol><symbol id="ic-compare" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16"></path><path d="M7 8L4 11l3 3"></path><path d="M17 8l3 3-3 3"></path><path d="M4 11h5M15 11h5"></path></g></symbol><symbol id="ic-sparkle" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></symbol></defs></svg>';
   var NAV = EN ? {
     brand:"🐻 Whiteout Tools Lab", home:"Home", sim:"Bear Sim", left:"Left-Hero",
-    ratio:"Troop Ratio", doctor:"Damage Doctor", castle:"Castle Battle", foundry:"Foundry", frost:"Frost Dragon", tools:"All Tools", cmd:"Commander", heroes:"Heroes", guide:"Guides"
+    ratio:"Troop Ratio", doctor:"Damage Doctor", castle:"Castle Battle", foundry:"Foundry", frost:"Frost Dragon", tools:"All Tools", cmd:"Commander", heroes:"Heroes", guide:"Guides", stats:"Gen Stats"
   } : {
     brand:"🐻 ホワサバ ツールラボ", home:"ホーム", sim:"熊狩シミュ", left:"左英雄チェッカー",
-    ratio:"兵士比率", doctor:"ダメージ診断", castle:"王城戦", foundry:"兵器工場戦", frost:"霜竜配置", tools:"ツール一覧", cmd:"指揮官診断", heroes:"英雄一覧", guide:"攻略ガイド"
+    ratio:"兵士比率", doctor:"ダメージ診断", castle:"王城戦", foundry:"兵器工場戦", frost:"霜竜配置", tools:"ツール一覧", cmd:"指揮官診断", heroes:"英雄一覧", guide:"攻略ガイド", stats:"世代別統計"
   };
   function langLink(){
     return EN
@@ -28,6 +28,7 @@
       +'<a href="'+d+'tools/foundry-battle/index.html">'+NAV.foundry+'</a>'
       +'<a href="'+d+'index.html#tools">'+NAV.tools+'</a>'
       +'<a href="'+d+'guides/bear-hunt-guide.html">'+NAV.guide+'</a>'
+      +'<a href="'+d+'stats/index.html">'+NAV.stats+'</a>'
       +langLink()
       +'<a class="nav-owner" href="'+d+'about.html" aria-label="'+(EN?'About the creator':'運営者について')+'"><img src="/assets/owner.png" alt="'+(EN?'Creator':'運営者')+'" onerror="this.style.display=\'none\'"></a>'
       +'</div></nav>';
@@ -48,6 +49,7 @@
       +'<a href="'+d+'tools/bear-hunt/index.html">'+f.sim+'</a>'
       +'<a href="'+d+'tools/king-castle/index.html">'+NAV.castle+'</a>'
       +'<a href="'+d+'tools/foundry-battle/index.html">'+NAV.foundry+'</a>'
+      +'<a href="'+d+'stats/index.html">'+NAV.stats+'</a>'
       +'<a href="'+d+'index.html#tools">'+NAV.tools+'</a>'
       +'<a href="'+d+'guides/bear-hunt-guide.html">'+f.guide+'</a>'
       +'<a href="'+d+'about.html">'+f.about+'</a>'
@@ -294,7 +296,9 @@
   /* ツールページ共通の注意書き: 計算結果が推定値であること・検証環境・最終更新・出典方針を明示。
      .wrap 末尾(フッター前)に1つだけ差し込む。各ツールのJSには触れない。 */
   (function(){
-    if((location.pathname||'').indexOf('/tools/')<0) return;
+    var P=(location.pathname||'');
+    var isStats = P.indexOf('/stats/')>=0 || P.indexOf('/submit/')>=0;
+    if(P.indexOf('/tools/')<0 && !isStats) return;
     function injectCss(){
       if(document.getElementById('wos-toolnote-css')) return;
       var s=document.createElement('style'); s.id='wos-toolnote-css';
@@ -309,7 +313,14 @@
       if(document.querySelector('.wos-toolnote')) return;
       var wrap=document.querySelector('div.wrap'); if(!wrap) return;
       var base=(window.WOS_BASE||'');
-      var html = EN
+      var html = isStats ? (EN
+        ? '<div class="wos-toolnote"><h3>About these statistics (please read)</h3>'
+          +'<p>Live figures are aggregated from <b>anonymous, self-reported</b> user submissions over the last 90 days and skew toward this site\'s users. Theoretical builds are <b>model estimates</b> from the simulator\'s formula, not measurements. '
+          +'Method: <a href="'+base+'/stats/methodology.html">Methodology</a> · Privacy: <a href="'+base+'/privacy.html">Privacy policy</a> · Change history: <a href="'+base+'/changelog.html">Changelog</a></p></div>'
+        : '<div class="wos-toolnote"><h3>統計についての注意（必ずお読みください）</h3>'
+          +'<p>実測の数値は利用者の<b>匿名・自己申告</b>による投稿を直近90日で集計したもので、当サイトの利用者に偏ります。理論最適構成はシミュレーターの計算式による<b>推定値</b>であり、実戦の記録ではありません。'
+          +'集計方法：<a href="'+base+'/stats/methodology.html">集計方法と計算の前提</a> ／ 取り扱い：<a href="'+base+'/privacy.html">プライバシーポリシー</a> ／ 変更の記録：<a href="'+base+'/changelog.html">更新履歴</a></p></div>')
+        : EN
         ? '<div class="wos-toolnote"><h3>About these results (please read)</h3>'
           +'<p>This tool\'s output is an <b>estimate</b> based on public specs and community/our own verification — not a reproduction of the game\'s internal formulas. Absolute values contain error; use the calibration/measurement features to fit them to your own account. Results may change with game updates.</p>'
           +'<p>Verification environment: Server 1567 (Whiteout Survival) · Last updated: 2026-07-24 · '

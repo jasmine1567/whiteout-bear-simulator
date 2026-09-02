@@ -605,15 +605,6 @@ document.getElementById('fdCalc').addEventListener('click', function(){
   shareTa.value = share.join('\n').replace(/\n{3,}/g,'\n\n').replace(/\s+$/,'');
   area.scrollIntoView({ behavior:'smooth', block:'start' });
 
-  /* 応援導線: 「全入れ物がボーダーを超えられた」= 役に立った瞬間だけ、
-     共有ボタンの下にそっと1行だけ出す。未達のときは出さない。 */
-  try{
-    var solved = !!split || (best && best.feas === 1);
-    if(solved && window.WOS_mountSupportInline){
-      var anchor = document.querySelector('#fdResult .fd-sharebtns');
-      if(anchor) window.WOS_mountSupportInline(anchor, 'after');
-    }
-  }catch(e){}
 });
 
 /* ================= コピー / 共有 ================= */

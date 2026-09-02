@@ -24,9 +24,15 @@ AdSense審査対策として、日本語ページと英語ページを **別々�
 編集後、次の2つを実行すると `/en/` とサイトマップが再生成されます:
 
 ```bash
+node _solve_theory.js       # 理論最適構成 → assets/theory.json（英雄・世代・課金帯モデルを変えたときだけ）
+python3 _build_stats.py     # 統計セクション（stats/, submit/）を生成
 python3 _build_lang.py      # ルート各ページを整形し、/en/ ツリーを再生成
 python3 _build_sitemap.py   # sitemap.xml（日英+ hreflang）を再生成
 ```
+
+`stats/` と `submit/` は生成物なので直接編集しないでください。
+世代ページの解説文は `_stats_notes/gen-NN.md` に書きます（`_stats_notes/README.md` 参照）。
+理論値を変えたら Cloudflare Worker も再デプロイしてください（`cloudflare/README.md`）。
 
 （`_build_lang.py` は何度実行しても同じ結果になります＝冪等です。）
 

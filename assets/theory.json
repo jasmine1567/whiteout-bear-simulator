@@ -1,0 +1,5310 @@
+{
+ "generatedAt": "2026-09-02T04:15:42.150Z",
+ "model": {
+  "ratio": [
+   1,
+   4,
+   95
+  ],
+  "joiner": [
+   "jessie",
+   "jasser",
+   "seoyoon",
+   "wayne"
+  ],
+  "totalTroops": 100000,
+  "applyHeroStats": true,
+  "defaults": {
+   "betaA": "0.93",
+   "betaL": "1.00",
+   "kFactor": "0.63",
+   "p0": "0.2905",
+   "tierGrowth": "1.15",
+   "t12Bonus": "1.18",
+   "fcGrowth": "1.08",
+   "wI": "0.25",
+   "wL": "0.78",
+   "wM": "1.00",
+   "pI": "0.91",
+   "pL": "0.90",
+   "crowdDecay": "0.8",
+   "crowdRef": "40000",
+   "heroRate": "100",
+   "spAtk": "0",
+   "spLeth": "0",
+   "trapBonus": "25",
+   "tier": "",
+   "fcLevel": "",
+   "cyril": "",
+   "cyrilOverride": "",
+   "teamAtk": "",
+   "teamLeth": "",
+   "atkInf": "",
+   "lethInf": "",
+   "atkLan": "",
+   "lethLan": "",
+   "atkMks": "",
+   "lethMks": "",
+   "nInf": "20000",
+   "nLan": "60000",
+   "nMks": "120000",
+   "petAtk": "",
+   "petLeth": "",
+   "buffItem": "",
+   "buffLeth": "",
+   "petDefDown": "",
+   "buffDef": ""
+  },
+  "note": "計算式は熊狩シミュレーターと同一。推定値であり実戦の記録ではない。"
+ },
+ "tiers": [
+  {
+   "key": "f2p",
+   "label": "無課金・微課金",
+   "label_en": "F2P / light spender",
+   "hallSlots": 1,
+   "paid": false,
+   "gear": 1,
+   "fc": 2,
+   "tier": 10
+  },
+  {
+   "key": "mid",
+   "label": "中課金",
+   "label_en": "Mid spender",
+   "hallSlots": 2,
+   "paid": true,
+   "gear": 5,
+   "fc": 5,
+   "tier": 11
+  },
+  {
+   "key": "whale",
+   "label": "石油王",
+   "label_en": "Whale",
+   "hallSlots": 3,
+   "paid": true,
+   "gear": 10,
+   "fc": 8,
+   "tier": 12
+  }
+ ],
+ "gens": {
+  "1": {
+   "gen": 1,
+   "unlockDay": 0,
+   "rangeFrom": 0,
+   "rangeTo": 39,
+   "heroes": [
+    {
+     "id": "natalia",
+     "cls": "inf",
+     "acq": "paid"
+    },
+    {
+     "id": "jeronimo",
+     "cls": "inf",
+     "acq": "paid"
+    },
+    {
+     "id": "molly",
+     "cls": "lan",
+     "acq": "event"
+    },
+    {
+     "id": "zinman",
+     "cls": "mks",
+     "acq": "roulette"
+    }
+   ],
+   "byTier": {
+    "f2p": {
+     "evaluated": 108,
+     "top": [
+      {
+       "ids": [
+        "sergey",
+        "molly",
+        "zinman"
+       ],
+       "score": 2581008
+      },
+      {
+       "ids": [
+        "smith",
+        "molly",
+        "zinman"
+       ],
+       "score": 2580033
+      },
+      {
+       "ids": [
+        "eugene",
+        "molly",
+        "zinman"
+       ],
+       "score": 2580033
+      },
+      {
+       "ids": [
+        "sergey",
+        "patrick",
+        "zinman"
+       ],
+       "score": 2043194
+      },
+      {
+       "ids": [
+        "smith",
+        "patrick",
+        "zinman"
+       ],
+       "score": 2042399
+      },
+      {
+       "ids": [
+        "eugene",
+        "patrick",
+        "zinman"
+       ],
+       "score": 2042399
+      },
+      {
+       "ids": [
+        "sergey",
+        "jessie",
+        "zinman"
+       ],
+       "score": 2005421
+      },
+      {
+       "ids": [
+        "smith",
+        "jessie",
+        "zinman"
+       ],
+       "score": 2004641
+      },
+      {
+       "ids": [
+        "eugene",
+        "jessie",
+        "zinman"
+       ],
+       "score": 2004641
+      },
+      {
+       "ids": [
+        "sergey",
+        "molly",
+        "bahiti"
+       ],
+       "score": 1816457
+      }
+     ],
+     "next": {
+      "gen": 2,
+      "from": [
+       "sergey",
+       "molly",
+       "zinman"
+      ],
+      "to": [
+       "flint",
+       "molly",
+       "alonso"
+      ],
+      "changed": [
+       "inf",
+       "mks"
+      ],
+      "gainPct": 134.7
+     }
+    },
+    "mid": {
+     "evaluated": 180,
+     "top": [
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "zinman"
+       ],
+       "score": 9547109
+      },
+      {
+       "ids": [
+        "natalia",
+        "molly",
+        "zinman"
+       ],
+       "score": 7882899
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "patrick",
+        "zinman"
+       ],
+       "score": 7546703
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "jessie",
+        "zinman"
+       ],
+       "score": 7443497
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "bahiti"
+       ],
+       "score": 7352471
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "seoyoon"
+       ],
+       "score": 6914188
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "jasser"
+       ],
+       "score": 6713076
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "lingxue",
+        "zinman"
+       ],
+       "score": 6513060
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "lumak",
+        "zinman"
+       ],
+       "score": 6513060
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "charlie",
+        "zinman"
+       ],
+       "score": 6490620
+      }
+     ],
+     "next": {
+      "gen": 2,
+      "from": [
+       "jeronimo",
+       "molly",
+       "zinman"
+      ],
+      "to": [
+       "jeronimo",
+       "molly",
+       "alonso"
+      ],
+      "changed": [
+       "mks"
+      ],
+      "gainPct": 68.2
+     }
+    },
+    "whale": {
+     "evaluated": 180,
+     "top": [
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "zinman"
+       ],
+       "score": 23675330
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "bahiti"
+       ],
+       "score": 19608442
+      },
+      {
+       "ids": [
+        "natalia",
+        "molly",
+        "zinman"
+       ],
+       "score": 19548353
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "patrick",
+        "zinman"
+       ],
+       "score": 18770492
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "jessie",
+        "zinman"
+       ],
+       "score": 18513795
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "seoyoon"
+       ],
+       "score": 18435549
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "jasser"
+       ],
+       "score": 17899316
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "lingxue",
+        "zinman"
+       ],
+       "score": 16199570
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "lumak",
+        "zinman"
+       ],
+       "score": 16199570
+      },
+      {
+       "ids": [
+        "natalia",
+        "molly",
+        "bahiti"
+       ],
+       "score": 16190390
+      }
+     ],
+     "next": {
+      "gen": 2,
+      "from": [
+       "jeronimo",
+       "molly",
+       "zinman"
+      ],
+      "to": [
+       "jeronimo",
+       "molly",
+       "alonso"
+      ],
+      "changed": [
+       "mks"
+      ],
+      "gainPct": 79
+     }
+    }
+   }
+  },
+  "2": {
+   "gen": 2,
+   "unlockDay": 40,
+   "rangeFrom": 40,
+   "rangeTo": 119,
+   "heroes": [
+    {
+     "id": "flint",
+     "cls": "inf",
+     "acq": "roulette"
+    },
+    {
+     "id": "philly",
+     "cls": "lan",
+     "acq": "hall"
+    },
+    {
+     "id": "alonso",
+     "cls": "mks",
+     "acq": "hall"
+    }
+   ],
+   "byTier": {
+    "f2p": {
+     "evaluated": 192,
+     "top": [
+      {
+       "ids": [
+        "flint",
+        "molly",
+        "alonso"
+       ],
+       "score": 6057134
+      },
+      {
+       "ids": [
+        "flint",
+        "jessie",
+        "alonso"
+       ],
+       "score": 4915259
+      },
+      {
+       "ids": [
+        "flint",
+        "patrick",
+        "alonso"
+       ],
+       "score": 4881708
+      },
+      {
+       "ids": [
+        "flint",
+        "lingxue",
+        "alonso"
+       ],
+       "score": 4213079
+      },
+      {
+       "ids": [
+        "flint",
+        "lumak",
+        "alonso"
+       ],
+       "score": 4213079
+      },
+      {
+       "ids": [
+        "flint",
+        "charlie",
+        "alonso"
+       ],
+       "score": 4198982
+      },
+      {
+       "ids": [
+        "sergey",
+        "molly",
+        "alonso"
+       ],
+       "score": 4061375
+      },
+      {
+       "ids": [
+        "smith",
+        "molly",
+        "alonso"
+       ],
+       "score": 4059971
+      },
+      {
+       "ids": [
+        "eugene",
+        "molly",
+        "alonso"
+       ],
+       "score": 4059971
+      },
+      {
+       "ids": [
+        "flint",
+        "molly",
+        "zinman"
+       ],
+       "score": 3850656
+      }
+     ],
+     "next": {
+      "gen": 3,
+      "from": [
+       "flint",
+       "molly",
+       "alonso"
+      ],
+      "to": [
+       "flint",
+       "mia",
+       "alonso"
+      ],
+      "changed": [
+       "lan"
+      ],
+      "gainPct": 7.9
+     }
+    },
+    "mid": {
+     "evaluated": 294,
+     "top": [
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "alonso"
+       ],
+       "score": 16055809
+      },
+      {
+       "ids": [
+        "natalia",
+        "molly",
+        "alonso"
+       ],
+       "score": 13257030
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "patrick",
+        "alonso"
+       ],
+       "score": 13247881
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "jessie",
+        "alonso"
+       ],
+       "score": 13066709
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "philly",
+        "alonso"
+       ],
+       "score": 12850862
+      },
+      {
+       "ids": [
+        "flint",
+        "molly",
+        "alonso"
+       ],
+       "score": 12689322
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "lingxue",
+        "alonso"
+       ],
+       "score": 11433370
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "lumak",
+        "alonso"
+       ],
+       "score": 11433370
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "charlie",
+        "alonso"
+       ],
+       "score": 11397186
+      },
+      {
+       "ids": [
+        "natalia",
+        "patrick",
+        "alonso"
+       ],
+       "score": 10849137
+      }
+     ],
+     "next": {
+      "gen": 3,
+      "from": [
+       "jeronimo",
+       "molly",
+       "alonso"
+      ],
+      "to": [
+       "jeronimo",
+       "mia",
+       "alonso"
+      ],
+      "changed": [
+       "lan"
+      ],
+      "gainPct": 18.3
+     }
+    },
+    "whale": {
+     "evaluated": 294,
+     "top": [
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "alonso"
+       ],
+       "score": 42382812
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "patrick",
+        "alonso"
+       ],
+       "score": 35062854
+      },
+      {
+       "ids": [
+        "natalia",
+        "molly",
+        "alonso"
+       ],
+       "score": 34994830
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "jessie",
+        "alonso"
+       ],
+       "score": 34583350
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "philly",
+        "alonso"
+       ],
+       "score": 33912723
+      },
+      {
+       "ids": [
+        "flint",
+        "molly",
+        "alonso"
+       ],
+       "score": 31310653
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "lingxue",
+        "alonso"
+       ],
+       "score": 30260431
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "lumak",
+        "alonso"
+       ],
+       "score": 30260431
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "charlie",
+        "alonso"
+       ],
+       "score": 30172363
+      },
+      {
+       "ids": [
+        "natalia",
+        "patrick",
+        "alonso"
+       ],
+       "score": 28714159
+      }
+     ],
+     "next": {
+      "gen": 3,
+      "from": [
+       "jeronimo",
+       "molly",
+       "alonso"
+      ],
+      "to": [
+       "jeronimo",
+       "mia",
+       "alonso"
+      ],
+      "changed": [
+       "lan"
+      ],
+      "gainPct": 26.5
+     }
+    }
+   }
+  },
+  "3": {
+   "gen": 3,
+   "unlockDay": 120,
+   "rangeFrom": 120,
+   "rangeTo": 199,
+   "heroes": [
+    {
+     "id": "logan",
+     "cls": "inf",
+     "acq": "hall"
+    },
+    {
+     "id": "mia",
+     "cls": "lan",
+     "acq": "roulette"
+    },
+    {
+     "id": "greg",
+     "cls": "mks",
+     "acq": "hall"
+    }
+   ],
+   "byTier": {
+    "f2p": {
+     "evaluated": 290,
+     "top": [
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "alonso"
+       ],
+       "score": 6533982
+      },
+      {
+       "ids": [
+        "flint",
+        "molly",
+        "alonso"
+       ],
+       "score": 6057134
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "greg"
+       ],
+       "score": 5615913
+      },
+      {
+       "ids": [
+        "flint",
+        "molly",
+        "greg"
+       ],
+       "score": 5207282
+      },
+      {
+       "ids": [
+        "flint",
+        "jessie",
+        "alonso"
+       ],
+       "score": 4915259
+      },
+      {
+       "ids": [
+        "flint",
+        "patrick",
+        "alonso"
+       ],
+       "score": 4881708
+      },
+      {
+       "ids": [
+        "sergey",
+        "mia",
+        "alonso"
+       ],
+       "score": 4381219
+      },
+      {
+       "ids": [
+        "smith",
+        "mia",
+        "alonso"
+       ],
+       "score": 4379714
+      },
+      {
+       "ids": [
+        "eugene",
+        "mia",
+        "alonso"
+       ],
+       "score": 4379714
+      },
+      {
+       "ids": [
+        "flint",
+        "lingxue",
+        "alonso"
+       ],
+       "score": 4213079
+      }
+     ],
+     "next": {
+      "gen": 4,
+      "from": [
+       "flint",
+       "mia",
+       "alonso"
+      ],
+      "to": [
+       "flint",
+       "mia",
+       "alonso"
+      ],
+      "changed": [],
+      "gainPct": 0
+     }
+    },
+    "mid": {
+     "evaluated": 446,
+     "top": [
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "alonso"
+       ],
+       "score": 18993641
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "alonso"
+       ],
+       "score": 16055809
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "alonso"
+       ],
+       "score": 15682752
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "greg"
+       ],
+       "score": 15102204
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "alonso"
+       ],
+       "score": 14704773
+      },
+      {
+       "ids": [
+        "natalia",
+        "molly",
+        "alonso"
+       ],
+       "score": 13257030
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "patrick",
+        "alonso"
+       ],
+       "score": 13247881
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "jessie",
+        "alonso"
+       ],
+       "score": 13066709
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "philly",
+        "alonso"
+       ],
+       "score": 12850862
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "greg"
+       ],
+       "score": 12768540
+      }
+     ],
+     "next": {
+      "gen": 4,
+      "from": [
+       "jeronimo",
+       "mia",
+       "alonso"
+      ],
+      "to": [
+       "jeronimo",
+       "mia",
+       "alonso"
+      ],
+      "changed": [],
+      "gainPct": 0
+     }
+    },
+    "whale": {
+     "evaluated": 448,
+     "top": [
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "alonso"
+       ],
+       "score": 53602582
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "alonso"
+       ],
+       "score": 44258820
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "alonso"
+       ],
+       "score": 42382812
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "greg"
+       ],
+       "score": 39641913
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "alonso"
+       ],
+       "score": 38791105
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "patrick",
+        "alonso"
+       ],
+       "score": 35062854
+      },
+      {
+       "ids": [
+        "natalia",
+        "molly",
+        "alonso"
+       ],
+       "score": 34994830
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "jessie",
+        "alonso"
+       ],
+       "score": 34583350
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "philly",
+        "alonso"
+       ],
+       "score": 33912723
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "greg"
+       ],
+       "score": 32731712
+      }
+     ],
+     "next": {
+      "gen": 4,
+      "from": [
+       "jeronimo",
+       "mia",
+       "alonso"
+      ],
+      "to": [
+       "jeronimo",
+       "mia",
+       "alonso"
+      ],
+      "changed": [],
+      "gainPct": 0
+     }
+    }
+   }
+  },
+  "4": {
+   "gen": 4,
+   "unlockDay": 200,
+   "rangeFrom": 200,
+   "rangeTo": 279,
+   "heroes": [
+    {
+     "id": "ahmose",
+     "cls": "inf",
+     "acq": "hall"
+    },
+    {
+     "id": "reina",
+     "cls": "lan",
+     "acq": "hall"
+    },
+    {
+     "id": "lynn",
+     "cls": "mks",
+     "acq": "roulette"
+    }
+   ],
+   "byTier": {
+    "f2p": {
+     "evaluated": 406,
+     "top": [
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "alonso"
+       ],
+       "score": 6533982
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "lynn"
+       ],
+       "score": 6251737
+      },
+      {
+       "ids": [
+        "flint",
+        "molly",
+        "alonso"
+       ],
+       "score": 6057134
+      },
+      {
+       "ids": [
+        "flint",
+        "molly",
+        "lynn"
+       ],
+       "score": 5801726
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "greg"
+       ],
+       "score": 5615913
+      },
+      {
+       "ids": [
+        "flint",
+        "reina",
+        "lynn"
+       ],
+       "score": 5290097
+      },
+      {
+       "ids": [
+        "flint",
+        "molly",
+        "greg"
+       ],
+       "score": 5207282
+      },
+      {
+       "ids": [
+        "flint",
+        "jessie",
+        "alonso"
+       ],
+       "score": 4915259
+      },
+      {
+       "ids": [
+        "flint",
+        "patrick",
+        "alonso"
+       ],
+       "score": 4881708
+      },
+      {
+       "ids": [
+        "flint",
+        "jessie",
+        "lynn"
+       ],
+       "score": 4695546
+      }
+     ],
+     "next": {
+      "gen": 5,
+      "from": [
+       "flint",
+       "mia",
+       "alonso"
+      ],
+      "to": [
+       "hector",
+       "mia",
+       "gwen"
+      ],
+      "changed": [
+       "inf",
+       "mks"
+      ],
+      "gainPct": 27.4
+     }
+    },
+    "mid": {
+     "evaluated": 640,
+     "top": [
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "alonso"
+       ],
+       "score": 18993641
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "lynn"
+       ],
+       "score": 16462073
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "reina",
+        "alonso"
+       ],
+       "score": 16188252
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "alonso"
+       ],
+       "score": 16055809
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "alonso"
+       ],
+       "score": 15682752
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "greg"
+       ],
+       "score": 15102204
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "alonso"
+       ],
+       "score": 14704773
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "lynn"
+       ],
+       "score": 13927341
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "reina",
+        "lynn"
+       ],
+       "score": 13913696
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "lynn"
+       ],
+       "score": 13592476
+      }
+     ],
+     "next": {
+      "gen": 5,
+      "from": [
+       "jeronimo",
+       "mia",
+       "alonso"
+      ],
+      "to": [
+       "jeronimo",
+       "mia",
+       "gwen"
+      ],
+      "changed": [
+       "mks"
+      ],
+      "gainPct": 6.4
+     }
+    },
+    "whale": {
+     "evaluated": 648,
+     "top": [
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "alonso"
+       ],
+       "score": 53602582
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "reina",
+        "alonso"
+       ],
+       "score": 45617877
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "alonso"
+       ],
+       "score": 44258820
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "lynn"
+       ],
+       "score": 42389538
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "alonso"
+       ],
+       "score": 42382812
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "greg"
+       ],
+       "score": 39641913
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "alonso"
+       ],
+       "score": 38791105
+      },
+      {
+       "ids": [
+        "natalia",
+        "reina",
+        "alonso"
+       ],
+       "score": 37665973
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "reina",
+        "lynn"
+       ],
+       "score": 35788655
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "patrick",
+        "alonso"
+       ],
+       "score": 35062854
+      }
+     ],
+     "next": {
+      "gen": 5,
+      "from": [
+       "jeronimo",
+       "mia",
+       "alonso"
+      ],
+      "to": [
+       "jeronimo",
+       "mia",
+       "alonso"
+      ],
+      "changed": [],
+      "gainPct": 0
+     }
+    }
+   }
+  },
+  "5": {
+   "gen": 5,
+   "unlockDay": 280,
+   "rangeFrom": 280,
+   "rangeTo": 359,
+   "heroes": [
+    {
+     "id": "hector",
+     "cls": "inf",
+     "acq": "roulette"
+    },
+    {
+     "id": "nora",
+     "cls": "lan",
+     "acq": "hall"
+    },
+    {
+     "id": "gwen",
+     "cls": "mks",
+     "acq": "hall"
+    }
+   ],
+   "byTier": {
+    "f2p": {
+     "evaluated": 553,
+     "top": [
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "gwen"
+       ],
+       "score": 8322977
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "gwen"
+       ],
+       "score": 8053910
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "gwen"
+       ],
+       "score": 7846851
+      },
+      {
+       "ids": [
+        "flint",
+        "molly",
+        "gwen"
+       ],
+       "score": 7593076
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "alonso"
+       ],
+       "score": 6939002
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "lynn"
+       ],
+       "score": 6635034
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "alonso"
+       ],
+       "score": 6533982
+      },
+      {
+       "ids": [
+        "hector",
+        "patrick",
+        "gwen"
+       ],
+       "score": 6445629
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "alonso"
+       ],
+       "score": 6432772
+      },
+      {
+       "ids": [
+        "hector",
+        "jessie",
+        "gwen"
+       ],
+       "score": 6326469
+      }
+     ],
+     "next": {
+      "gen": 6,
+      "from": [
+       "hector",
+       "mia",
+       "gwen"
+      ],
+      "to": [
+       "hector",
+       "mia",
+       "wayne"
+      ],
+      "changed": [
+       "mks"
+      ],
+      "gainPct": 24.9
+     }
+    },
+    "mid": {
+     "evaluated": 882,
+     "top": [
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "gwen"
+       ],
+       "score": 20217377
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "alonso"
+       ],
+       "score": 18993641
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "gwen"
+       ],
+       "score": 17831961
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "reina",
+        "gwen"
+       ],
+       "score": 17181257
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "gwen"
+       ],
+       "score": 16693171
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "gwen"
+       ],
+       "score": 16595579
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "lynn"
+       ],
+       "score": 16462073
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "reina",
+        "alonso"
+       ],
+       "score": 16188252
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "alonso"
+       ],
+       "score": 16055809
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "alonso"
+       ],
+       "score": 15682752
+      }
+     ],
+     "next": {
+      "gen": 6,
+      "from": [
+       "jeronimo",
+       "mia",
+       "gwen"
+      ],
+      "to": [
+       "jeronimo",
+       "mia",
+       "wayne"
+      ],
+      "changed": [
+       "mks"
+      ],
+      "gainPct": 22.2
+     }
+    },
+    "whale": {
+     "evaluated": 900,
+     "top": [
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "alonso"
+       ],
+       "score": 53602582
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "gwen"
+       ],
+       "score": 51019995
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "reina",
+        "alonso"
+       ],
+       "score": 45617877
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "alonso"
+       ],
+       "score": 44258820
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "reina",
+        "gwen"
+       ],
+       "score": 43324538
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "lynn"
+       ],
+       "score": 42389538
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "alonso"
+       ],
+       "score": 42382812
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "gwen"
+       ],
+       "score": 42126414
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "gwen"
+       ],
+       "score": 42076779
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "alonso"
+       ],
+       "score": 41154503
+      }
+     ],
+     "next": {
+      "gen": 6,
+      "from": [
+       "jeronimo",
+       "mia",
+       "alonso"
+      ],
+      "to": [
+       "jeronimo",
+       "mia",
+       "wayne"
+      ],
+      "changed": [
+       "mks"
+      ],
+      "gainPct": 13.9
+     }
+    }
+   }
+  },
+  "6": {
+   "gen": 6,
+   "unlockDay": 360,
+   "rangeFrom": 360,
+   "rangeTo": 439,
+   "heroes": [
+    {
+     "id": "wuming",
+     "cls": "inf",
+     "acq": "hall"
+    },
+    {
+     "id": "renee",
+     "cls": "lan",
+     "acq": "roulette"
+    },
+    {
+     "id": "wayne",
+     "cls": "mks",
+     "acq": "hall"
+    }
+   ],
+   "byTier": {
+    "f2p": {
+     "evaluated": 713,
+     "top": [
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "wayne"
+       ],
+       "score": 10392594
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "wayne"
+       ],
+       "score": 9804159
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "wayne"
+       ],
+       "score": 9664406
+      },
+      {
+       "ids": [
+        "flint",
+        "molly",
+        "wayne"
+       ],
+       "score": 9117129
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "gwen"
+       ],
+       "score": 8322977
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "gwen"
+       ],
+       "score": 8053910
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "gwen"
+       ],
+       "score": 7846851
+      },
+      {
+       "ids": [
+        "hector",
+        "patrick",
+        "wayne"
+       ],
+       "score": 7766217
+      },
+      {
+       "ids": [
+        "hector",
+        "jessie",
+        "wayne"
+       ],
+       "score": 7622643
+      },
+      {
+       "ids": [
+        "flint",
+        "molly",
+        "gwen"
+       ],
+       "score": 7593076
+      }
+     ],
+     "next": {
+      "gen": 7,
+      "from": [
+       "hector",
+       "mia",
+       "wayne"
+      ],
+      "to": [
+       "hector",
+       "mia",
+       "bradley"
+      ],
+      "changed": [
+       "mks"
+      ],
+      "gainPct": 49.3
+     }
+    },
+    "mid": {
+     "evaluated": 1174,
+     "top": [
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "wayne"
+       ],
+       "score": 24705022
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "wayne"
+       ],
+       "score": 20937532
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "wayne"
+       ],
+       "score": 20398549
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "wayne"
+       ],
+       "score": 20267264
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "gwen"
+       ],
+       "score": 20217377
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "reina",
+        "wayne"
+       ],
+       "score": 20123057
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "wayne"
+       ],
+       "score": 19122582
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "alonso"
+       ],
+       "score": 18993641
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "gwen"
+       ],
+       "score": 17831961
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "wayne"
+       ],
+       "score": 17534515
+      }
+     ],
+     "next": {
+      "gen": 7,
+      "from": [
+       "jeronimo",
+       "mia",
+       "wayne"
+      ],
+      "to": [
+       "jeronimo",
+       "mia",
+       "bradley"
+      ],
+      "changed": [
+       "mks"
+      ],
+      "gainPct": 40.8
+     }
+    },
+    "whale": {
+     "evaluated": 1210,
+     "top": [
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "wayne"
+       ],
+       "score": 61054736
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "alonso"
+       ],
+       "score": 53602582
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "gwen"
+       ],
+       "score": 51019995
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "wayne"
+       ],
+       "score": 50411941
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "reina",
+        "wayne"
+       ],
+       "score": 49706279
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "wayne"
+       ],
+       "score": 48376328
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "wayne"
+       ],
+       "score": 46813744
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "reina",
+        "alonso"
+       ],
+       "score": 45617877
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "alonso"
+       ],
+       "score": 44258820
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "wayne"
+       ],
+       "score": 44176438
+      }
+     ],
+     "next": {
+      "gen": 7,
+      "from": [
+       "jeronimo",
+       "mia",
+       "wayne"
+      ],
+      "to": [
+       "jeronimo",
+       "mia",
+       "bradley"
+      ],
+      "changed": [
+       "mks"
+      ],
+      "gainPct": 37.9
+     }
+    }
+   }
+  },
+  "7": {
+   "gen": 7,
+   "unlockDay": 440,
+   "rangeFrom": 440,
+   "rangeTo": 519,
+   "heroes": [
+    {
+     "id": "edith",
+     "cls": "inf",
+     "acq": "hall"
+    },
+    {
+     "id": "gordon",
+     "cls": "lan",
+     "acq": "hall"
+    },
+    {
+     "id": "bradley",
+     "cls": "mks",
+     "acq": "roulette"
+    }
+   ],
+   "byTier": {
+    "f2p": {
+     "evaluated": 896,
+     "top": [
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "bradley"
+       ],
+       "score": 15521062
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "bradley"
+       ],
+       "score": 14445989
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "bradley"
+       ],
+       "score": 14280815
+      },
+      {
+       "ids": [
+        "flint",
+        "molly",
+        "bradley"
+       ],
+       "score": 13291586
+      },
+      {
+       "ids": [
+        "hector",
+        "reina",
+        "bradley"
+       ],
+       "score": 12628388
+      },
+      {
+       "ids": [
+        "flint",
+        "reina",
+        "bradley"
+       ],
+       "score": 11619386
+      },
+      {
+       "ids": [
+        "hector",
+        "jessie",
+        "bradley"
+       ],
+       "score": 11432547
+      },
+      {
+       "ids": [
+        "hector",
+        "patrick",
+        "bradley"
+       ],
+       "score": 11354509
+      },
+      {
+       "ids": [
+        "hector",
+        "philly",
+        "bradley"
+       ],
+       "score": 10860470
+      },
+      {
+       "ids": [
+        "flint",
+        "jessie",
+        "bradley"
+       ],
+       "score": 10518762
+      }
+     ],
+     "next": {
+      "gen": 8,
+      "from": [
+       "hector",
+       "mia",
+       "bradley"
+      ],
+      "to": [
+       "hector",
+       "mia",
+       "bradley"
+      ],
+      "changed": [],
+      "gainPct": 0
+     }
+    },
+    "mid": {
+     "evaluated": 1520,
+     "top": [
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "bradley"
+       ],
+       "score": 34791062
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "bradley"
+       ],
+       "score": 29604003
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "bradley"
+       ],
+       "score": 29508318
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "bradley"
+       ],
+       "score": 28822441
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "reina",
+        "bradley"
+       ],
+       "score": 28299875
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "bradley"
+       ],
+       "score": 27240590
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "bradley"
+       ],
+       "score": 25632102
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "wayne"
+       ],
+       "score": 24705022
+      },
+      {
+       "ids": [
+        "natalia",
+        "molly",
+        "bradley"
+       ],
+       "score": 24445985
+      },
+      {
+       "ids": [
+        "hector",
+        "reina",
+        "bradley"
+       ],
+       "score": 24080388
+      }
+     ],
+     "next": {
+      "gen": 8,
+      "from": [
+       "jeronimo",
+       "mia",
+       "bradley"
+      ],
+      "to": [
+       "jeronimo",
+       "mia",
+       "hendrik"
+      ],
+      "changed": [
+       "mks"
+      ],
+      "gainPct": 0.6
+     }
+    },
+    "whale": {
+     "evaluated": 1584,
+     "top": [
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "bradley"
+       ],
+       "score": 84176299
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "bradley"
+       ],
+       "score": 69735343
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "reina",
+        "bradley"
+       ],
+       "score": 68450837
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "bradley"
+       ],
+       "score": 66949443
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "bradley"
+       ],
+       "score": 66742348
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "bradley"
+       ],
+       "score": 61609951
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "wayne"
+       ],
+       "score": 61054736
+      },
+      {
+       "ids": [
+        "natalia",
+        "reina",
+        "bradley"
+       ],
+       "score": 56707680
+      },
+      {
+       "ids": [
+        "natalia",
+        "molly",
+        "bradley"
+       ],
+       "score": 55292292
+      },
+      {
+       "ids": [
+        "hector",
+        "reina",
+        "bradley"
+       ],
+       "score": 54441802
+      }
+     ],
+     "next": {
+      "gen": 8,
+      "from": [
+       "jeronimo",
+       "mia",
+       "bradley"
+      ],
+      "to": [
+       "jeronimo",
+       "mia",
+       "bradley"
+      ],
+      "changed": [],
+      "gainPct": 0
+     }
+    }
+   }
+  },
+  "8": {
+   "gen": 8,
+   "unlockDay": 520,
+   "rangeFrom": 520,
+   "rangeTo": 599,
+   "heroes": [
+    {
+     "id": "gatot",
+     "cls": "inf",
+     "acq": "roulette"
+    },
+    {
+     "id": "sonya",
+     "cls": "lan",
+     "acq": "hall"
+    },
+    {
+     "id": "hendrik",
+     "cls": "mks",
+     "acq": "hall"
+    }
+   ],
+   "byTier": {
+    "f2p": {
+     "evaluated": 1120,
+     "top": [
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "bradley"
+       ],
+       "score": 15521062
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "hendrik"
+       ],
+       "score": 15250378
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "bradley"
+       ],
+       "score": 14445989
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "hendrik"
+       ],
+       "score": 14397336
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "bradley"
+       ],
+       "score": 14280815
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "hendrik"
+       ],
+       "score": 14199059
+      },
+      {
+       "ids": [
+        "hector",
+        "sonya",
+        "bradley"
+       ],
+       "score": 13429806
+      },
+      {
+       "ids": [
+        "flint",
+        "molly",
+        "hendrik"
+       ],
+       "score": 13404777
+      },
+      {
+       "ids": [
+        "flint",
+        "molly",
+        "bradley"
+       ],
+       "score": 13291586
+      },
+      {
+       "ids": [
+        "hector",
+        "reina",
+        "bradley"
+       ],
+       "score": 12628388
+      }
+     ],
+     "next": {
+      "gen": 9,
+      "from": [
+       "hector",
+       "mia",
+       "bradley"
+      ],
+      "to": [
+       "hector",
+       "mia",
+       "bradley"
+      ],
+      "changed": [],
+      "gainPct": 0
+     }
+    },
+    "mid": {
+     "evaluated": 1928,
+     "top": [
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "hendrik"
+       ],
+       "score": 34982978
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "bradley"
+       ],
+       "score": 34791062
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "hendrik"
+       ],
+       "score": 29680428
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "bradley"
+       ],
+       "score": 29604003
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "bradley"
+       ],
+       "score": 29508318
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "hendrik"
+       ],
+       "score": 28884894
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "bradley"
+       ],
+       "score": 28822441
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "hendrik"
+       ],
+       "score": 28678554
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "reina",
+        "hendrik"
+       ],
+       "score": 28440223
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "reina",
+        "bradley"
+       ],
+       "score": 28299875
+      }
+     ],
+     "next": {
+      "gen": 9,
+      "from": [
+       "jeronimo",
+       "mia",
+       "hendrik"
+      ],
+      "to": [
+       "jeronimo",
+       "mia",
+       "hendrik"
+      ],
+      "changed": [],
+      "gainPct": 0
+     }
+    },
+    "whale": {
+     "evaluated": 2028,
+     "top": [
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "bradley"
+       ],
+       "score": 84176299
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "hendrik"
+       ],
+       "score": 83489672
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "bradley"
+       ],
+       "score": 69735343
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "hendrik"
+       ],
+       "score": 68936113
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "reina",
+        "bradley"
+       ],
+       "score": 68450837
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "reina",
+        "hendrik"
+       ],
+       "score": 67860932
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "bradley"
+       ],
+       "score": 66949443
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "bradley"
+       ],
+       "score": 66742348
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "hendrik"
+       ],
+       "score": 66216147
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "hendrik"
+       ],
+       "score": 63976558
+      }
+     ],
+     "next": {
+      "gen": 9,
+      "from": [
+       "jeronimo",
+       "mia",
+       "bradley"
+      ],
+      "to": [
+       "jeronimo",
+       "mia",
+       "bradley"
+      ],
+      "changed": [],
+      "gainPct": 0
+     }
+    }
+   }
+  },
+  "9": {
+   "gen": 9,
+   "unlockDay": 600,
+   "rangeFrom": 600,
+   "rangeTo": 679,
+   "heroes": [
+    {
+     "id": "magnus",
+     "cls": "inf",
+     "acq": "hall"
+    },
+    {
+     "id": "fred",
+     "cls": "lan",
+     "acq": "roulette"
+    },
+    {
+     "id": "xura",
+     "cls": "mks",
+     "acq": "hall"
+    }
+   ],
+   "byTier": {
+    "f2p": {
+     "evaluated": 1356,
+     "top": [
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "bradley"
+       ],
+       "score": 15521062
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "hendrik"
+       ],
+       "score": 15250378
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "xura"
+       ],
+       "score": 15083571
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "bradley"
+       ],
+       "score": 14445989
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "hendrik"
+       ],
+       "score": 14397336
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "bradley"
+       ],
+       "score": 14280815
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "xura"
+       ],
+       "score": 14242252
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "hendrik"
+       ],
+       "score": 14199059
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "xura"
+       ],
+       "score": 14047701
+      },
+      {
+       "ids": [
+        "hector",
+        "sonya",
+        "bradley"
+       ],
+       "score": 13429806
+      }
+     ],
+     "next": {
+      "gen": 10,
+      "from": [
+       "hector",
+       "mia",
+       "bradley"
+      ],
+      "to": [
+       "hector",
+       "mia",
+       "blanchette"
+      ],
+      "changed": [
+       "mks"
+      ],
+      "gainPct": 89.9
+     }
+    },
+    "mid": {
+     "evaluated": 2398,
+     "top": [
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "hendrik"
+       ],
+       "score": 34982978
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "bradley"
+       ],
+       "score": 34791062
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "xura"
+       ],
+       "score": 34131064
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "hendrik"
+       ],
+       "score": 29680428
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "bradley"
+       ],
+       "score": 29604003
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "bradley"
+       ],
+       "score": 29508318
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "xura"
+       ],
+       "score": 28964944
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "hendrik"
+       ],
+       "score": 28884894
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "bradley"
+       ],
+       "score": 28822441
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "hendrik"
+       ],
+       "score": 28678554
+      }
+     ],
+     "next": {
+      "gen": 10,
+      "from": [
+       "jeronimo",
+       "mia",
+       "hendrik"
+      ],
+      "to": [
+       "jeronimo",
+       "mia",
+       "blanchette"
+      ],
+      "changed": [
+       "mks"
+      ],
+      "gainPct": 83.2
+     }
+    },
+    "whale": {
+     "evaluated": 2548,
+     "top": [
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "bradley"
+       ],
+       "score": 84176299
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "hendrik"
+       ],
+       "score": 83489672
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "xura"
+       ],
+       "score": 80365336
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "bradley"
+       ],
+       "score": 69735343
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "hendrik"
+       ],
+       "score": 68936113
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "reina",
+        "bradley"
+       ],
+       "score": 68450837
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "reina",
+        "hendrik"
+       ],
+       "score": 67860932
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "bradley"
+       ],
+       "score": 66949443
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "bradley"
+       ],
+       "score": 66742348
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "xura"
+       ],
+       "score": 66356396
+      }
+     ],
+     "next": {
+      "gen": 10,
+      "from": [
+       "jeronimo",
+       "mia",
+       "bradley"
+      ],
+      "to": [
+       "jeronimo",
+       "mia",
+       "blanchette"
+      ],
+      "changed": [
+       "mks"
+      ],
+      "gainPct": 76.9
+     }
+    }
+   }
+  },
+  "10": {
+   "gen": 10,
+   "unlockDay": 680,
+   "rangeFrom": 680,
+   "rangeTo": 759,
+   "heroes": [
+    {
+     "id": "gregory",
+     "cls": "inf",
+     "acq": "hall"
+    },
+    {
+     "id": "freya",
+     "cls": "lan",
+     "acq": "hall"
+    },
+    {
+     "id": "blanchette",
+     "cls": "mks",
+     "acq": "roulette"
+    }
+   ],
+   "byTier": {
+    "f2p": {
+     "evaluated": 1620,
+     "top": [
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "blanchette"
+       ],
+       "score": 29478696
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "blanchette"
+       ],
+       "score": 27467481
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "blanchette"
+       ],
+       "score": 26728781
+      },
+      {
+       "ids": [
+        "hector",
+        "sonya",
+        "blanchette"
+       ],
+       "score": 25070324
+      },
+      {
+       "ids": [
+        "flint",
+        "molly",
+        "blanchette"
+       ],
+       "score": 24905141
+      },
+      {
+       "ids": [
+        "magnus",
+        "mia",
+        "blanchette"
+       ],
+       "score": 24485090
+      },
+      {
+       "ids": [
+        "hector",
+        "reina",
+        "blanchette"
+       ],
+       "score": 23935712
+      },
+      {
+       "ids": [
+        "magnus",
+        "molly",
+        "blanchette"
+       ],
+       "score": 22814679
+      },
+      {
+       "ids": [
+        "flint",
+        "sonya",
+        "blanchette"
+       ],
+       "score": 22732237
+      },
+      {
+       "ids": [
+        "hector",
+        "patrick",
+        "blanchette"
+       ],
+       "score": 22243606
+      }
+     ],
+     "next": {
+      "gen": 11,
+      "from": [
+       "hector",
+       "mia",
+       "blanchette"
+      ],
+      "to": [
+       "hector",
+       "mia",
+       "rufus"
+      ],
+      "changed": [
+       "mks"
+      ],
+      "gainPct": 48
+     }
+    },
+    "mid": {
+     "evaluated": 2934,
+     "top": [
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "blanchette"
+       ],
+       "score": 64096784
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "blanchette"
+       ],
+       "score": 54420425
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "blanchette"
+       ],
+       "score": 54341303
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "blanchette"
+       ],
+       "score": 53927712
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "reina",
+        "blanchette"
+       ],
+       "score": 52042910
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "sonya",
+        "blanchette"
+       ],
+       "score": 49807541
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "blanchette"
+       ],
+       "score": 48897419
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "blanchette"
+       ],
+       "score": 46740502
+      },
+      {
+       "ids": [
+        "natalia",
+        "molly",
+        "blanchette"
+       ],
+       "score": 46137679
+      },
+      {
+       "ids": [
+        "magnus",
+        "mia",
+        "blanchette"
+       ],
+       "score": 44784823
+      }
+     ],
+     "next": {
+      "gen": 11,
+      "from": [
+       "jeronimo",
+       "mia",
+       "blanchette"
+      ],
+      "to": [
+       "jeronimo",
+       "mia",
+       "rufus"
+      ],
+      "changed": [
+       "mks"
+      ],
+      "gainPct": 46.3
+     }
+    },
+    "whale": {
+     "evaluated": 3150,
+     "top": [
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "blanchette"
+       ],
+       "score": 148887561
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "blanchette"
+       ],
+       "score": 126226997
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "reina",
+        "blanchette"
+       ],
+       "score": 120880232
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "blanchette"
+       ],
+       "score": 118162419
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "blanchette"
+       ],
+       "score": 117095870
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "sonya",
+        "blanchette"
+       ],
+       "score": 108025711
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "blanchette"
+       ],
+       "score": 106174996
+      },
+      {
+       "ids": [
+        "natalia",
+        "reina",
+        "blanchette"
+       ],
+       "score": 102482360
+      },
+      {
+       "ids": [
+        "natalia",
+        "molly",
+        "blanchette"
+       ],
+       "score": 100178196
+      },
+      {
+       "ids": [
+        "magnus",
+        "mia",
+        "blanchette"
+       ],
+       "score": 97225708
+      }
+     ],
+     "next": {
+      "gen": 11,
+      "from": [
+       "jeronimo",
+       "mia",
+       "blanchette"
+      ],
+      "to": [
+       "jeronimo",
+       "mia",
+       "rufus"
+      ],
+      "changed": [
+       "mks"
+      ],
+      "gainPct": 44.4
+     }
+    }
+   }
+  },
+  "11": {
+   "gen": 11,
+   "unlockDay": 760,
+   "rangeFrom": 760,
+   "rangeTo": 839,
+   "heroes": [
+    {
+     "id": "eleonora",
+     "cls": "inf",
+     "acq": "roulette"
+    },
+    {
+     "id": "lloyd",
+     "cls": "lan",
+     "acq": "hall"
+    },
+    {
+     "id": "rufus",
+     "cls": "mks",
+     "acq": "hall"
+    }
+   ],
+   "byTier": {
+    "f2p": {
+     "evaluated": 1935,
+     "top": [
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "rufus"
+       ],
+       "score": 43637235
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "rufus"
+       ],
+       "score": 40671544
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "rufus"
+       ],
+       "score": 40183869
+      },
+      {
+       "ids": [
+        "flint",
+        "molly",
+        "rufus"
+       ],
+       "score": 37452834
+      },
+      {
+       "ids": [
+        "hector",
+        "jessie",
+        "rufus"
+       ],
+       "score": 32363071
+      },
+      {
+       "ids": [
+        "hector",
+        "patrick",
+        "rufus"
+       ],
+       "score": 32142163
+      },
+      {
+       "ids": [
+        "flint",
+        "jessie",
+        "rufus"
+       ],
+       "score": 29801753
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "blanchette"
+       ],
+       "score": 29478696
+      },
+      {
+       "ids": [
+        "flint",
+        "patrick",
+        "rufus"
+       ],
+       "score": 29043072
+      },
+      {
+       "ids": [
+        "hector",
+        "fred",
+        "rufus"
+       ],
+       "score": 28665938
+      }
+     ],
+     "next": {
+      "gen": 12,
+      "from": [
+       "hector",
+       "mia",
+       "rufus"
+      ],
+      "to": [
+       "hector",
+       "mia",
+       "rufus"
+      ],
+      "changed": [],
+      "gainPct": 0
+     }
+    },
+    "mid": {
+     "evaluated": 3546,
+     "top": [
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "rufus"
+       ],
+       "score": 93753291
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "rufus"
+       ],
+       "score": 79621557
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "rufus"
+       ],
+       "score": 78792223
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "rufus"
+       ],
+       "score": 76777722
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "reina",
+        "rufus"
+       ],
+       "score": 76085627
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "sonya",
+        "rufus"
+       ],
+       "score": 72562368
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "rufus"
+       ],
+       "score": 72556398
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "rufus"
+       ],
+       "score": 68309788
+      },
+      {
+       "ids": [
+        "natalia",
+        "molly",
+        "rufus"
+       ],
+       "score": 65204770
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "blanchette"
+       ],
+       "score": 64096784
+      }
+     ],
+     "next": {
+      "gen": 12,
+      "from": [
+       "jeronimo",
+       "mia",
+       "rufus"
+      ],
+      "to": [
+       "jeronimo",
+       "mia",
+       "rufus"
+      ],
+      "changed": [],
+      "gainPct": 0
+     }
+    },
+    "whale": {
+     "evaluated": 3840,
+     "top": [
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "rufus"
+       ],
+       "score": 214956380
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "rufus"
+       ],
+       "score": 176035015
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "reina",
+        "rufus"
+       ],
+       "score": 174444288
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "rufus"
+       ],
+       "score": 170641145
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "rufus"
+       ],
+       "score": 168873096
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "rufus"
+       ],
+       "score": 155508385
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "sonya",
+        "rufus"
+       ],
+       "score": 155409816
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "blanchette"
+       ],
+       "score": 148887561
+      },
+      {
+       "ids": [
+        "natalia",
+        "reina",
+        "rufus"
+       ],
+       "score": 142858299
+      },
+      {
+       "ids": [
+        "natalia",
+        "molly",
+        "rufus"
+       ],
+       "score": 139743777
+      }
+     ],
+     "next": {
+      "gen": 12,
+      "from": [
+       "jeronimo",
+       "mia",
+       "rufus"
+      ],
+      "to": [
+       "jeronimo",
+       "mia",
+       "rufus"
+      ],
+      "changed": [],
+      "gainPct": 0
+     }
+    }
+   }
+  },
+  "12": {
+   "gen": 12,
+   "unlockDay": 840,
+   "rangeFrom": 840,
+   "rangeTo": 919,
+   "heroes": [
+    {
+     "id": "hervor",
+     "cls": "inf",
+     "acq": "hall"
+    },
+    {
+     "id": "karol",
+     "cls": "lan",
+     "acq": "roulette"
+    },
+    {
+     "id": "ligeia",
+     "cls": "mks",
+     "acq": "hall"
+    }
+   ],
+   "byTier": {
+    "f2p": {
+     "evaluated": 2261,
+     "top": [
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "rufus"
+       ],
+       "score": 43637235
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "rufus"
+       ],
+       "score": 40671544
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "rufus"
+       ],
+       "score": 40183869
+      },
+      {
+       "ids": [
+        "flint",
+        "molly",
+        "rufus"
+       ],
+       "score": 37452834
+      },
+      {
+       "ids": [
+        "hector",
+        "jessie",
+        "rufus"
+       ],
+       "score": 32363071
+      },
+      {
+       "ids": [
+        "hector",
+        "patrick",
+        "rufus"
+       ],
+       "score": 32142163
+      },
+      {
+       "ids": [
+        "flint",
+        "jessie",
+        "rufus"
+       ],
+       "score": 29801753
+      },
+      {
+       "ids": [
+        "hector",
+        "karol",
+        "rufus"
+       ],
+       "score": 29492206
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "blanchette"
+       ],
+       "score": 29478696
+      },
+      {
+       "ids": [
+        "flint",
+        "patrick",
+        "rufus"
+       ],
+       "score": 29043072
+      }
+     ],
+     "next": {
+      "gen": 13,
+      "from": [
+       "hector",
+       "mia",
+       "rufus"
+      ],
+      "to": [
+       "hector",
+       "mia",
+       "rufus"
+      ],
+      "changed": [],
+      "gainPct": 0
+     }
+    },
+    "mid": {
+     "evaluated": 4232,
+     "top": [
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "rufus"
+       ],
+       "score": 93753291
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "rufus"
+       ],
+       "score": 79621557
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "rufus"
+       ],
+       "score": 78792223
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "rufus"
+       ],
+       "score": 76777722
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "reina",
+        "rufus"
+       ],
+       "score": 76085627
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "sonya",
+        "rufus"
+       ],
+       "score": 72562368
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "rufus"
+       ],
+       "score": 72556398
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "rufus"
+       ],
+       "score": 68309788
+      },
+      {
+       "ids": [
+        "natalia",
+        "molly",
+        "rufus"
+       ],
+       "score": 65204770
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "blanchette"
+       ],
+       "score": 64096784
+      }
+     ],
+     "next": {
+      "gen": 13,
+      "from": [
+       "jeronimo",
+       "mia",
+       "rufus"
+      ],
+      "to": [
+       "jeronimo",
+       "mia",
+       "rufus"
+      ],
+      "changed": [],
+      "gainPct": 0
+     }
+    },
+    "whale": {
+     "evaluated": 4624,
+     "top": [
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "rufus"
+       ],
+       "score": 214956380
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "rufus"
+       ],
+       "score": 176035015
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "reina",
+        "rufus"
+       ],
+       "score": 174444288
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "rufus"
+       ],
+       "score": 170641145
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "rufus"
+       ],
+       "score": 168873096
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "rufus"
+       ],
+       "score": 155508385
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "sonya",
+        "rufus"
+       ],
+       "score": 155409816
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "blanchette"
+       ],
+       "score": 148887561
+      },
+      {
+       "ids": [
+        "natalia",
+        "reina",
+        "rufus"
+       ],
+       "score": 142858299
+      },
+      {
+       "ids": [
+        "natalia",
+        "molly",
+        "rufus"
+       ],
+       "score": 139743777
+      }
+     ],
+     "next": {
+      "gen": 13,
+      "from": [
+       "jeronimo",
+       "mia",
+       "rufus"
+      ],
+      "to": [
+       "jeronimo",
+       "mia",
+       "rufus"
+      ],
+      "changed": [],
+      "gainPct": 0
+     }
+    }
+   }
+  },
+  "13": {
+   "gen": 13,
+   "unlockDay": 920,
+   "rangeFrom": 920,
+   "rangeTo": 999,
+   "heroes": [
+    {
+     "id": "gisela",
+     "cls": "inf",
+     "acq": "hall"
+    },
+    {
+     "id": "flora",
+     "cls": "lan",
+     "acq": "hall"
+    },
+    {
+     "id": "vulcanus",
+     "cls": "mks",
+     "acq": "roulette"
+    }
+   ],
+   "byTier": {
+    "f2p": {
+     "evaluated": 2620,
+     "top": [
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "rufus"
+       ],
+       "score": 43637235
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "rufus"
+       ],
+       "score": 40671544
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "rufus"
+       ],
+       "score": 40183869
+      },
+      {
+       "ids": [
+        "flint",
+        "molly",
+        "rufus"
+       ],
+       "score": 37452834
+      },
+      {
+       "ids": [
+        "hector",
+        "jessie",
+        "rufus"
+       ],
+       "score": 32363071
+      },
+      {
+       "ids": [
+        "hector",
+        "patrick",
+        "rufus"
+       ],
+       "score": 32142163
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "vulcanus"
+       ],
+       "score": 32029255
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "vulcanus"
+       ],
+       "score": 30263370
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "vulcanus"
+       ],
+       "score": 29863673
+      },
+      {
+       "ids": [
+        "flint",
+        "jessie",
+        "rufus"
+       ],
+       "score": 29801753
+      }
+     ],
+     "next": {
+      "gen": 14,
+      "from": [
+       "hector",
+       "mia",
+       "rufus"
+      ],
+      "to": [
+       "hector",
+       "mia",
+       "rufus"
+      ],
+      "changed": [],
+      "gainPct": 0
+     }
+    },
+    "mid": {
+     "evaluated": 4996,
+     "top": [
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "rufus"
+       ],
+       "score": 93753291
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "rufus"
+       ],
+       "score": 79621557
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "rufus"
+       ],
+       "score": 78792223
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "rufus"
+       ],
+       "score": 76777722
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "reina",
+        "rufus"
+       ],
+       "score": 76085627
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "sonya",
+        "rufus"
+       ],
+       "score": 72562368
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "rufus"
+       ],
+       "score": 72556398
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "vulcanus"
+       ],
+       "score": 68914732
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "rufus"
+       ],
+       "score": 68309788
+      },
+      {
+       "ids": [
+        "natalia",
+        "molly",
+        "rufus"
+       ],
+       "score": 65204770
+      }
+     ],
+     "next": {
+      "gen": 14,
+      "from": [
+       "jeronimo",
+       "mia",
+       "rufus"
+      ],
+      "to": [
+       "jeronimo",
+       "mia",
+       "rufus"
+      ],
+      "changed": [],
+      "gainPct": 0
+     }
+    },
+    "whale": {
+     "evaluated": 5508,
+     "top": [
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "rufus"
+       ],
+       "score": 214956380
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "rufus"
+       ],
+       "score": 176035015
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "reina",
+        "rufus"
+       ],
+       "score": 174444288
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "rufus"
+       ],
+       "score": 170641145
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "rufus"
+       ],
+       "score": 168873096
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "rufus"
+       ],
+       "score": 155508385
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "sonya",
+        "rufus"
+       ],
+       "score": 155409816
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "vulcanus"
+       ],
+       "score": 154174387
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "blanchette"
+       ],
+       "score": 148887561
+      },
+      {
+       "ids": [
+        "natalia",
+        "reina",
+        "rufus"
+       ],
+       "score": 142858299
+      }
+     ],
+     "next": {
+      "gen": 14,
+      "from": [
+       "jeronimo",
+       "mia",
+       "rufus"
+      ],
+      "to": [
+       "jeronimo",
+       "mia",
+       "rufus"
+      ],
+      "changed": [],
+      "gainPct": 0
+     }
+    }
+   }
+  },
+  "14": {
+   "gen": 14,
+   "unlockDay": 1000,
+   "rangeFrom": 1000,
+   "rangeTo": 1079,
+   "heroes": [
+    {
+     "id": "elif",
+     "cls": "inf",
+     "acq": "roulette"
+    },
+    {
+     "id": "dominic",
+     "cls": "lan",
+     "acq": "hall"
+    },
+    {
+     "id": "cara",
+     "cls": "mks",
+     "acq": "hall"
+    }
+   ],
+   "byTier": {
+    "f2p": {
+     "evaluated": 3040,
+     "top": [
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "rufus"
+       ],
+       "score": 43637235
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "rufus"
+       ],
+       "score": 40671544
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "rufus"
+       ],
+       "score": 40183869
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "cara"
+       ],
+       "score": 39302319
+      },
+      {
+       "ids": [
+        "flint",
+        "molly",
+        "rufus"
+       ],
+       "score": 37452834
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "cara"
+       ],
+       "score": 37139611
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "cara"
+       ],
+       "score": 36651866
+      },
+      {
+       "ids": [
+        "flint",
+        "molly",
+        "cara"
+       ],
+       "score": 34634991
+      },
+      {
+       "ids": [
+        "hector",
+        "jessie",
+        "rufus"
+       ],
+       "score": 32363071
+      },
+      {
+       "ids": [
+        "hector",
+        "patrick",
+        "rufus"
+       ],
+       "score": 32142163
+      }
+     ],
+     "next": {
+      "gen": 15,
+      "from": [
+       "hector",
+       "mia",
+       "rufus"
+      ],
+      "to": [
+       "hector",
+       "mia",
+       "viveca"
+      ],
+      "changed": [
+       "mks"
+      ],
+      "gainPct": 11.2
+     }
+    },
+    "mid": {
+     "evaluated": 5850,
+     "top": [
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "rufus"
+       ],
+       "score": 93753291
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "cara"
+       ],
+       "score": 83627146
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "rufus"
+       ],
+       "score": 79621557
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "rufus"
+       ],
+       "score": 78792223
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "rufus"
+       ],
+       "score": 76777722
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "reina",
+        "rufus"
+       ],
+       "score": 76085627
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "sonya",
+        "rufus"
+       ],
+       "score": 72562368
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "rufus"
+       ],
+       "score": 72556398
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "cara"
+       ],
+       "score": 71061279
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "cara"
+       ],
+       "score": 69049614
+      }
+     ],
+     "next": {
+      "gen": 15,
+      "from": [
+       "jeronimo",
+       "mia",
+       "rufus"
+      ],
+      "to": [
+       "jeronimo",
+       "mia",
+       "viveca"
+      ],
+      "changed": [
+       "mks"
+      ],
+      "gainPct": 8.9
+     }
+    },
+    "whale": {
+     "evaluated": 6498,
+     "top": [
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "rufus"
+       ],
+       "score": 214956380
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "cara"
+       ],
+       "score": 184937782
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "rufus"
+       ],
+       "score": 176035015
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "reina",
+        "rufus"
+       ],
+       "score": 174444288
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "rufus"
+       ],
+       "score": 170641145
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "rufus"
+       ],
+       "score": 168873096
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "rufus"
+       ],
+       "score": 155508385
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "sonya",
+        "rufus"
+       ],
+       "score": 155409816
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "vulcanus"
+       ],
+       "score": 154174387
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "cara"
+       ],
+       "score": 152700211
+      }
+     ],
+     "next": {
+      "gen": 15,
+      "from": [
+       "jeronimo",
+       "mia",
+       "rufus"
+      ],
+      "to": [
+       "jeronimo",
+       "mia",
+       "viveca"
+      ],
+      "changed": [
+       "mks"
+      ],
+      "gainPct": 3.9
+     }
+    }
+   }
+  },
+  "15": {
+   "gen": 15,
+   "unlockDay": 1080,
+   "rangeFrom": 1080,
+   "rangeTo": 1159,
+   "heroes": [
+    {
+     "id": "hank",
+     "cls": "inf",
+     "acq": "hall"
+    },
+    {
+     "id": "estrella",
+     "cls": "lan",
+     "acq": "roulette"
+    },
+    {
+     "id": "viveca",
+     "cls": "mks",
+     "acq": "hall"
+    }
+   ],
+   "byTier": {
+    "f2p": {
+     "evaluated": 3470,
+     "top": [
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "viveca"
+       ],
+       "score": 48504318
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "viveca"
+       ],
+       "score": 45839544
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "viveca"
+       ],
+       "score": 45240399
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "rufus"
+       ],
+       "score": 43637235
+      },
+      {
+       "ids": [
+        "flint",
+        "molly",
+        "viveca"
+       ],
+       "score": 42754929
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "rufus"
+       ],
+       "score": 40671544
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "rufus"
+       ],
+       "score": 40183869
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "cara"
+       ],
+       "score": 39302319
+      },
+      {
+       "ids": [
+        "flint",
+        "molly",
+        "rufus"
+       ],
+       "score": 37452834
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "cara"
+       ],
+       "score": 37139611
+      }
+     ],
+     "next": {
+      "gen": 16,
+      "from": [
+       "hector",
+       "mia",
+       "viveca"
+      ],
+      "to": [
+       "hector",
+       "mia",
+       "aisling"
+      ],
+      "changed": [
+       "mks"
+      ],
+      "gainPct": 141.4
+     }
+    },
+    "mid": {
+     "evaluated": 6790,
+     "top": [
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "viveca"
+       ],
+       "score": 102133002
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "rufus"
+       ],
+       "score": 93753291
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "viveca"
+       ],
+       "score": 86800479
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "viveca"
+       ],
+       "score": 84329607
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "viveca"
+       ],
+       "score": 83633408
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "cara"
+       ],
+       "score": 83627146
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "reina",
+        "viveca"
+       ],
+       "score": 82780977
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "rufus"
+       ],
+       "score": 79621557
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "viveca"
+       ],
+       "score": 79036987
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "rufus"
+       ],
+       "score": 78792223
+      }
+     ],
+     "next": {
+      "gen": 16,
+      "from": [
+       "jeronimo",
+       "mia",
+       "viveca"
+      ],
+      "to": [
+       "jeronimo",
+       "mia",
+       "aisling"
+      ],
+      "changed": [
+       "mks"
+      ],
+      "gainPct": 135
+     }
+    },
+    "whale": {
+     "evaluated": 7600,
+     "top": [
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "viveca"
+       ],
+       "score": 223401673
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "rufus"
+       ],
+       "score": 214956380
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "cara"
+       ],
+       "score": 184937782
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "viveca"
+       ],
+       "score": 184459237
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "reina",
+        "viveca"
+       ],
+       "score": 181080982
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "viveca"
+       ],
+       "score": 177470625
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "rufus"
+       ],
+       "score": 176035015
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "reina",
+        "rufus"
+       ],
+       "score": 174444288
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "viveca"
+       ],
+       "score": 171010273
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "rufus"
+       ],
+       "score": 170641145
+      }
+     ],
+     "next": {
+      "gen": 16,
+      "from": [
+       "jeronimo",
+       "mia",
+       "viveca"
+      ],
+      "to": [
+       "jeronimo",
+       "mia",
+       "aisling"
+      ],
+      "changed": [
+       "mks"
+      ],
+      "gainPct": 132.6
+     }
+    }
+   }
+  },
+  "16": {
+   "gen": 16,
+   "unlockDay": 1160,
+   "rangeFrom": 1160,
+   "rangeTo": null,
+   "heroes": [
+    {
+     "id": "seigel",
+     "cls": "inf",
+     "acq": "hall"
+    },
+    {
+     "id": "ursar",
+     "cls": "lan",
+     "acq": "hall"
+    },
+    {
+     "id": "aisling",
+     "cls": "mks",
+     "acq": "roulette"
+    }
+   ],
+   "byTier": {
+    "f2p": {
+     "evaluated": 3938,
+     "top": [
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "aisling"
+       ],
+       "score": 117087190
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "aisling"
+       ],
+       "score": 110665771
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "aisling"
+       ],
+       "score": 107391028
+      },
+      {
+       "ids": [
+        "flint",
+        "molly",
+        "aisling"
+       ],
+       "score": 101501361
+      },
+      {
+       "ids": [
+        "magnus",
+        "mia",
+        "aisling"
+       ],
+       "score": 97056157
+      },
+      {
+       "ids": [
+        "hector",
+        "sonya",
+        "aisling"
+       ],
+       "score": 96401237
+      },
+      {
+       "ids": [
+        "hector",
+        "reina",
+        "aisling"
+       ],
+       "score": 94866152
+      },
+      {
+       "ids": [
+        "hervor",
+        "mia",
+        "aisling"
+       ],
+       "score": 93338402
+      },
+      {
+       "ids": [
+        "flint",
+        "sonya",
+        "aisling"
+       ],
+       "score": 91114516
+      },
+      {
+       "ids": [
+        "flint",
+        "reina",
+        "aisling"
+       ],
+       "score": 89663427
+      }
+     ]
+    },
+    "mid": {
+     "evaluated": 7820,
+     "top": [
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "aisling"
+       ],
+       "score": 240029964
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "aisling"
+       ],
+       "score": 201416817
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "aisling"
+       ],
+       "score": 199889035
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "aisling"
+       ],
+       "score": 198188949
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "reina",
+        "aisling"
+       ],
+       "score": 194487441
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "aisling"
+       ],
+       "score": 188922895
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "sonya",
+        "aisling"
+       ],
+       "score": 181399430
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "aisling"
+       ],
+       "score": 170536343
+      },
+      {
+       "ids": [
+        "natalia",
+        "molly",
+        "aisling"
+       ],
+       "score": 166306683
+      },
+      {
+       "ids": [
+        "magnus",
+        "mia",
+        "aisling"
+       ],
+       "score": 165693562
+      }
+     ]
+    },
+    "whale": {
+     "evaluated": 8820,
+     "top": [
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "aisling"
+       ],
+       "score": 519590962
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "aisling"
+       ],
+       "score": 429018056
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "reina",
+        "aisling"
+       ],
+       "score": 421025958
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "aisling"
+       ],
+       "score": 407548892
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "aisling"
+       ],
+       "score": 404488428
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "aisling"
+       ],
+       "score": 382290891
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "sonya",
+        "aisling"
+       ],
+       "score": 367136812
+      },
+      {
+       "ids": [
+        "natalia",
+        "reina",
+        "aisling"
+       ],
+       "score": 347634488
+      },
+      {
+       "ids": [
+        "natalia",
+        "molly",
+        "aisling"
+       ],
+       "score": 336506687
+      },
+      {
+       "ids": [
+        "magnus",
+        "mia",
+        "aisling"
+       ],
+       "score": 335291923
+      }
+     ]
+    }
+   }
+  }
+ }
+}
