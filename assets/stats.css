@@ -352,3 +352,4 @@ details.faq .faq-a .g{font-size:10px;color:var(--muted);margin:0 5px 0 2px}
 .adm-item.reported .adm-st{background:#fde7df;color:#c74e1b}.adm-item.hidden .adm-st{background:#e9ecf3;color:#5b6276}
 .adm-item .adm-btns{margin-top:6px;display:flex;gap:6px}
 .adm-item .adm-btns button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:4px 10px;font-size:12px;cursor:pointer;font-family:inherit;font-weight:700}
+.acq.login{background:#fff4dc;color:#9a6200}

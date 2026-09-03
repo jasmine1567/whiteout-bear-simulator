@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-03T04:39:50.290Z",
+ "generatedAt": "2026-09-03T13:55:48.990Z",
  "model": {
   "ratio": [
    1,
@@ -109,7 +109,7 @@
     {
      "id": "molly",
      "cls": "lan",
-     "acq": "event"
+     "acq": "login"
     },
     {
      "id": "zinman",
@@ -710,7 +710,7 @@
     {
      "id": "philly",
      "cls": "lan",
-     "acq": "hall"
+     "acq": "event"
     },
     {
      "id": "alonso",
@@ -1360,7 +1360,7 @@
     {
      "id": "greg",
      "cls": "mks",
-     "acq": "hall"
+     "acq": "event"
     }
    ],
    "byTier": {
@@ -2034,7 +2034,7 @@
     {
      "id": "ahmose",
      "cls": "inf",
-     "acq": "hall"
+     "acq": "event"
     },
     {
      "id": "reina",
@@ -2773,7 +2773,7 @@
     {
      "id": "nora",
      "cls": "lan",
-     "acq": "hall"
+     "acq": "event"
     },
     {
      "id": "gwen",
@@ -3558,7 +3558,7 @@
     {
      "id": "wayne",
      "cls": "mks",
-     "acq": "hall"
+     "acq": "event"
     }
    ],
    "byTier": {
@@ -4373,7 +4373,7 @@
     {
      "id": "edith",
      "cls": "inf",
-     "acq": "hall"
+     "acq": "event"
     },
     {
      "id": "gordon",
@@ -5244,7 +5244,7 @@
     {
      "id": "sonya",
      "cls": "lan",
-     "acq": "hall"
+     "acq": "event"
     },
     {
      "id": "hendrik",
@@ -6164,7 +6164,7 @@
     {
      "id": "xura",
      "cls": "mks",
-     "acq": "hall"
+     "acq": "event"
     }
    ],
    "byTier": {
@@ -7114,7 +7114,7 @@
     {
      "id": "gregory",
      "cls": "inf",
-     "acq": "hall"
+     "acq": "event"
     },
     {
      "id": "freya",
@@ -8124,7 +8124,7 @@
     {
      "id": "lloyd",
      "cls": "lan",
-     "acq": "hall"
+     "acq": "event"
     },
     {
      "id": "rufus",
@@ -9173,7 +9173,7 @@
     {
      "id": "ligeia",
      "cls": "mks",
-     "acq": "hall"
+     "acq": "event"
     }
    ],
    "byTier": {
@@ -10258,7 +10258,7 @@
     {
      "id": "gisela",
      "cls": "inf",
-     "acq": "hall"
+     "acq": "event"
     },
     {
      "id": "flora",
@@ -11401,7 +11401,7 @@
     {
      "id": "dominic",
      "cls": "lan",
-     "acq": "hall"
+     "acq": "event"
     },
     {
      "id": "cara",
@@ -12591,7 +12591,7 @@
     {
      "id": "viveca",
      "cls": "mks",
-     "acq": "hall"
+     "acq": "event"
     }
    ],
    "byTier": {
@@ -13811,7 +13811,7 @@
     {
      "id": "seigel",
      "cls": "inf",
-     "acq": "hall"
+     "acq": "event"
     },
     {
      "id": "ursar",
@@ -15470,7 +15470,7 @@
    "id": "molly",
    "cls": "lan",
    "gen": 1,
-   "acq": "event",
+   "acq": "login",
    "leaderSkill": "50%で与ダメ50/固定与ダメ25",
    "joinerSkill": null,
    "bearNoEffect": false,
@@ -16302,7 +16302,7 @@
    "id": "philly",
    "cls": "lan",
    "gen": 2,
-   "acq": "hall",
+   "acq": "event",
    "leaderSkill": "攻撃15",
    "joinerSkill": "攻撃+15%",
    "bearNoEffect": false,
@@ -17332,7 +17332,7 @@
    "id": "greg",
    "cls": "mks",
    "gen": 3,
-   "acq": "hall",
+   "acq": "event",
    "leaderSkill": "20%で全軍ダメ40/3T(正義の剣)",
    "joinerSkill": "20%で全軍ダメ+8→40%/3T(正義の剣)",
    "bearNoEffect": false,
@@ -17581,7 +17581,7 @@
    "id": "ahmose",
    "cls": "inf",
    "gen": 4,
-   "acq": "hall",
+   "acq": "event",
    "leaderSkill": "盾与ダメ100/盾攻撃毎60%追撃/被ダメ+25",
    "joinerSkill": null,
    "bearNoEffect": false,
@@ -18492,7 +18492,7 @@
    "id": "nora",
    "cls": "lan",
    "gen": 5,
-   "acq": "hall",
+   "acq": "event",
    "leaderSkill": "盾弓与ダメ15/槍20%で100%追撃/5回毎与ダメ25",
    "joinerSkill": "盾弓:与ダメ+15%",
    "bearNoEffect": false,
@@ -19318,7 +19318,7 @@
    "id": "wayne",
    "cls": "mks",
    "gen": 6,
-   "acq": "hall",
+   "acq": "event",
    "leaderSkill": "4T毎100%追加攻撃",
    "joinerSkill": "4T毎に100%追加攻撃(+20%)",
    "bearNoEffect": false,
@@ -19516,7 +19516,7 @@
    "id": "edith",
    "cls": "inf",
    "gen": 7,
-   "acq": "hall",
+   "acq": "event",
    "leaderSkill": "槍与ダメ20(攻守両立)",
    "joinerSkill": "槍:与ダメ+20%",
    "bearNoEffect": false,
@@ -20223,7 +20223,7 @@
    "id": "sonya",
    "cls": "lan",
    "gen": 8,
-   "acq": "hall",
+   "acq": "event",
    "leaderSkill": "与ダメ20/周期火力/槍強化",
    "joinerSkill": "与ダメ+20%",
    "bearNoEffect": false,
@@ -20845,7 +20845,7 @@
    "id": "xura",
    "cls": "mks",
    "gen": 9,
-   "acq": "hall",
+   "acq": "event",
    "leaderSkill": "弓:2回毎50%追撃(校正)/被ダメ+12/弓与ダメ10",
    "joinerSkill": null,
    "bearNoEffect": false,
@@ -20992,7 +20992,7 @@
    "id": "gregory",
    "cls": "inf",
    "gen": 10,
-   "acq": "hall",
+   "acq": "event",
    "leaderSkill": "攻撃15/25%で会心(推定+50)",
    "joinerSkill": "攻撃+3→15%(灼熱の軍団)",
    "bearNoEffect": false,
@@ -21495,7 +21495,7 @@
    "id": "lloyd",
    "cls": "lan",
    "gen": 11,
-   "acq": "hall",
+   "acq": "event",
    "leaderSkill": "3T毎槍与ダメ150/40%で殺傷50",
    "joinerSkill": null,
    "bearNoEffect": false,
@@ -21913,7 +21913,7 @@
    "id": "ligeia",
    "cls": "mks",
    "gen": 12,
-   "acq": "hall",
+   "acq": "event",
    "leaderSkill": "敵防御-25/弓:2回毎50%追撃(校正・重複分は不算入)/被ダメ+12",
    "joinerSkill": "敵防御-25%(スチールファング/防御down枠)",
    "bearNoEffect": false,
@@ -22009,7 +22009,7 @@
    "id": "gisela",
    "cls": "inf",
    "gen": 13,
-   "acq": "hall",
+   "acq": "event",
    "leaderSkill": null,
    "joinerSkill": null,
    "bearNoEffect": true,
@@ -22308,7 +22308,7 @@
    "id": "dominic",
    "cls": "lan",
    "gen": 14,
-   "acq": "hall",
+   "acq": "event",
    "leaderSkill": "与ダメ20/槍攻撃毎60%追撃/被ダメ+5/盾弓与ダメ15",
    "joinerSkill": "与ダメ+4→20%(イリュージョン)",
    "bearNoEffect": false,
@@ -22522,7 +22522,7 @@
    "id": "viveca",
    "cls": "mks",
    "gen": 15,
-   "acq": "hall",
+   "acq": "event",
    "leaderSkill": "攻撃25/弓20%で100%追撃/弓与ダメ10",
    "joinerSkill": "攻撃+5→25%(ナイトレギオン)",
    "bearNoEffect": false,
@@ -22567,7 +22567,7 @@
    "id": "seigel",
    "cls": "inf",
    "gen": 16,
-   "acq": "hall",
+   "acq": "event",
    "leaderSkill": "盾兵攻撃-20%(永夜の堅城/熊では微減)",
    "joinerSkill": null,
    "bearNoEffect": false,

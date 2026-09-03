@@ -9,7 +9,7 @@ import os, re, json, html, subprocess
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 BASE_URL = "https://whitesim-lab.com"
-V = "102"            # 共有アセットの版数
+V = "103"            # 共有アセットの版数
 HV = "86"           # heroes.js の版数
 UPDATED = "2026-09-03"
 NOTES_DIR = os.path.join(ROOT, "_stats_notes")
@@ -27,7 +27,8 @@ const fs=require('fs'),vm=require('vm');const sb={console};sb.window=sb;vm.creat
 vm.runInContext(fs.readFileSync('assets/heroes.js','utf8'),sb);
 const GM=require('./assets/gen-map.js'), HP=require('./assets/hero-posts.js');
 const H=sb.window.WOS_HEROES.map(h=>({id:h.id,name:h.name,en:(sb.window.WOS_HERO_EN||{})[h.id]||h.id,cls:h.cls,gen:h.gen,rar:h.rar,acq:GM.acqOf(h),
-  leader:h.leader?h.leader.label:null, joiner:h.joiner?h.joiner.label:null, bearNoEffect:!!h.bearNoEffect, post:HP.url(h.id), search:HP.searchUrl(h.name), wiki:HP.wikiUrl(h)}));
+  leader:h.leader?h.leader.label:null, joiner:h.joiner?h.joiner.label:null, bearNoEffect:!!h.bearNoEffect, post:HP.url(h.id), search:HP.searchUrl(h.name), wiki:HP.wikiUrl(h),
+  routes:GM.acqRoutes(h,false), routesEn:GM.acqRoutes(h,true)}));
 console.log(JSON.stringify({heroes:H,unlock:GM.UNLOCK,tiers:GM.TIERS,skillEn:sb.window.WOS_SKILL_EN||{}}));
 """], cwd=ROOT, capture_output=True, text=True, check=True)
 _d = json.loads(_dump.stdout)
@@ -37,8 +38,9 @@ UNLOCK = _d["unlock"]; TIERDEF = _d["tiers"]; SKILL_EN = _d["skillEn"]
 CLS = ["inf", "lan", "mks"]
 CLS_JA = {"inf": "盾", "lan": "槍", "mks": "弓"}
 CLS_EN = {"inf": "INF", "lan": "LAN", "mks": "MKS"}
-ACQ_JA = {"roulette": "ルーレット", "paid": "課金限定", "event": "イベント配布", "hall": "英雄殿堂", "common": "常設"}
-ACQ_EN = {"roulette": "Roulette", "paid": "Paid only", "event": "Event", "hall": "Hall of Heroes", "common": "Permanent"}
+# 入手経路のバッジ表示（各世代3体＝ルーレット／イベント（デイリー割引・氷原支配者・最強王国・英雄集結）／英雄殿堂。出典: アルテマ「英雄の入手先まとめ」）
+ACQ_JA = {"roulette": "ルーレット", "event": "デイリー割引・氷原支配者ほか", "hall": "英雄殿堂", "paid": "課金限定", "login": "ログイン配布", "common": "常設"}
+ACQ_EN = {"roulette": "Lucky Wheel", "event": "Daily Deals / Frostfield Ruler etc.", "hall": "Hall of Heroes", "paid": "Paid only", "login": "Login reward", "common": "Permanent"}
 
 class Tr:
     def __init__(self): self.m = {"盾": "INF", "槍": "LAN", "弓": "MKS"}
@@ -227,8 +229,8 @@ def hero_eval(hid, g):
         last = g + streak - 1
         items.append((f"石油王の理論1位を<b>第{last}世代まで維持</b>（{streak}世代）", f"Stays #1 for whales <b>through Gen {last}</b> ({streak} generations)"))
     # 4) 入手
-    items.append((f"入手：{ACQ_JA[h['acq']]}" + ("（無課金でも入手可）" if h["acq"] == "roulette" else "（課金限定・無課金は不可）" if h["acq"] == "paid" else ""),
-                  f"Source: {ACQ_EN[h['acq']]}" + (" (F2P-obtainable)" if h["acq"] == "roulette" else " (paid only)" if h["acq"] == "paid" else "")))
+    items.append((f"入手：{esc('、'.join(h['routes']))}" + ("（無課金でも入手可）" if h["acq"] == "roulette" else "（課金限定・無課金は不可）" if h["acq"] == "paid" else ""),
+                  f"Source: {esc(', '.join(h['routesEn']))}" + (" (F2P-obtainable)" if h["acq"] == "roulette" else " (paid only)" if h["acq"] == "paid" else "")))
     # 判定
     wr = ranks.get("whale") or {}
     fr = ranks.get("f2p") or {}
@@ -298,7 +300,7 @@ def tier_chips(tk, tr):
     paid = tr("課金限定英雄あり", "paid-only heroes") if td["paid"] else tr("課金限定英雄なし", "no paid-only heroes")
     mx = f'<span class="chip max">👑 {tr("全ステータスMAX", "Everything maxed")}</span>' if tk == "whale" else ""
     return (f'{mx}<span class="chip">{paid}</span>'
-            f'<span class="chip">{tr("英雄殿堂SSR ", "Hall SSRs: ")}{td["hallSlots"]}{tr("枠", "")}</span>'
+            f'<span class="chip">{tr("ルーレット以外のSSR ", "Non-wheel SSRs: ")}{td["hallSlots"]}{tr("体まで", " max")}</span>'
             f'<span class="chip">{tr("専用装備 Lv", "Gear Lv")}{td["gear"]}{tr("（最大）", " (max)") if td["gear"] >= 10 else ""}</span>'
             f'<span class="chip">{tr("火晶 Lv", "FC Lv")}{td["fc"]}{tr("（最大）", " (max)") if td["fc"] >= 10 else ""}</span>'
             f'<span class="chip">{tr("兵種 T", "Troops T")}{td["tier"]}{tr("（最大）", " (max)") if td["tier"] >= 12 else ""}</span>')
@@ -393,10 +395,10 @@ def faq_section(g, tr):
     rou_ja = f" この世代のルーレット英雄（無課金でも入手可）は{CLS_JA[rou['cls']]}{rou['name']}です。" if rou else ""
     rou_en = f" This generation’s roulette hero (F2P-obtainable) is {CLS_EN[rou['cls']]} {rou['en']}." if rou else ""
     qas.append((f"無課金・微課金は第{g}世代の熊狩りでどの英雄を使えばいい？",
-                f"課金限定英雄を使わず、英雄殿堂SSRは1枠までという前提での理論最適は {html_ids(f)} です。{rou_ja}",
-                f"課金限定英雄を使わず、英雄殿堂SSRは1枠までという前提での理論最適は {names(f)} です。{rou_ja}",
+                f"課金限定英雄を使わず、ルーレット以外のSSR（英雄殿堂・イベント）は1体までという前提での理論最適は {html_ids(f)} です。{rou_ja}",
+                f"課金限定英雄を使わず、ルーレット以外のSSR（英雄殿堂・イベント）は1体までという前提での理論最適は {names(f)} です。{rou_ja}",
                 f"Which heroes should F2P / light spenders use in Gen {g} Bear Hunt?",
-                f"With no paid-only heroes and at most one Hall-of-Heroes SSR, the theoretical best is {html_ids(f)}.{rou_en}"))
+                f"With no paid-only heroes and at most one non-wheel SSR (Hall of Heroes / events), the theoretical best is {html_ids(f)}.{rou_en}"))
     # Q3 新英雄
     vs = [(HEROES[h["id"]], hero_eval(h["id"], g)[0]) for h in gen_heroes]
     v_ja = "、".join(f"{CLS_JA[h['cls']]}{h['name']}は「{v[1]}」" for h, v in vs)
@@ -614,7 +616,7 @@ def hub_gen_card(g, tr, featured=False):
     best = e["byTier"]["whale"]["top"][0]["ids"]; f2 = e["byTier"]["f2p"]["top"][0]["ids"]
     chips = "".join(
         f'<span class="gh {h["cls"]}"><i>{CLS_JA[h["cls"]]}</i><span data-hero="{h["id"]}">{esc(HEROES[h["id"]]["name"])}</span>'
-        + ('<em title="ルーレット（無課金でも入手可）">🎡</em>' if h["acq"] == "roulette" else "") + '</span>' for h in gh)
+        + ('<em title="ルーレット（無課金でも入手可）">🎡</em>' if h["acq"] == "roulette" else '<em title="デイリー割引・氷原支配者・最強王国・英雄集結">🎪</em>' if h["acq"] == "event" else '<em title="英雄殿堂">🏛</em>' if h["acq"] == "hall" else "") + '</span>' for h in gh)
     swap = [h for h in gh if hero_eval(h["id"], g)[0][0] == "v1"]
     verdict = (f'<div class="gc-verdict">{bi("🔁 乗り換え推奨：" + "・".join(HEROES[h["id"]]["name"] for h in swap), "🔁 Swap in: " + ", ".join(HEROES[h["id"]]["en"] for h in swap))}</div>' if swap
                else f'<div class="gc-verdict muted">— {tr("新英雄は据え置きで可","No swap needed")}</div>')
@@ -649,7 +651,7 @@ def build_hub():
         f'<p>{tr(*TIER_DESC[t["key"]])}</p><div class="chips">{tier_chips(t["key"], tr)}</div></div>' for t in TIERS)
     faq = [
         ("自分のサーバーが第何世代か分からない",
-         "ゲーム内の英雄殿堂やルーレットで入手できる「いちばん新しい英雄」の世代が、あなたのサーバーの世代です。各世代の新英雄は上のカードに書いてあるので、見覚えのある英雄が最新のカードを選んでください。",
+         "ゲーム内のラッキールーレット・英雄殿堂・デイリー割引などで入手できる「いちばん新しい英雄」の世代が、あなたのサーバーの世代です。各世代の新英雄は上のカードに書いてあるので、見覚えのある英雄が最新のカードを選んでください。",
          "I don’t know my server’s generation",
          "Your server’s generation is the generation of the newest hero available in the Hall of Heroes or roulette. Each card above lists that generation’s new heroes — pick the newest card whose heroes you recognise."),
         ("「世代」とは何ですか？",
@@ -685,7 +687,7 @@ def build_hub():
 <div class="callout" style="background:#fff;border:1px solid var(--line)"><span>📊</span><div>{tr("総投稿数 ","Total submissions: ")}<b data-total-n>—</b>{tr(" 件。実測は世代ごとに10件から公開。理論最適は投稿数に関係なく全世代で見られます。"," — live stats open at 10 per generation. Theory is available for every generation.")}</div></div>
 
 <h2>{tr("世代を選ぶ","Choose a generation")}</h2>
-<p class="sec-lead">{tr("カードの英雄＝その世代の新英雄（🎡はルーレット＝無課金でも入手可）。理論最適は石油王の条件です。","Heroes on each card are that generation’s new heroes (🎡 = roulette, F2P-obtainable). “Best” is for whales.")}</p>
+<p class="sec-lead">{tr("カードの英雄＝その世代の新英雄（🎡＝ルーレット・無課金でも入手可、🎪＝デイリー割引・氷原支配者などのイベント、🏛＝英雄殿堂）。理論最適は石油王の条件です。","Heroes on each card are that generation’s new heroes (🎡 = Lucky Wheel, F2P-obtainable; 🎪 = Daily Deals / event; 🏛 = Hall of Heroes). “Best” is for whales.")}</p>
 {hub_gen_card(MAXG, tr, featured=True)}
 <div class="gen-cards">{cards}</div>
 
@@ -779,8 +781,9 @@ def build_methodology():
 <li>{tr("参加者（乗り）：","Joiners: ")}{"・".join(HEROES[j]["name"] for j in m["joiner"])}</li>
 <li>{tr("係数：シミュレーターの上級者パラメータの初期値","Coefficients: the simulator’s default advanced parameters")}</li></ul></div>
 <div class="point" style="grid-column:1/-1"><div class="pt-h">{tr("課金帯モデル（暫定）","Spending-tier model (provisional)")}</div>
-<div style="overflow-x:auto"><table style="width:100%;font-size:12.5px;border-collapse:collapse"><thead><tr><th>{tr("課金帯","Tier")}</th><th>{tr("課金限定英雄","Paid-only heroes")}</th><th>{tr("殿堂SSRの上限","Hall SSR cap")}</th><th>{tr("専用装備Lv","Gear Lv")}</th><th>{tr("火晶Lv","FC Lv")}</th><th>Tier</th></tr></thead><tbody>{tiers_rows}</tbody></table></div>
-<ul style="margin-top:8px"><li>{tr("ルーレット英雄（無課金でも入手可）は各世代1体、弓→盾→槍の順","Roulette hero (F2P-obtainable): one per generation, cycling MKS → INF → LAN")}</li>
+<div style="overflow-x:auto"><table style="width:100%;font-size:12.5px;border-collapse:collapse"><thead><tr><th>{tr("課金帯","Tier")}</th><th>{tr("課金限定英雄","Paid-only heroes")}</th><th>{tr("ルーレット以外のSSR上限","Non-wheel SSR cap")}</th><th>{tr("専用装備Lv","Gear Lv")}</th><th>{tr("火晶Lv","FC Lv")}</th><th>Tier</th></tr></thead><tbody>{tiers_rows}</tbody></table></div>
+<ul style="margin-top:8px"><li>{tr("各世代の新英雄3体は入手経路が必ず3種類に分かれます：①ラッキールーレット（無課金でも入手可）②デイリー割引・氷原支配者・最強王国・英雄集結 ③英雄殿堂。第3世代以降はいずれも兵器工場ショップでも入手可（出典：アルテマ「英雄の入手先まとめ」）","Each generation’s three heroes come through three distinct routes: (1) Lucky Wheel (F2P-obtainable), (2) Daily Deals / Frostfield Ruler / Strongest Kingdom / Hero Gathering, (3) Hall of Heroes. From Gen 3 on, all three are also sold in the Foundry Shop (source: altema.jp)")}</li>
+<li>{tr("ルーレット英雄は各世代1体、弓→盾→槍の順。無課金・微課金はこれが軸","One Lucky Wheel hero per generation, cycling MKS → INF → LAN — the backbone for F2P")}</li>
 <li>{tr("ナタリア・ジェロニモは初回チャージ／VIP限定","Natalia and Jeronimo are first-purchase / VIP only")}</li>
 <li>{tr("実測が集まったら各課金帯の中央値に置き換えます","Will be replaced by measured medians once data accumulates")}</li></ul></div>
 </div>

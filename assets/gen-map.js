@@ -47,14 +47,17 @@
   }
 
   /* ===== 入手経路 =====
-     roulette : ラッキールーレット。各世代1体、弓→盾→槍の3世代周期。無課金でも入手可
-     paid     : 初回チャージ / VIP 限定。無課金は入手不可
-     event    : ログイン等のイベント配布
-     hall     : 上記以外のSSR。英雄殿堂で欠片を集める（時間はかかるが無課金でも可）
-     common   : 常設の R / SR
-     出典: アルテマ「英雄の入手先まとめ」 */
+     各世代の新英雄3体は、入手経路が必ず次の3種類に分かれる（重複しない）。
+       roulette : ラッキールーレット（＋兵器工場ショップ）。各世代1体、弓→盾→槍の3世代周期。無課金でも入手可
+       event    : デイリー割引・氷原支配者・最強王国・英雄集結（＋兵器工場ショップ）。課金イベント中心
+       hall     : 英雄殿堂（＋兵器工場ショップ）。欠片を集める
+     それ以外:
+       paid     : 初回チャージ / VIP 限定（ナタリア・ジェロニモ）。無課金は入手不可
+       login    : ログイン・ミッション配布（ジャスミン）
+       common   : 常設の R / SR
+     出典: アルテマ「英雄の入手先まとめ」（2026-09 時点） */
   var ACQ = {
-    /* ルーレット（世代順） */
+    /* ---- ルーレット（世代順・弓→盾→槍） ---- */
     zinman: 'roulette',     /* G1  弓 */
     flint: 'roulette',      /* G2  盾 */
     mia: 'roulette',        /* G3  槍 */
@@ -71,20 +74,65 @@
     elif: 'roulette',       /* G14 盾 */
     estrella: 'roulette',   /* G15 槍 */
     aisling: 'roulette',    /* G16 弓 */
-    /* 課金限定 */
+    /* ---- イベント（デイリー割引・氷原支配者・最強王国・英雄集結） ---- */
+    philly: 'event',        /* G2  フレンダー */
+    greg: 'event',          /* G3  グレッグ */
+    ahmose: 'event',        /* G4  アクモス */
+    nora: 'event',          /* G5  ノラ */
+    wayne: 'event',         /* G6  ウェイン */
+    edith: 'event',         /* G7  エディス */
+    sonya: 'event',         /* G8  ソニヤ */
+    xura: 'event',          /* G9  シュラ */
+    gregory: 'event',       /* G10 グレゴリー */
+    lloyd: 'event',         /* G11 ロイド */
+    ligeia: 'event',        /* G12 ライジーア */
+    gisela: 'event',        /* G13 ギーゼラ */
+    dominic: 'event',       /* G14 ドミニク */
+    viveca: 'event',        /* G15 ヴィヴィカ */
+    seigel: 'event',        /* G16 シガー */
+    /* ---- 英雄殿堂 ---- */
+    alonso: 'hall',         /* G2  アロンゾ */
+    logan: 'hall',          /* G3  ローガン */
+    reina: 'hall',          /* G4  レイナ */
+    gwen: 'hall',           /* G5  グエン */
+    wuming: 'hall',         /* G6  無名 */
+    gordon: 'hall',         /* G7  ゴードン */
+    hendrik: 'hall',        /* G8  ヘンドリック */
+    magnus: 'hall',         /* G9  マグヌス */
+    freya: 'hall',          /* G10 フレイヤ */
+    rufus: 'hall',          /* G11 ルーファス */
+    hervor: 'hall',         /* G12 ヘルヴィル */
+    flora: 'hall',          /* G13 フローラ */
+    cara: 'hall',           /* G14 カーラ */
+    hank: 'hall',           /* G15 ハンク */
+    ursar: 'hall',          /* G16 ウルタール */
+    /* ---- 第1世代の特例 ---- */
     natalia: 'paid',        /* 初回チャージ / VIP1-6 */
     jeronimo: 'paid',       /* VIP7-12 */
-    /* イベント配布 */
-    molly: 'event'          /* ジャスミン: 7日間ログイン */
+    molly: 'login'          /* ジャスミン: 7日間ログイン・英雄募集など */
   };
   function acqOf(hero) {
     if (!hero) return 'common';
     if (ACQ[hero.id]) return ACQ[hero.id];
-    return hero.rar === 'SSR' ? 'hall' : 'common';
+    return hero.rar === 'SSR' ? 'hall' : 'common';   /* 未登録のSSRは英雄殿堂扱い（新世代追加時はACQに追記する） */
+  }
+  /* 入手経路の表示文（兵器工場ショップは第3世代以降の英雄に付く） */
+  var ACQ_ROUTES = {
+    roulette: ['ラッキールーレット'], event: ['デイリー割引', '氷原支配者', '最強王国', '英雄集結'], hall: ['英雄殿堂'],
+    paid: ['初回チャージ・VIP会員ギフト'], login: ['7日間ログイン', '英雄募集', '灯台ミッション'], common: ['英雄募集']
+  };
+  var ACQ_ROUTES_EN = {
+    roulette: ['Lucky Wheel'], event: ['Daily Deals', 'Frostfield Ruler', 'Strongest Kingdom', 'Hero Gathering'], hall: ['Hall of Heroes'],
+    paid: ['First purchase / VIP gifts'], login: ['7-day login', 'Hero Recruitment', 'Lighthouse missions'], common: ['Hero Recruitment']
+  };
+  function acqRoutes(hero, en) {
+    var a = acqOf(hero), list = ((en ? ACQ_ROUTES_EN : ACQ_ROUTES)[a] || []).slice();
+    if (hero && hero.gen >= 3 && (a === 'roulette' || a === 'event' || a === 'hall')) list.push(en ? 'Foundry Shop' : '兵器工場ショップ');
+    return list;
   }
 
   /* ===== 課金帯モデル（理論ソルバーのプリセット） =====
-     hallSlots : 3枠のうち「英雄殿堂で集める必要があるSSR」を何体まで使えるか
+     hallSlots : 3枠のうち「ルーレット以外で集めるSSR（英雄殿堂・イベント）」を何体まで使えるか
      paid      : 課金限定英雄を使えるか
      gear/fc/tier/base : 英雄装備・領主装備・宝石などの差を丸めた前提値
      ※ 数値は暫定。実測が集まったら各課金帯の中央値に置き換える。 */
@@ -108,10 +156,10 @@
     if (a === 'paid' && !tier.paid) return false;
     return true;
   }
-  /* 3枠のうち英雄殿堂枠を消費する英雄の数 */
+  /* 3枠のうち「ルーレット以外で集めるSSR」（英雄殿堂・イベント）の数。課金帯の hallSlots と比べる */
   function hallCount(heroes) {
     var n = 0;
-    for (var i = 0; i < heroes.length; i++) if (acqOf(heroes[i]) === 'hall') n++;
+    for (var i = 0; i < heroes.length; i++) { var a = acqOf(heroes[i]); if (a === 'hall' || a === 'event') n++; }
     return n;
   }
 
@@ -125,7 +173,7 @@
 
   return {
     UNLOCK: UNLOCK, MAX: MAX, genFromDays: genFromDays, rangeOf: rangeOf,
-    ACQ: ACQ, acqOf: acqOf,
+    ACQ: ACQ, acqOf: acqOf, acqRoutes: acqRoutes,
     TIERS: TIERS, TIER_ORDER: TIER_ORDER, usable: usable, hallCount: hallCount,
     SOLVER_RATIO: SOLVER_RATIO, SOLVER_JOINER: SOLVER_JOINER
   };

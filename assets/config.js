@@ -18,7 +18,7 @@ window.SITE = {
 /* 統計APIの接続先。カスタムドメイン（api.whitesim-lab.com）を割り当てていない場合は、
    Worker の URL（例: "https://whitesim-stats.hiroaki-c51.workers.dev"）をそのまま入れてもよい */
 window.WOS_API = "https://whitesim-stats.hiroaki-c51.workers.dev";
-window.WOS_TURNSTILE_SITEKEY = "0x4AAAAAAElno-utdGkBO_ys";
+window.WOS_TURNSTILE_SITEKEY = "0x4AAAAAAElno-utdGkBO_ys";   /* Turnstile のサイトキー（公開用。シークレットキーは貼らない） */
 
 window.WOS_BASE = (/^\/en(\/|$)/.test(location.pathname)) ? '/en' : '';
 window.WOS_LANG = (window.WOS_BASE === '/en') ? 'en' : 'ja';
