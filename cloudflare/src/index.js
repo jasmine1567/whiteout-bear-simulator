@@ -3,6 +3,10 @@
    DELETE /v1/submit/:id      編集キーで自分の投稿を削除
    GET    /v1/stats/summary   全世代のサンプル数（ハブ用）
    GET    /v1/stats/:gen      その世代の集計（KVから。無ければその場で集計）
+   GET    /v1/reviews/:gen    その世代の口コミ（投稿フォームの「ひとこと」付き投稿。新しい順・D1 から）
+   POST   /v1/report/:id      口コミを通報（同一クライアントから1回。REPORT_HIDE 件で自動非表示）
+   GET    /v1/admin/reviews   運営者用: 口コミ一覧（?key=ADMIN_KEY&status=all|ok|hidden|reported）
+   POST   /v1/admin/reviews/:id  運営者用: {key, action:'hide'|'show'}
    cron   毎日 20:00 UTC      D1 を集計して KV に書き出す
 
    データはすべて匿名。IP は塩付きハッシュのみ保存し、レート制限にだけ使う。 */
@@ -74,7 +78,25 @@ function validate(b) {
   const fc = b.fc == null || b.fc === '' ? null : int(b.fc, 0, 20);
   let gear = [null, null, null];
   if (Array.isArray(b.gear) && b.gear.length === 3) gear = b.gear.map(v => v == null || v === '' ? null : int(v, 0, 10));
-  return { errors: e, days, tier, gen, heroes, ratio, damage, fc, gear };
+  /* 口コミ（ひとこと）と表示名。どちらも任意。URL・NGワードは弾く */
+  const comment = cleanText(b.comment, 200), nick = cleanText(b.nick, 16).replace(/\n/g, ' ');
+  if (comment && textProblem(comment, b.ngWords)) e.push('comment:' + textProblem(comment, b.ngWords));
+  if (nick && textProblem(nick, b.ngWords)) e.push('nick:' + textProblem(nick, b.ngWords));
+  return { errors: e, days, tier, gen, heroes, ratio, damage, fc, gear, comment: comment || null, nick: nick || null };
+}
+/* 制御文字を除き、空白を整え、長さを切る */
+export function cleanText(v, max) {
+  if (v == null) return '';
+  return String(v).replace(/[\u0000-\u0008\u000b-\u001f\u007f]/g, '').replace(/\r\n?/g, '\n').replace(/[ \t]+/g, ' ').replace(/\n{3,}/g, '\n\n').trim().slice(0, max);
+}
+const URL_RE = /https?:\/\/|www\.|\.(com|net|jp|io|co|me|ly|gg)\b|t\.co\//i;
+const DEFAULT_NG = ['死ね', '氏ね', '殺す', 'ころす', 'きもい', 'キモい', 'カス', 'クズ', 'ゴミ', 'バカ', 'アホ', '池沼', 'ガイジ', '出会い', '副業', '稼げる', 'LINE@', '無料配布', 'fuck', 'shit', 'bitch', 'nigger', 'cunt'];
+export function textProblem(text, extraNg) {
+  if (URL_RE.test(text)) return 'url';
+  const ng = DEFAULT_NG.concat(String(extraNg || '').split(',').map(s => s.trim()).filter(Boolean));
+  const low = text.toLowerCase();
+  if (ng.some(w => w && low.includes(w.toLowerCase()))) return 'ng';
+  return null;
 }
 
 /* ---------- 投稿直後に返す診断 ---------- */
@@ -156,6 +178,21 @@ async function rebuildAll(env) {
   return summary;
 }
 
+/* ---------- 口コミ（投稿フォームの「ひとこと」） ---------- */
+function reviewItem(r) {
+  return { id: r.id, at: r.updated_at || r.created_at, gen: GM.genFromDays(r.server_days), tier: r.spend_tier,
+           inf: r.hero_inf, lan: r.hero_lan, mks: r.hero_mks, damage: r.damage, comment: r.comment, nick: r.nick || null,
+           status: r.review_status, reports: r.reports || 0 };
+}
+async function listReviews(env, g) {
+  const range = GM.rangeOf(g), max = parseInt(env.REVIEW_MAX || '100', 10);
+  const { results } = await env.DB.prepare(
+    `SELECT id, created_at, updated_at, server_days, spend_tier, hero_inf, hero_lan, hero_mks, damage, comment, nick, review_status, reports
+     FROM submissions WHERE status='ok' AND review_status='ok' AND comment IS NOT NULL AND comment!='' AND server_days>=? AND server_days<=?
+     ORDER BY updated_at DESC LIMIT ?`).bind(range.from, range.to == null ? 99999 : range.to, max).all();
+  return { gen: g, updatedAt: now(), items: results.map(r => { const it = reviewItem(r); delete it.status; delete it.reports; return it; }) };
+}
+
 /* ---------- ルーティング ---------- */
 export default {
   async scheduled(_ev, env) { await rebuildAll(env); },
@@ -170,6 +207,45 @@ export default {
         return json(await rebuildAll(env), 200, h);
       }
       let m;
+      if (req.method === 'GET' && (m = p.match(/^\/v1\/reviews\/(\d{1,2})$/))) {
+        const g = parseInt(m[1], 10); if (g < 1 || g > GM.MAX) return json({ error: 'gen' }, 404, h);
+        return json(await listReviews(env, g), 200, { ...h, 'cache-control': 'public, max-age=300' });
+      }
+      if (req.method === 'POST' && (m = p.match(/^\/v1\/report\/([a-f0-9]{24})$/))) {
+        const ip = req.headers.get('CF-Connecting-IP') || '';
+        const clientHash = await sha256(ip + '|' + (env.CLIENT_SALT || ''));
+        const row = await env.DB.prepare('SELECT id, reports FROM submissions WHERE id=? AND status=\'ok\' AND comment IS NOT NULL').bind(m[1]).first();
+        if (!row) return json({ error: 'not_found' }, 404, h);
+        const ins = await env.DB.prepare('INSERT OR IGNORE INTO reports (sub_id, client_hash, created_at) VALUES (?,?,?)').bind(m[1], clientHash, now()).run();
+        let reports = row.reports || 0;
+        if (ins.meta.changes > 0) {
+          reports += 1;
+          const hide = reports >= parseInt(env.REPORT_HIDE || '3', 10);
+          await env.DB.prepare('UPDATE submissions SET reports=?' + (hide ? ", review_status=CASE WHEN review_status='ok' THEN 'reported' ELSE review_status END" : '') + ' WHERE id=?').bind(reports, m[1]).run();
+        }
+        return json({ ok: true, reports }, 200, h);
+      }
+      if (p === '/v1/admin/reviews' || (m = p.match(/^\/v1\/admin\/reviews\/([a-f0-9]{24})$/))) {
+        const body = req.method === 'POST' ? (await req.json().catch(() => ({}))) : {};
+        const key = url.searchParams.get('key') || body.key || '';
+        if (!env.ADMIN_KEY || key !== env.ADMIN_KEY) return json({ error: 'forbidden' }, 403, h);
+        if (req.method === 'GET' && p === '/v1/admin/reviews') {
+          const st = url.searchParams.get('status') || 'all';
+          const where = st === 'all' ? "status='ok'" : "status='ok' AND review_status=?";
+          const q = env.DB.prepare(`SELECT id, created_at, updated_at, server_days, spend_tier, hero_inf, hero_lan, hero_mks, damage, comment, nick, review_status, reports
+                                    FROM submissions WHERE comment IS NOT NULL AND comment!='' AND ${where} ORDER BY updated_at DESC LIMIT 300`);
+          const { results } = await (st === 'all' ? q.bind() : q.bind(st)).all();
+          return json({ ok: true, items: results.map(reviewItem) }, 200, h);
+        }
+        if (req.method === 'POST' && m) {
+          const action = body.action === 'hide' ? 'hidden' : body.action === 'show' ? 'ok' : null;
+          if (!action) return json({ error: 'action' }, 400, h);
+          const r = await env.DB.prepare('UPDATE submissions SET review_status=?' + (action === 'ok' ? ', reports=0' : '') + ' WHERE id=?').bind(action, m[1]).run();
+          if (action === 'ok') await env.DB.prepare('DELETE FROM reports WHERE sub_id=?').bind(m[1]).run();
+          return json({ ok: true, changed: r.meta.changes > 0 }, 200, h);
+        }
+        return json({ error: 'not_found' }, 404, h);
+      }
       if (req.method === 'GET' && (m = p.match(/^\/v1\/stats\/(\d{1,2})$/))) {
         const g = parseInt(m[1], 10); if (g < 1 || g > GM.MAX) return json({ error: 'gen' }, 404, h);
         const s = await env.STATS.get('stats:gen:' + g);
@@ -182,7 +258,7 @@ export default {
         const body = await req.json().catch(() => null); if (!body) return json({ error: 'json' }, 400, h);
         const ip = req.headers.get('CF-Connecting-IP') || '';
         if (!(await verifyTurnstile(env, body.turnstile, ip))) return json({ error: 'turnstile' }, 403, h);
-        const v = validate(body); if (v.errors.length) return json({ error: 'invalid', fields: v.errors }, 400, h);
+        body.ngWords = env.NG_WORDS || ''; const v = validate(body); if (v.errors.length) return json({ error: 'invalid', fields: v.errors }, 400, h);
         const clientHash = await sha256(ip + '|' + (env.CLIENT_SALT || ''));
         const t = now(), dayStart = t - (t % 86400);
         let row = null;
@@ -196,25 +272,25 @@ export default {
           id = row.id;
           if (!editKey) { editKey = randHex(16); }
           await env.DB.prepare(`UPDATE submissions SET updated_at=?, server_days=?, spend_tier=?, hero_inf=?, hero_lan=?, hero_mks=?,
-              ratio_inf=?, ratio_lan=?, ratio_mks=?, damage=?, fc_level=?, gear_inf=?, gear_lan=?, gear_mks=?, edit_key_hash=?, status='ok' WHERE id=?`)
+              ratio_inf=?, ratio_lan=?, ratio_mks=?, damage=?, fc_level=?, gear_inf=?, gear_lan=?, gear_mks=?, edit_key_hash=?, comment=?, nick=?, status='ok' WHERE id=?`)
             .bind(t, v.days, v.tier, v.heroes.inf.id, v.heroes.lan.id, v.heroes.mks.id,
               v.ratio ? v.ratio[0] : null, v.ratio ? v.ratio[1] : null, v.ratio ? v.ratio[2] : null,
-              v.damage, v.fc, v.gear[0], v.gear[1], v.gear[2], await sha256(editKey), id).run();
+              v.damage, v.fc, v.gear[0], v.gear[1], v.gear[2], await sha256(editKey), v.comment, v.nick, id).run();
         } else {                                         /* 新規 */
           id = randHex(12); editKey = randHex(16);
           await env.DB.prepare(`INSERT INTO submissions (id, created_at, updated_at, server_days, spend_tier, hero_inf, hero_lan, hero_mks,
-              ratio_inf, ratio_lan, ratio_mks, damage, fc_level, gear_inf, gear_lan, gear_mks, edit_key_hash, client_hash, status)
-              VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'ok')`)
+              ratio_inf, ratio_lan, ratio_mks, damage, fc_level, gear_inf, gear_lan, gear_mks, edit_key_hash, client_hash, status, comment, nick)
+              VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'ok',?,?)`)
             .bind(id, t, t, v.days, v.tier, v.heroes.inf.id, v.heroes.lan.id, v.heroes.mks.id,
               v.ratio ? v.ratio[0] : null, v.ratio ? v.ratio[1] : null, v.ratio ? v.ratio[2] : null,
-              v.damage, v.fc, v.gear[0], v.gear[1], v.gear[2], await sha256(editKey), clientHash).run();
+              v.damage, v.fc, v.gear[0], v.gear[1], v.gear[2], await sha256(editKey), clientHash, v.comment, v.nick).run();
         }
         /* 診断: 同世代・直近の投稿と比較 */
         const range = GM.rangeOf(v.gen), since = t - parseInt(env.WINDOW_DAYS || '90', 10) * 86400;
         const { results } = await env.DB.prepare(
           `SELECT damage FROM submissions WHERE status='ok' AND created_at>=? AND server_days>=? AND server_days<=? AND id!=?`)
           .bind(since, range.from, range.to == null ? 99999 : range.to, id).all();
-        return json({ ok: true, id, editKey, diag: diagnose(v, results) }, 200, h);
+        return json({ ok: true, id, editKey, review: !!v.comment, diag: diagnose(v, results) }, 200, h);
       }
       if (req.method === 'DELETE' && (m = p.match(/^\/v1\/submit\/([a-f0-9]{24})$/))) {
         const body = await req.json().catch(() => ({}));

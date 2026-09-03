@@ -96,7 +96,7 @@
              hallSlots: 2, paid: true,  gear: 5,  fc: 5, tier: 11,
              base: { team: { a: 110, l: 75  }, per: { a: 55, l: 38 } } },
     whale: { key: 'whale', label: '石油王',        label_en: 'Whale',
-             hallSlots: 3, paid: true,  gear: 10, fc: 8, tier: 12,
+             hallSlots: 3, paid: true,  gear: 10, fc: 10, tier: 12,   /* 石油王＝全ステータスMAX（専用装備Lv10・火晶Lv10・T12）*/
              base: { team: { a: 160, l: 110 }, per: { a: 80, l: 55 } } }
   };
   var TIER_ORDER = ['f2p', 'mid', 'whale'];

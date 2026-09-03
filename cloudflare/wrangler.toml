@@ -23,7 +23,11 @@ ALLOWED_ORIGINS = "https://whitesim-lab.com,http://localhost:8000,http://127.0.0
 WINDOW_DAYS = "90"        # 集計対象: 直近90日
 MIN_PUBLISH = "10"        # n がこれ未満の世代は実測を非公開
 MIN_TIER_SPLIT = "30"     # n がこれ以上の世代だけ課金帯別の内訳を出す
+REVIEW_MAX = "100"        # 口コミを1世代あたり何件まで表示するか（新しい順）
+REPORT_HIDE = "3"         # 通報がこの件数に達した口コミは自動で非表示（運営者が戻せる）
+NG_WORDS = ""             # 追加のNGワード（カンマ区切り。組み込みの一覧に足される）
 
 # シークレット（wrangler secret put で登録。toml には書かない）
 #   TURNSTILE_SECRET … Turnstile のシークレットキー
 #   CLIENT_SALT      … IP をハッシュ化するときの塩（ランダムな長い文字列）
+#   ADMIN_KEY        … 口コミの管理画面（/stats/admin.html）で使う合言葉（ランダムな長い文字列）

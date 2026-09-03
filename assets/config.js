@@ -15,8 +15,10 @@ window.SITE = {
 /* ===== 統計セクション（/stats/, /submit/）の接続先 =====
    WOS_API を空文字にすると実測パートだけが「集計中」表示になり、理論値パートは動き続ける（切り戻し用）。
    WOS_TURNSTILE_SITEKEY は Cloudflare Turnstile のサイトキー（cloudflare/README.md 参照）。空なら人間確認なしで送信。 */
-window.WOS_API = "https://api.whitesim-lab.com";
-window.WOS_TURNSTILE_SITEKEY = "";
+/* 統計APIの接続先。カスタムドメイン（api.whitesim-lab.com）を割り当てていない場合は、
+   Worker の URL（例: "https://whitesim-stats.hiroaki-c51.workers.dev"）をそのまま入れてもよい */
+window.WOS_API = "https://whitesim-stats.hiroaki-c51.workers.dev";
+window.WOS_TURNSTILE_SITEKEY = "0x4AAAAAAElno-utdGkBO_ys";
 
 window.WOS_BASE = (/^\/en(\/|$)/.test(location.pathname)) ? '/en' : '';
 window.WOS_LANG = (window.WOS_BASE === '/en') ? 'en' : 'ja';

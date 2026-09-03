@@ -9,7 +9,7 @@ import os, re, json, html, subprocess
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 BASE_URL = "https://whitesim-lab.com"
-V = "97"            # 共有アセットの版数
+V = "100"            # 共有アセットの版数
 HV = "86"           # heroes.js の版数
 UPDATED = "2026-09-03"
 NOTES_DIR = os.path.join(ROOT, "_stats_notes")
@@ -65,7 +65,7 @@ GA = """<!-- Google tag (gtag.js) -->
   gtag('config', 'G-Y8YMCVQDMG');
 </script>"""
 CSP = ("default-src 'self'; "
-       "connect-src 'self' https://api.whitesim-lab.com https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; "
+       "connect-src 'self' https://api.whitesim-lab.com https://*.workers.dev https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; "
        "script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://platform.twitter.com https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; "
        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; "
        "frame-src https://challenges.cloudflare.com https://platform.twitter.com https://syndication.twitter.com https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'")
@@ -289,17 +289,19 @@ def theory_trio_list(top, limit=3):
 TIER_DESC = {  # 大きな選択ボタンに添える一言
     "f2p":   ("ルーレット英雄が中心・課金限定なし", "Roulette heroes, no paid-only"),
     "mid":   ("ルーレット＋毎世代1体を育成", "Roulette + one extra hero per gen"),
-    "whale": ("全英雄カンスト・課金限定あり", "Every hero maxed, paid-only included"),
+    "whale": ("全英雄カンスト・全ステータスMAX", "Every hero and stat maxed"),
 }
 TIER_ICON = {"f2p": "🎡", "mid": "💎", "whale": "👑"}
 
 def tier_chips(tk, tr):
     td = TIERDEF[tk]
     paid = tr("課金限定英雄あり", "paid-only heroes") if td["paid"] else tr("課金限定英雄なし", "no paid-only heroes")
-    return (f'<span class="chip">{paid}</span>'
+    mx = f'<span class="chip max">👑 {tr("全ステータスMAX", "Everything maxed")}</span>' if tk == "whale" else ""
+    return (f'{mx}<span class="chip">{paid}</span>'
             f'<span class="chip">{tr("英雄殿堂SSR ", "Hall SSRs: ")}{td["hallSlots"]}{tr("枠", "")}</span>'
-            f'<span class="chip">{tr("専用装備 Lv", "Gear Lv")}{td["gear"]}</span>'
-            f'<span class="chip">{tr("火晶 Lv", "FC Lv")}{td["fc"]}</span>')
+            f'<span class="chip">{tr("専用装備 Lv", "Gear Lv")}{td["gear"]}{tr("（最大）", " (max)") if td["gear"] >= 10 else ""}</span>'
+            f'<span class="chip">{tr("火晶 Lv", "FC Lv")}{td["fc"]}{tr("（最大）", " (max)") if td["fc"] >= 10 else ""}</span>'
+            f'<span class="chip">{tr("兵種 T", "Troops T")}{td["tier"]}{tr("（最大）", " (max)") if td["tier"] >= 12 else ""}</span>')
 
 def tier_picker(tr, big=True):
     """課金帯の選択UI。big=True はページの核（説明付きの大きなボタン）、False は下部の小さなタブ。同じ data-group で連動"""
@@ -433,6 +435,16 @@ def faq_section(g, tr):
     ld = ld_faq([(q, t_) for q, _a, t_, _qe, _ae in qas])
     return f'<h2 id="faq">{tr("よくある質問","FAQ")}</h2><div class="faq-list">{items}</div>', ld
 
+# ---------------- 口コミ（投稿フォームの「ひとこと」） ----------------
+def reviews_section(g, tr):
+    return f"""<h2 id="reviews">{tr(f"第{g}世代の熊狩り 口コミ", f"Gen {g} Bear Hunt reviews")}</h2>
+<p class="sec-lead">{tr("みんなの構成と「ひとこと」を新しい順に表示します。投稿フォームで構成を送るとき「ひとこと」を書くと、ここに載ります（匿名・表示名は任意）。","Players’ builds and one-liners, newest first. Add a one-liner when you submit your build and it appears here (anonymous; display name optional).")}</p>
+<div class="rv-bar">
+  <a class="btn rv-post" href="/submit/index.html?gen={g}&review=1">💬 {tr("口コミを投稿する","Post a review")}</a>
+</div>
+<div class="rv-list" data-reviews="{g}"><div class="skel"></div><div class="skel" style="width:80%"></div><div class="skel" style="width:60%"></div></div>
+<p class="note">{tr("口コミは投稿者個人の意見で、当サイトの見解ではありません。URL・不適切な表現は投稿時に弾き、通報が集まった口コミは自動で非表示になります。自分の投稿は投稿フォームから上書き・削除できます。","Reviews are the posters’ own opinions, not this site’s. Links and abusive wording are rejected on submission, and reviews that receive several reports are hidden automatically. You can edit or delete your own from the submission form.")}</p>"""
+
 def sim_cta(g, tr):
     e = theory["gens"][str(g)]
     ids = e["byTier"][DEFAULT_TIER]["top"][0]["ids"]
@@ -553,7 +565,7 @@ def build_gen(g):
         + (f'<a href="/stats/{gen_dir(next_g)}/index.html">{tr(f"第{next_g}世代の熊狩り構成", f"Gen {next_g} builds")} →</a>' if next_g else "<span></span>") + '</div>')
     faq_html, faq_ld = faq_section(g, tr)
     toc = (f'<nav class="toc" aria-label="目次"><a href="#best">🏆 {tr("理想の構成","Ideal build")}</a><a href="#heroes">🆕 {tr("新英雄の評価","New heroes")}</a>'
-           f'<a href="#compare">⚖️ {tr("理論 vs 実測","Theory vs Live")}</a><a href="#next">⏭️ {tr("次の世代","Next gen")}</a><a href="#faq">❓ FAQ</a></nav>')
+           f'<a href="#compare">⚖️ {tr("理論 vs 実測","Theory vs Live")}</a><a href="#next">⏭️ {tr("次の世代","Next gen")}</a><a href="#reviews">💬 {tr("口コミ","Reviews")}</a><a href="#faq">❓ FAQ</a></nav>')
     body = f"""<div class="wrap wide" data-live-page="{g}">
 <div class="crumb"><a href="/index.html">{tr("ホーム","Home")}</a> &gt; <a href="/stats/index.html">{tr("世代別 熊狩り構成","Bear Hunt builds by generation")}</a> &gt; {tr(f"第{g}世代", f"Gen {g}")}</div>
 <div class="eyebrow">{tr("ホワサバ（Whiteout Survival）熊狩り攻略 ／ 世代別ガイド","Whiteout Survival Bear Hunt · generation guide")}</div>
@@ -575,6 +587,7 @@ def build_gen(g):
 <div id="next"></div>
 {next_section(g, tr)}
 {points_section(g, tr)}
+{reviews_section(g, tr)}
 {sim_cta(g, tr)}
 {faq_html}
 
@@ -778,7 +791,13 @@ def build_methodology():
 <div style="overflow-x:auto"><table style="font-size:12.5px;border-collapse:collapse;min-width:260px"><thead><tr><th>{tr("世代","Gen")}</th><th>{tr("解放日（目安）","Unlock day (approx.)")}</th></tr></thead><tbody>{unlock_rows}</tbody></table></div>
 <p class="note">{tr("出典：スマホゲームNavi「英雄世代の解放スケジュール」、アルテマ「サーバー経過日数と各コンテンツの解放時期」。","Sources: appmatch.jp generation schedule; altema.jp server-day unlock guide.")}</p></div>
 
-<h2>{tr("4. 投稿の削除","4. Deleting a submission")}</h2>
+<h2>{tr("4. 口コミ（ひとこと）","4. Reviews (one-liners)")}</h2>
+<div class="card" style="font-size:13.5px"><ul class="kv-list">
+<li>{tr("投稿フォームの「ひとこと」（最大200文字）と表示名（任意・最大16文字）を、構成・課金帯・投稿日と一緒に世代ページの口コミ欄へ新しい順に表示します（1世代100件まで）","The one-liner (up to 200 chars) and optional display name (16 chars) from the submission form are shown in the generation page’s Reviews block with the build, tier and date, newest first (up to 100 per generation)")}</li>
+<li>{tr("URL・不適切な言葉を含む投稿は受付時に弾きます。通報が3件集まった口コミは自動で非表示になり、運営者が確認して戻すか消します","Posts containing links or abusive words are rejected. A review reported 3 times is hidden automatically until the operator reviews it")}</li>
+<li>{tr("自分の口コミは投稿フォームから上書き・削除できます（編集キー）。運営者はガイドラインに反する口コミを予告なく非表示にすることがあります","You can edit or delete your own review from the submission form (edit key). The operator may hide reviews that violate the guidelines without notice")}</li></ul></div>
+
+<h2>{tr("5. 投稿の削除","5. Deleting a submission")}</h2>
 <div class="card" style="font-size:13.5px"><ul class="kv-list"><li>{tr("投稿時の編集キー（ブラウザに保存）で上書き・削除できます","Your edit key (saved in your browser) lets you update or delete")}</li>
 <li>{tr("ブラウザを変えた場合は、編集キーの先頭6桁を添えて","If you switched browsers, contact us with the first 6 characters of the key: ")}<a href="/contact.html">{tr("お問い合わせ","Contact")}</a></li></ul></div>
 
@@ -821,6 +840,57 @@ def build_submit():
     crumb_en = '<a href="/en/index.html">Home</a> &gt; <a href="/en/stats/index.html">Generation stats</a> &gt; Submit'
     return head(title_ja, desc_ja, path) + body + tail(tr, title_en, crumb_en, 'Submit your <span class="acc">Bear Hunt build</span>', tr.m[lead_ja])
 
+# ---------------- 運営者用: 口コミ管理 ----------------
+def build_admin():
+    tr = Tr()
+    path = "/stats/admin.html"
+    body = """<div class="wrap">
+<div class="crumb"><a href="/index.html">ホーム</a> &gt; <a href="/stats/index.html">世代別 熊狩り構成</a> &gt; 口コミ管理</div>
+<h1>口コミ<span class="acc">管理</span>（運営者用）</h1>
+<p class="lead">通報された口コミの確認・非表示・再表示。合言葉（Worker の ADMIN_KEY）はこのブラウザに保存されます。</p>
+<div class="step"><label>合言葉（ADMIN_KEY）</label><input type="password" id="adm-key" style="max-width:340px;width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:9px;font-size:14px">
+<div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap"><button class="submit-btn" id="adm-load" style="padding:8px 16px;font-size:13px">読み込む</button>
+<select id="adm-status" style="padding:8px;border:1px solid var(--line);border-radius:9px"><option value="reported">通報で非表示中</option><option value="hidden">運営者が非表示</option><option value="ok">表示中</option><option value="all" selected>すべて</option></select></div>
+<div class="err" id="adm-err"></div></div>
+<div id="adm-list"></div>
+</div>
+<script>
+(function(){
+  var API = (window.WOS_API || '').replace(/\\/$/, ''), $ = function(id){ return document.getElementById(id); };
+  var H = {}; function heroes(){ if(!Object.keys(H).length) (window.WOS_HEROES || []).forEach(function(h){ H[h.id] = h.name; }); return H; }
+  var TL = { f2p:'無課金・微課金', mid:'中課金', whale:'石油王' }, SL = { ok:'表示中', reported:'通報で非表示', hidden:'運営者が非表示' };
+  try{ $('adm-key').value = localStorage.getItem('wos_admin_key') || ''; }catch(e){}
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){ return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]; }); }
+  function load(){
+    var key = $('adm-key').value.trim(); if(!key){ $('adm-err').textContent = '合言葉を入れてください'; return; }
+    try{ localStorage.setItem('wos_admin_key', key); }catch(e){}
+    $('adm-err').textContent = ''; $('adm-list').innerHTML = '<div class="skel"></div>';
+    fetch(API + '/v1/admin/reviews?key=' + encodeURIComponent(key) + '&status=' + $('adm-status').value, { mode:'cors' }).then(function(r){ return r.json(); }).then(function(j){
+      if(!j.ok){ $('adm-err').textContent = j.error === 'forbidden' ? '合言葉が違うか、Worker に ADMIN_KEY が設定されていません' : '読み込めませんでした'; $('adm-list').innerHTML = ''; return; }
+      if(!j.items.length){ $('adm-list').innerHTML = '<p class="note">該当する口コミはありません。</p>'; return; }
+      $('adm-list').innerHTML = j.items.map(function(it){
+        var d = new Date(it.at * 1000).toLocaleString('ja-JP');
+        return '<div class="adm-item ' + esc(it.status) + '" data-id="' + esc(it.id) + '"><div class="adm-h"><span class="adm-st">' + (SL[it.status] || it.status) + '</span><span>通報 ' + it.reports + '</span><span>第' + it.gen + '世代 ／ ' + (TL[it.tier] || it.tier) + '</span><span>' + d + '</span><span>' + esc(it.nick || '匿名') + '</span></div>'
+          + '<div style="font-size:12px;color:var(--muted)">盾' + esc(heroes()[it.inf] || it.inf) + '　槍' + esc(heroes()[it.lan] || it.lan) + '　弓' + esc(heroes()[it.mks] || it.mks) + '</div>'
+          + '<div style="margin:4px 0;white-space:pre-wrap">' + esc(it.comment) + '</div>'
+          + '<div class="adm-btns">' + (it.status === 'ok' ? '<button data-act="hide">非表示にする</button>' : '<button data-act="show">表示に戻す（通報数リセット）</button>') + '</div></div>';
+      }).join('');
+      $('adm-list').querySelectorAll('button[data-act]').forEach(function(b){
+        b.onclick = function(){
+          var id = b.closest('.adm-item').getAttribute('data-id'); b.disabled = true;
+          fetch(API + '/v1/admin/reviews/' + id, { method:'POST', mode:'cors', headers:{ 'content-type':'application/json' }, body: JSON.stringify({ key: key, action: b.getAttribute('data-act') }) })
+            .then(function(r){ return r.json(); }).then(function(){ load(); }).catch(function(){ b.disabled = false; });
+        };
+      });
+    }).catch(function(){ $('adm-err').textContent = '通信エラー'; });
+  }
+  $('adm-load').onclick = load;
+})();
+</script>
+"""
+    h = head("口コミ管理（運営者用） | ホワサバ ツールラボ", "運営者用ページ", path).replace('<meta name="viewport"', '<meta name="robots" content="noindex,nofollow">\n<meta name="viewport"')
+    return h + body + tail(tr, "Review admin | Whiteout Tools Lab", 'Admin', 'Review <span class="acc">admin</span>', 'Operator only.')
+
 # ---------------- 書き出し ----------------
 def write(rel, s):
     p = os.path.join(ROOT, rel); os.makedirs(os.path.dirname(p), exist_ok=True)
@@ -829,6 +899,7 @@ def write(rel, s):
 write("stats/index.html", build_hub())
 write("stats/methodology.html", build_methodology())
 write("submit/index.html", build_submit())
+write("stats/admin.html", build_admin())
 for g in GENS:
     write(f"stats/{gen_dir(g)}/index.html", build_gen(g))
 nopost = [HEROES[h]["name"] for h in HEROES if HEROES[h]["gen"] > 0 and not HEROES[h]["post"]]

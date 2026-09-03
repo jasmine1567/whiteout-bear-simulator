@@ -1,6 +1,7 @@
 import { DatabaseSync } from 'node:sqlite';
 import fs from 'node:fs';
-const worker = (await import(new URL('../dist/worker.js', import.meta.url).href)).default;
+const mod = await import(new URL('../dist/worker.js', import.meta.url).href);
+const worker = mod.default;
 
 /* D1 / KV の最小モック */
 const db = new DatabaseSync(':memory:');
@@ -84,6 +85,41 @@ const d = r.body.diag;
 t('世代ラグ（盾G2→14, 槍G3→13, 弓G13→3）', d.lag.inf===14 && d.lag.lan===13 && d.lag.mks===3, JSON.stringify(d.lag));
 t('理論値との差分（無課金の最適との比較・swap枠が返る）', d.theory && d.theory.ids.length===3 && Array.isArray(d.theory.swap), JSON.stringify(d.theory));
 t('同世代内の順位が返る', d.rank && d.rank.n>=5 && d.rank.pct>0, JSON.stringify(d.rank));
+
+console.log('--- 口コミ（ひとこと） ---');
+r = await call('POST','/v1/submit',{ gen:10, tier:'f2p', inf:'hector', lan:'mia', mks:'blanchette', damage:12000000, comment:'ブランシュに替えて1割伸びた。\n無課金ならヘクトーで十分', nick:'たろう' },'20.0.0.1');
+t('ひとこと付き投稿 → review:true', r.status===200 && r.body.review===true, JSON.stringify(r.body));
+const rid = r.body.id, rkey = r.body.editKey;
+r = await call('POST','/v1/submit',{ gen:10, tier:'whale', inf:'jeronimo', lan:'mia', mks:'blanchette', comment:'詳細はこちら https://example.com/xx' },'20.0.0.2');
+t('URL入りは弾く', r.status===400 && r.body.fields.includes('comment:url'), JSON.stringify(r.body.fields));
+r = await call('POST','/v1/submit',{ gen:10, tier:'whale', inf:'jeronimo', lan:'mia', mks:'blanchette', comment:'運営は死ね' },'20.0.0.2');
+t('NGワードは弾く', r.status===400 && r.body.fields.includes('comment:ng'));
+r = await call('POST','/v1/submit',{ gen:10, tier:'whale', inf:'jeronimo', lan:'mia', mks:'blanchette', comment:'x'.repeat(500), nick:'n'.repeat(40) },'20.0.0.2');
+t('長すぎる本文・名前は切り詰めて受理', r.status===200 && r.body.review===true);
+r = await call('GET','/v1/reviews/10');
+t('GET /v1/reviews/10: 新しい順・2件・本文と構成', r.body.items.length===2 && r.body.items[0].comment.length===200 && r.body.items[1].nick==='たろう' && r.body.items[1].inf==='hector' && r.body.items[1].damage===12000000, JSON.stringify(r.body.items[1]));
+t('ひとこと無しの投稿は口コミに出ない（第16世代は0件）', (await call('GET','/v1/reviews/16')).body.items.length===0);
+r = await call('POST','/v1/submit',{ gen:10, tier:'f2p', inf:'hector', lan:'mia', mks:'blanchette', comment:'書き直しました', editKey: rkey },'20.0.0.1');
+t('同じ編集キーで上書き → 本文が更新', r.body.id===rid && (await call('GET','/v1/reviews/10')).body.items.some(i=>i.id===rid && i.comment==='書き直しました'));
+/* 通報 */
+r = await call('POST','/v1/report/'+rid,{},'30.0.0.1'); t('通報 1件目', r.body.ok && r.body.reports===1, JSON.stringify(r.body));
+r = await call('POST','/v1/report/'+rid,{},'30.0.0.1'); t('同じクライアントの再通報は数えない', r.body.reports===1);
+await call('POST','/v1/report/'+rid,{},'30.0.0.2'); r = await call('POST','/v1/report/'+rid,{},'30.0.0.3');
+t('3件で自動非表示', r.body.reports===3 && !(await call('GET','/v1/reviews/10')).body.items.some(i=>i.id===rid));
+r = await call('POST','/v1/report/zzzz',{}); t('存在しないIDの通報 → 404', r.status===404);
+/* 運営者 */
+r = await call('GET','/v1/admin/reviews?key=nope'); t('ADMIN_KEY 未設定なら管理APIは403', r.status===403);
+const envA = { ...env, ADMIN_KEY:'secret' };
+const callA = async (method, path, body) => { const x = await worker.fetch(req(method, path, body), envA); return { status:x.status, body: await x.json() }; };
+r = await callA('GET','/v1/admin/reviews?key=secret&status=reported');
+t('管理一覧: 通報済みが見える', r.status===200 && r.body.items.length===1 && r.body.items[0].id===rid && r.body.items[0].reports===3, JSON.stringify(r.body.items.map(i=>[i.id,i.status,i.reports])));
+r = await callA('POST','/v1/admin/reviews/'+rid,{ key:'secret', action:'show' });
+t('運営者が表示に戻す → 通報数リセット・再表示', r.body.changed && (await call('GET','/v1/reviews/10')).body.items.some(i=>i.id===rid) && db.prepare('select reports from submissions where id=?').get(rid).reports===0);
+r = await callA('POST','/v1/admin/reviews/'+rid,{ key:'secret', action:'hide' });
+t('運営者が非表示', r.body.changed && !(await call('GET','/v1/reviews/10')).body.items.some(i=>i.id===rid));
+r = await callA('POST','/v1/admin/reviews/'+rid,{ key:'wrong', action:'show' }); t('合言葉違いは403', r.status===403);
+r = await call('DELETE','/v1/submit/'+rid,{ editKey: rkey }); t('投稿者が削除すると口コミも消える', r.body.removed===true);
+t('cleanText/textProblem', mod.cleanText('  a\u0000b   c\r\n\r\n\r\nd ', 100)==='ab c\n\nd' && mod.textProblem('www.example.com')==='url' && mod.textProblem('ふつうの感想')===null && mod.textProblem('ゴミ構成', '')==='ng' && mod.textProblem('ぬるぽ', 'ぬるぽ')==='ng');
 
 console.log(`\n結果: ${pass} 件OK / ${fail} 件NG`);
 process.exit(fail?1:0);

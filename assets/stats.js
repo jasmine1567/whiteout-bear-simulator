@@ -139,6 +139,54 @@
     });
   };
 
+  /* ---------- 世代ページ: 口コミ（投稿フォームの「ひとこと」付き投稿を Worker から取得） ---------- */
+  var RV_VISIBLE = 5;   /* これを超えたら枠内スクロール */
+  var RV_LS = 'wos_stats_reported';
+  function fmtDate(sec){ var d = new Date(sec * 1000); if(isNaN(d)) return ''; return d.toLocaleDateString(EN ? 'en-US' : 'ja-JP', { year:'numeric', month:'short', day:'numeric' }); }
+  function reported(){ try{ return JSON.parse(localStorage.getItem(RV_LS) || '[]'); }catch(e){ return []; } }
+  function reviewCard(it){
+    var T = GM.TIERS[it.tier] || {};
+    var who = it.nick ? esc(it.nick) : t('匿名','Anonymous');
+    var dmg = it.damage ? '<span class="rv-dmg">⚔ ' + fmtM(it.damage) + '</span>' : '';
+    var rep = reported().indexOf(it.id) >= 0;
+    return '<div class="rv-item" data-id="' + esc(it.id) + '">'
+      + '<div class="rv-head"><span class="rv-tier ' + esc(it.tier) + '">' + esc(EN ? T.label_en : T.label) + '</span><b>' + who + '</b><time>' + fmtDate(it.at) + '</time></div>'
+      + '<div class="rv-build">' + heroHtml(it.inf, true) + ' ' + heroHtml(it.lan, true) + ' ' + heroHtml(it.mks, true) + dmg + '</div>'
+      + '<div class="rv-text">' + esc(it.comment).replace(/\n/g, '<br>') + '</div>'
+      + '<div class="rv-foot"><button type="button" class="rv-report"' + (rep ? ' disabled' : '') + '>' + (rep ? t('通報済み','Reported') : '⚑ ' + t('通報','Report')) + '</button></div></div>';
+  }
+  function bindReport(box){
+    box.querySelectorAll('.rv-report').forEach(function(b){
+      if(b.disabled) return;
+      var step = 0;
+      b.addEventListener('click', function(){
+        var id = b.closest('.rv-item').getAttribute('data-id');
+        if(step === 0){ step = 1; b.textContent = t('この口コミを通報しますか？ → はい','Report this review? → Yes'); b.classList.add('arm'); setTimeout(function(){ if(step === 1){ step = 0; b.textContent = '⚑ ' + t('通報','Report'); b.classList.remove('arm'); } }, 6000); return; }
+        step = 2; b.disabled = true; b.textContent = t('送信中…','Sending…');
+        fetch(API + '/v1/report/' + encodeURIComponent(id), { method:'POST', mode:'cors', credentials:'omit', headers:{ 'content-type':'application/json' }, body:'{}' })
+          .then(function(r){ return r.json(); })
+          .then(function(){ b.textContent = t('通報しました。ご協力ありがとうございます','Reported — thank you'); try{ var a = reported(); a.push(id); localStorage.setItem(RV_LS, JSON.stringify(a.slice(-200))); }catch(e){} })
+          .catch(function(){ b.disabled = false; step = 0; b.textContent = t('送信できませんでした','Could not send'); });
+      });
+    });
+  }
+  S.renderReviews = function(gen){
+    var box = D.querySelector('[data-reviews="' + gen + '"]'); if(!box) return;
+    var submitHref = (W.WOS_BASE || '') + '/submit/index.html?gen=' + gen + '&review=1';
+    function empty(title, body){ box.innerHTML = '<div class="rv-empty"><b>' + title + '</b>' + (body ? '<div>' + body + '</div>' : '') + '<a class="btn" href="' + submitHref + '">' + t('口コミを投稿する','Post a review') + '</a></div>'; }
+    if(!API){ empty(t('口コミは準備中です','Reviews coming soon'), ''); return; }
+    getJSON('/v1/reviews/' + gen).then(function(r){
+      var items = (r && r.items) || [];
+      if(!items.length){ empty(t('まだ口コミがありません','No reviews yet'), t('最初の口コミを投稿しませんか？ 投稿フォームの「ひとこと」に書くだけで、ここに載ります。','Be the first — just fill in the "one-liner" field on the submission form.')); return; }
+      var html = '<div class="rv-meta">' + t('全 ','') + '<b>' + items.length + '</b>' + t(' 件・新しい順',' reviews · newest first') + '</div>';
+      html += '<div class="rv-scroll' + (items.length > RV_VISIBLE ? ' on' : '') + '">' + items.map(reviewCard).join('') + '</div>'
+        + (items.length > RV_VISIBLE ? '<div class="rv-more">' + t('▼ スクロールで続きを表示','▼ scroll for more') + '</div>' : '');
+      box.innerHTML = html;
+      relabelHeroes(box);
+      bindReport(box);
+    }).catch(function(){ empty(t('口コミを読み込めませんでした','Could not load reviews'), t('時間をおいて再読み込みしてください。','Please try again later.')); });
+  };
+
   /* ハブ用: 世代ごとの件数 */
   S.renderSummary = function(){
     var targets = D.querySelectorAll('[data-gen-n]');
@@ -214,7 +262,12 @@
       optional += '</div>';
     }
     if(optional) html += '<div class="step"><h3><span class="num">3</span>' + t('任意：もっと詳しく','Optional: more details') + '</h3>' + optional + '</div>';
-    html += '<label class="consent"><input type="checkbox" id="st-consent"><span>' + t('匿名の統計データとして送信し、当サイトで集計・公開することに同意します（個人を特定する情報は送信されません）。','I agree to submit this as anonymous statistics for aggregation and publication on this site. No identifying information is sent.') + ' <a href="' + (W.WOS_BASE||'') + '/privacy.html" target="_blank" rel="noopener">' + t('プライバシーポリシー','Privacy policy') + '</a></span></label>'
+    /* 口コミ（ひとこと）。書くと世代ページの「口コミ」欄に公開される */
+    html += '<div class="step" id="st-review"><h3><span class="num">' + (optional ? 4 : 3) + '</span>' + t('任意：ひとこと（口コミとして公開）','Optional: one-liner (published as a review)') + '</h3>'
+      + '<p class="hint">' + t('この構成の使用感・乗り換えた理由など。世代ページの「口コミ」欄に、上の構成と一緒に載ります。URL は書けません。','How this build feels, why you swapped, etc. Shown with your build in the generation page\'s Reviews block. No links.') + '</p>'
+      + '<textarea id="st-comment" maxlength="200" rows="3" placeholder="' + t('例: ブランシュに替えて1割伸びた。無課金ならヘクトーで十分','e.g. Swapped to Blanchette and gained ~10%. Hector is enough for F2P') + '"></textarea>'
+      + '<div class="row"><div><label>' + t('表示名（任意・16文字まで）','Display name (optional, 16 chars)') + '</label><input type="text" id="st-nick" maxlength="16" placeholder="' + t('空欄なら「匿名」','Blank = Anonymous') + '"></div><div style="align-self:flex-end"><span class="hint" id="st-count">0 / 200</span></div></div></div>';
+    html += '<label class="consent"><input type="checkbox" id="st-consent"><span>' + t('匿名の統計データとして送信し、当サイトで集計・公開することに同意します（個人を特定する情報は送信されません。「ひとこと」と表示名は口コミとして公開されます）。','I agree to submit this as anonymous statistics for aggregation and publication on this site. No identifying information is sent; the one-liner and display name are published as a review.') + ' <a href="' + (W.WOS_BASE||'') + '/privacy.html" target="_blank" rel="noopener">' + t('プライバシーポリシー','Privacy policy') + '</a></span></label>'
       + (W.WOS_TURNSTILE_SITEKEY ? '<div class="cf-turnstile" data-sitekey="' + esc(W.WOS_TURNSTILE_SITEKEY) + '" data-size="flexible" style="margin:8px 0"></div>' : '')
       + '<button type="button" class="submit-btn" id="st-submit" disabled>' + t('統計に投稿する','Submit to stats') + '</button>'
       + (saved.editKey ? '<p class="note" style="margin-top:6px">' + t('前回の投稿を上書き更新します。','This will update your previous submission.') + ' <a href="#" id="st-forget">' + t('新規として投稿する','Submit as new') + '</a></p>' : '')
@@ -251,6 +304,10 @@
     if(FIELDS.damage){ var dv = pre.damage != null ? pre.damage : saved.damage; if(dv != null) $('st-damage').value = dv; }
     if(FIELDS.fc){ var fv = pre.fc != null ? pre.fc : saved.fc; if(fv != null) $('st-fc').value = fv; }
     if(FIELDS.gear){ (pre.gear || saved.gear || []).forEach(function(v, i){ if(v != null && $('st-g' + i)) $('st-g' + i).value = v; }); }
+    var cmt = $('st-comment'), nick = $('st-nick'), cnt = $('st-count');
+    if(saved.comment) cmt.value = saved.comment; if(saved.nick) nick.value = saved.nick;
+    function count(){ cnt.textContent = cmt.value.length + ' / 200'; } count(); cmt.addEventListener('input', count);
+    if(q.get('review') === '1'){ setTimeout(function(){ try{ $('st-review').scrollIntoView({ behavior:'smooth', block:'center' }); cmt.focus(); }catch(e){} }, 300); }
 
     function ratioVal(){
       if(!r) return null;
@@ -277,6 +334,7 @@
         ratio: ratioVal(),
         damage: FIELDS.damage ? ($('st-damage').value || null) : null, fc: FIELDS.fc ? ($('st-fc').value || null) : null,
         gear: FIELDS.gear ? [0,1,2].map(function(i){ return $('st-g' + i).value || null; }) : null,
+        comment: cmt.value.trim() || null, nick: nick.value.trim() || null,
         editKey: editKey, turnstile: tsToken(container) };
       if(!API){ err.textContent = t('投稿先が設定されていません。','Submission endpoint is not configured.'); btn.disabled = false; btn.textContent = t('統計に投稿する','Submit to stats'); return; }
       fetch(API + '/v1/submit', { method:'POST', mode:'cors', credentials:'omit', headers:{ 'content-type':'application/json' }, body: JSON.stringify(body) })
@@ -286,14 +344,14 @@
           if(!o.ok || !o.j.ok){
             var m = o.j && o.j.error;
             err.textContent = m === 'turnstile' ? t('人間確認に失敗しました。ページを再読み込みしてください。','Verification failed. Please reload.')
-              : m === 'invalid' ? t('入力内容に問題があります: ','Invalid input: ') + (o.j.fields || []).join(', ')
+              : m === 'invalid' ? fieldError(o.j.fields || [])
               : t('送信に失敗しました。','Submission failed.');
             try{ if(W.turnstile) W.turnstile.reset(); }catch(e){}
             return;
           }
           editKey = o.j.editKey; submissionId = o.j.id;
-          save({ id: submissionId, editKey: editKey, gen: body.gen, tier: body.tier, inf: body.inf, lan: body.lan, mks: body.mks, ratio: body.ratio, damage: body.damage, fc: body.fc, gear: body.gear });
-          res.innerHTML = resultCard(o.j.diag);
+          save({ id: submissionId, editKey: editKey, gen: body.gen, tier: body.tier, inf: body.inf, lan: body.lan, mks: body.mks, ratio: body.ratio, damage: body.damage, fc: body.fc, gear: body.gear, comment: body.comment, nick: body.nick });
+          res.innerHTML = resultCard(o.j.diag, o.j.review ? body : null);
           relabelHeroes(res);
           if(W.WOS_TRACK) W.WOS_TRACK('stats_submit', { gen: o.j.diag.gen, tier: body.tier });
           res.scrollIntoView({ behavior:'smooth', block:'start' });
@@ -303,7 +361,13 @@
     });
   };
 
-  function resultCard(d){
+  function fieldError(fields){
+    var f = fields.join(',');
+    if(/comment:url|nick:url/.test(f)) return t('「ひとこと」「表示名」に URL は書けません。','Links are not allowed in the one-liner or display name.');
+    if(/comment:ng|nick:ng/.test(f)) return t('「ひとこと」「表示名」に使えない言葉が含まれています。表現を変えてください。','The one-liner or display name contains a blocked word. Please rephrase.');
+    return t('入力内容に問題があります: ','Invalid input: ') + fields.join(', ');
+  }
+  function resultCard(d, reviewBody){
     var base = (W.WOS_BASE || '');
     var html = '<div class="result-card"><h3>' + t('投稿ありがとうございます！','Thanks for submitting!') + '</h3>'
       + '<div class="kv">'
@@ -318,6 +382,7 @@
         ? '<div class="swap"><b>' + t('乗り換え候補の枠','Slots to consider swapping') + '</b><br>' + d.theory.swap.map(function(c){ return '<span class="slot-tag">' + clsName(c) + '</span>'; }).join(' ') + '</div>'
         : '<div class="swap">🎯 ' + t('理論最適構成と一致しています。','Your build matches the theoretical best.') + '</div>';
     }
+    if(reviewBody) html += '<div class="swap">💬 ' + t('ひとことは口コミとして世代ページに掲載されました。','Your one-liner is now shown in the generation page\'s Reviews block.') + '</div>';
     html += '<p class="note">' + t('投稿はこのブラウザに保存され、次回は上書き更新になります。','Saved in this browser; your next submission updates this one.') + '</p>';
     html += '<p><a class="btn" href="' + base + '/stats/gen-' + String(d.gen).padStart(2,'0') + '/index.html">' + t('この世代の統計を見る','See stats for this generation') + '</a></p></div>';
     return html;
@@ -328,7 +393,7 @@
     relabelHeroes();
     initTierTabs();
     initTweets();
-    var page = D.querySelector('[data-live-page]'); if(page) S.renderCompare(parseInt(page.getAttribute('data-live-page'), 10));
+    var page = D.querySelector('[data-live-page]'); if(page){ var g = parseInt(page.getAttribute('data-live-page'), 10); S.renderCompare(g); S.renderReviews(g); }
     S.renderSummary();
     var form = D.getElementById('submit-form'); if(form) S.mountForm(form, {});
   }

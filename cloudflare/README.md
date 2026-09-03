@@ -15,11 +15,12 @@
 | 1 | Cloudflare のアカウントを作る | ブラウザ |
 | 2 | このフォルダで準備コマンドを実行する | パソコン（黒い画面） |
 | 3 | データ置き場（D1 と KV）を作って、IDを設定ファイルに貼る | パソコン |
-| 4 | 人間確認（Turnstile）のキーを発行する | ブラウザ → パソコン |
+| 4 | 人間確認（Turnstile）のキーを発行し、合言葉3つを登録する | ブラウザ → パソコン |
 | 5 | 本番に配置する（デプロイ） | パソコン |
-| 6 | `api.whitesim-lab.com` を割り当てる | ブラウザ（Cloudflare とドメイン管理画面） |
+| 6 | サイトから Worker への接続先を決める（カスタムドメイン or Worker の URL） | ブラウザ／メモ帳 |
 | 7 | サイト側の設定ファイルにキーを貼ってアップロード | いつものzip作業 |
 | 8 | 動作確認 | ブラウザ |
+| 9 | 口コミの管理画面を確認する | ブラウザ |
 
 > **黒い画面（ターミナル）の開き方**
 > - Windows: スタートメニューで「PowerShell」と検索して開く
@@ -121,7 +122,13 @@ npx wrangler secret put TURNSTILE_SECRET
 npx wrangler secret put CLIENT_SALT
 ```
 
-> サイトキーは手順7で使います。シークレットキーと塩は二度と表示されないので、パスワード管理アプリなどに控えておいてください。
+6. 最後に、口コミ管理画面で使う**合言葉**を登録します。これも適当な長い文字列（塩とは別のもの）を貼って Enter
+
+```
+npx wrangler secret put ADMIN_KEY
+```
+
+> サイトキーは手順7で、合言葉は手順9で使います。シークレットキー・塩・合言葉は二度と表示されないので、パスワード管理アプリなどに控えておいてください。
 
 ## 手順5. 本番に配置する（デプロイ）
 
@@ -132,24 +139,31 @@ npx wrangler deploy
 最後に `https://whitesim-stats.＜あなたのアカウント名＞.workers.dev` のようなURLが表示されれば成功です。
 ブラウザでそのURLの末尾に `/v1/stats/summary` を付けて開くと、`{"updatedAt": ...}` のような文字が表示されます。
 
-## 手順6. `api.whitesim-lab.com` を割り当てる
+## 手順6. サイトから Worker への接続先を決める（2通り）
 
-サイト側は `https://api.whitesim-lab.com` に接続するので、その名前を Worker に向けます。
+サイト側は既定で `https://api.whitesim-lab.com` に接続します。**Worker のカスタムドメインは、そのドメイン
+（`whitesim-lab.com`）が Cloudflare に登録されている場合だけ使えます。** 登録していない場合は B を選んでください。
 
-1. Cloudflare ダッシュボード → **Workers & Pages** → `whitesim-stats` をクリック
-2. **Settings** タブ → **Domains & Routes** → **Add** → **Custom Domain**
-3. `api.whitesim-lab.com` と入力して Add
+### A. `whitesim-lab.com` を Cloudflare で管理している（または管理に移す）場合
 
-ここで2パターンに分かれます。
+1. Cloudflare ダッシュボード → **Workers & Pages** → `whitesim-stats` → 上のタブ **ドメイン**
+2. **ドメインを追加** → `api.whitesim-lab.com` と入力して追加（DNS と証明書は自動で設定されます）
+3. 数分後に `https://api.whitesim-lab.com/v1/stats/summary` が開けば完了。`assets/config.js` はそのままでOK
 
-- **ドメインを Cloudflare で管理している場合**: これで完了です（自動で設定されます）
-- **他社（お名前.com など）で管理している場合**: 画面に「CNAME レコードを追加してください」と、追加すべき値が表示されます。
-  ドメイン管理画面の DNS 設定で、次の1行を追加してください。
-  - 種類: `CNAME`
-  - ホスト名: `api`
-  - 値: Cloudflare の画面に表示されたもの（`xxxx.workers.dev` のような文字列）
+> ドメインを Cloudflare に移すには、ダッシュボードの「ドメイン」→「ドメインを追加」で `whitesim-lab.com` を登録し、
+> 表示されるネームサーバー2つをドメイン会社（お名前.com など）の設定で置き換えます。GitHub Pages 用の既存レコードは
+> 自動で取り込まれます（反映まで最大24時間）。急がない・面倒な場合は B で十分です。
 
-反映まで数分〜1時間ほどかかります。ブラウザで `https://api.whitesim-lab.com/v1/stats/summary` を開いて JSON が表示されれば完了です。
+### B. ドメインは今のまま、Worker の URL をそのまま使う場合（かんたん）
+
+1. 手順5で表示された Worker の URL（例: `https://whitesim-stats.hiroaki-c51.workers.dev`）をコピー
+2. サイトのファイル `assets/config.js` の次の行を、その URL に書き換える（末尾に `/` は付けない）
+
+```
+window.WOS_API = "https://whitesim-stats.hiroaki-c51.workers.dev";
+```
+
+3. 手順7のサイトキーと一緒にアップロードすれば完了。ページ側の接続許可（CSP）は `*.workers.dev` を含めてあります
 
 ## 手順7. サイト側にサイトキーを貼る
 
@@ -172,6 +186,22 @@ window.WOS_TURNSTILE_SITEKEY = "";
    Cloudflare ダッシュボード → Workers & Pages → whitesim-stats → **Triggers** タブ → Cron Triggers の **Run now**
 4. 10件以上集まった世代のページで「実測」側に数字が入ります
 
+## 手順9. 口コミの管理画面を確認する
+
+世代ページの「口コミ」欄は、投稿フォームの「ひとこと」を表示します（追加費用なし。統計と同じ D1 を使います）。
+通報が3件集まった口コミは自動で非表示になるので、運営者が確認して「戻す／消す」ための管理画面があります。
+
+1. ブラウザで `https://whitesim-lab.com/stats/admin.html` を開く
+2. 手順4-6で登録した**合言葉（ADMIN_KEY）**を入れて「読み込む」。口コミの一覧（まだ無ければ「該当する口コミはありません」）が出ればOK
+   （合言葉はそのブラウザに保存されます。他の人には教えないでください）
+3. 通報が来たときは、上の「通報で非表示中」を選んで内容を確認し、「表示に戻す」か、そのまま非表示にしておく
+
+> **v7 以前の schema.sql で手順3を実行済みの場合だけ**、表に口コミ用の列を足してください（初回セットアップなら不要）。
+>
+> ```
+> npx wrangler d1 execute whitesim-stats --remote --file=./migrations/001_reviews.sql
+> ```
+
 ---
 
 ## よくあるつまずき
@@ -179,11 +209,15 @@ window.WOS_TURNSTILE_SITEKEY = "";
 | 症状 | 対処 |
 |---|---|
 | `npx` や `node` が「見つかりません」と出る | 手順0のインストール後、黒い画面を一度閉じて開き直す |
+| Windows で「このシステムではスクリプトの実行が無効になっているため…npm.ps1 を読み込むことができません」と出る | PowerShell の設定です。`Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` を実行して `Y` → もう一度 `npm install`。設定を変えたくない場合は `npm.cmd install` / `npx.cmd wrangler …` のように末尾に `.cmd` を付けて実行 |
 | `wrangler login` でブラウザが開かない | 表示されたURLを手でコピーしてブラウザに貼る |
 | `deploy` で `database_id` のエラー | `wrangler.toml` に `REPLACE_WITH_` が残っている。手順3を確認 |
 | 投稿ボタンを押すと「人間確認に失敗」 | Turnstile のドメインが `whitesim-lab.com` になっているか、サイトキーとシークレットキーを取り違えていないか確認 |
-| 投稿すると「通信エラー」 | `https://api.whitesim-lab.com/v1/stats/summary` が開けるか確認（手順6の反映待ちの可能性） |
+| 投稿すると「通信エラー」 | `assets/config.js` の `WOS_API` の URL に `/v1/stats/summary` を付けてブラウザで開けるか確認（手順6） |
 | 「実測」が「準備中」のまま | Worker が動いていないか、まだ投稿が10件未満。summary のURLで件数を確認 |
+| 口コミ欄が「読み込めませんでした」 | 手順3の表に口コミ用の列が無い（v7以前の schema で作成）。手順9の枠内のコマンドで列を足す |
+| 管理画面で「合言葉が違う」 | 手順4-6の `ADMIN_KEY` が未登録か、登録後に `npx wrangler deploy` していない |
+| 投稿すると「使えない言葉が含まれています」 | 組み込みのNGワードに当たっている。増やしたい言葉は `wrangler.toml` の `NG_WORDS` にカンマ区切りで追加して deploy |
 
 ## 困ったときの逃げ道
 
@@ -204,6 +238,7 @@ window.WOS_TURNSTILE_SITEKEY = "";
 ```
 wrangler.toml         設定ファイル（D1 / KV の ID を貼る場所）
 schema.sql            データベースの表の定義
+migrations/           古い表に列を足すためのSQL（v7以前から更新する時だけ）
 src/index.js          プログラム本体
 src/heroes-min.json   英雄一覧（_solve_theory.js が自動生成。手で編集しない）
 test/worker.test.mjs  ローカルテスト
@@ -215,6 +250,9 @@ test/worker.test.mjs  ローカルテスト
 | DELETE /v1/submit/:id | 編集キーで自分の投稿を削除 |
 | GET /v1/stats/summary | 全世代の投稿件数 |
 | GET /v1/stats/:gen | その世代の集計 |
+| GET /v1/reviews/:gen | その世代の口コミ（「ひとこと」付き投稿を新しい順・100件まで） |
+| POST /v1/report/:id | 口コミを通報（同じ人からは1回。3件で自動非表示） |
+| GET/POST /v1/admin/reviews… | 運営者用（ADMIN_KEY）。一覧・非表示・再表示 |
 | 毎日 20:00 UTC | 集計して KV に保存 |
 
 無料枠の目安: 1日あたり Workers 10万リクエスト、D1 500万行読み取り、KV 10万読み取り。1日1万PVでも余裕があります。
