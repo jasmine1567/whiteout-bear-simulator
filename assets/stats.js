@@ -209,8 +209,17 @@
 
   /* ---------- 投稿フォーム ---------- */
   var LS_KEY = 'wos_stats_submission';
-  function loadSaved(){ try{ return JSON.parse(localStorage.getItem(LS_KEY) || 'null'); }catch(e){ return null; } }
-  function save(o){ try{ localStorage.setItem(LS_KEY, JSON.stringify(o)); }catch(e){} }
+  /* 投稿の記憶は世代ごと（同じ人が世代ごとに1件ずつ持てる）。旧形式（世代なしの1件）は同じ世代のときだけ引き継ぐ */
+  function loadSaved(g){
+    try{
+      var v = JSON.parse(localStorage.getItem(LS_KEY + ':' + g) || 'null'); if(v) return v;
+      var legacy = JSON.parse(localStorage.getItem(LS_KEY) || 'null');
+      return (legacy && legacy.gen === g) ? legacy : null;
+    }catch(e){ return null; }
+  }
+  function save(o){ try{ localStorage.setItem(LS_KEY + ':' + o.gen, JSON.stringify(o)); localStorage.setItem(LS_KEY + ':last', String(o.gen)); var l = JSON.parse(localStorage.getItem(LS_KEY) || 'null'); if(l && l.gen === o.gen) localStorage.removeItem(LS_KEY); }catch(e){} }
+  function forgetSaved(g){ try{ localStorage.removeItem(LS_KEY + ':' + g); var l = JSON.parse(localStorage.getItem(LS_KEY) || 'null'); if(l && l.gen === g) localStorage.removeItem(LS_KEY); }catch(e){} }
+  function lastGen(){ try{ var v = parseInt(localStorage.getItem(LS_KEY + ':last'), 10); if(v) return v; var l = JSON.parse(localStorage.getItem(LS_KEY) || 'null'); return l && l.gen; }catch(e){ return null; } }
   function tsScript(){
     if(!W.WOS_TURNSTILE_SITEKEY || D.getElementById('cf-ts')) return;
     var s = D.createElement('script'); s.id = 'cf-ts'; s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js'; s.async = true; s.defer = true; D.head.appendChild(s);
@@ -222,9 +231,10 @@
 
   /* container に投稿フォームを描画。opts.prefill = {gen,tier,inf,lan,mks,ratio,damage,fc,gear} */
   S.mountForm = function(container, opts){
-    opts = opts || {}; var pre = opts.prefill || {}; var saved = loadSaved() || {};
+    opts = opts || {}; var pre = opts.prefill || {};
     var q = new URLSearchParams(location.search);
-    var initGen = pre.gen || saved.gen || parseInt(q.get('gen'), 10) || GM.MAX;
+    var initGen = pre.gen || parseInt(q.get('gen'), 10) || lastGen() || GM.MAX;
+    var saved = loadSaved(initGen) || {};
     var initTier = pre.tier || saved.tier || 'f2p';
     tsScript();
 
@@ -271,29 +281,56 @@
     html += '<label class="consent"><input type="checkbox" id="st-consent"><span>' + t('匿名の統計データとして送信し、当サイトで集計・公開することに同意します（個人を特定する情報は送信されません。「ひとこと」と表示名は口コミとして公開されます）。','I agree to submit this as anonymous statistics for aggregation and publication on this site. No identifying information is sent; the one-liner and display name are published as a review.') + ' <a href="' + (W.WOS_BASE||'') + '/privacy.html" target="_blank" rel="noopener">' + t('プライバシーポリシー','Privacy policy') + '</a></span></label>'
       + (W.WOS_TURNSTILE_SITEKEY ? '<div class="cf-turnstile" data-sitekey="' + esc(W.WOS_TURNSTILE_SITEKEY) + '" data-size="flexible" style="margin:8px 0"></div>' : '')
       + '<button type="button" class="submit-btn" id="st-submit" disabled>' + t('統計に投稿する','Submit to stats') + '</button>'
-      + (saved.editKey ? '<p class="note" style="margin-top:6px">' + t('前回の投稿を上書き更新します（口コミも差し替わります）。','This will update your previous submission (including the review).') + ' <a href="#" id="st-forget">' + t('新規として投稿する','Submit as new') + '</a> ／ <a href="#" id="st-delete">' + t('前回の投稿を削除する','Delete my previous submission') + '</a></p>' : '')
+      + '<p class="note" id="st-prev" style="margin-top:6px"></p>'
       + '<div class="err" id="st-err"></div><div id="st-result"></div>';
     container.innerHTML = html;
 
     var $ = function(id){ return container.querySelector('#' + id); };
     var genSel = $('st-gen'), sel = { inf:$('st-inf'), lan:$('st-lan'), mks:$('st-mks') };
     var consent = $('st-consent'), btn = $('st-submit'), err = $('st-err'), res = $('st-result');
-    var editKey = saved.editKey || null, submissionId = saved.id || null;
-    var forget = $('st-forget'); if(forget) forget.onclick = function(e){ e.preventDefault(); editKey = null; submissionId = null; forget.parentNode.remove(); };
-    var del = $('st-delete'), delArmed = false;
-    if(del) del.onclick = function(e){
-      e.preventDefault();
-      if(!delArmed){ delArmed = true; del.textContent = t('本当に削除しますか？ → はい、削除する','Really delete? → Yes, delete'); del.style.color = 'var(--bad)'; setTimeout(function(){ if(delArmed){ delArmed = false; del.textContent = t('前回の投稿を削除する','Delete my previous submission'); del.style.color = ''; } }, 6000); return; }
-      del.textContent = t('削除中…','Deleting…');
-      fetch(API + '/v1/submit/' + encodeURIComponent(submissionId), { method:'DELETE', mode:'cors', credentials:'omit', headers:{ 'content-type':'application/json' }, body: JSON.stringify({ editKey: editKey }) })
-        .then(function(x){ return x.json(); })
-        .then(function(j){
-          if(j && j.ok){ try{ localStorage.removeItem(LS_KEY); }catch(err){} editKey = null; submissionId = null;
-            del.parentNode.innerHTML = t('前回の投稿（統計・口コミ）を削除しました。次の投稿は新規になります。','Your previous submission (stats and review) was deleted. The next one will be new.'); }
-          else { del.textContent = t('削除できませんでした','Could not delete'); }
-        }).catch(function(){ del.textContent = t('通信エラー','Network error'); });
-    };
+    var editKey = null, submissionId = null;
     var curGen = function(){ return parseInt(genSel.value, 10); };
+    /* この世代の前回投稿があれば「上書き／新規／削除」の案内を出す */
+    function renderPrev(){
+      var prev = $('st-prev'); if(!prev) return;
+      if(!editKey){ prev.innerHTML = ''; return; }
+      var g = curGen();
+      prev.innerHTML = t('この世代（第' + g + '世代）の前回の投稿を上書き更新します（口コミも差し替わります）。','This will update your previous Gen ' + g + ' submission (including the review).')
+        + ' <a href="#" id="st-forget">' + t('新規として投稿する','Submit as new') + '</a> ／ <a href="#" id="st-delete">' + t('前回の投稿を削除する','Delete my previous submission') + '</a>';
+      $('st-forget').onclick = function(e){ e.preventDefault(); editKey = null; submissionId = null; prev.innerHTML = ''; };
+      var del = $('st-delete'), delArmed = false;
+      del.onclick = function(e){
+        e.preventDefault();
+        if(!delArmed){ delArmed = true; del.textContent = t('本当に削除しますか？ → はい、削除する','Really delete? → Yes, delete'); del.style.color = 'var(--bad)'; setTimeout(function(){ if(delArmed){ delArmed = false; del.textContent = t('前回の投稿を削除する','Delete my previous submission'); del.style.color = ''; } }, 6000); return; }
+        del.textContent = t('削除中…','Deleting…');
+        var gDel = g, idDel = submissionId, keyDel = editKey;
+        fetch(API + '/v1/submit/' + encodeURIComponent(idDel), { method:'DELETE', mode:'cors', credentials:'omit', headers:{ 'content-type':'application/json' }, body: JSON.stringify({ editKey: keyDel }) })
+          .then(function(x){ return x.json(); })
+          .then(function(j){
+            if(j && j.ok){ forgetSaved(gDel); editKey = null; submissionId = null; saved = {};
+              prev.innerHTML = t('第' + gDel + '世代の前回の投稿（統計・口コミ）を削除しました。次の投稿は新規になります。','Your previous Gen ' + gDel + ' submission (stats and review) was deleted. The next one will be new.'); }
+            else { del.textContent = t('削除できませんでした','Could not delete'); }
+          }).catch(function(){ del.textContent = t('通信エラー','Network error'); });
+      };
+    }
+    /* 世代を切り替えたら、その世代の前回投稿を読み直す */
+    var loadedComment = null;   /* 記憶から入れた文面（自分で打った文は世代切替で消さない）*/
+    function applySaved(g, fillFields){
+      saved = loadSaved(g) || {};
+      editKey = saved.editKey || null; submissionId = saved.id || null;
+      if(fillFields && !saved.editKey && loadedComment != null && $('st-comment').value === loadedComment){
+        $('st-comment').value = ''; $('st-nick').value = ''; $('st-hidedmg').checked = false; loadedComment = null;
+        var ev0 = D.createEvent('Event'); ev0.initEvent('input', true, true); $('st-comment').dispatchEvent(ev0);
+      }
+      if(fillFields && saved.editKey){
+        if(FIELDS.damage && saved.damage != null) $('st-damage').value = saved.damage;
+        if(FIELDS.fc && saved.fc != null) $('st-fc').value = saved.fc;
+        if(FIELDS.gear) (saved.gear || []).forEach(function(v, i){ if(v != null && $('st-g' + i)) $('st-g' + i).value = v; });
+        $('st-comment').value = saved.comment || ''; $('st-nick').value = saved.nick || ''; $('st-hidedmg').checked = saved.showDamage === false; loadedComment = saved.comment || '';
+        var ev = D.createEvent('Event'); ev.initEvent('input', true, true); $('st-comment').dispatchEvent(ev);
+      }
+      renderPrev();
+    }
     var tier = function(){ var el = container.querySelector('input[name="st-tier"]:checked'); return el ? el.value : null; };
 
     function fillHeroes(){
@@ -320,6 +357,7 @@
     if(FIELDS.gear){ (pre.gear || saved.gear || []).forEach(function(v, i){ if(v != null && $('st-g' + i)) $('st-g' + i).value = v; }); }
     var cmt = $('st-comment'), nick = $('st-nick'), cnt = $('st-count'), hideDmg = $('st-hidedmg');
     if(saved.comment) cmt.value = saved.comment; if(saved.nick) nick.value = saved.nick; if(saved.showDamage === false) hideDmg.checked = true;
+    if(saved.editKey) loadedComment = saved.comment || '';
     function count(){ cnt.textContent = cmt.value.length + ' / 200'; } count(); cmt.addEventListener('input', count);
     if(q.get('review') === '1'){ setTimeout(function(){ try{ $('st-review').scrollIntoView({ behavior:'smooth', block:'center' }); cmt.focus(); }catch(e){} }, 300); }
 
@@ -335,10 +373,11 @@
       if(rs && (rs.some(function(v){ return !isFinite(v) || v < 0; }) || rs[0] + rs[1] + rs[2] !== 100)) ok = false;
       btn.disabled = !ok; return ok;
     }
-    genSel.addEventListener('change', fillHeroes);
+    genSel.addEventListener('change', function(){ applySaved(curGen(), true); CLS.forEach(function(c){ sel[c].value = ''; }); fillHeroes(); });
     container.querySelectorAll('input[name="st-tier"]').forEach(function(el){ el.addEventListener('change', function(){ container.querySelectorAll('.tier-pick label').forEach(function(l){ l.classList.toggle('on', l.querySelector('input').checked); }); validate(); }); });
     CLS.forEach(function(c){ sel[c].addEventListener('change', validate); });
     consent.addEventListener('change', validate);
+    applySaved(initGen, false);
     fillHeroes();
 
     btn.addEventListener('click', function(){
@@ -365,6 +404,7 @@
           }
           editKey = o.j.editKey; submissionId = o.j.id;
           save({ id: submissionId, editKey: editKey, gen: body.gen, tier: body.tier, inf: body.inf, lan: body.lan, mks: body.mks, ratio: body.ratio, damage: body.damage, fc: body.fc, gear: body.gear, comment: body.comment, nick: body.nick, showDamage: body.showDamage });
+          renderPrev();
           res.innerHTML = resultCard(o.j.diag, o.j.review ? body : null);
           relabelHeroes(res);
           if(W.WOS_TRACK) W.WOS_TRACK('stats_submit', { gen: o.j.diag.gen, tier: body.tier });

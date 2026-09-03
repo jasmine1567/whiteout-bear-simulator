@@ -9,7 +9,7 @@ import os, re, json, html, subprocess
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 BASE_URL = "https://whitesim-lab.com"
-V = "101"            # 共有アセットの版数
+V = "102"            # 共有アセットの版数
 HV = "86"           # heroes.js の版数
 UPDATED = "2026-09-03"
 NOTES_DIR = os.path.join(ROOT, "_stats_notes")
@@ -796,7 +796,7 @@ def build_methodology():
 <li>{tr("投稿フォームの「ひとこと」（最大200文字）と表示名（任意・最大16文字）を、構成・課金帯・投稿日と一緒に世代ページの口コミ欄へ新しい順に表示します（1世代100件まで）","The one-liner (up to 200 chars) and optional display name (16 chars) from the submission form are shown in the generation page’s Reviews block with the build, tier and date, newest first (up to 100 per generation)")}</li>
 <li>{tr("URL・不適切な言葉を含む投稿は受付時に弾きます。通報が3件集まった口コミは自動で非表示になり、運営者が確認して戻すか消します","Posts containing links or abusive words are rejected. A review reported 3 times is hidden automatically until the operator reviews it")}</li>
 <li>{tr("ダメージは「口コミにダメージを表示しない」にチェックすると口コミには出ません（統計の集計にだけ使われます）","Tick “Hide my damage in the review” and the damage is used only for aggregate stats, not shown in the review")}</li>
-<li>{tr("同じブラウザから再投稿すると上書き（口コミも差し替え）。投稿フォームの「前回の投稿を削除する」で削除できます。運営者はガイドラインに反する口コミを予告なく非表示にすることがあります","Re-submitting from the same browser overwrites (review included); “Delete my previous submission” on the form removes it. The operator may hide reviews that violate the guidelines without notice")}</li></ul></div>
+<li>{tr("投稿は世代ごとに1件ずつ持てます（第10世代と第12世代に別々の口コミを残せます）。同じ世代に同じブラウザから再投稿すると上書き（口コミも差し替え）。投稿フォームの「前回の投稿を削除する」で削除できます。運営者はガイドラインに反する口コミを予告なく非表示にすることがあります","You can keep one submission per generation (e.g. separate reviews for Gen 10 and Gen 12). Re-submitting the same generation from the same browser overwrites (review included); “Delete my previous submission” on the form removes it. The operator may hide reviews that violate the guidelines without notice")}</li></ul></div>
 
 <h2>{tr("5. 投稿の削除","5. Deleting a submission")}</h2>
 <div class="card" style="font-size:13.5px"><ul class="kv-list"><li>{tr("投稿時の編集キー（ブラウザに保存）で上書き・削除できます","Your edit key (saved in your browser) lets you update or delete")}</li>
@@ -828,7 +828,7 @@ def build_submit():
 <p class="lead">{lead_ja}</p>
 <ul class="kv-list" style="margin-bottom:14px">
 <li>{tr("投稿するとすぐに、同じ世代の中での位置と、あなたの課金帯の理論最適との差が分かります","Right after submitting you see your rank in your generation and the gap to your tier’s theoretical best")}</li>
-<li>{tr("投稿はブラウザに紐づいて保存され、次回は上書きになります","Saved to this browser; your next submission updates it")}</li>
+<li>{tr("投稿は世代ごとに1件。同じ世代に再投稿すると上書き、別の世代なら別の投稿になります","One submission per generation: re-submitting the same generation updates it, another generation adds a new one")}</li>
 </ul>
 <div id="submit-form"><div class="skel"></div><div class="skel" style="width:60%"></div></div>
 <p class="note" style="margin-top:14px">{tr("熊狩ダメージ・シミュレーターの結果画面からも1クリックで投稿できます。","You can also submit straight from the Bear Hunt Simulator's result panel.")} <a href="/tools/bear-hunt/index.html">{tr("シミュレーターへ","Open the simulator")}</a></p>
