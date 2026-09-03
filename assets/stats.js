@@ -30,6 +30,7 @@
   }
   function fmtM(n){ if(!isFinite(n)) return '—'; if(n >= 1e6) return (n/1e6).toFixed(2) + 'M'; if(n >= 1e3) return (n/1e3).toFixed(0) + 'K'; return String(Math.round(n)); }
   S.esc = esc; S.heroHtml = heroHtml; S.heroName = heroName; S.clsName = clsName;
+  S.relabelHeroes = function(root){ relabelHeroes(root); };
 
   function relabelHeroes(root){
     (root || D).querySelectorAll('[data-hero]').forEach(function(el){
@@ -40,18 +41,32 @@
   }
 
   /* ---------- 課金帯タブ ---------- */
+  /* 同じ data-group のタブ群（ページ上部の大きな選択と、下の小さなタブ）は連動する。
+     選んだ課金帯はブラウザに記憶し、次の世代ページでも同じ課金帯で開く（?tier= で上書き可） */
+  var TIER_LS = 'wos_stats_tier';
   function initTierTabs(){
+    var groups = {};
     D.querySelectorAll('.tier-tabs').forEach(function(tabs){
-      if(tabs.getAttribute('data-init')) return; tabs.setAttribute('data-init','1');
       var group = tabs.getAttribute('data-group') || 'theory';
-      var btns = tabs.querySelectorAll('button');
-      var def = tabs.getAttribute('data-default') || (btns[0] && btns[0].getAttribute('data-tier'));
-      function pick(key){
-        btns.forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-tier') === key); });
+      (groups[group] = groups[group] || []).push(tabs);
+    });
+    Object.keys(groups).forEach(function(group){
+      var sets = groups[group], first = sets[0];
+      if(first.getAttribute('data-init')) return; sets.forEach(function(s){ s.setAttribute('data-init','1'); });
+      var btns = []; sets.forEach(function(s){ s.querySelectorAll('button').forEach(function(b){ btns.push(b); }); });
+      var valid = {}; btns.forEach(function(b){ valid[b.getAttribute('data-tier')] = 1; });
+      var def = first.getAttribute('data-default') || (btns[0] && btns[0].getAttribute('data-tier'));
+      var want = null;
+      try{ want = new URLSearchParams(location.search).get('tier'); }catch(e){}
+      if(!want || !valid[want]){ try{ want = localStorage.getItem(TIER_LS); }catch(e){ want = null; } }
+      if(!want || !valid[want]) want = def;
+      function pick(key, remember){
+        btns.forEach(function(b){ var on = b.getAttribute('data-tier') === key; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false'); });
         D.querySelectorAll('.tier-pane[data-group="' + group + '"]').forEach(function(p){ p.classList.toggle('on', p.getAttribute('data-tier') === key); });
+        if(remember){ try{ localStorage.setItem(TIER_LS, key); }catch(e){} }
       }
-      btns.forEach(function(b){ b.addEventListener('click', function(){ pick(b.getAttribute('data-tier')); }); });
-      pick(def);
+      btns.forEach(function(b){ b.addEventListener('click', function(){ pick(b.getAttribute('data-tier'), true); }); });
+      pick(want, false);
     });
   }
 
