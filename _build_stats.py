@@ -9,9 +9,9 @@ import os, re, json, html, subprocess
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 BASE_URL = "https://whitesim-lab.com"
-V = "96"            # 共有アセットの版数
+V = "97"            # 共有アセットの版数
 HV = "86"           # heroes.js の版数
-UPDATED = "2026-09-02"
+UPDATED = "2026-09-03"
 NOTES_DIR = os.path.join(ROOT, "_stats_notes")
 DEFAULT_TIER = "whale"   # 理論側のデフォルト表示（石油王）
 
@@ -41,7 +41,7 @@ ACQ_JA = {"roulette": "ルーレット", "paid": "課金限定", "event": "イ�
 ACQ_EN = {"roulette": "Roulette", "paid": "Paid only", "event": "Event", "hall": "Hall of Heroes", "common": "Permanent"}
 
 class Tr:
-    def __init__(self): self.m = {}
+    def __init__(self): self.m = {"盾": "INF", "槍": "LAN", "弓": "MKS"}
     def __call__(self, ja, en): self.m[ja] = en; return ja
     def script(self): return json.dumps(self.m, ensure_ascii=False)
 
@@ -70,7 +70,26 @@ CSP = ("default-src 'self'; "
        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; "
        "frame-src https://challenges.cloudflare.com https://platform.twitter.com https://syndication.twitter.com https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'")
 
-def head(title_ja, desc_ja, path):
+def jsonld(objs):
+    return "".join(f'<script type="application/ld+json">{json.dumps(o, ensure_ascii=False, separators=(",", ":"))}</script>' for o in objs)
+
+def ld_article(headline, desc, path, published):
+    return {"@context": "https://schema.org", "@type": "Article", "headline": headline, "description": desc,
+            "image": f"{BASE_URL}/favicon.png?v=85",
+            "author": {"@type": "Person", "name": "じゃすみん", "url": f"{BASE_URL}/about.html"},
+            "publisher": {"@type": "Organization", "name": "ホワサバ ツールラボ", "logo": {"@type": "ImageObject", "url": f"{BASE_URL}/favicon.png?v=85"}},
+            "datePublished": published, "dateModified": UPDATED,
+            "mainEntityOfPage": {"@type": "WebPage", "@id": f"{BASE_URL}{path}"}, "inLanguage": "ja"}
+
+def ld_crumbs(items):
+    return {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+        {"@type": "ListItem", "position": i + 1, "name": n, "item": f"{BASE_URL}{p}"} for i, (n, p) in enumerate(items)]}
+
+def ld_faq(qas):
+    return {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in qas]}
+
+def head(title_ja, desc_ja, path, ld=""):
     return f"""<!DOCTYPE html>
 <html lang="ja" id="htmlroot">
 <head>
@@ -97,12 +116,14 @@ def head(title_ja, desc_ja, path):
 <meta name="twitter:card" content="summary">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4593324513914979" crossorigin="anonymous"></script>
 <link rel="canonical" href="{BASE_URL}{path}">
+{ld}
 </head>
 <body>
 <div id="nav"></div>
 """
 
-def tail(tr, title_en, crumb_en, h1_en, lead_en, extra_js=""):
+def tail(tr, title_en, crumb_en, h1_en, lead_en, extra_js="", desc_en=""):
+    desc_js = f'var md=q("meta[name=description]"); if(md) md.setAttribute("content", {json.dumps(desc_en, ensure_ascii=False)});' if desc_en else ""
     return f"""<div id="foot"></div>
 <script src="/assets/config.js?v={V}"></script>
 <script src="/assets/toolkit.js?v={V}"></script>
@@ -113,7 +134,7 @@ def tail(tr, title_en, crumb_en, h1_en, lead_en, extra_js=""):
 <script>
 document.getElementById('nav').innerHTML = WOS_NAV(2);
 document.getElementById('foot').innerHTML = WOS_FOOT(2);
-var ub=document.getElementById('updbox'); if(ub) ub.innerHTML = WOS_UPDATEBOX({{date:'{UPDATED}',gen:{MAXG},note:'世代別統計セクション公開',note_en:'Generation stats section launched'}});
+var ub=document.getElementById('updbox'); if(ub) ub.innerHTML = WOS_UPDATEBOX({{date:'{UPDATED}',gen:{MAXG},note:'世代別ページを全面改修（理想の英雄構成・FAQ）',note_en:'Generation pages reworked (ideal build, FAQ)'}});
 {extra_js}
 </script>
 <script>
@@ -122,10 +143,12 @@ window.addEventListener("DOMContentLoaded", function() {{
   var q = function(s) {{ return document.querySelector(s); }};
   document.getElementById("htmlroot").lang = "en";
   document.title = {json.dumps(title_en, ensure_ascii=False)};
+  {desc_js}
   if (q("h1")) q("h1").innerHTML = {json.dumps(h1_en, ensure_ascii=False)};
   if (q(".lead")) q(".lead").innerHTML = {json.dumps(lead_en, ensure_ascii=False)};
   var TR = {tr.script()};
-  function tr(s) {{ var k = s.replace(/\\s+/g, " ").trim(); var ar = k.indexOf("→ ") === 0 ? "→ " : ""; var kk = k.slice(ar.length); return TR[kk] != null ? s.replace(kk, TR[kk]) : s; }}
+  function tr(s) {{ var k = s.replace(/\\s+/g, " ").trim(); if (TR[k] != null) return s.replace(k, TR[k]);
+    var m = k.match(/^((?:[^\\u3040-\\u30ff\\u4e00-\\u9faf]*?\\s)?)(.+?)(\\s→)?$/); if (!m) return s; var kk = m[2]; return TR[kk] != null ? s.replace(kk, TR[kk]) : s; }}
   var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
   var nodes = [], n;
   while (n = w.nextNode()) nodes.push(n);
@@ -135,6 +158,7 @@ window.addEventListener("DOMContentLoaded", function() {{
     node.nodeValue = tr(v);
   }});
   document.querySelectorAll("[data-en]").forEach(function(el){{ el.innerHTML = el.getAttribute("data-en"); }});
+  if (window.WOS_STATS && WOS_STATS.relabelHeroes) WOS_STATS.relabelHeroes();
   var crumb = document.querySelector(".crumb");
   if (crumb) crumb.innerHTML = {json.dumps(crumb_en, ensure_ascii=False)};
 }});
@@ -261,18 +285,176 @@ def theory_trio_list(top, limit=3):
                    f'<span class="rk-bar"><i style="width:{idx}%"></i></span></div>')
     return "".join(out)
 
+# ---------------- 課金帯の表現 ----------------
+TIER_DESC = {  # 大きな選択ボタンに添える一言
+    "f2p":   ("ルーレット英雄が中心・課金限定なし", "Roulette heroes, no paid-only"),
+    "mid":   ("ルーレット＋毎世代1体を育成", "Roulette + one extra hero per gen"),
+    "whale": ("全英雄カンスト・課金限定あり", "Every hero maxed, paid-only included"),
+}
+TIER_ICON = {"f2p": "🎡", "mid": "💎", "whale": "👑"}
+
+def tier_chips(tk, tr):
+    td = TIERDEF[tk]
+    paid = tr("課金限定英雄あり", "paid-only heroes") if td["paid"] else tr("課金限定英雄なし", "no paid-only heroes")
+    return (f'<span class="chip">{paid}</span>'
+            f'<span class="chip">{tr("英雄殿堂SSR ", "Hall SSRs: ")}{td["hallSlots"]}{tr("枠", "")}</span>'
+            f'<span class="chip">{tr("専用装備 Lv", "Gear Lv")}{td["gear"]}</span>'
+            f'<span class="chip">{tr("火晶 Lv", "FC Lv")}{td["fc"]}</span>')
+
+def tier_picker(tr, big=True):
+    """課金帯の選択UI。big=True はページの核（説明付きの大きなボタン）、False は下部の小さなタブ。同じ data-group で連動"""
+    if big:
+        btns = "".join(
+            f'<button type="button" data-tier="{t["key"]}" class="tp-btn"><span class="tp-ic">{TIER_ICON[t["key"]]}</span>'
+            f'<span class="tp-t">{tr(t["label"], t["label_en"])}</span><span class="tp-d">{tr(*TIER_DESC[t["key"]])}</span></button>' for t in TIERS)
+        return f'<div class="tier-tabs tier-picker" data-group="cmp" data-default="{DEFAULT_TIER}" role="group" aria-label="課金帯">{btns}</div>'
+    btns = "".join(f'<button type="button" data-tier="{t["key"]}">{TIER_ICON[t["key"]]} {tr(t["label"], t["label_en"])}</button>' for t in TIERS)
+    return f'<div class="tier-tabs tier-mini" data-group="cmp" data-default="{DEFAULT_TIER}"><span class="tm-lab">{tr("課金帯：","Tier: ")}</span>{btns}</div>'
+
+def showing_label(tk, tr):
+    t = TIER_BY[tk]
+    return (f'<div class="showing"><span class="sh-ic">{TIER_ICON[tk]}</span><span class="sh-t">{tr("表示中：","Showing: ")}<b>{tr(t["label"], t["label_en"])}</b>'
+            f'{tr("の構成","")}</span><span class="sh-hint">{tr("← 上のボタンで切替","← switch above")}</span></div>')
+
+def sim_href(g, ids, tk):
+    return f'/tools/bear-hunt/index.html?gen={g}&inf={ids[0]}&lan={ids[1]}&mks={ids[2]}&gear={TIERDEF[tk]["gear"]}'
+
+# ---------------- 理想の英雄構成（ページの核） ----------------
+def best_section(g, tr):
+    e = theory["gens"][str(g)]
+    panes = ""
+    for t in TIERS:
+        tk = t["key"]; b = e["byTier"][tk]; top = b["top"][0]; ids = top["ids"]
+        tiles = ""
+        for i, c in enumerate(CLS):
+            hid = ids[i]; h = HEROES[hid]
+            rows = b["slotRank"][c]
+            idx = next((r["index"] for r in rows if r["id"] == hid), 100)
+            runner = next((r for r in rows if r["id"] != hid), None)
+            new = f'<span class="bt-new">{tr("この世代の新英雄","NEW this gen")}</span>' if h["gen"] == g else ""
+            nd = f' <span class="nd" title="集結主スキル未登録・ステのみ">※</span>' if not h["leader"] and not h["bearNoEffect"] else ""
+            alt = (f'<div class="bt-alt">{tr("次点：","Runner-up: ")}{hero_html(runner["id"])} <span class="bt-idx">{runner["index"]}</span></div>'
+                   if runner else "")
+            tiles += (f'<div class="best-tile {c}"><div class="bt-cls">{cls_badge(c)}<span>{tr(CLS_JA[c] + "枠", CLS_EN[c] + " slot")}</span>{new}</div>'
+                      f'<div class="bt-name"><span data-hero="{hid}">{esc(h["name"])}</span>{nd}</div>'
+                      f'<div class="bt-meta"><span class="hc-gen">G{h["gen"]}</span><span class="acq {h["acq"]}">{tr(ACQ_JA[h["acq"]], ACQ_EN[h["acq"]])}</span></div>'
+                      f'{alt}</div>')
+        panes += (f'<div class="tier-pane best-pane" data-group="cmp" data-tier="{tk}">'
+                  f'{showing_label(tk, tr)}'
+                  f'<div class="best-trio">{tiles}</div>'
+                  f'<div class="best-foot"><div class="chips">{tier_chips(tk, tr)}</div>'
+                  f'<a class="btn best-cta" href="{sim_href(g, ids, tk)}">🐻 {tr("この構成でダメージを試算する","Simulate this build")} →</a></div>'
+                  f'</div>')
+    return f"""<section class="best" id="best">
+<div class="best-head"><div class="best-kicker">🏆 {tr("理想の英雄構成","Ideal hero build")}</div>
+<h2 class="best-h2">{tr(f"第{g}世代の最強集結主構成（課金帯別）", f"Gen {g} best rally-leader build by tier")}</h2>
+<p class="best-lead">{tr("あなたの課金帯を選んでください。その条件で入手できる英雄だけを 盾×槍×弓 で総当たりし、熊狩ダメージが理論上いちばん高い組み合わせを表示します。",
+                        "Pick your spending tier. We brute-force every INF × LAN × MKS combination obtainable at that tier and show the one with the highest theoretical Bear Hunt damage.")}</p>
+<div class="best-step">{tr("あなたの課金帯は？","Your tier?")}</div>
+{tier_picker(tr, big=True)}
+</div>
+{panes}
+<p class="note">※ {tr("理論値は熊狩ダメージ・シミュレーターと同じ計算式による推定です。兵種比率・参加者・係数は固定（","Estimates use the same formula as the Bear Hunt Simulator. Ratio, joiners and coefficients are fixed (")}<a href="/stats/methodology.html">{tr("前提を見る","see methodology")}</a>{tr("）。",").")}</p>
+</section>"""
+
+# ---------------- 結論（先に答え） ----------------
+def tldr_section(g, tr):
+    e = theory["gens"][str(g)]
+    lis = []
+    for t in TIERS:
+        ids = e["byTier"][t["key"]]["top"][0]["ids"]
+        lis.append(f'<li><span class="tl-k"><span class="ic">{TIER_ICON[t["key"]]}</span> {tr(t["label"], t["label_en"])}</span><span class="tl-v">{" ".join(hero_html(h, True) for h in ids)}</span></li>')
+    swap = [h for h in sorted(e["heroes"], key=lambda x: CLS.index(x["cls"])) if hero_eval(h["id"], g)[0][0] == "v1"]
+    if swap:
+        lis.append(f'<li><span class="tl-k"><span class="ic">🔁</span> {tr("新英雄で乗り換え推奨","Swap in")}</span><span class="tl-v">{" ".join(hero_html(h["id"], True) for h in swap)}</span></li>')
+    else:
+        lis.append(f'<li><span class="tl-k"><span class="ic">🔁</span> {tr("新英雄で乗り換え推奨","Swap in")}</span><span class="tl-v">{tr("なし（据え置きで可）","none — keep current heroes")}</span></li>')
+    return f'<div class="tldr"><div class="tl-h"><span class="ic">📌</span> {tr(f"第{g}世代の結論", f"Gen {g} in short")}</div><ul>{"".join(lis)}</ul></div>'
+
+# ---------------- よくある質問（FAQ + 構造化データ） ----------------
+def faq_section(g, tr):
+    e = theory["gens"][str(g)]
+    def names(ids): return "・".join(f"{CLS_JA[HEROES[h]['cls']]}{HEROES[h]['name']}" for h in ids)
+    def names_en(ids): return ", ".join(f"{CLS_EN[HEROES[h]['cls']]} {HEROES[h]['en']}" for h in ids)
+    def html_ids(ids): return " ".join(hero_html(h, True) for h in ids)
+    w = e["byTier"]["whale"]["top"][0]["ids"]; f = e["byTier"]["f2p"]["top"][0]["ids"]; mid = e["byTier"]["mid"]["top"][0]["ids"]
+    gen_heroes = sorted(e["heroes"], key=lambda x: CLS.index(x["cls"]))
+    qas = []   # (q_ja, a_ja_html, a_ja_text, q_en, a_en_html)
+    # Q1 最強構成
+    qas.append((f"ホワサバ第{g}世代の熊狩りで最強の集結主構成は？",
+                f"理論上の最強（石油王・全英雄カンスト前提）は {html_ids(w)} です。中課金なら {html_ids(mid)}、無課金・微課金なら {html_ids(f)} が理論最適です。",
+                f"理論上の最強（石油王・全英雄カンスト前提）は {names(w)} です。中課金なら {names(mid)}、無課金・微課金なら {names(f)} が理論最適です。",
+                f"What is the strongest Gen {g} rally-leader build in Bear Hunt?",
+                f"Theoretical best for whales (every hero maxed): {html_ids(w)}. Mid spenders: {html_ids(mid)}. F2P / light spenders: {html_ids(f)}."))
+    # Q2 無課金
+    rou = next((HEROES[h["id"]] for h in gen_heroes if h["acq"] == "roulette"), None)
+    rou_ja = f" この世代のルーレット英雄（無課金でも入手可）は{CLS_JA[rou['cls']]}{rou['name']}です。" if rou else ""
+    rou_en = f" This generation’s roulette hero (F2P-obtainable) is {CLS_EN[rou['cls']]} {rou['en']}." if rou else ""
+    qas.append((f"無課金・微課金は第{g}世代の熊狩りでどの英雄を使えばいい？",
+                f"課金限定英雄を使わず、英雄殿堂SSRは1枠までという前提での理論最適は {html_ids(f)} です。{rou_ja}",
+                f"課金限定英雄を使わず、英雄殿堂SSRは1枠までという前提での理論最適は {names(f)} です。{rou_ja}",
+                f"Which heroes should F2P / light spenders use in Gen {g} Bear Hunt?",
+                f"With no paid-only heroes and at most one Hall-of-Heroes SSR, the theoretical best is {html_ids(f)}.{rou_en}"))
+    # Q3 新英雄
+    vs = [(HEROES[h["id"]], hero_eval(h["id"], g)[0]) for h in gen_heroes]
+    v_ja = "、".join(f"{CLS_JA[h['cls']]}{h['name']}は「{v[1]}」" for h, v in vs)
+    v_en = "; ".join(f"{CLS_EN[h['cls']]} {h['en']}: {v[2]}" for h, v in vs)
+    qas.append((f"第{g}世代の新英雄は熊狩りで乗り換えるべき？",
+                f"熊狩り（集結主）としての判定は、{v_ja} です。判定の根拠（集結主スキル・理論順位・入手経路）は上の「この世代の英雄」に載せています。",
+                f"熊狩り（集結主）としての判定は、{v_ja} です。",
+                f"Should I swap to the Gen {g} heroes for Bear Hunt?",
+                f"Rally-leader verdicts: {v_en}. See “This generation’s heroes” above for the reasoning."))
+    # Q4 ジェロニモ無し（盾1位が課金限定のときだけ）
+    if HEROES[w[0]]["acq"] == "paid" and f[0] != w[0]:
+        qas.append((f"{HEROES[w[0]]['name']}を持っていない場合、第{g}世代の盾枠は誰がいい？",
+                    f"課金限定英雄なしの理論順位では {hero_html(f[0], True)} が盾枠の1位です。",
+                    f"課金限定英雄なしの理論順位では {CLS_JA['inf']}{HEROES[f[0]]['name']} が盾枠の1位です。",
+                    f"What if I don’t have {HEROES[w[0]]['en']} for the INF slot in Gen {g}?",
+                    f"Without paid-only heroes, {hero_html(f[0], True)} ranks first in the INF slot."))
+    # Q5 次世代
+    if g < MAXG:
+        nx = e["byTier"]["whale"].get("next")
+        if nx and nx["changed"]:
+            ch = "・".join(f"{CLS_JA[c]}枠を{HEROES[nx['to'][CLS.index(c)]]['name']}" for c in nx["changed"])
+            ch_en = ", ".join(f"{CLS_EN[c]} → {HEROES[nx['to'][CLS.index(c)]]['en']}" for c in nx["changed"])
+            a_ja = f"石油王の理論最適では、第{g+1}世代で{ch}に替えると理論値が約{nx['gainPct']}%伸びます。課金帯ごとの詳細は「次の世代でどうする？」を見てください。"
+            a_en = f"For whales, swapping {ch_en} in Gen {g+1} raises the theoretical value by about {nx['gainPct']}%. See “What to do next generation” for each tier."
+        else:
+            a_ja = f"第{g+1}世代では石油王の理論最適は変わりません。そのままの構成で問題ありません。"
+            a_en = f"The theoretical best for whales does not change in Gen {g+1}; keep your current build."
+        qas.append((f"次の第{g+1}世代で熊狩りの構成は変わる？", a_ja, a_ja, f"Does the build change in Gen {g+1}?", a_en))
+    # Q6 自分の数字
+    qas.append(("理論値ではなく自分のステータスでのダメージを知りたい",
+                '<a href="/tools/bear-hunt/index.html">熊狩ダメージ・シミュレーター</a>に編成画面の攻撃%・殺傷%を入れると、集結1回のダメージポイントを推定できます。上の「この構成でダメージを試算する」ボタンを押すと、この世代の理論最適が集結主にセットされた状態で開きます。',
+                "熊狩ダメージ・シミュレーターに編成画面の攻撃%・殺傷%を入れると、集結1回のダメージポイントを推定できます。",
+                "How do I get the damage for my own stats instead of the theory?",
+                'Enter your formation-screen ATK% / Lethality% into the <a href="/tools/bear-hunt/index.html">Bear Hunt Simulator</a>. The “Simulate this build” button above opens it with this generation’s best heroes pre-set.'))
+    items = "".join(f'<details class="faq"><summary>{bi(esc(q), qen)}</summary><div class="faq-a">{bi(a, aen)}</div></details>' for q, a, _t, qen, aen in qas)
+    ld = ld_faq([(q, t_) for q, _a, t_, _qe, _ae in qas])
+    return f'<h2 id="faq">{tr("よくある質問","FAQ")}</h2><div class="faq-list">{items}</div>', ld
+
+def sim_cta(g, tr):
+    e = theory["gens"][str(g)]
+    ids = e["byTier"][DEFAULT_TIER]["top"][0]["ids"]
+    return f"""<div class="sim-cta"><div class="sc-ic">🐻</div><div class="sc-body">
+<div class="sc-t">{tr("理論値は「モデル上の推定」。あなたの数字はシミュレーターで","Theory is a model estimate — get your own number in the simulator")}</div>
+<p>{tr("編成画面の攻撃%・殺傷%と兵数を入れるだけで、集結1回のダメージポイントと「次に強化すべき順」が出ます。この世代の理論最適を集結主にセットした状態で開けます。",
+      "Enter your formation-screen ATK% / Lethality% and troop count to get the damage points of one rally plus what to upgrade next. Opens with this generation’s best heroes pre-set.")}</p>
+<div class="sc-btns"><a class="btn" href="{sim_href(g, ids, DEFAULT_TIER)}">{tr("理論最適をセットしてシミュレーターを開く","Open the simulator with the best build")} →</a>
+<a class="sc-sub" href="/tools/bear-hunt/index.html">{tr("自分の構成で開く","Open with my own build")}</a></div>
+</div></div>"""
+
+def byline(tr):
+    return (f'<div class="st-byline">✍ {tr("執筆：","By ")}<a href="/about.html"><b>{tr("じゃすみん","Jasmine")}</b></a>'
+            f'<span class="sep">|</span>{tr("最終更新：","Updated ")}{UPDATED}<span class="sep">|</span>{tr("検証環境：1567サーバー","Verified on Server 1567")}</div>')
+
 def compare_section(g, tr):
     e = theory["gens"][str(g)]
-    tabs = f'<div class="tier-tabs" data-group="cmp" data-default="{DEFAULT_TIER}">' + "".join(
-        f'<button type="button" data-tier="{t["key"]}">{tr(t["label"], t["label_en"])}</button>' for t in TIERS) + '</div>'
+    tabs = tier_picker(tr, big=False)
     panes = ""
     for t in TIERS:
         b = e["byTier"][t["key"]]; td = TIERDEF[t["key"]]
-        hs, gr, fc = td["hallSlots"], td["gear"], td["fc"]
-        paid_ja, paid_en = ("あり", "included") if td["paid"] else ("なし", "excluded")
-        assump = (f'<ul class="kv-list"><li>{tr("課金限定英雄：","Paid-only heroes: ")}{tr(paid_ja, paid_en)}</li>'
-                  f'<li>{tr("英雄殿堂で集めるSSR：","Hall-of-Heroes SSRs: ")}{tr(str(hs) + "枠まで", "up to " + str(hs))}</li>'
-                  f'<li>{tr("専用装備 Lv","Gear Lv")}{gr} ／ {tr("火晶 Lv","FC Lv")}{fc}</li></ul>')
+        assump = f'{showing_label(t["key"], tr)}<div class="chips" style="margin:6px 0 10px">{tier_chips(t["key"], tr)}</div>'
         cols = ""
         for c in CLS:
             cols += (f'<div class="cmp-col"><h4>{cls_badge(c)}{tr(CLS_JA[c] + "枠", CLS_EN[c] + " slot")}</h4><div class="cmp-half">'
@@ -282,8 +464,8 @@ def compare_section(g, tr):
         trio = (f'<div class="cmp-trio"><h4>{tr("3人の組み合わせ TOP3","Top-3 trios")} <span data-live="srctag" data-tier="{t["key"]}"></span></h4><div class="cmp-half">'
                 f'<div><div class="lab th">{tr("理論","THEORY")}</div>{theory_trio_list(b["top"])}</div>'
                 f'<div><div class="lab lv">{tr("実測","LIVE")}</div><div data-live="trio" data-tier="{t["key"]}"><div class="skel"></div></div></div></div></div>')
-        panes += f'<div class="tier-pane" data-group="cmp" data-tier="{t["key"]}"><div class="tier-desc">{assump}</div><div class="cmp-grid">{cols}</div>{trio}</div>'
-    return f"""<h2>{tr("理論 vs 実測","Theory vs Live")}</h2>
+        panes += f'<div class="tier-pane" data-group="cmp" data-tier="{t["key"]}">{assump}<div class="cmp-grid">{cols}</div>{trio}</div>'
+    return f"""<h2 id="compare">{tr("理論 vs 実測：各枠の英雄ランキング","Theory vs Live: per-slot hero rankings")}</h2>
 <ul class="kv-list sec-lead">
 <li><b>{tr("理論","Theory")}</b>：{tr("その世代で入手できる英雄を盾×槍×弓で総当たりし、熊狩シミュレーターと同じ式で期待ダメージが高い順に並べたもの。数字は1位を100とした指数。","All obtainable INF×LAN×MKS combinations, ranked by the simulator’s formula. Numbers are an index (#1 = 100).")}</li>
 <li><b>{tr("実測","Live")}</b>：{tr("利用者の投稿から集計した採用率（直近90日）。数字は％。","Pick rate from user submissions (last 90 days), in %.")}</li>
@@ -309,7 +491,7 @@ def next_section(g, tr):
         else:
             body = f'<div class="keep">✔ {tr("そのままでOK。理論最適は変わりません。","No change — the theoretical best stays the same.")}</div>'
         boxes += f'<div class="next-box"><div class="nb-tier">{tr(t["label"], t["label_en"])}</div>{body}</div>'
-    return f"""<h2>{tr("次の世代でどうする？","What to do next generation")}</h2>
+    return f"""<h2>{tr(f"次の第{g+1}世代が来たらどうする？（乗り換え予測）", f"When Gen {g+1} arrives: swap forecast")}</h2>
 <p class="sec-lead">{tr(f"第{g+1}世代が来たときに、理論最適構成がどう変わるかを課金帯ごとに示します。", f"How the theoretical best changes when Gen {g+1} arrives, per spending tier.")}</p>
 <div class="next-grid">{boxes}</div>"""
 
@@ -341,102 +523,196 @@ def points_section(g, tr):
     return f'<h2>{tr("この世代のポイント","Key points")}</h2><div class="point-grid">{"".join(cards)}</div>'
 
 # ---------------- 世代ページ ----------------
+PUBLISHED = "2026-09-02"
+
 def build_gen(g):
     tr = Tr()
     e = theory["gens"][str(g)]
     path = f"/stats/{gen_dir(g)}/"
-    title_ja = f"第{g}世代の熊狩り構成｜英雄評価・理論最適 vs 実測 | ホワサバ ツールラボ"
-    title_en = f"Gen {g} Bear Hunt Builds: Hero Verdicts, Theory vs Live | Whiteout Tools Lab"
-    desc_ja = f"ホワサバ第{g}世代の熊狩り（集結主）構成。この世代の英雄3体の熊狩評価、課金帯別の理論最適構成と利用者の実測採用率の対比、次世代への乗り換え予測。"
-    lead_ja = tr(f"第{g}世代の英雄は熊狩りでどう使う？ 理論上の最適構成と、みんなが実際に使っている構成を並べて確認できます。",
-                 f"How to use Gen {g} heroes in Bear Hunt: the theoretical best builds side by side with what players actually run.")
-    h1_en = f'Gen {g} <span class="acc">Bear Hunt Builds</span>'
-    heroes = "".join(hero_card(h["id"], g, tr) for h in sorted(e["heroes"], key=lambda x: CLS.index(x["cls"])))
+    gen_heroes = sorted(e["heroes"], key=lambda x: CLS.index(x["cls"]))
+    hn_ja = "・".join(HEROES[h["id"]]["name"] for h in gen_heroes)
+    hn_en = ", ".join(HEROES[h["id"]]["en"] for h in gen_heroes)
+    w = e["byTier"]["whale"]["top"][0]["ids"]; f2 = e["byTier"]["f2p"]["top"][0]["ids"]
+    def names(ids): return "・".join(f"{CLS_JA[HEROES[h]['cls']]}{HEROES[h]['name']}" for h in ids)
+    def names_en(ids): return ", ".join(f"{CLS_EN[HEROES[h]['cls']]} {HEROES[h]['en']}" for h in ids)
+    title_ja = f"ホワサバ 第{g}世代の熊狩り おすすめ英雄・最強構成【無課金〜石油王】 | ホワサバ ツールラボ"
+    title_en = f"Whiteout Survival Gen {g} Bear Hunt: Best Heroes & Builds (F2P to Whale) | Whiteout Tools Lab"
+    desc_ja = (f"ホワサバ第{g}世代の熊狩り（集結主）でおすすめの英雄と最強構成を課金帯別に解説。"
+               f"新英雄{hn_ja}の評価、理論上の最強構成（石油王：{names(w)}）、無課金向けの構成、実測採用率、"
+               + (f"第{g+1}世代への乗り換え予測まで。" if g < MAXG else "次世代への備えまで。"))
+    desc_en = (f"Best Gen {g} Bear Hunt rally-leader heroes and builds in Whiteout Survival, by spending tier. Verdicts on {hn_en}, "
+               f"the theoretical best ({names_en(w)} for whales, {names_en(f2)} for F2P), live pick rates and the next-generation swap forecast.")
+    lead_ja = tr(f"ホワサバ（ホワイトアウト・サバイバル）第{g}世代の熊狩りで、集結主が使うべき英雄を課金帯別にまとめました。新英雄 {hn_ja} の評価、理論上の最強構成、みんなが実際に使っている構成、次の世代への備えまで、このページで分かります。",
+                 f"Which heroes a rally leader should run in Gen {g} Bear Hunt, by spending tier: verdicts on {hn_en}, the theoretical best build, what players actually run, and how to prepare for the next generation.")
+    h1_en = f'Gen {g} Bear Hunt: <span class="acc">Best Heroes &amp; Builds</span>'
+    heroes = "".join(hero_card(h["id"], g, tr) for h in gen_heroes)
     prev_g, next_g = (g - 1 if g > 1 else None), (g + 1 if g < MAXG else None)
     prevnext = ('<div class="gen-prevnext">'
-        + (f'<a href="/stats/{gen_dir(prev_g)}/index.html">← {tr(f"第{prev_g}世代", f"Gen {prev_g}")}</a>' if prev_g else "<span></span>")
+        + (f'<a href="/stats/{gen_dir(prev_g)}/index.html">← {tr(f"第{prev_g}世代の熊狩り構成", f"Gen {prev_g} builds")}</a>' if prev_g else "<span></span>")
         + f'<a href="/stats/index.html">{tr("世代一覧","All generations")}</a>'
-        + (f'<a href="/stats/{gen_dir(next_g)}/index.html">{tr(f"第{next_g}世代", f"Gen {next_g}")} →</a>' if next_g else "<span></span>") + '</div>')
+        + (f'<a href="/stats/{gen_dir(next_g)}/index.html">{tr(f"第{next_g}世代の熊狩り構成", f"Gen {next_g} builds")} →</a>' if next_g else "<span></span>") + '</div>')
+    faq_html, faq_ld = faq_section(g, tr)
+    toc = (f'<nav class="toc" aria-label="目次"><a href="#best">🏆 {tr("理想の構成","Ideal build")}</a><a href="#heroes">🆕 {tr("新英雄の評価","New heroes")}</a>'
+           f'<a href="#compare">⚖️ {tr("理論 vs 実測","Theory vs Live")}</a><a href="#next">⏭️ {tr("次の世代","Next gen")}</a><a href="#faq">❓ FAQ</a></nav>')
     body = f"""<div class="wrap wide" data-live-page="{g}">
-<div class="crumb"><a href="/index.html">{tr("ホーム","Home")}</a> &gt; <a href="/stats/index.html">{tr("世代別統計","Generation stats")}</a> &gt; {tr(f"第{g}世代", f"Gen {g}")}</div>
-<h1>{tr(f"第{g}世代の", f"Gen {g}")} <span class="acc">{tr("熊狩り構成","Bear Hunt Builds")}</span></h1>
+<div class="crumb"><a href="/index.html">{tr("ホーム","Home")}</a> &gt; <a href="/stats/index.html">{tr("世代別 熊狩り構成","Bear Hunt builds by generation")}</a> &gt; {tr(f"第{g}世代", f"Gen {g}")}</div>
+<div class="eyebrow">{tr("ホワサバ（Whiteout Survival）熊狩り攻略 ／ 世代別ガイド","Whiteout Survival Bear Hunt · generation guide")}</div>
+<h1>{tr(f"第{g}世代の熊狩り", f"Gen {g} Bear Hunt:")} <span class="acc">{tr("おすすめ英雄・最強構成","Best Heroes &amp; Builds")}</span></h1>
 <div id="updbox"></div>
+{byline(tr)}
 <p class="lead">{lead_ja}</p>
 {gen_strip(g)}
+{tldr_section(g, tr)}
+{toc}
 
-<h2>{tr("この世代の英雄","This generation’s heroes")}</h2>
-<p class="sec-lead">{tr("公式X（@WOS_Japan）の紹介投稿と、熊狩り（集結主）としての判定。","Official @WOS_Japan posts plus a Bear Hunt rally-leader verdict for each.")}</p>
+{best_section(g, tr)}
+
+<h2 id="heroes">{tr(f"第{g}世代の新英雄は熊狩りで使える？", f"Are the Gen {g} heroes good for Bear Hunt?")}</h2>
+<p class="sec-lead">{tr("公式X（@WOS_Japan）の紹介投稿と、熊狩り（集結主）としての判定。乗り換え推奨／有力候補／据え置きで可／熊狩では不要 の4段階です。","Official @WOS_Japan posts plus a rally-leader verdict: swap in / strong option / keep current / not for Bear Hunt.")}</p>
 <div class="hero-cards">{heroes}</div>
 
 {compare_section(g, tr)}
+<div id="next"></div>
 {next_section(g, tr)}
 {points_section(g, tr)}
+{sim_cta(g, tr)}
+{faq_html}
 
 <div class="callout" style="background:#fff;border:1px solid var(--line)"><span>📝</span><div>{tr("あなたの構成も投稿すると、この世代の実測に反映されます。投稿後すぐに、同世代内の位置と理論最適との差が分かります。","Submit your build to be counted here. You'll immediately see your rank in this generation and how it compares with the theoretical best.")}
  <a class="btn" style="margin-left:10px;padding:6px 14px;font-size:12px" href="/submit/index.html?gen={g}">{tr("投稿する","Submit")}</a></div></div>
 <div class="relbar">
   <a href="/tools/bear-hunt/index.html">→ {tr("熊狩ダメージ・シミュレーター","Bear Hunt Simulator")}</a>
   <a href="/guides/leader-formation.html">→ {tr("集結主におすすめの編成と英雄の選び方","Rally leader: recommended formations")}</a>
+  <a href="/tools/hero-list/index.html">→ {tr("英雄一覧・データベース","Hero database")}</a>
   <a href="/stats/methodology.html">→ {tr("集計方法と計算の前提","Methodology")}</a>
 </div>
 {prevnext}
 </div>
 """
-    crumb_en = f'<a href="/en/index.html">Home</a> &gt; <a href="/en/stats/index.html">Generation stats</a> &gt; Gen {g}'
-    return head(title_ja, desc_ja, path) + body + tail(tr, title_en, crumb_en, h1_en, tr.m[lead_ja])
+    crumb_en = f'<a href="/en/index.html">Home</a> &gt; <a href="/en/stats/index.html">Bear Hunt builds by generation</a> &gt; Gen {g}'
+    ld = jsonld([ld_article(f"第{g}世代の熊狩り おすすめ英雄・最強構成", desc_ja, path, PUBLISHED),
+                 ld_crumbs([("ホーム", "/"), ("世代別 熊狩り構成", "/stats/"), (f"第{g}世代", path)]), faq_ld])
+    return head(title_ja, desc_ja, path, ld) + body + tail(tr, title_en, crumb_en, h1_en, tr.m[lead_ja], desc_en=desc_en)
 
 # ---------------- ハブ ----------------
+def hub_gen_card(g, tr, featured=False):
+    e = theory["gens"][str(g)]
+    gh = sorted(e["heroes"], key=lambda x: CLS.index(x["cls"]))
+    best = e["byTier"]["whale"]["top"][0]["ids"]; f2 = e["byTier"]["f2p"]["top"][0]["ids"]
+    chips = "".join(
+        f'<span class="gh {h["cls"]}"><i>{CLS_JA[h["cls"]]}</i><span data-hero="{h["id"]}">{esc(HEROES[h["id"]]["name"])}</span>'
+        + ('<em title="ルーレット（無課金でも入手可）">🎡</em>' if h["acq"] == "roulette" else "") + '</span>' for h in gh)
+    swap = [h for h in gh if hero_eval(h["id"], g)[0][0] == "v1"]
+    verdict = (f'<div class="gc-verdict">{bi("🔁 乗り換え推奨：" + "・".join(HEROES[h["id"]]["name"] for h in swap), "🔁 Swap in: " + ", ".join(HEROES[h["id"]]["en"] for h in swap))}</div>' if swap
+               else f'<div class="gc-verdict muted">— {tr("新英雄は据え置きで可","No swap needed")}</div>')
+    if featured:
+        return f"""<a class="gen-feat" href="/stats/{gen_dir(g)}/index.html">
+<div class="gf-l"><div class="gf-kicker">{tr("最新世代","Latest")}</div><div class="gf-t">{tr(f"第{g}世代", f"Gen {g}")}<span class="gf-sub">{tr("の熊狩り おすすめ英雄・最強構成","Bear Hunt best heroes & builds")}</span></div>
+<div class="gc-heroes">{chips}</div>{verdict}</div>
+<div class="gf-r"><div class="gf-row"><b>👑 {tr("石油王の理論最適","Whale best")}</b>{" ".join(hero_html(h, True) for h in best)}</div>
+<div class="gf-row"><b>🎡 {tr("無課金・微課金の理論最適","F2P best")}</b>{" ".join(hero_html(h, True) for h in f2)}</div>
+<div class="gf-row"><b>📊 {tr("投稿","Submissions")}</b><span data-gen-n="{g}">—</span> {tr("件","")}</div>
+<span class="gf-go">{tr("この世代のページを見る","Open this generation")} →</span></div></a>"""
+    return (f'<a class="gen-card" href="/stats/{gen_dir(g)}/index.html"><div class="gc-t"><span class="gc-num">G{g}</span><span class="gc-name">{tr(f"第{g}世代", f"Gen {g}")}</span>'
+            f'<span class="gc-n">{tr("投稿","posts")} <span data-gen-n="{g}">—</span></span></div>'
+            f'<div class="gc-heroes">{chips}</div>'
+            f'<div class="gc-row"><b>👑 {tr("理論最適","Best")}</b>{" ".join(hero_html(h, True) for h in best)}</div>'
+            f'{verdict}</a>')
+
 def build_hub():
     tr = Tr()
     path = "/stats/"
-    title_ja = "世代別 熊狩り構成の統計｜英雄評価・理論最適 vs 実測 | ホワサバ ツールラボ"
-    title_en = "Bear Hunt Builds by Generation: Hero Verdicts, Theory vs Live | Whiteout Tools Lab"
-    desc_ja = "ホワサバの熊狩り（集結主）構成を世代ごとに。各世代の英雄の熊狩評価、課金帯別の理論最適構成、利用者の実測採用率を1ページで比較できます。"
-    lead_ja = tr("自分の世代を選ぶと、その世代の英雄の熊狩評価・理論最適構成・みんなの実測構成が1ページで見られます。",
-                 "Pick your generation to see hero verdicts, theoretical best builds and what players actually run — all on one page.")
-    cards = ""
-    for g in GENS:
-        e = theory["gens"][str(g)]
-        rou = next((HEROES[h["id"]] for h in e["heroes"] if h["acq"] == "roulette"), None)
-        best = e["byTier"]["whale"]["top"][0]["ids"]
-        heroes3 = " ".join(hero_html(h["id"], True) for h in sorted(e["heroes"], key=lambda x: CLS.index(x["cls"])))
-        cards += (f'<a class="gen-card" href="/stats/{gen_dir(g)}/index.html">'
-                  f'<div class="gc-t">{tr(f"第{g}世代", f"Gen {g}")}<span class="gc-n">{tr("投稿","posts")} <span data-gen-n="{g}">—</span></span></div>'
-                  f'<div class="gc-row"><b>{tr("英雄","Heroes")}</b>{heroes3}</div>'
-                  f'<div class="gc-row"><b>{tr("理論最適","Best")}</b>{" ".join(hero_html(h, True) for h in best)}</div></a>')
+    title_ja = f"ホワサバ 熊狩りのおすすめ英雄・最強構成を世代別にまとめ【第1〜{MAXG}世代】 | ホワサバ ツールラボ"
+    title_en = f"Whiteout Survival Bear Hunt: Best Heroes & Builds by Generation (Gen 1–{MAXG}) | Whiteout Tools Lab"
+    desc_ja = (f"ホワサバの熊狩りで集結主が使うべき英雄・最強構成を第1〜第{MAXG}世代まで世代別に解説。"
+               "各世代の新英雄の熊狩り評価、無課金・中課金・石油王ごとの理論最適構成、実測採用率、次世代への乗り換え予測。")
+    desc_en = (f"Best Bear Hunt rally-leader heroes and builds in Whiteout Survival for every generation (Gen 1–{MAXG}): "
+               "verdicts on each generation’s heroes, theoretical best builds for F2P / mid / whale, live pick rates and swap forecasts.")
+    lead_ja = tr(f"自分のサーバーの世代を選ぶと、その世代で集結主が使うべき英雄・課金帯別の最強構成・みんなの実測構成が1ページで分かります。第1〜第{MAXG}世代まで全世代に対応。",
+                 f"Pick your server’s generation to see which heroes a rally leader should run, the best build for your spending tier, and what players actually use — every generation from 1 to {MAXG}.")
+    cards = "".join(hub_gen_card(g, tr) for g in reversed(GENS) if g != MAXG)
+    tiers = "".join(
+        f'<div class="tier-card"><div class="tc-h"><span class="tc-ic">{TIER_ICON[t["key"]]}</span>{tr(t["label"], t["label_en"])}</div>'
+        f'<p>{tr(*TIER_DESC[t["key"]])}</p><div class="chips">{tier_chips(t["key"], tr)}</div></div>' for t in TIERS)
+    faq = [
+        ("自分のサーバーが第何世代か分からない",
+         "ゲーム内の英雄殿堂やルーレットで入手できる「いちばん新しい英雄」の世代が、あなたのサーバーの世代です。各世代の新英雄は上のカードに書いてあるので、見覚えのある英雄が最新のカードを選んでください。",
+         "I don’t know my server’s generation",
+         "Your server’s generation is the generation of the newest hero available in the Hall of Heroes or roulette. Each card above lists that generation’s new heroes — pick the newest card whose heroes you recognise."),
+        ("「世代」とは何ですか？",
+         "ホワサバでは新しい英雄が盾・槍・弓の3体セットで順番に実装され、その区切りを世代と呼びます。サーバーごとに進み方が違うので、同じ英雄でも入手できる時期はサーバーによって変わります。",
+         "What is a “generation”?",
+         "New heroes arrive as a set of three (INF, LAN, MKS); each set is a generation. Servers progress at different speeds, so the same hero becomes available at different times."),
+        ("理論最適と実測の違いは？",
+         "理論最適は熊狩ダメージ・シミュレーターの計算式で、その世代で入手できる英雄を総当たりした結果（モデル上の推定）です。実測は利用者の匿名投稿を集計した採用率で、世代ごとに10件以上集まると公開されます。",
+         "What is the difference between theory and live?",
+         "Theory is a model estimate: every obtainable hero combination evaluated with the simulator formula. Live is the pick rate from anonymous user submissions, published once a generation has 10+ entries."),
+        ("無課金でも上位の構成は組めますか？",
+         "はい。各世代ページの「無課金・微課金」を選ぶと、課金限定英雄を使わずルーレット英雄を中心にした理論最適が出ます。無課金は3世代に1回しか各枠を更新できないので、乗り換えのタイミングが重要です。",
+         "Can F2P players build a competitive team?",
+         "Yes. Choose “F2P / light spender” on a generation page to get the best build without paid-only heroes, built around roulette heroes. F2P can refresh each slot only every three generations, so timing matters."),
+    ]
+    faq_html = "".join(f'<details class="faq"><summary>{bi(esc(q), qe)}</summary><div class="faq-a">{bi(esc(a), ae)}</div></details>' for q, a, qe, ae in faq)
     body = f"""<div class="wrap wide">
-<div class="crumb"><a href="/index.html">{tr("ホーム","Home")}</a> &gt; {tr("世代別統計","Generation stats")}</div>
-<h1>{tr("世代別","By generation")} <span class="acc">{tr("熊狩り構成の統計","Bear Hunt Build Stats")}</span></h1>
-<div id="updbox"></div>
+<div class="crumb"><a href="/index.html">{tr("ホーム","Home")}</a> &gt; {tr("世代別 熊狩り構成","Bear Hunt builds by generation")}</div>
+<div class="hub-hero">
+<div class="hh-l"><div class="eyebrow">{tr("ホワサバ（Whiteout Survival）熊狩り攻略","Whiteout Survival Bear Hunt guide")}</div>
+<h1>{tr("熊狩りのおすすめ英雄・最強構成","Bear Hunt Best Heroes &amp; Builds")}<br><span class="acc">{tr(f"世代別まとめ（第1〜第{MAXG}世代）", f"by generation (Gen 1–{MAXG})")}</span></h1>
 <p class="lead">{lead_ja}</p>
-<div class="callout" style="background:#fff;border:1px solid var(--line)"><span>📊</span><div>{tr("総投稿数 ","Total submissions: ")}<b data-total-n>—</b>{tr(" 件。実測は世代ごとに10件から公開。理論最適は投稿数に関係なく全世代で見られます。"," — live stats open at 10 per generation. Theory is available for every generation.")}
- <a class="btn" style="margin-left:10px;padding:6px 14px;font-size:12px" href="/submit/index.html">{tr("構成を投稿する","Submit a build")}</a></div></div>
+<div class="hh-btns"><a class="btn" href="/stats/{gen_dir(MAXG)}/index.html">{tr(f"最新の第{MAXG}世代を見る", f"Open the latest (Gen {MAXG})")} →</a>
+<a class="btn ghost" href="/submit/index.html">{tr("自分の構成を投稿する","Submit my build")}</a></div></div>
+<div class="hh-r"><div class="steps">
+<div class="stp"><span class="sn">1</span><div><b>{tr("世代を選ぶ","Pick a generation")}</b><small>{tr("自分のサーバーの最新世代","Your server’s latest")}</small></div></div>
+<div class="stp"><span class="sn">2</span><div><b>{tr("課金帯を選ぶ","Pick your tier")}</b><small>{tr("無課金・微課金／中課金／石油王","F2P / mid / whale")}</small></div></div>
+<div class="stp"><span class="sn">3</span><div><b>{tr("シミュレーターで自分の数字を出す","Simulate with your stats")}</b><small>{tr("最強構成をワンタップでセット","Best build set in one tap")}</small></div></div>
+</div></div>
+</div>
+<div id="updbox"></div>
+{byline(tr)}
+<div class="callout" style="background:#fff;border:1px solid var(--line)"><span>📊</span><div>{tr("総投稿数 ","Total submissions: ")}<b data-total-n>—</b>{tr(" 件。実測は世代ごとに10件から公開。理論最適は投稿数に関係なく全世代で見られます。"," — live stats open at 10 per generation. Theory is available for every generation.")}</div></div>
+
 <h2>{tr("世代を選ぶ","Choose a generation")}</h2>
+<p class="sec-lead">{tr("カードの英雄＝その世代の新英雄（🎡はルーレット＝無課金でも入手可）。理論最適は石油王の条件です。","Heroes on each card are that generation’s new heroes (🎡 = roulette, F2P-obtainable). “Best” is for whales.")}</p>
+{hub_gen_card(MAXG, tr, featured=True)}
 <div class="gen-cards">{cards}</div>
-<h2>{tr("各ページに載っているもの","What each page shows")}</h2>
-<div class="point-grid">
-<div class="point"><div class="pt-h"><span class="ic">🆕</span>{tr("この世代の英雄","This generation’s heroes")}</div><ul>
-<li>{tr("公式X（@WOS_Japan）の紹介投稿","Official @WOS_Japan post")}</li>
-<li>{tr("熊狩り（集結主）としての判定：乗り換え推奨／有力候補／据え置きで可／熊狩では不要","Bear Hunt verdict: swap in / strong option / keep current / not for Bear Hunt")}</li>
-<li>{tr("集結主スキル・理論順位・入手経路","Leader skill, theoretical rank, source")}</li></ul></div>
+
+<h2>{tr("課金帯の考え方","How the spending tiers are defined")}</h2>
+<p class="sec-lead">{tr("各世代ページでは、この3つの前提で理論最適を出しています。自分に近いものを選んでください。","Each generation page computes the theoretical best under these three assumptions. Pick the closest to you.")}</p>
+<div class="tier-cards">{tiers}</div>
+
+<h2>{tr("各世代ページに載っているもの","What each generation page shows")}</h2>
+<div class="point-grid four">
+<div class="point"><div class="pt-h"><span class="ic">🏆</span>{tr("理想の英雄構成","Ideal build")}</div><ul>
+<li>{tr("課金帯を選ぶと、その条件での最強の集結主3人が大きく表示","Pick a tier and the best three rally-leader heroes appear")}</li>
+<li>{tr("ワンタップでシミュレーターにセットして自分の数字を確認","One tap sets them in the simulator for your own number")}</li></ul></div>
+<div class="point"><div class="pt-h"><span class="ic">🆕</span>{tr("新英雄の熊狩り評価","New-hero verdicts")}</div><ul>
+<li>{tr("公式X（@WOS_Japan）の紹介投稿つき","With the official @WOS_Japan post")}</li>
+<li>{tr("乗り換え推奨／有力候補／据え置きで可／熊狩では不要","Swap in / strong option / keep current / not for Bear Hunt")}</li></ul></div>
 <div class="point"><div class="pt-h"><span class="ic">⚖️</span>{tr("理論 vs 実測","Theory vs Live")}</div><ul>
 <li>{tr("盾・槍・弓それぞれの英雄ランキングを左右で対比","Per-slot hero rankings side by side")}</li>
-<li>{tr("理論：シミュレーターの式で総当たり（1位=100の指数）","Theory: brute force with the simulator formula (index, #1 = 100)")}</li>
-<li>{tr("実測：利用者の投稿の採用率（％）","Live: pick rate from submissions (%)")}</li>
-<li>{tr("課金帯タブで切替（無課金・微課金／中課金／石油王）","Switch tiers: F2P / mid / whale")}</li></ul></div>
+<li>{tr("実測は利用者の投稿の採用率（％）","Live: pick rate from submissions (%)")}</li></ul></div>
 <div class="point"><div class="pt-h"><span class="ic">⏭️</span>{tr("次の世代でどうする？","Next generation")}</div><ul>
 <li>{tr("次世代が来たとき、どの枠を替えると何％伸びるか","Which slot to swap next gen and the expected gain")}</li>
 <li>{tr("無課金は3世代に1回しか各枠を更新できないので、ここが計画の要","F2P can refresh each slot only every 3 generations — plan around it")}</li></ul></div>
 </div>
+
+<h2 id="faq">{tr("よくある質問","FAQ")}</h2>
+<div class="faq-list">{faq_html}</div>
+
 <div class="relbar">
-  <a href="/submit/index.html">→ {tr("構成を投稿する","Submit your build")}</a>
   <a href="/tools/bear-hunt/index.html">→ {tr("熊狩ダメージ・シミュレーター","Bear Hunt Simulator")}</a>
+  <a href="/guides/leader-formation.html">→ {tr("集結主におすすめの編成と英雄の選び方","Rally leader: recommended formations")}</a>
+  <a href="/submit/index.html">→ {tr("構成を投稿する","Submit your build")}</a>
   <a href="/stats/methodology.html">→ {tr("集計方法と計算の前提","Methodology")}</a>
 </div>
 </div>
 """
-    crumb_en = '<a href="/en/index.html">Home</a> &gt; Generation stats'
-    return head(title_ja, desc_ja, path) + body + tail(tr, title_en, crumb_en, 'By generation <span class="acc">Bear Hunt Build Stats</span>', tr.m[lead_ja])
+    crumb_en = '<a href="/en/index.html">Home</a> &gt; Bear Hunt builds by generation'
+    ld = jsonld([ld_article("ホワサバ 熊狩りのおすすめ英雄・最強構成 世代別まとめ", desc_ja, path, PUBLISHED),
+                 ld_crumbs([("ホーム", "/"), ("世代別 熊狩り構成", path)]),
+                 ld_faq([(q, a) for q, a, _qe, _ae in faq])])
+    h1_en = f'Bear Hunt Best Heroes &amp; Builds<br><span class="acc">by generation (Gen 1–{MAXG})</span>'
+    return head(title_ja, desc_ja, path, ld) + body + tail(tr, title_en, crumb_en, h1_en, tr.m[lead_ja], desc_en=desc_en)
 
 # ---------------- 方法論 ----------------
 def build_methodology():

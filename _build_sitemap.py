@@ -1,5 +1,5 @@
 BASE="https://whitesim-lab.com"
-LASTMOD="2026-09-02"
+LASTMOD="2026-09-03"
 paths=["/",
  "/tools/bear-hunt/","/tools/king-castle/","/tools/foundry-battle/","/tools/frost-dragon/",
  "/tools/left-hero/","/tools/troop-ratio/","/tools/damage-doctor/","/tools/commander-type/","/tools/hero-list/",
