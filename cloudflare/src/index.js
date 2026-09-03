@@ -204,8 +204,17 @@ export default {
     const url = new URL(req.url), p = url.pathname;
     try {
       if (req.method === 'GET' && p === '/v1/stats/summary') {
-        const s = await env.STATS.get('stats:summary'); if (s) return json(JSON.parse(s), 200, { ...h, 'cache-control': 'public, max-age=600' });
-        return json(await rebuildAll(env), 200, h);
+        const s = await env.STATS.get('stats:summary');
+        const sum = s ? JSON.parse(s) : await rebuildAll(env);
+        /* 件数だけは D1 から即時反映（published の判定と実測の中身は日次集計のまま）。
+           1回の SELECT で直近90日の行を数えるだけなので無料枠で十分収まる */
+        const since = now() - parseInt(env.WINDOW_DAYS || '90', 10) * 86400;
+        const { results } = await env.DB.prepare('SELECT server_days, COUNT(*) AS n FROM submissions WHERE status=\'ok\' AND created_at>=? GROUP BY server_days').bind(since).all();
+        const live = {}; for (let g = 1; g <= GM.MAX; g++) live[g] = 0;
+        (results || []).forEach(r => { const g = GM.genFromDays(r.server_days); if (live[g] != null) live[g] += r.n; });
+        for (let g = 1; g <= GM.MAX; g++) { sum.gens[g] = sum.gens[g] || { n: 0, published: false }; sum.gens[g].n = live[g]; }
+        sum.liveCounts = true;
+        return json(sum, 200, { ...h, 'cache-control': 'public, max-age=60' });
       }
       let m;
       if (req.method === 'GET' && (m = p.match(/^\/v1\/reviews\/(\d{1,2})$/))) {
@@ -271,12 +280,14 @@ export default {
         body.ngWords = env.NG_WORDS || ''; const v = validate(body); if (v.errors.length) return json({ error: 'invalid', fields: v.errors }, 400, h);
         const clientHash = await sha256(ip + '|' + (env.CLIENT_SALT || ''));
         const t = now(), dayStart = t - (t % 86400);
+        /* 上書きは「同じ世代」の投稿に限る（同じ人が世代ごとに1件ずつ持てる） */
+        const gr = GM.rangeOf(v.gen), gFrom = gr.from, gTo = gr.to == null ? 99999 : gr.to;
         let row = null;
         if (body.editKey) {
           const kh = await sha256(String(body.editKey));
-          row = await env.DB.prepare('SELECT id FROM submissions WHERE edit_key_hash=? AND status!=\'removed\'').bind(kh).first();
+          row = await env.DB.prepare('SELECT id FROM submissions WHERE edit_key_hash=? AND status!=\'removed\' AND server_days>=? AND server_days<=?').bind(kh, gFrom, gTo).first();
         }
-        if (!row) row = await env.DB.prepare('SELECT id FROM submissions WHERE client_hash=? AND created_at>=? AND status=\'ok\'').bind(clientHash, dayStart).first();
+        if (!row) row = await env.DB.prepare('SELECT id FROM submissions WHERE client_hash=? AND created_at>=? AND status=\'ok\' AND server_days>=? AND server_days<=?').bind(clientHash, dayStart, gFrom, gTo).first();
         let id, editKey = body.editKey && row ? String(body.editKey) : null;
         if (row) {                                       /* 上書き */
           id = row.id;

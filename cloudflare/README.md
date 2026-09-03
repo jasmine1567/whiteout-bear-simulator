@@ -247,7 +247,7 @@ test/worker.test.mjs  ローカルテスト
 |---|---|
 | POST /v1/submit | 投稿を受け付ける。返事に順位・世代ラグ・理論値との差が入る |
 | DELETE /v1/submit/:id | 編集キーで自分の投稿を削除 |
-| GET /v1/stats/summary | 全世代の投稿件数 |
+| GET /v1/stats/summary | 全世代の投稿件数（件数は即時反映・公開判定は日次） |
 | GET /v1/stats/:gen | その世代の集計 |
 | GET /v1/reviews/:gen | その世代の口コミ（「ひとこと」付き投稿を新しい順・100件まで） |
 | POST /v1/report/:id | 口コミを通報（同じ人からは1回。3件で自動非表示） |

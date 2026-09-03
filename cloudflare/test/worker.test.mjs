@@ -56,6 +56,16 @@ t('間違った編集キーでは削除されない', r.body.removed===false);
 r = await call('DELETE','/v1/submit/'+id1,{ editKey:key2 });
 t('正しい編集キーで削除', r.body.removed===true && db.prepare("select status from submissions where id=?").get(id1).status==='removed');
 
+console.log('--- 世代ごとに1件 ---');
+r = await call('POST','/v1/submit',{ gen:3, tier:'mid', inf:'jeronimo', lan:'mia', mks:'alonso', comment:'G3の感想' },'40.0.0.1');
+const g10id = r.body.id, g10key = r.body.editKey;
+r = await call('POST','/v1/submit',{ gen:5, tier:'mid', inf:'jeronimo', lan:'mia', mks:'gwen', comment:'G5の感想' },'40.0.0.1');
+t('同じ人・同じ日でも世代が違えば別の投稿になる', r.body.id!==g10id && db.prepare("select count(*) c from submissions where client_hash=(select client_hash from submissions where id=?) and status='ok'").get(g10id).c===2);
+r = await call('POST','/v1/submit',{ gen:7, tier:'mid', inf:'jeronimo', lan:'mia', mks:'bradley', comment:'G7', editKey: g10key },'40.0.0.2');
+t('別世代に古い編集キーを付けても上書きせず新規', r.body.id!==g10id && db.prepare('select comment from submissions where id=?').get(g10id).comment==='G3の感想');
+r = await call('POST','/v1/submit',{ gen:3, tier:'mid', inf:'natalia', lan:'mia', mks:'alonso', comment:'G3を書き直し', editKey: g10key },'40.0.0.2');
+t('同じ世代なら編集キーで上書き', r.body.id===g10id && db.prepare('select comment from submissions where id=?').get(g10id).comment==='G3を書き直し');
+
 console.log('--- 集計 ---');
 /* 第16世代環境に40件、第8世代に5件 投げる */
 const H = JSON.parse(fs.readFileSync(new URL('../src/heroes-min.json', import.meta.url),'utf8'));
@@ -68,6 +78,10 @@ await worker.scheduled({}, env);
 const s16 = JSON.parse(kv.get('stats:gen:16')), s8 = JSON.parse(kv.get('stats:gen:8')), sum = JSON.parse(kv.get('stats:summary'));
 t('summary に16世代分', Object.keys(sum.gens).length===16, JSON.stringify({g16:sum.gens[16], g8:sum.gens[8]}));
 t('第16世代 n=42 公開', s16.n===42 && s16.published===true, 'n='+s16.n);
+r = await call('GET','/v1/stats/summary');
+await call('POST','/v1/submit',{ gen:12, tier:'mid', inf:'jeronimo', lan:'mia', mks:'rufus' },'10.0.2.1');
+const sum2 = (await call('GET','/v1/stats/summary')).body;
+t('summary の件数は投稿直後に反映（第12世代 0→1、published は日次のまま）', r.body.gens[12].n===0 && sum2.gens[12].n===1 && sum2.gens[12].published===false && sum2.liveCounts===true, JSON.stringify(sum2.gens[12]));
 t('第8世代 n=5 は非公開', s8.n===5 && s8.published===false);
 t('盾枠1位はジェロニモ', s16.slot.inf[0].id==='jeronimo' && s16.slot.inf[0].pct>=60, JSON.stringify(s16.slot.inf[0]));
 t('組み合わせTOPが出る', s16.comps[0].ids.length===3 && s16.comps[0].count>=15, JSON.stringify(s16.comps[0]));
