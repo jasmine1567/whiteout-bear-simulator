@@ -11,12 +11,12 @@ crons = ["0 20 * * *"]
 [[d1_databases]]
 binding = "DB"
 database_name = "whitesim-stats"
-database_id = "REPLACE_WITH_D1_DATABASE_ID"
+database_id = "c73d4b7b-36dc-43fe-987f-01e23e288a0b"
 
 # KV: `wrangler kv namespace create STATS` の出力で id を置き換える
 [[kv_namespaces]]
 binding = "STATS"
-id = "REPLACE_WITH_KV_NAMESPACE_ID"
+id = "1ddbc2db577642358ab2b4e7449ac3d0"
 
 [vars]
 ALLOWED_ORIGINS = "https://whitesim-lab.com,http://localhost:8000,http://127.0.0.1:8000"

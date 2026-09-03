@@ -22,7 +22,8 @@ CREATE TABLE IF NOT EXISTS submissions (
   comment       TEXT,                       -- 口コミ（ひとこと・任意・公開される。最大200文字）
   nick          TEXT,                       -- 表示名（任意・最大16文字）
   review_status TEXT    NOT NULL DEFAULT 'ok',  -- ok / reported（通報で自動非表示） / hidden（運営者が非表示）
-  reports       INTEGER NOT NULL DEFAULT 0
+  reports       INTEGER NOT NULL DEFAULT 0,
+  show_damage   INTEGER NOT NULL DEFAULT 1   -- 口コミにダメージを表示するか（1=表示）
 );
 -- 通報（同じクライアントからは1件の口コミに1回だけ）
 CREATE TABLE IF NOT EXISTS reports (

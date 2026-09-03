@@ -99,6 +99,8 @@ t('長すぎる本文・名前は切り詰めて受理', r.status===200 && r.bod
 r = await call('GET','/v1/reviews/10');
 t('GET /v1/reviews/10: 新しい順・2件・本文と構成', r.body.items.length===2 && r.body.items[0].comment.length===200 && r.body.items[1].nick==='たろう' && r.body.items[1].inf==='hector' && r.body.items[1].damage===12000000, JSON.stringify(r.body.items[1]));
 t('ひとこと無しの投稿は口コミに出ない（第16世代は0件）', (await call('GET','/v1/reviews/16')).body.items.length===0);
+r = await call('POST','/v1/submit',{ gen:10, tier:'mid', inf:'jeronimo', lan:'mia', mks:'blanchette', damage:99000000, comment:'ダメージは内緒', showDamage:false },'20.0.0.3');
+t('showDamage:false → 口コミにダメージが出ない（統計用には保存）', r.status===200 && (await call('GET','/v1/reviews/10')).body.items.find(i=>i.comment==='ダメージは内緒').damage===null && db.prepare('select damage from submissions where id=?').get(r.body.id).damage===99000000);
 r = await call('POST','/v1/submit',{ gen:10, tier:'f2p', inf:'hector', lan:'mia', mks:'blanchette', comment:'書き直しました', editKey: rkey },'20.0.0.1');
 t('同じ編集キーで上書き → 本文が更新', r.body.id===rid && (await call('GET','/v1/reviews/10')).body.items.some(i=>i.id===rid && i.comment==='書き直しました'));
 /* 通報 */

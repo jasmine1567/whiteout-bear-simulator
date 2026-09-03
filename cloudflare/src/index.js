@@ -82,7 +82,8 @@ function validate(b) {
   const comment = cleanText(b.comment, 200), nick = cleanText(b.nick, 16).replace(/\n/g, ' ');
   if (comment && textProblem(comment, b.ngWords)) e.push('comment:' + textProblem(comment, b.ngWords));
   if (nick && textProblem(nick, b.ngWords)) e.push('nick:' + textProblem(nick, b.ngWords));
-  return { errors: e, days, tier, gen, heroes, ratio, damage, fc, gear, comment: comment || null, nick: nick || null };
+  const showDamage = (b.showDamage === false || b.showDamage === 0 || b.showDamage === '0') ? 0 : 1;   /* 口コミにダメージを出すか（既定: 出す） */
+  return { errors: e, days, tier, gen, heroes, ratio, damage, fc, gear, comment: comment || null, nick: nick || null, showDamage };
 }
 /* 制御文字を除き、空白を整え、長さを切る */
 export function cleanText(v, max) {
@@ -181,13 +182,13 @@ async function rebuildAll(env) {
 /* ---------- 口コミ（投稿フォームの「ひとこと」） ---------- */
 function reviewItem(r) {
   return { id: r.id, at: r.updated_at || r.created_at, gen: GM.genFromDays(r.server_days), tier: r.spend_tier,
-           inf: r.hero_inf, lan: r.hero_lan, mks: r.hero_mks, damage: r.damage, comment: r.comment, nick: r.nick || null,
+           inf: r.hero_inf, lan: r.hero_lan, mks: r.hero_mks, damage: (r.show_damage == null || r.show_damage) ? r.damage : null, comment: r.comment, nick: r.nick || null,
            status: r.review_status, reports: r.reports || 0 };
 }
 async function listReviews(env, g) {
   const range = GM.rangeOf(g), max = parseInt(env.REVIEW_MAX || '100', 10);
   const { results } = await env.DB.prepare(
-    `SELECT id, created_at, updated_at, server_days, spend_tier, hero_inf, hero_lan, hero_mks, damage, comment, nick, review_status, reports
+    `SELECT id, created_at, updated_at, server_days, spend_tier, hero_inf, hero_lan, hero_mks, damage, show_damage, comment, nick, review_status, reports
      FROM submissions WHERE status='ok' AND review_status='ok' AND comment IS NOT NULL AND comment!='' AND server_days>=? AND server_days<=?
      ORDER BY updated_at DESC LIMIT ?`).bind(range.from, range.to == null ? 99999 : range.to, max).all();
   return { gen: g, updatedAt: now(), items: results.map(r => { const it = reviewItem(r); delete it.status; delete it.reports; return it; }) };
@@ -232,7 +233,7 @@ export default {
         if (req.method === 'GET' && p === '/v1/admin/reviews') {
           const st = url.searchParams.get('status') || 'all';
           const where = st === 'all' ? "status='ok'" : "status='ok' AND review_status=?";
-          const q = env.DB.prepare(`SELECT id, created_at, updated_at, server_days, spend_tier, hero_inf, hero_lan, hero_mks, damage, comment, nick, review_status, reports
+          const q = env.DB.prepare(`SELECT id, created_at, updated_at, server_days, spend_tier, hero_inf, hero_lan, hero_mks, damage, show_damage, comment, nick, review_status, reports
                                     FROM submissions WHERE comment IS NOT NULL AND comment!='' AND ${where} ORDER BY updated_at DESC LIMIT 300`);
           const { results } = await (st === 'all' ? q.bind() : q.bind(st)).all();
           return json({ ok: true, items: results.map(reviewItem) }, 200, h);
@@ -249,7 +250,16 @@ export default {
       if (req.method === 'GET' && (m = p.match(/^\/v1\/stats\/(\d{1,2})$/))) {
         const g = parseInt(m[1], 10); if (g < 1 || g > GM.MAX) return json({ error: 'gen' }, 404, h);
         const s = await env.STATS.get('stats:gen:' + g);
-        if (s) return json(JSON.parse(s), 200, { ...h, 'cache-control': 'public, max-age=600' });
+        if (s) {
+          const agg = JSON.parse(s);
+          if (!agg.published) {                          /* 未公開のうちは件数だけ D1 から最新を取る（「現在 N 件」を即時反映） */
+            const range = GM.rangeOf(g), since = now() - parseInt(env.WINDOW_DAYS || '90', 10) * 86400;
+            const c = await env.DB.prepare('SELECT COUNT(*) AS n FROM submissions WHERE status=\'ok\' AND created_at>=? AND server_days>=? AND server_days<=?')
+              .bind(since, range.from, range.to == null ? 99999 : range.to).first();
+            if (c && typeof c.n === 'number') agg.n = c.n;
+          }
+          return json(agg, 200, { ...h, 'cache-control': 'public, max-age=' + (agg.published ? 600 : 60) });
+        }
         const byGen = await loadWindow(env); const agg = aggregate(byGen[g], g, env);
         await env.STATS.put('stats:gen:' + g, JSON.stringify(agg));
         return json(agg, 200, h);
@@ -272,18 +282,18 @@ export default {
           id = row.id;
           if (!editKey) { editKey = randHex(16); }
           await env.DB.prepare(`UPDATE submissions SET updated_at=?, server_days=?, spend_tier=?, hero_inf=?, hero_lan=?, hero_mks=?,
-              ratio_inf=?, ratio_lan=?, ratio_mks=?, damage=?, fc_level=?, gear_inf=?, gear_lan=?, gear_mks=?, edit_key_hash=?, comment=?, nick=?, status='ok' WHERE id=?`)
+              ratio_inf=?, ratio_lan=?, ratio_mks=?, damage=?, fc_level=?, gear_inf=?, gear_lan=?, gear_mks=?, edit_key_hash=?, comment=?, nick=?, show_damage=?, status='ok' WHERE id=?`)
             .bind(t, v.days, v.tier, v.heroes.inf.id, v.heroes.lan.id, v.heroes.mks.id,
               v.ratio ? v.ratio[0] : null, v.ratio ? v.ratio[1] : null, v.ratio ? v.ratio[2] : null,
-              v.damage, v.fc, v.gear[0], v.gear[1], v.gear[2], await sha256(editKey), v.comment, v.nick, id).run();
+              v.damage, v.fc, v.gear[0], v.gear[1], v.gear[2], await sha256(editKey), v.comment, v.nick, v.showDamage, id).run();
         } else {                                         /* 新規 */
           id = randHex(12); editKey = randHex(16);
           await env.DB.prepare(`INSERT INTO submissions (id, created_at, updated_at, server_days, spend_tier, hero_inf, hero_lan, hero_mks,
-              ratio_inf, ratio_lan, ratio_mks, damage, fc_level, gear_inf, gear_lan, gear_mks, edit_key_hash, client_hash, status, comment, nick)
-              VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'ok',?,?)`)
+              ratio_inf, ratio_lan, ratio_mks, damage, fc_level, gear_inf, gear_lan, gear_mks, edit_key_hash, client_hash, status, comment, nick, show_damage)
+              VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'ok',?,?,?)`)
             .bind(id, t, t, v.days, v.tier, v.heroes.inf.id, v.heroes.lan.id, v.heroes.mks.id,
               v.ratio ? v.ratio[0] : null, v.ratio ? v.ratio[1] : null, v.ratio ? v.ratio[2] : null,
-              v.damage, v.fc, v.gear[0], v.gear[1], v.gear[2], await sha256(editKey), clientHash, v.comment, v.nick).run();
+              v.damage, v.fc, v.gear[0], v.gear[1], v.gear[2], await sha256(editKey), clientHash, v.comment, v.nick, v.showDamage).run();
         }
         /* 診断: 同世代・直近の投稿と比較 */
         const range = GM.rangeOf(v.gen), since = t - parseInt(env.WINDOW_DAYS || '90', 10) * 86400;

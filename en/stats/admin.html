@@ -18,8 +18,8 @@
 <title>口コミ管理（運営者用） | ホワサバ ツールラボ</title>
 <meta name="description" content="運営者用ページ">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://api.whitesim-lab.com https://*.workers.dev https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://platform.twitter.com https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://challenges.cloudflare.com https://platform.twitter.com https://syndication.twitter.com https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
-<link rel="stylesheet" href="/assets/site.css?v=100">
-<link rel="stylesheet" href="/assets/stats.css?v=100">
+<link rel="stylesheet" href="/assets/site.css?v=101">
+<link rel="stylesheet" href="/assets/stats.css?v=101">
 <script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=85">
 <link rel="icon" type="image/png" href="/favicon.png?v=85">
@@ -50,7 +50,8 @@
 </div>
 <script>
 (function(){
-  var API = (window.WOS_API || '').replace(/\/$/, ''), $ = function(id){ return document.getElementById(id); };
+  var $ = function(id){ return document.getElementById(id); };
+  function api(){ return (window.WOS_API || '').replace(/\/$/, ''); }   /* config.js は後から読み込まれるので使う時に参照 */
   var H = {}; function heroes(){ if(!Object.keys(H).length) (window.WOS_HEROES || []).forEach(function(h){ H[h.id] = h.name; }); return H; }
   var TL = { f2p:'無課金・微課金', mid:'中課金', whale:'石油王' }, SL = { ok:'表示中', reported:'通報で非表示', hidden:'運営者が非表示' };
   try{ $('adm-key').value = localStorage.getItem('wos_admin_key') || ''; }catch(e){}
@@ -59,7 +60,8 @@
     var key = $('adm-key').value.trim(); if(!key){ $('adm-err').textContent = '合言葉を入れてください'; return; }
     try{ localStorage.setItem('wos_admin_key', key); }catch(e){}
     $('adm-err').textContent = ''; $('adm-list').innerHTML = '<div class="skel"></div>';
-    fetch(API + '/v1/admin/reviews?key=' + encodeURIComponent(key) + '&status=' + $('adm-status').value, { mode:'cors' }).then(function(r){ return r.json(); }).then(function(j){
+    if(!api()){ $('adm-err').textContent = '接続先（config.js の WOS_API）が読み込めていません'; return; }
+    fetch(api() + '/v1/admin/reviews?key=' + encodeURIComponent(key) + '&status=' + $('adm-status').value, { mode:'cors' }).then(function(r){ return r.json(); }).then(function(j){
       if(!j.ok){ $('adm-err').textContent = j.error === 'forbidden' ? '合言葉が違うか、Worker に ADMIN_KEY が設定されていません' : '読み込めませんでした'; $('adm-list').innerHTML = ''; return; }
       if(!j.items.length){ $('adm-list').innerHTML = '<p class="note">該当する口コミはありません。</p>'; return; }
       $('adm-list').innerHTML = j.items.map(function(it){
@@ -72,7 +74,7 @@
       $('adm-list').querySelectorAll('button[data-act]').forEach(function(b){
         b.onclick = function(){
           var id = b.closest('.adm-item').getAttribute('data-id'); b.disabled = true;
-          fetch(API + '/v1/admin/reviews/' + id, { method:'POST', mode:'cors', headers:{ 'content-type':'application/json' }, body: JSON.stringify({ key: key, action: b.getAttribute('data-act') }) })
+          fetch(api() + '/v1/admin/reviews/' + id, { method:'POST', mode:'cors', headers:{ 'content-type':'application/json' }, body: JSON.stringify({ key: key, action: b.getAttribute('data-act') }) })
             .then(function(r){ return r.json(); }).then(function(){ load(); }).catch(function(){ b.disabled = false; });
         };
       });
@@ -82,12 +84,12 @@
 })();
 </script>
 <div id="foot"></div>
-<script src="/assets/config.js?v=100"></script>
-<script src="/assets/toolkit.js?v=100"></script>
+<script src="/assets/config.js?v=101"></script>
+<script src="/assets/toolkit.js?v=101"></script>
 <script src="/assets/heroes.js?v=86"></script>
-<script src="/assets/gen-map.js?v=100"></script>
-<script src="/assets/hero-posts.js?v=100"></script>
-<script src="/assets/stats.js?v=100"></script>
+<script src="/assets/gen-map.js?v=101"></script>
+<script src="/assets/hero-posts.js?v=101"></script>
+<script src="/assets/stats.js?v=101"></script>
 <script>
 document.getElementById('nav').innerHTML = WOS_NAV(2);
 document.getElementById('foot').innerHTML = WOS_FOOT(2);

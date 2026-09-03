@@ -266,11 +266,12 @@
     html += '<div class="step" id="st-review"><h3><span class="num">' + (optional ? 4 : 3) + '</span>' + t('任意：ひとこと（口コミとして公開）','Optional: one-liner (published as a review)') + '</h3>'
       + '<p class="hint">' + t('この構成の使用感・乗り換えた理由など。世代ページの「口コミ」欄に、上の構成と一緒に載ります。URL は書けません。','How this build feels, why you swapped, etc. Shown with your build in the generation page\'s Reviews block. No links.') + '</p>'
       + '<textarea id="st-comment" maxlength="200" rows="3" placeholder="' + t('例: ブランシュに替えて1割伸びた。無課金ならヘクトーで十分','e.g. Swapped to Blanchette and gained ~10%. Hector is enough for F2P') + '"></textarea>'
-      + '<div class="row"><div><label>' + t('表示名（任意・16文字まで）','Display name (optional, 16 chars)') + '</label><input type="text" id="st-nick" maxlength="16" placeholder="' + t('空欄なら「匿名」','Blank = Anonymous') + '"></div><div style="align-self:flex-end"><span class="hint" id="st-count">0 / 200</span></div></div></div>';
+      + '<div class="row"><div><label>' + t('表示名（任意・16文字まで）','Display name (optional, 16 chars)') + '</label><input type="text" id="st-nick" maxlength="16" placeholder="' + t('空欄なら「匿名」','Blank = Anonymous') + '"></div><div style="align-self:flex-end"><span class="hint" id="st-count">0 / 200</span></div></div>'
+      + '<label class="consent" style="margin:10px 0 0"><input type="checkbox" id="st-hidedmg"><span>' + t('口コミにダメージを表示しない（統計の集計には使われます）','Hide my damage in the review (still used for aggregate stats)') + '</span></label></div>';
     html += '<label class="consent"><input type="checkbox" id="st-consent"><span>' + t('匿名の統計データとして送信し、当サイトで集計・公開することに同意します（個人を特定する情報は送信されません。「ひとこと」と表示名は口コミとして公開されます）。','I agree to submit this as anonymous statistics for aggregation and publication on this site. No identifying information is sent; the one-liner and display name are published as a review.') + ' <a href="' + (W.WOS_BASE||'') + '/privacy.html" target="_blank" rel="noopener">' + t('プライバシーポリシー','Privacy policy') + '</a></span></label>'
       + (W.WOS_TURNSTILE_SITEKEY ? '<div class="cf-turnstile" data-sitekey="' + esc(W.WOS_TURNSTILE_SITEKEY) + '" data-size="flexible" style="margin:8px 0"></div>' : '')
       + '<button type="button" class="submit-btn" id="st-submit" disabled>' + t('統計に投稿する','Submit to stats') + '</button>'
-      + (saved.editKey ? '<p class="note" style="margin-top:6px">' + t('前回の投稿を上書き更新します。','This will update your previous submission.') + ' <a href="#" id="st-forget">' + t('新規として投稿する','Submit as new') + '</a></p>' : '')
+      + (saved.editKey ? '<p class="note" style="margin-top:6px">' + t('前回の投稿を上書き更新します（口コミも差し替わります）。','This will update your previous submission (including the review).') + ' <a href="#" id="st-forget">' + t('新規として投稿する','Submit as new') + '</a> ／ <a href="#" id="st-delete">' + t('前回の投稿を削除する','Delete my previous submission') + '</a></p>' : '')
       + '<div class="err" id="st-err"></div><div id="st-result"></div>';
     container.innerHTML = html;
 
@@ -279,6 +280,19 @@
     var consent = $('st-consent'), btn = $('st-submit'), err = $('st-err'), res = $('st-result');
     var editKey = saved.editKey || null, submissionId = saved.id || null;
     var forget = $('st-forget'); if(forget) forget.onclick = function(e){ e.preventDefault(); editKey = null; submissionId = null; forget.parentNode.remove(); };
+    var del = $('st-delete'), delArmed = false;
+    if(del) del.onclick = function(e){
+      e.preventDefault();
+      if(!delArmed){ delArmed = true; del.textContent = t('本当に削除しますか？ → はい、削除する','Really delete? → Yes, delete'); del.style.color = 'var(--bad)'; setTimeout(function(){ if(delArmed){ delArmed = false; del.textContent = t('前回の投稿を削除する','Delete my previous submission'); del.style.color = ''; } }, 6000); return; }
+      del.textContent = t('削除中…','Deleting…');
+      fetch(API + '/v1/submit/' + encodeURIComponent(submissionId), { method:'DELETE', mode:'cors', credentials:'omit', headers:{ 'content-type':'application/json' }, body: JSON.stringify({ editKey: editKey }) })
+        .then(function(x){ return x.json(); })
+        .then(function(j){
+          if(j && j.ok){ try{ localStorage.removeItem(LS_KEY); }catch(err){} editKey = null; submissionId = null;
+            del.parentNode.innerHTML = t('前回の投稿（統計・口コミ）を削除しました。次の投稿は新規になります。','Your previous submission (stats and review) was deleted. The next one will be new.'); }
+          else { del.textContent = t('削除できませんでした','Could not delete'); }
+        }).catch(function(){ del.textContent = t('通信エラー','Network error'); });
+    };
     var curGen = function(){ return parseInt(genSel.value, 10); };
     var tier = function(){ var el = container.querySelector('input[name="st-tier"]:checked'); return el ? el.value : null; };
 
@@ -304,8 +318,8 @@
     if(FIELDS.damage){ var dv = pre.damage != null ? pre.damage : saved.damage; if(dv != null) $('st-damage').value = dv; }
     if(FIELDS.fc){ var fv = pre.fc != null ? pre.fc : saved.fc; if(fv != null) $('st-fc').value = fv; }
     if(FIELDS.gear){ (pre.gear || saved.gear || []).forEach(function(v, i){ if(v != null && $('st-g' + i)) $('st-g' + i).value = v; }); }
-    var cmt = $('st-comment'), nick = $('st-nick'), cnt = $('st-count');
-    if(saved.comment) cmt.value = saved.comment; if(saved.nick) nick.value = saved.nick;
+    var cmt = $('st-comment'), nick = $('st-nick'), cnt = $('st-count'), hideDmg = $('st-hidedmg');
+    if(saved.comment) cmt.value = saved.comment; if(saved.nick) nick.value = saved.nick; if(saved.showDamage === false) hideDmg.checked = true;
     function count(){ cnt.textContent = cmt.value.length + ' / 200'; } count(); cmt.addEventListener('input', count);
     if(q.get('review') === '1'){ setTimeout(function(){ try{ $('st-review').scrollIntoView({ behavior:'smooth', block:'center' }); cmt.focus(); }catch(e){} }, 300); }
 
@@ -334,7 +348,7 @@
         ratio: ratioVal(),
         damage: FIELDS.damage ? ($('st-damage').value || null) : null, fc: FIELDS.fc ? ($('st-fc').value || null) : null,
         gear: FIELDS.gear ? [0,1,2].map(function(i){ return $('st-g' + i).value || null; }) : null,
-        comment: cmt.value.trim() || null, nick: nick.value.trim() || null,
+        comment: cmt.value.trim() || null, nick: nick.value.trim() || null, showDamage: !hideDmg.checked,
         editKey: editKey, turnstile: tsToken(container) };
       if(!API){ err.textContent = t('投稿先が設定されていません。','Submission endpoint is not configured.'); btn.disabled = false; btn.textContent = t('統計に投稿する','Submit to stats'); return; }
       fetch(API + '/v1/submit', { method:'POST', mode:'cors', credentials:'omit', headers:{ 'content-type':'application/json' }, body: JSON.stringify(body) })
@@ -350,7 +364,7 @@
             return;
           }
           editKey = o.j.editKey; submissionId = o.j.id;
-          save({ id: submissionId, editKey: editKey, gen: body.gen, tier: body.tier, inf: body.inf, lan: body.lan, mks: body.mks, ratio: body.ratio, damage: body.damage, fc: body.fc, gear: body.gear, comment: body.comment, nick: body.nick });
+          save({ id: submissionId, editKey: editKey, gen: body.gen, tier: body.tier, inf: body.inf, lan: body.lan, mks: body.mks, ratio: body.ratio, damage: body.damage, fc: body.fc, gear: body.gear, comment: body.comment, nick: body.nick, showDamage: body.showDamage });
           res.innerHTML = resultCard(o.j.diag, o.j.review ? body : null);
           relabelHeroes(res);
           if(W.WOS_TRACK) W.WOS_TRACK('stats_submit', { gen: o.j.diag.gen, tier: body.tier });

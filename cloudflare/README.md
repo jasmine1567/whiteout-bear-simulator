@@ -196,11 +196,10 @@ window.WOS_TURNSTILE_SITEKEY = "";
    （合言葉はそのブラウザに保存されます。他の人には教えないでください）
 3. 通報が来たときは、上の「通報で非表示中」を選んで内容を確認し、「表示に戻す」か、そのまま非表示にしておく
 
-> **v7 以前の schema.sql で手順3を実行済みの場合だけ**、表に口コミ用の列を足してください（初回セットアップなら不要）。
->
-> ```
-> npx wrangler d1 execute whitesim-stats --remote --file=./migrations/001_reviews.sql
-> ```
+> **古い schema.sql で手順3を実行済みの場合だけ**、表に列を足してください（初回セットアップなら不要）。
+> D1 のコンソール（ストレージとデータベース → D1 → whitesim-stats → コンソール）に貼って実行するのが簡単です。
+> - v7 以前で作成 → `migrations/001_reviews.sql` と `migrations/002_show_damage.sql` の両方
+> - v8〜v11 で作成 → `migrations/002_show_damage.sql` だけ（1行: `ALTER TABLE submissions ADD COLUMN show_damage INTEGER NOT NULL DEFAULT 1;`）
 
 ---
 

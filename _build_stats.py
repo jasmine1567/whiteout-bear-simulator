@@ -9,7 +9,7 @@ import os, re, json, html, subprocess
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 BASE_URL = "https://whitesim-lab.com"
-V = "100"            # 共有アセットの版数
+V = "101"            # 共有アセットの版数
 HV = "86"           # heroes.js の版数
 UPDATED = "2026-09-03"
 NOTES_DIR = os.path.join(ROOT, "_stats_notes")
@@ -795,7 +795,8 @@ def build_methodology():
 <div class="card" style="font-size:13.5px"><ul class="kv-list">
 <li>{tr("投稿フォームの「ひとこと」（最大200文字）と表示名（任意・最大16文字）を、構成・課金帯・投稿日と一緒に世代ページの口コミ欄へ新しい順に表示します（1世代100件まで）","The one-liner (up to 200 chars) and optional display name (16 chars) from the submission form are shown in the generation page’s Reviews block with the build, tier and date, newest first (up to 100 per generation)")}</li>
 <li>{tr("URL・不適切な言葉を含む投稿は受付時に弾きます。通報が3件集まった口コミは自動で非表示になり、運営者が確認して戻すか消します","Posts containing links or abusive words are rejected. A review reported 3 times is hidden automatically until the operator reviews it")}</li>
-<li>{tr("自分の口コミは投稿フォームから上書き・削除できます（編集キー）。運営者はガイドラインに反する口コミを予告なく非表示にすることがあります","You can edit or delete your own review from the submission form (edit key). The operator may hide reviews that violate the guidelines without notice")}</li></ul></div>
+<li>{tr("ダメージは「口コミにダメージを表示しない」にチェックすると口コミには出ません（統計の集計にだけ使われます）","Tick “Hide my damage in the review” and the damage is used only for aggregate stats, not shown in the review")}</li>
+<li>{tr("同じブラウザから再投稿すると上書き（口コミも差し替え）。投稿フォームの「前回の投稿を削除する」で削除できます。運営者はガイドラインに反する口コミを予告なく非表示にすることがあります","Re-submitting from the same browser overwrites (review included); “Delete my previous submission” on the form removes it. The operator may hide reviews that violate the guidelines without notice")}</li></ul></div>
 
 <h2>{tr("5. 投稿の削除","5. Deleting a submission")}</h2>
 <div class="card" style="font-size:13.5px"><ul class="kv-list"><li>{tr("投稿時の編集キー（ブラウザに保存）で上書き・削除できます","Your edit key (saved in your browser) lets you update or delete")}</li>
@@ -856,7 +857,8 @@ def build_admin():
 </div>
 <script>
 (function(){
-  var API = (window.WOS_API || '').replace(/\\/$/, ''), $ = function(id){ return document.getElementById(id); };
+  var $ = function(id){ return document.getElementById(id); };
+  function api(){ return (window.WOS_API || '').replace(/\\/$/, ''); }   /* config.js は後から読み込まれるので使う時に参照 */
   var H = {}; function heroes(){ if(!Object.keys(H).length) (window.WOS_HEROES || []).forEach(function(h){ H[h.id] = h.name; }); return H; }
   var TL = { f2p:'無課金・微課金', mid:'中課金', whale:'石油王' }, SL = { ok:'表示中', reported:'通報で非表示', hidden:'運営者が非表示' };
   try{ $('adm-key').value = localStorage.getItem('wos_admin_key') || ''; }catch(e){}
@@ -865,7 +867,8 @@ def build_admin():
     var key = $('adm-key').value.trim(); if(!key){ $('adm-err').textContent = '合言葉を入れてください'; return; }
     try{ localStorage.setItem('wos_admin_key', key); }catch(e){}
     $('adm-err').textContent = ''; $('adm-list').innerHTML = '<div class="skel"></div>';
-    fetch(API + '/v1/admin/reviews?key=' + encodeURIComponent(key) + '&status=' + $('adm-status').value, { mode:'cors' }).then(function(r){ return r.json(); }).then(function(j){
+    if(!api()){ $('adm-err').textContent = '接続先（config.js の WOS_API）が読み込めていません'; return; }
+    fetch(api() + '/v1/admin/reviews?key=' + encodeURIComponent(key) + '&status=' + $('adm-status').value, { mode:'cors' }).then(function(r){ return r.json(); }).then(function(j){
       if(!j.ok){ $('adm-err').textContent = j.error === 'forbidden' ? '合言葉が違うか、Worker に ADMIN_KEY が設定されていません' : '読み込めませんでした'; $('adm-list').innerHTML = ''; return; }
       if(!j.items.length){ $('adm-list').innerHTML = '<p class="note">該当する口コミはありません。</p>'; return; }
       $('adm-list').innerHTML = j.items.map(function(it){
@@ -878,7 +881,7 @@ def build_admin():
       $('adm-list').querySelectorAll('button[data-act]').forEach(function(b){
         b.onclick = function(){
           var id = b.closest('.adm-item').getAttribute('data-id'); b.disabled = true;
-          fetch(API + '/v1/admin/reviews/' + id, { method:'POST', mode:'cors', headers:{ 'content-type':'application/json' }, body: JSON.stringify({ key: key, action: b.getAttribute('data-act') }) })
+          fetch(api() + '/v1/admin/reviews/' + id, { method:'POST', mode:'cors', headers:{ 'content-type':'application/json' }, body: JSON.stringify({ key: key, action: b.getAttribute('data-act') }) })
             .then(function(r){ return r.json(); }).then(function(){ load(); }).catch(function(){ b.disabled = false; });
         };
       });
