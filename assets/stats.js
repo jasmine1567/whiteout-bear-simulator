@@ -97,23 +97,28 @@
   }
   function fillAll(sel, html){ D.querySelectorAll(sel).forEach(function(el){ el.innerHTML = html; }); }
 
+  /* 実測が公開されるまでは理論値だけを見せる（実測列・実測の説明・見出しは hidden のまま）。
+     公開されたら列を開いて見出しを「理論 vs 実測」に切り替える */
+  function showLive(on){
+    D.querySelectorAll('.live-col').forEach(function(el){ el.hidden = !on; });
+    var pg = D.querySelector('[data-live-page]'); if(pg) pg.classList.toggle('live-on', !!on);
+    var ht = D.querySelector('#compare .h-theory'), hl = D.querySelector('#compare .h-live');
+    if(ht) ht.hidden = on; if(hl) hl.hidden = !on;
+  }
   S.renderCompare = function(gen){
     var page = D.querySelector('[data-live-page]'); if(!page) return;
     var submitHref = (W.WOS_BASE || '') + '/submit/index.html?gen=' + gen;
-    function notReady(title, body){
-      var html = '<div class="live-empty"><b>' + title + '</b>' + body
-        + '<br><a class="btn" href="' + submitHref + '">' + t('この世代の構成を投稿する','Submit a build for this generation') + '</a></div>';
+    function notReady(n){
+      showLive(false);
+      var html = n == null ? '' : '<p class="live-note">' + t('みんなの実測（採用率）は投稿が10件集まった世代から公開します。', 'Live pick rates open once a generation has 10 submissions.')
+        + ' ' + t('現在 ','Currently ') + '<b>' + n + '</b>' + t(' 件。',' so far.') + ' <a href="' + submitHref + '">' + t('構成を投稿する','Submit your build') + ' →</a></p>';
       fillAll('[data-live="meta"]', html);
-      fillAll('[data-live="slot"], [data-live="trio"]', '<div class="note live-none">' + t('投稿待ち','awaiting data') + '</div>');
       fillAll('[data-live="stats"]', '');
     }
-    if(!API){ notReady(t('実測データは準備中です','Live stats coming soon'), ''); return; }
+    if(!API){ notReady(null); return; }
     getJSON('/v1/stats/' + gen).then(function(s){
-      if(!s || !s.published){
-        notReady(t('実測はデータ募集中','Collecting live data'),
-          t('現在 ','') + '<b style="display:inline">' + (s && s.n || 0) + '</b>' + t(' 件。10件集まると公開されます。',' submissions so far. Opens at 10.'));
-        return;
-      }
+      if(!s || !s.published){ notReady(s && s.n || 0); return; }
+      showLive(true);
       var d = new Date(s.updatedAt * 1000);
       var ref = s.n < 30 ? '<span class="badge-ref">' + t('参考値（30件未満）','indicative (<30)') + '</span>' : '';
       fillAll('[data-live="meta"]', '<span class="live-meta">' + t('投稿 ','Submissions: ') + '<b>' + s.n + '</b>' + t(' 件 ／ 直近90日 ／ 更新 ',' · last 90 days · updated ') + d.toLocaleDateString(EN ? 'en-US' : 'ja-JP') + ref + '</span>');
@@ -134,9 +139,7 @@
       st += '</div>';
       fillAll('[data-live="stats"]', st);
       relabelHeroes(page);
-    }).catch(function(){
-      notReady(t('実測データは準備中です','Live stats coming soon'), t('集計サーバーに接続できませんでした。理論側はそのまま参照できます。','Could not reach the stats server. The theory side is unaffected.'));
-    });
+    }).catch(function(){ notReady(null); });
   };
 
   /* ---------- 世代ページ: 口コミ（投稿フォームの「ひとこと」付き投稿を Worker から取得） ---------- */
@@ -173,18 +176,19 @@
   S.renderReviews = function(gen){
     var box = D.querySelector('[data-reviews="' + gen + '"]'); if(!box) return;
     var submitHref = (W.WOS_BASE || '') + '/submit/index.html?gen=' + gen + '&review=1';
-    function empty(title, body){ box.innerHTML = '<div class="rv-empty"><b>' + title + '</b>' + (body ? '<div>' + body + '</div>' : '') + '<a class="btn" href="' + submitHref + '">' + t('口コミを投稿する','Post a review') + '</a></div>'; }
-    if(!API){ empty(t('口コミは準備中です','Reviews coming soon'), ''); return; }
+    function empty(msg){ box.classList.add('rv-none'); box.innerHTML = msg ? '<p class="live-note">' + msg + '</p>' : ''; }
+    if(!API){ empty(''); return; }
     getJSON('/v1/reviews/' + gen).then(function(r){
       var items = (r && r.items) || [];
-      if(!items.length){ empty(t('まだ口コミがありません','No reviews yet'), t('最初の口コミを投稿しませんか？ 投稿フォームの「ひとこと」に書くだけで、ここに載ります。','Be the first — just fill in the "one-liner" field on the submission form.')); return; }
+      if(!items.length){ empty(t('この世代の口コミはまだありません。投稿フォームの「ひとこと」に書くと、ここに載ります。','No reviews for this generation yet — add a one-liner on the submission form and it will appear here.')); return; }
+      box.classList.remove('rv-none');
       var html = '<div class="rv-meta">' + t('全 ','') + '<b>' + items.length + '</b>' + t(' 件・新しい順',' reviews · newest first') + '</div>';
       html += '<div class="rv-scroll' + (items.length > RV_VISIBLE ? ' on' : '') + '">' + items.map(reviewCard).join('') + '</div>'
         + (items.length > RV_VISIBLE ? '<div class="rv-more">' + t('▼ スクロールで続きを表示','▼ scroll for more') + '</div>' : '');
       box.innerHTML = html;
       relabelHeroes(box);
       bindReport(box);
-    }).catch(function(){ empty(t('口コミを読み込めませんでした','Could not load reviews'), t('時間をおいて再読み込みしてください。','Please try again later.')); });
+    }).catch(function(){ empty(''); });
   };
 
   /* ハブ用: 世代ごとの件数 */
