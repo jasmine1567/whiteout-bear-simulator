@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-03T13:55:48.990Z",
+ "generatedAt": "2026-09-04T04:29:52.240Z",
  "model": {
   "ratio": [
    1,
@@ -2276,7 +2276,7 @@
        "inf",
        "mks"
       ],
-      "gainPct": 27.4
+      "gainPct": 48
      }
     },
     "mid": {
@@ -2791,7 +2791,7 @@
         "mia",
         "gwen"
        ],
-       "score": 8322977
+       "score": 9669997
       },
       {
        "ids": [
@@ -2799,7 +2799,15 @@
         "molly",
         "gwen"
        ],
-       "score": 8053910
+       "score": 9357383
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "alonso"
+       ],
+       "score": 8062034
       },
       {
        "ids": [
@@ -2808,6 +2816,14 @@
         "gwen"
        ],
        "score": 7846851
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "lynn"
+       ],
+       "score": 7708871
       },
       {
        "ids": [
@@ -2820,34 +2836,10 @@
       {
        "ids": [
         "hector",
-        "mia",
-        "alonso"
-       ],
-       "score": 6939002
-      },
-      {
-       "ids": [
-        "hector",
-        "mia",
-        "lynn"
-       ],
-       "score": 6635034
-      },
-      {
-       "ids": [
-        "flint",
-        "mia",
-        "alonso"
-       ],
-       "score": 6533982
-      },
-      {
-       "ids": [
-        "hector",
         "patrick",
         "gwen"
        ],
-       "score": 6445629
+       "score": 7488812
       },
       {
        "ids": [
@@ -2855,7 +2847,7 @@
         "molly",
         "alonso"
        ],
-       "score": 6432772
+       "score": 7473875
       },
       {
        "ids": [
@@ -2863,7 +2855,15 @@
         "jessie",
         "gwen"
        ],
-       "score": 6326469
+       "score": 7350367
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "lynn"
+       ],
+       "score": 7154112
       }
      ],
      "slotRank": {
@@ -2876,32 +2876,32 @@
        {
         "id": "flint",
         "rank": 2,
-        "index": 94
+        "index": 81
        },
        {
         "id": "sergey",
         "rank": 3,
-        "index": 63
+        "index": 54
        },
        {
         "id": "smith",
         "rank": 4,
-        "index": 63
+        "index": 54
        },
        {
         "id": "eugene",
         "rank": 5,
-        "index": 63
+        "index": 54
        },
        {
         "id": "ahmose",
         "rank": 6,
-        "index": 62
+        "index": 53
        },
        {
         "id": "logan",
         "rank": 7,
-        "index": 51
+        "index": 43
        }
       ],
       "lan": [
@@ -3040,6 +3040,14 @@
       },
       {
        "ids": [
+        "hector",
+        "mia",
+        "gwen"
+       ],
+       "score": 19281465
+      },
+      {
+       "ids": [
         "jeronimo",
         "mia",
         "alonso"
@@ -3048,11 +3056,27 @@
       },
       {
        "ids": [
+        "hector",
+        "mia",
+        "alonso"
+       ],
+       "score": 18133996
+      },
+      {
+       "ids": [
         "jeronimo",
         "molly",
         "gwen"
        ],
        "score": 17831961
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "gwen"
+       ],
+       "score": 17361001
       },
       {
        "ids": [
@@ -3072,14 +3096,6 @@
       },
       {
        "ids": [
-        "hector",
-        "mia",
-        "gwen"
-       ],
-       "score": 16595579
-      },
-      {
-       "ids": [
         "jeronimo",
         "mia",
         "lynn"
@@ -3088,27 +3104,11 @@
       },
       {
        "ids": [
-        "jeronimo",
+        "hector",
         "reina",
-        "alonso"
-       ],
-       "score": 16188252
-      },
-      {
-       "ids": [
-        "jeronimo",
-        "molly",
-        "alonso"
-       ],
-       "score": 16055809
-      },
-      {
-       "ids": [
-        "jeronimo",
-        "nora",
         "gwen"
        ],
-       "score": 15976874
+       "score": 16385524
       }
      ],
      "slotRank": {
@@ -3119,14 +3119,14 @@
         "index": 100
        },
        {
-        "id": "natalia",
+        "id": "hector",
         "rank": 2,
-        "index": 83
+        "index": 95
        },
        {
-        "id": "hector",
+        "id": "natalia",
         "rank": 3,
-        "index": 82
+        "index": 83
        },
        {
         "id": "flint",
@@ -3303,11 +3303,27 @@
       },
       {
        "ids": [
+        "hector",
+        "mia",
+        "alonso"
+       ],
+       "score": 55771522
+      },
+      {
+       "ids": [
         "jeronimo",
         "reina",
         "alonso"
        ],
        "score": 53208691
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "gwen"
+       ],
+       "score": 53040289
       },
       {
        "ids": [
@@ -3348,22 +3364,6 @@
         "gwen"
        ],
        "score": 49136249
-      },
-      {
-       "ids": [
-        "jeronimo",
-        "molly",
-        "gwen"
-       ],
-       "score": 49078355
-      },
-      {
-       "ids": [
-        "hector",
-        "mia",
-        "alonso"
-       ],
-       "score": 48002612
       }
      ],
      "slotRank": {
@@ -3374,14 +3374,14 @@
         "index": 100
        },
        {
-        "id": "natalia",
+        "id": "hector",
         "rank": 2,
-        "index": 83
+        "index": 89
        },
        {
-        "id": "hector",
+        "id": "natalia",
         "rank": 3,
-        "index": 77
+        "index": 83
        },
        {
         "id": "flint",
@@ -3571,7 +3571,15 @@
         "mia",
         "wayne"
        ],
-       "score": 10392594
+       "score": 12074568
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "wayne"
+       ],
+       "score": 11228528
       },
       {
        "ids": [
@@ -3584,10 +3592,18 @@
       {
        "ids": [
         "hector",
-        "molly",
-        "wayne"
+        "mia",
+        "gwen"
        ],
-       "score": 9664406
+       "score": 9669997
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "gwen"
+       ],
+       "score": 9357383
       },
       {
        "ids": [
@@ -3600,34 +3616,10 @@
       {
        "ids": [
         "hector",
-        "mia",
-        "gwen"
-       ],
-       "score": 8322977
-      },
-      {
-       "ids": [
-        "hector",
-        "molly",
-        "gwen"
-       ],
-       "score": 8053910
-      },
-      {
-       "ids": [
-        "flint",
-        "mia",
-        "gwen"
-       ],
-       "score": 7846851
-      },
-      {
-       "ids": [
-        "hector",
         "patrick",
         "wayne"
        ],
-       "score": 7766217
+       "score": 9023128
       },
       {
        "ids": [
@@ -3635,15 +3627,23 @@
         "jessie",
         "wayne"
        ],
-       "score": 7622643
+       "score": 8856319
       },
       {
        "ids": [
-        "flint",
-        "molly",
-        "gwen"
+        "hector",
+        "mia",
+        "alonso"
        ],
-       "score": 7593076
+       "score": 8062034
+      },
+      {
+       "ids": [
+        "hector",
+        "renee",
+        "wayne"
+       ],
+       "score": 7914639
       }
      ],
      "slotRank": {
@@ -3656,37 +3656,37 @@
        {
         "id": "flint",
         "rank": 2,
-        "index": 94
+        "index": 81
        },
        {
         "id": "sergey",
         "rank": 3,
-        "index": 63
+        "index": 55
        },
        {
         "id": "smith",
         "rank": 4,
-        "index": 63
+        "index": 55
        },
        {
         "id": "eugene",
         "rank": 5,
-        "index": 63
+        "index": 55
        },
        {
         "id": "ahmose",
         "rank": 6,
-        "index": 49
+        "index": 43
        },
        {
         "id": "wuming",
         "rank": 7,
-        "index": 47
+        "index": 41
        },
        {
         "id": "logan",
         "rank": 8,
-        "index": 40
+        "index": 35
        }
       ],
       "lan": [
@@ -3835,6 +3835,14 @@
       },
       {
        "ids": [
+        "hector",
+        "mia",
+        "wayne"
+       ],
+       "score": 23547389
+      },
+      {
+       "ids": [
         "jeronimo",
         "molly",
         "wayne"
@@ -3852,10 +3860,10 @@
       {
        "ids": [
         "hector",
-        "mia",
+        "molly",
         "wayne"
        ],
-       "score": 20267264
+       "score": 20372363
       },
       {
        "ids": [
@@ -3875,35 +3883,27 @@
       },
       {
        "ids": [
+        "hector",
+        "mia",
+        "gwen"
+       ],
+       "score": 19281465
+      },
+      {
+       "ids": [
+        "hector",
+        "reina",
+        "wayne"
+       ],
+       "score": 19179851
+      },
+      {
+       "ids": [
         "flint",
         "mia",
         "wayne"
        ],
        "score": 19122582
-      },
-      {
-       "ids": [
-        "jeronimo",
-        "mia",
-        "alonso"
-       ],
-       "score": 18993641
-      },
-      {
-       "ids": [
-        "jeronimo",
-        "nora",
-        "wayne"
-       ],
-       "score": 18687695
-      },
-      {
-       "ids": [
-        "jeronimo",
-        "molly",
-        "gwen"
-       ],
-       "score": 17831961
       }
      ],
      "slotRank": {
@@ -3914,14 +3914,14 @@
         "index": 100
        },
        {
-        "id": "natalia",
+        "id": "hector",
         "rank": 2,
-        "index": 83
+        "index": 95
        },
        {
-        "id": "hector",
+        "id": "natalia",
         "rank": 3,
-        "index": 82
+        "index": 83
        },
        {
         "id": "flint",
@@ -4105,6 +4105,14 @@
       },
       {
        "ids": [
+        "hector",
+        "mia",
+        "wayne"
+       ],
+       "score": 63440780
+      },
+      {
+       "ids": [
         "jeronimo",
         "mia",
         "alonso"
@@ -4147,9 +4155,9 @@
        "ids": [
         "hector",
         "mia",
-        "wayne"
+        "alonso"
        ],
-       "score": 54603551
+       "score": 55771522
       },
       {
        "ids": [
@@ -4161,19 +4169,11 @@
       },
       {
        "ids": [
-        "natalia",
+        "hector",
         "mia",
-        "alonso"
+        "gwen"
        ],
-       "score": 51623487
-      },
-      {
-       "ids": [
-        "flint",
-        "mia",
-        "wayne"
-       ],
-       "score": 51527397
+       "score": 53040289
       }
      ],
      "slotRank": {
@@ -4184,14 +4184,14 @@
         "index": 100
        },
        {
-        "id": "natalia",
+        "id": "hector",
         "rank": 2,
-        "index": 83
+        "index": 89
        },
        {
-        "id": "hector",
+        "id": "natalia",
         "rank": 3,
-        "index": 77
+        "index": 83
        },
        {
         "id": "flint",
@@ -4396,7 +4396,7 @@
         "mia",
         "bradley"
        ],
-       "score": 15521062
+       "score": 18033044
       },
       {
        "ids": [
@@ -4404,7 +4404,23 @@
         "molly",
         "bradley"
        ],
-       "score": 14445989
+       "score": 16783978
+      },
+      {
+       "ids": [
+        "hector",
+        "reina",
+        "bradley"
+       ],
+       "score": 14672210
+      },
+      {
+       "ids": [
+        "hector",
+        "nora",
+        "bradley"
+       ],
+       "score": 14638481
       },
       {
        "ids": [
@@ -4425,50 +4441,34 @@
       {
        "ids": [
         "hector",
-        "reina",
+        "jessie",
         "bradley"
        ],
-       "score": 12628388
+       "score": 13282830
       },
       {
        "ids": [
         "hector",
-        "nora",
+        "patrick",
         "bradley"
        ],
-       "score": 12599357
+       "score": 13192162
       },
       {
        "ids": [
-        "ahmose",
+        "hector",
+        "philly",
+        "bradley"
+       ],
+       "score": 12618166
+      },
+      {
+       "ids": [
+        "hector",
         "mia",
-        "bradley"
+        "wayne"
        ],
-       "score": 12024776
-      },
-      {
-       "ids": [
-        "ahmose",
-        "molly",
-        "bradley"
-       ],
-       "score": 11658156
-      },
-      {
-       "ids": [
-        "flint",
-        "reina",
-        "bradley"
-       ],
-       "score": 11619386
-      },
-      {
-       "ids": [
-        "flint",
-        "nora",
-        "bradley"
-       ],
-       "score": 11592763
+       "score": 12074568
       }
      ],
      "slotRank": {
@@ -4481,42 +4481,42 @@
        {
         "id": "flint",
         "rank": 2,
-        "index": 92
+        "index": 79
        },
        {
         "id": "ahmose",
         "rank": 3,
-        "index": 77
+        "index": 67
        },
        {
         "id": "wuming",
         "rank": 4,
-        "index": 74
+        "index": 64
        },
        {
         "id": "edith",
         "rank": 5,
-        "index": 64
+        "index": 55
        },
        {
         "id": "logan",
         "rank": 6,
-        "index": 64
+        "index": 55
        },
        {
         "id": "sergey",
         "rank": 7,
-        "index": 63
+        "index": 55
        },
        {
         "id": "smith",
         "rank": 8,
-        "index": 63
+        "index": 55
        },
        {
         "id": "eugene",
         "rank": 9,
-        "index": 63
+        "index": 55
        }
       ],
       "lan": [
@@ -4677,7 +4677,15 @@
         "mia",
         "bradley"
        ],
-       "score": 29604003
+       "score": 34395218
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "bradley"
+       ],
+       "score": 29780491
       },
       {
        "ids": [
@@ -4705,6 +4713,14 @@
       },
       {
        "ids": [
+        "hector",
+        "reina",
+        "bradley"
+       ],
+       "score": 27977642
+      },
+      {
+       "ids": [
         "flint",
         "mia",
         "bradley"
@@ -4722,26 +4738,10 @@
       {
        "ids": [
         "hector",
-        "molly",
+        "nora",
         "bradley"
        ],
-       "score": 25632102
-      },
-      {
-       "ids": [
-        "jeronimo",
-        "mia",
-        "wayne"
-       ],
-       "score": 24705022
-      },
-      {
-       "ids": [
-        "natalia",
-        "molly",
-        "bradley"
-       ],
-       "score": 24445985
+       "score": 25952365
       }
      ],
      "slotRank": {
@@ -4754,7 +4754,7 @@
        {
         "id": "hector",
         "rank": 2,
-        "index": 85
+        "index": 99
        },
        {
         "id": "natalia",
@@ -4811,7 +4811,7 @@
        {
         "id": "molly",
         "rank": 2,
-        "index": 85
+        "index": 86
        },
        {
         "id": "reina",
@@ -4826,7 +4826,7 @@
        {
         "id": "jessie",
         "rank": 5,
-        "index": 67
+        "index": 68
        },
        {
         "id": "patrick",
@@ -4958,6 +4958,14 @@
       },
       {
        "ids": [
+        "hector",
+        "mia",
+        "bradley"
+       ],
+       "score": 90728161
+      },
+      {
+       "ids": [
         "natalia",
         "mia",
         "bradley"
@@ -4974,19 +4982,27 @@
       },
       {
        "ids": [
-        "hector",
-        "mia",
-        "bradley"
-       ],
-       "score": 78089831
-      },
-      {
-       "ids": [
         "jeronimo",
         "molly",
         "bradley"
        ],
        "score": 77848274
+      },
+      {
+       "ids": [
+        "hector",
+        "reina",
+        "bradley"
+       ],
+       "score": 73778128
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "bradley"
+       ],
+       "score": 73436272
       },
       {
        "ids": [
@@ -5011,22 +5027,6 @@
         "bradley"
        ],
        "score": 68645287
-      },
-      {
-       "ids": [
-        "natalia",
-        "reina",
-        "bradley"
-       ],
-       "score": 66143838
-      },
-      {
-       "ids": [
-        "natalia",
-        "molly",
-        "bradley"
-       ],
-       "score": 64492930
       }
      ],
      "slotRank": {
@@ -5037,14 +5037,14 @@
         "index": 100
        },
        {
-        "id": "natalia",
+        "id": "hector",
         "rank": 2,
-        "index": 83
+        "index": 92
        },
        {
-        "id": "hector",
+        "id": "natalia",
         "rank": 3,
-        "index": 80
+        "index": 83
        },
        {
         "id": "flint",
@@ -5262,7 +5262,7 @@
         "mia",
         "bradley"
        ],
-       "score": 15521062
+       "score": 18033044
       },
       {
        "ids": [
@@ -5270,7 +5270,7 @@
         "mia",
         "hendrik"
        ],
-       "score": 15250378
+       "score": 17718552
       },
       {
        "ids": [
@@ -5278,7 +5278,39 @@
         "molly",
         "bradley"
        ],
-       "score": 14445989
+       "score": 16783978
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "hendrik"
+       ],
+       "score": 16497084
+      },
+      {
+       "ids": [
+        "hector",
+        "sonya",
+        "bradley"
+       ],
+       "score": 15603333
+      },
+      {
+       "ids": [
+        "hector",
+        "reina",
+        "bradley"
+       ],
+       "score": 14672210
+      },
+      {
+       "ids": [
+        "hector",
+        "nora",
+        "bradley"
+       ],
+       "score": 14638481
       },
       {
        "ids": [
@@ -5298,43 +5330,11 @@
       },
       {
        "ids": [
-        "hector",
-        "molly",
-        "hendrik"
-       ],
-       "score": 14199059
-      },
-      {
-       "ids": [
-        "hector",
-        "sonya",
-        "bradley"
-       ],
-       "score": 13429806
-      },
-      {
-       "ids": [
         "flint",
         "molly",
         "hendrik"
        ],
        "score": 13404777
-      },
-      {
-       "ids": [
-        "flint",
-        "molly",
-        "bradley"
-       ],
-       "score": 13291586
-      },
-      {
-       "ids": [
-        "hector",
-        "reina",
-        "bradley"
-       ],
-       "score": 12628388
       }
      ],
      "slotRank": {
@@ -5347,47 +5347,47 @@
        {
         "id": "flint",
         "rank": 2,
-        "index": 93
+        "index": 80
        },
        {
         "id": "ahmose",
         "rank": 3,
-        "index": 77
+        "index": 67
        },
        {
         "id": "wuming",
         "rank": 4,
-        "index": 74
+        "index": 64
        },
        {
         "id": "edith",
         "rank": 5,
-        "index": 64
+        "index": 55
        },
        {
         "id": "gatot",
         "rank": 6,
-        "index": 64
+        "index": 55
        },
        {
         "id": "logan",
         "rank": 7,
-        "index": 64
+        "index": 55
        },
        {
         "id": "sergey",
         "rank": 8,
-        "index": 63
+        "index": 55
        },
        {
         "id": "smith",
         "rank": 9,
-        "index": 63
+        "index": 55
        },
        {
         "id": "eugene",
         "rank": 10,
-        "index": 63
+        "index": 55
        }
       ],
       "lan": [
@@ -5564,19 +5564,35 @@
       },
       {
        "ids": [
-        "jeronimo",
-        "molly",
-        "hendrik"
+        "hector",
+        "mia",
+        "bradley"
        ],
-       "score": 29680428
+       "score": 34395218
       },
       {
        "ids": [
         "hector",
         "mia",
+        "hendrik"
+       ],
+       "score": 33319991
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
         "bradley"
        ],
-       "score": 29604003
+       "score": 29780491
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "molly",
+        "hendrik"
+       ],
+       "score": 29680428
       },
       {
        "ids": [
@@ -5596,35 +5612,19 @@
       },
       {
        "ids": [
+        "hector",
+        "molly",
+        "hendrik"
+       ],
+       "score": 28858569
+      },
+      {
+       "ids": [
         "natalia",
         "mia",
         "bradley"
        ],
        "score": 28822441
-      },
-      {
-       "ids": [
-        "hector",
-        "mia",
-        "hendrik"
-       ],
-       "score": 28678554
-      },
-      {
-       "ids": [
-        "jeronimo",
-        "reina",
-        "hendrik"
-       ],
-       "score": 28440223
-      },
-      {
-       "ids": [
-        "jeronimo",
-        "reina",
-        "bradley"
-       ],
-       "score": 28299875
       }
      ],
      "slotRank": {
@@ -5637,7 +5637,7 @@
        {
         "id": "hector",
         "rank": 2,
-        "index": 85
+        "index": 98
        },
        {
         "id": "natalia",
@@ -5864,6 +5864,22 @@
       },
       {
        "ids": [
+        "hector",
+        "mia",
+        "bradley"
+       ],
+       "score": 90728161
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "hendrik"
+       ],
+       "score": 86699383
+      },
+      {
+       "ids": [
         "natalia",
         "mia",
         "bradley"
@@ -5896,14 +5912,6 @@
       },
       {
        "ids": [
-        "hector",
-        "mia",
-        "bradley"
-       ],
-       "score": 78089831
-      },
-      {
-       "ids": [
         "jeronimo",
         "molly",
         "bradley"
@@ -5917,14 +5925,6 @@
         "hendrik"
        ],
        "score": 77234514
-      },
-      {
-       "ids": [
-        "hector",
-        "mia",
-        "hendrik"
-       ],
-       "score": 74622257
       }
      ],
      "slotRank": {
@@ -5935,14 +5935,14 @@
         "index": 100
        },
        {
-        "id": "natalia",
+        "id": "hector",
         "rank": 2,
-        "index": 83
+        "index": 92
        },
        {
-        "id": "hector",
+        "id": "natalia",
         "rank": 3,
-        "index": 80
+        "index": 83
        },
        {
         "id": "flint",
@@ -6177,7 +6177,7 @@
         "mia",
         "xura"
        ],
-       "score": 22483100
+       "score": 26121843
       },
       {
        "ids": [
@@ -6185,7 +6185,7 @@
         "molly",
         "xura"
        ],
-       "score": 21414952
+       "score": 24880823
       },
       {
        "ids": [
@@ -6209,7 +6209,7 @@
         "patrick",
         "xura"
        ],
-       "score": 17309693
+       "score": 20111154
       },
       {
        "ids": [
@@ -6217,23 +6217,7 @@
         "jessie",
         "xura"
        ],
-       "score": 16989690
-      },
-      {
-       "ids": [
-        "flint",
-        "jessie",
-        "xura"
-       ],
-       "score": 16041835
-      },
-      {
-       "ids": [
-        "flint",
-        "patrick",
-        "xura"
-       ],
-       "score": 15932335
+       "score": 19739360
       },
       {
        "ids": [
@@ -6241,7 +6225,7 @@
         "mia",
         "bradley"
        ],
-       "score": 15521062
+       "score": 18033044
       },
       {
        "ids": [
@@ -6249,7 +6233,23 @@
         "fred",
         "xura"
        ],
-       "score": 15441702
+       "score": 17940841
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "hendrik"
+       ],
+       "score": 17718552
+      },
+      {
+       "ids": [
+        "hector",
+        "renee",
+        "xura"
+       ],
+       "score": 17342170
       }
      ],
      "slotRank": {
@@ -6262,52 +6262,52 @@
        {
         "id": "flint",
         "rank": 2,
-        "index": 94
+        "index": 81
        },
        {
         "id": "gatot",
         "rank": 3,
-        "index": 64
+        "index": 55
        },
        {
         "id": "sergey",
         "rank": 4,
-        "index": 63
+        "index": 55
        },
        {
         "id": "smith",
         "rank": 5,
-        "index": 63
+        "index": 55
        },
        {
         "id": "eugene",
         "rank": 6,
-        "index": 63
+        "index": 55
        },
        {
         "id": "magnus",
         "rank": 7,
-        "index": 56
+        "index": 48
        },
        {
         "id": "ahmose",
         "rank": 8,
-        "index": 53
+        "index": 46
        },
        {
         "id": "wuming",
         "rank": 9,
-        "index": 51
+        "index": 44
        },
        {
         "id": "edith",
         "rank": 10,
-        "index": 44
+        "index": 38
        },
        {
         "id": "logan",
         "rank": 11,
-        "index": 44
+        "index": 38
        }
       ],
       "lan": [
@@ -6486,11 +6486,27 @@
       },
       {
        "ids": [
+        "hector",
+        "mia",
+        "xura"
+       ],
+       "score": 48448269
+      },
+      {
+       "ids": [
         "jeronimo",
         "molly",
         "xura"
        ],
        "score": 44155473
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "xura"
+       ],
+       "score": 42925679
       },
       {
        "ids": [
@@ -6510,14 +6526,6 @@
       },
       {
        "ids": [
-        "hector",
-        "mia",
-        "xura"
-       ],
-       "score": 41699480
-      },
-      {
-       "ids": [
         "jeronimo",
         "sonya",
         "xura"
@@ -6526,35 +6534,27 @@
       },
       {
        "ids": [
+        "hector",
+        "reina",
+        "xura"
+       ],
+       "score": 40264187
+      },
+      {
+       "ids": [
+        "hector",
+        "sonya",
+        "xura"
+       ],
+       "score": 39426685
+      },
+      {
+       "ids": [
         "flint",
         "mia",
         "xura"
        ],
        "score": 39374647
-      },
-      {
-       "ids": [
-        "jeronimo",
-        "nora",
-        "xura"
-       ],
-       "score": 39187913
-      },
-      {
-       "ids": [
-        "hector",
-        "molly",
-        "xura"
-       ],
-       "score": 36946180
-      },
-      {
-       "ids": [
-        "natalia",
-        "molly",
-        "xura"
-       ],
-       "score": 36458478
       }
      ],
      "slotRank": {
@@ -6565,14 +6565,14 @@
         "index": 100
        },
        {
-        "id": "natalia",
+        "id": "hector",
         "rank": 2,
-        "index": 83
+        "index": 95
        },
        {
-        "id": "hector",
+        "id": "natalia",
         "rank": 3,
-        "index": 82
+        "index": 83
        },
        {
         "id": "flint",
@@ -6801,6 +6801,14 @@
       },
       {
        "ids": [
+        "hector",
+        "mia",
+        "xura"
+       ],
+       "score": 124377810
+      },
+      {
+       "ids": [
         "jeronimo",
         "reina",
         "xura"
@@ -6825,19 +6833,27 @@
       },
       {
        "ids": [
-        "hector",
-        "mia",
-        "xura"
-       ],
-       "score": 107052121
-      },
-      {
-       "ids": [
         "jeronimo",
         "sonya",
         "xura"
        ],
        "score": 104313253
+      },
+      {
+       "ids": [
+        "hector",
+        "reina",
+        "xura"
+       ],
+       "score": 103353552
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "xura"
+       ],
+       "score": 103011566
       },
       {
        "ids": [
@@ -6854,22 +6870,6 @@
         "xura"
        ],
        "score": 100557868
-      },
-      {
-       "ids": [
-        "jeronimo",
-        "mia",
-        "bradley"
-       ],
-       "score": 98183235
-      },
-      {
-       "ids": [
-        "jeronimo",
-        "mia",
-        "hendrik"
-       ],
-       "score": 97382354
       }
      ],
      "slotRank": {
@@ -6880,14 +6880,14 @@
         "index": 100
        },
        {
-        "id": "natalia",
+        "id": "hector",
         "rank": 2,
-        "index": 83
+        "index": 89
        },
        {
-        "id": "hector",
+        "id": "natalia",
         "rank": 3,
-        "index": 77
+        "index": 83
        },
        {
         "id": "flint",
@@ -7137,7 +7137,7 @@
         "mia",
         "blanchette"
        ],
-       "score": 29478696
+       "score": 34249631
       },
       {
        "ids": [
@@ -7145,7 +7145,7 @@
         "freya",
         "blanchette"
        ],
-       "score": 28089001
+       "score": 32635023
       },
       {
        "ids": [
@@ -7153,7 +7153,31 @@
         "molly",
         "blanchette"
        ],
-       "score": 27467481
+       "score": 31912914
+      },
+      {
+       "ids": [
+        "hector",
+        "sonya",
+        "blanchette"
+       ],
+       "score": 29127793
+      },
+      {
+       "ids": [
+        "hector",
+        "nora",
+        "blanchette"
+       ],
+       "score": 27967355
+      },
+      {
+       "ids": [
+        "hector",
+        "reina",
+        "blanchette"
+       ],
+       "score": 27809552
       },
       {
        "ids": [
@@ -7165,51 +7189,27 @@
       },
       {
        "ids": [
+        "hector",
+        "mia",
+        "xura"
+       ],
+       "score": 26121843
+      },
+      {
+       "ids": [
+        "hector",
+        "patrick",
+        "blanchette"
+       ],
+       "score": 25843589
+      },
+      {
+       "ids": [
         "flint",
         "freya",
         "blanchette"
        ],
        "score": 25469730
-      },
-      {
-       "ids": [
-        "hector",
-        "sonya",
-        "blanchette"
-       ],
-       "score": 25070324
-      },
-      {
-       "ids": [
-        "flint",
-        "molly",
-        "blanchette"
-       ],
-       "score": 24905141
-      },
-      {
-       "ids": [
-        "magnus",
-        "mia",
-        "blanchette"
-       ],
-       "score": 24485090
-      },
-      {
-       "ids": [
-        "hector",
-        "nora",
-        "blanchette"
-       ],
-       "score": 24071534
-      },
-      {
-       "ids": [
-        "hector",
-        "reina",
-        "blanchette"
-       ],
-       "score": 23935712
       }
      ],
      "slotRank": {
@@ -7222,57 +7222,57 @@
        {
         "id": "flint",
         "rank": 2,
-        "index": 91
+        "index": 78
        },
        {
         "id": "magnus",
         "rank": 3,
-        "index": 83
+        "index": 71
        },
        {
         "id": "gregory",
         "rank": 4,
-        "index": 78
+        "index": 67
        },
        {
         "id": "ahmose",
         "rank": 5,
-        "index": 78
+        "index": 67
        },
        {
         "id": "wuming",
         "rank": 6,
-        "index": 74
+        "index": 64
        },
        {
         "id": "edith",
         "rank": 7,
-        "index": 64
+        "index": 55
        },
        {
         "id": "gatot",
         "rank": 8,
-        "index": 64
+        "index": 55
        },
        {
         "id": "logan",
         "rank": 9,
-        "index": 64
+        "index": 55
        },
        {
         "id": "sergey",
         "rank": 10,
-        "index": 64
+        "index": 55
        },
        {
         "id": "smith",
         "rank": 11,
-        "index": 64
+        "index": 55
        },
        {
         "id": "eugene",
         "rank": 12,
-        "index": 64
+        "index": 55
        }
       ],
       "lan": [
@@ -7461,11 +7461,27 @@
       },
       {
        "ids": [
+        "hector",
+        "mia",
+        "blanchette"
+       ],
+       "score": 62655560
+      },
+      {
+       "ids": [
         "jeronimo",
         "freya",
         "blanchette"
        ],
        "score": 56695275
+      },
+      {
+       "ids": [
+        "hector",
+        "freya",
+        "blanchette"
+       ],
+       "score": 55418128
       },
       {
        "ids": [
@@ -7486,10 +7502,10 @@
       {
        "ids": [
         "hector",
-        "mia",
+        "molly",
         "blanchette"
        ],
-       "score": 53927712
+       "score": 54305147
       },
       {
        "ids": [
@@ -7509,27 +7525,11 @@
       },
       {
        "ids": [
-        "jeronimo",
-        "sonya",
+        "hector",
+        "reina",
         "blanchette"
        ],
-       "score": 49807541
-      },
-      {
-       "ids": [
-        "flint",
-        "mia",
-        "blanchette"
-       ],
-       "score": 48897419
-      },
-      {
-       "ids": [
-        "jeronimo",
-        "nora",
-        "blanchette"
-       ],
-       "score": 48202513
+       "score": 50872544
       }
      ],
      "slotRank": {
@@ -7540,14 +7540,14 @@
         "index": 100
        },
        {
-        "id": "natalia",
+        "id": "hector",
         "rank": 2,
-        "index": 85
+        "index": 98
        },
        {
-        "id": "hector",
+        "id": "natalia",
         "rank": 3,
-        "index": 84
+        "index": 85
        },
        {
         "id": "flint",
@@ -7639,7 +7639,7 @@
        {
         "id": "patrick",
         "rank": 7,
-        "index": 68
+        "index": 69
        },
        {
         "id": "jessie",
@@ -7791,6 +7791,14 @@
       },
       {
        "ids": [
+        "hector",
+        "mia",
+        "blanchette"
+       ],
+       "score": 158685306
+      },
+      {
+       "ids": [
         "natalia",
         "mia",
         "blanchette"
@@ -7832,34 +7840,26 @@
       {
        "ids": [
         "hector",
-        "mia",
+        "freya",
         "blanchette"
        ],
-       "score": 136580622
+       "score": 130901206
       },
       {
        "ids": [
-        "jeronimo",
-        "sonya",
+        "hector",
+        "reina",
         "blanchette"
        ],
-       "score": 126001189
+       "score": 128834487
       },
       {
        "ids": [
-        "flint",
-        "mia",
+        "hector",
+        "molly",
         "blanchette"
        ],
-       "score": 123842516
-      },
-      {
-       "ids": [
-        "jeronimo",
-        "nora",
-        "blanchette"
-       ],
-       "score": 122043014
+       "score": 128562223
       }
      ],
      "slotRank": {
@@ -7870,14 +7870,14 @@
         "index": 100
        },
        {
-        "id": "natalia",
+        "id": "hector",
         "rank": 2,
-        "index": 85
+        "index": 91
        },
        {
-        "id": "hector",
+        "id": "natalia",
         "rank": 3,
-        "index": 79
+        "index": 85
        },
        {
         "id": "flint",
@@ -8142,7 +8142,7 @@
         "mia",
         "rufus"
        ],
-       "score": 43637235
+       "score": 50699637
       },
       {
        "ids": [
@@ -8150,7 +8150,7 @@
         "molly",
         "rufus"
        ],
-       "score": 40671544
+       "score": 47253969
       },
       {
        "ids": [
@@ -8162,6 +8162,14 @@
       },
       {
        "ids": [
+        "hector",
+        "jessie",
+        "rufus"
+       ],
+       "score": 37600824
+      },
+      {
+       "ids": [
         "flint",
         "molly",
         "rufus"
@@ -8170,43 +8178,11 @@
       },
       {
        "ids": [
-        "eleonora",
-        "mia",
-        "rufus"
-       ],
-       "score": 32513637
-      },
-      {
-       "ids": [
-        "hector",
-        "jessie",
-        "rufus"
-       ],
-       "score": 32363071
-      },
-      {
-       "ids": [
         "hector",
         "patrick",
         "rufus"
        ],
-       "score": 32142163
-      },
-      {
-       "ids": [
-        "eleonora",
-        "molly",
-        "rufus"
-       ],
-       "score": 30304091
-      },
-      {
-       "ids": [
-        "flint",
-        "jessie",
-        "rufus"
-       ],
-       "score": 29801753
+       "score": 37344163
       },
       {
        "ids": [
@@ -8214,7 +8190,31 @@
         "mia",
         "blanchette"
        ],
-       "score": 29478696
+       "score": 34249631
+      },
+      {
+       "ids": [
+        "hector",
+        "fred",
+        "rufus"
+       ],
+       "score": 33571760
+      },
+      {
+       "ids": [
+        "hector",
+        "renee",
+        "rufus"
+       ],
+       "score": 32746753
+      },
+      {
+       "ids": [
+        "hector",
+        "freya",
+        "blanchette"
+       ],
+       "score": 32635023
       }
      ],
      "slotRank": {
@@ -8227,62 +8227,62 @@
        {
         "id": "flint",
         "rank": 2,
-        "index": 92
+        "index": 79
        },
        {
         "id": "eleonora",
         "rank": 3,
-        "index": 75
+        "index": 64
        },
        {
         "id": "gatot",
         "rank": 4,
-        "index": 64
+        "index": 55
        },
        {
         "id": "sergey",
         "rank": 5,
-        "index": 64
+        "index": 55
        },
        {
         "id": "smith",
         "rank": 6,
-        "index": 64
+        "index": 55
        },
        {
         "id": "eugene",
         "rank": 7,
-        "index": 64
+        "index": 55
        },
        {
         "id": "magnus",
         "rank": 8,
-        "index": 56
+        "index": 48
        },
        {
         "id": "gregory",
         "rank": 9,
-        "index": 53
+        "index": 45
        },
        {
         "id": "ahmose",
         "rank": 10,
-        "index": 52
+        "index": 45
        },
        {
         "id": "wuming",
         "rank": 11,
-        "index": 50
+        "index": 43
        },
        {
         "id": "edith",
         "rank": 12,
-        "index": 43
+        "index": 37
        },
        {
         "id": "logan",
         "rank": 13,
-        "index": 43
+        "index": 37
        }
       ],
       "lan": [
@@ -8479,11 +8479,27 @@
       },
       {
        "ids": [
+        "hector",
+        "mia",
+        "rufus"
+       ],
+       "score": 91544231
+      },
+      {
+       "ids": [
         "jeronimo",
         "freya",
         "rufus"
        ],
        "score": 82434869
+      },
+      {
+       "ids": [
+        "hector",
+        "freya",
+        "rufus"
+       ],
+       "score": 80490068
       },
       {
        "ids": [
@@ -8496,10 +8512,10 @@
       {
        "ids": [
         "hector",
-        "mia",
+        "molly",
         "rufus"
        ],
-       "score": 78792223
+       "score": 79365282
       },
       {
        "ids": [
@@ -8519,35 +8535,19 @@
       },
       {
        "ids": [
+        "hector",
+        "reina",
+        "rufus"
+       ],
+       "score": 74292680
+      },
+      {
+       "ids": [
         "jeronimo",
         "sonya",
         "rufus"
        ],
        "score": 72562368
-      },
-      {
-       "ids": [
-        "flint",
-        "mia",
-        "rufus"
-       ],
-       "score": 72556398
-      },
-      {
-       "ids": [
-        "jeronimo",
-        "lloyd",
-        "rufus"
-       ],
-       "score": 71039703
-      },
-      {
-       "ids": [
-        "jeronimo",
-        "nora",
-        "rufus"
-       ],
-       "score": 70442646
       }
      ],
      "slotRank": {
@@ -8560,7 +8560,7 @@
        {
         "id": "hector",
         "rank": 2,
-        "index": 84
+        "index": 98
        },
        {
         "id": "natalia",
@@ -8822,6 +8822,14 @@
       },
       {
        "ids": [
+        "hector",
+        "mia",
+        "rufus"
+       ],
+       "score": 228852471
+      },
+      {
+       "ids": [
         "jeronimo",
         "freya",
         "rufus"
@@ -8855,10 +8863,26 @@
       {
        "ids": [
         "hector",
-        "mia",
+        "freya",
         "rufus"
        ],
-       "score": 196973580
+       "score": 187803662
+      },
+      {
+       "ids": [
+        "hector",
+        "reina",
+        "rufus"
+       ],
+       "score": 185720978
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "rufus"
+       ],
+       "score": 185457536
       },
       {
        "ids": [
@@ -8867,30 +8891,6 @@
         "rufus"
        ],
        "score": 181384981
-      },
-      {
-       "ids": [
-        "jeronimo",
-        "sonya",
-        "rufus"
-       ],
-       "score": 181270010
-      },
-      {
-       "ids": [
-        "jeronimo",
-        "lloyd",
-        "rufus"
-       ],
-       "score": 177211053
-      },
-      {
-       "ids": [
-        "jeronimo",
-        "nora",
-        "rufus"
-       ],
-       "score": 176062735
       }
      ],
      "slotRank": {
@@ -8901,14 +8901,14 @@
         "index": 100
        },
        {
-        "id": "natalia",
+        "id": "hector",
         "rank": 2,
-        "index": 82
+        "index": 91
        },
        {
-        "id": "hector",
+        "id": "natalia",
         "rank": 3,
-        "index": 79
+        "index": 82
        },
        {
         "id": "flint",
@@ -9186,7 +9186,7 @@
         "mia",
         "rufus"
        ],
-       "score": 43637235
+       "score": 50699637
       },
       {
        "ids": [
@@ -9194,7 +9194,7 @@
         "mia",
         "ligeia"
        ],
-       "score": 40858012
+       "score": 47470615
       },
       {
        "ids": [
@@ -9202,7 +9202,15 @@
         "molly",
         "rufus"
        ],
-       "score": 40671544
+       "score": 47253969
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "ligeia"
+       ],
+       "score": 45256851
       },
       {
        "ids": [
@@ -9214,19 +9222,27 @@
       },
       {
        "ids": [
-        "hector",
-        "molly",
-        "ligeia"
-       ],
-       "score": 38952623
-      },
-      {
-       "ids": [
         "flint",
         "mia",
         "ligeia"
        ],
        "score": 38600227
+      },
+      {
+       "ids": [
+        "hector",
+        "jessie",
+        "rufus"
+       ],
+       "score": 37600824
+      },
+      {
+       "ids": [
+        "hector",
+        "karol",
+        "rufus"
+       ],
+       "score": 37528105
       },
       {
        "ids": [
@@ -9238,27 +9254,11 @@
       },
       {
        "ids": [
-        "flint",
-        "molly",
-        "ligeia"
-       ],
-       "score": 36800095
-      },
-      {
-       "ids": [
-        "eleonora",
-        "mia",
-        "rufus"
-       ],
-       "score": 32513637
-      },
-      {
-       "ids": [
         "hector",
-        "jessie",
+        "patrick",
         "rufus"
        ],
-       "score": 32363071
+       "score": 37344163
       }
      ],
      "slotRank": {
@@ -9271,67 +9271,67 @@
        {
         "id": "flint",
         "rank": 2,
-        "index": 92
+        "index": 79
        },
        {
         "id": "eleonora",
         "rank": 3,
-        "index": 75
+        "index": 64
        },
        {
         "id": "gatot",
         "rank": 4,
-        "index": 64
+        "index": 55
        },
        {
         "id": "sergey",
         "rank": 5,
-        "index": 64
+        "index": 55
        },
        {
         "id": "smith",
         "rank": 6,
-        "index": 64
+        "index": 55
        },
        {
         "id": "eugene",
         "rank": 7,
-        "index": 64
+        "index": 55
        },
        {
         "id": "magnus",
         "rank": 8,
-        "index": 56
+        "index": 48
        },
        {
         "id": "gregory",
         "rank": 9,
-        "index": 53
+        "index": 45
        },
        {
         "id": "ahmose",
         "rank": 10,
-        "index": 52
+        "index": 45
        },
        {
         "id": "hervor",
         "rank": 11,
-        "index": 52
+        "index": 45
        },
        {
         "id": "wuming",
         "rank": 12,
-        "index": 50
+        "index": 43
        },
        {
         "id": "edith",
         "rank": 13,
-        "index": 43
+        "index": 37
        },
        {
         "id": "logan",
         "rank": 14,
-        "index": 43
+        "index": 37
        }
       ],
       "lan": [
@@ -9540,6 +9540,14 @@
       },
       {
        "ids": [
+        "hector",
+        "mia",
+        "rufus"
+       ],
+       "score": 91544231
+      },
+      {
+       "ids": [
         "jeronimo",
         "mia",
         "ligeia"
@@ -9548,11 +9556,27 @@
       },
       {
        "ids": [
+        "hector",
+        "mia",
+        "ligeia"
+       ],
+       "score": 84660661
+      },
+      {
+       "ids": [
         "jeronimo",
         "freya",
         "rufus"
        ],
        "score": 82434869
+      },
+      {
+       "ids": [
+        "hector",
+        "freya",
+        "rufus"
+       ],
+       "score": 80490068
       },
       {
        "ids": [
@@ -9573,10 +9597,10 @@
       {
        "ids": [
         "hector",
-        "mia",
+        "molly",
         "rufus"
        ],
-       "score": 78792223
+       "score": 79365282
       },
       {
        "ids": [
@@ -9585,30 +9609,6 @@
         "ligeia"
        ],
        "score": 77272077
-      },
-      {
-       "ids": [
-        "natalia",
-        "mia",
-        "rufus"
-       ],
-       "score": 76777722
-      },
-      {
-       "ids": [
-        "jeronimo",
-        "reina",
-        "rufus"
-       ],
-       "score": 76085627
-      },
-      {
-       "ids": [
-        "jeronimo",
-        "reina",
-        "ligeia"
-       ],
-       "score": 73811257
       }
      ],
      "slotRank": {
@@ -9621,7 +9621,7 @@
        {
         "id": "hector",
         "rank": 2,
-        "index": 84
+        "index": 98
        },
        {
         "id": "natalia",
@@ -9908,6 +9908,22 @@
       },
       {
        "ids": [
+        "hector",
+        "mia",
+        "rufus"
+       ],
+       "score": 228852471
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "ligeia"
+       ],
+       "score": 209031371
+      },
+      {
+       "ids": [
         "jeronimo",
         "freya",
         "rufus"
@@ -9940,14 +9956,6 @@
       },
       {
        "ids": [
-        "hector",
-        "mia",
-        "rufus"
-       ],
-       "score": 196973580
-      },
-      {
-       "ids": [
         "jeronimo",
         "freya",
         "ligeia"
@@ -9961,14 +9969,6 @@
         "ligeia"
        ],
        "score": 194956809
-      },
-      {
-       "ids": [
-        "natalia",
-        "mia",
-        "ligeia"
-       ],
-       "score": 193991443
       }
      ],
      "slotRank": {
@@ -9979,14 +9979,14 @@
         "index": 100
        },
        {
-        "id": "natalia",
+        "id": "hector",
         "rank": 2,
-        "index": 82
+        "index": 91
        },
        {
-        "id": "hector",
+        "id": "natalia",
         "rank": 3,
-        "index": 79
+        "index": 82
        },
        {
         "id": "flint",
@@ -10281,7 +10281,7 @@
         "mia",
         "vulcanus"
        ],
-       "score": 44261693
+       "score": 51425159
       },
       {
        "ids": [
@@ -10289,15 +10289,7 @@
         "mia",
         "rufus"
        ],
-       "score": 43637235
-      },
-      {
-       "ids": [
-        "flint",
-        "mia",
-        "vulcanus"
-       ],
-       "score": 41821390
+       "score": 50699637
       },
       {
        "ids": [
@@ -10305,7 +10297,7 @@
         "freya",
         "vulcanus"
        ],
-       "score": 41762713
+       "score": 48521736
       },
       {
        "ids": [
@@ -10313,7 +10305,7 @@
         "molly",
         "vulcanus"
        ],
-       "score": 41510854
+       "score": 48229115
       },
       {
        "ids": [
@@ -10321,7 +10313,7 @@
         "mia",
         "ligeia"
        ],
-       "score": 40858012
+       "score": 47470615
       },
       {
        "ids": [
@@ -10329,31 +10321,39 @@
         "molly",
         "rufus"
        ],
-       "score": 40671544
+       "score": 47253969
       },
       {
        "ids": [
-        "flint",
-        "mia",
-        "rufus"
-       ],
-       "score": 40183869
-      },
-      {
-       "ids": [
-        "flint",
-        "freya",
-        "vulcanus"
-       ],
-       "score": 39460770
-      },
-      {
-       "ids": [
-        "flint",
+        "hector",
         "molly",
+        "ligeia"
+       ],
+       "score": 45256851
+      },
+      {
+       "ids": [
+        "hector",
+        "flora",
         "vulcanus"
        ],
-       "score": 39222190
+       "score": 43713675
+      },
+      {
+       "ids": [
+        "hector",
+        "sonya",
+        "vulcanus"
+       ],
+       "score": 43539046
+      },
+      {
+       "ids": [
+        "hector",
+        "nora",
+        "vulcanus"
+       ],
+       "score": 42141743
       }
      ],
      "slotRank": {
@@ -10366,72 +10366,72 @@
        {
         "id": "flint",
         "rank": 2,
-        "index": 94
+        "index": 81
        },
        {
         "id": "magnus",
         "rank": 3,
-        "index": 83
+        "index": 71
        },
        {
         "id": "hervor",
         "rank": 4,
-        "index": 80
+        "index": 69
        },
        {
         "id": "gregory",
         "rank": 5,
-        "index": 78
+        "index": 67
        },
        {
         "id": "ahmose",
         "rank": 6,
-        "index": 77
+        "index": 66
        },
        {
         "id": "eleonora",
         "rank": 7,
-        "index": 77
+        "index": 66
        },
        {
         "id": "wuming",
         "rank": 8,
-        "index": 74
+        "index": 64
        },
        {
         "id": "edith",
         "rank": 9,
-        "index": 64
+        "index": 55
        },
        {
         "id": "gisela",
         "rank": 10,
-        "index": 64
+        "index": 55
        },
        {
         "id": "gatot",
         "rank": 11,
-        "index": 64
+        "index": 55
        },
        {
         "id": "logan",
         "rank": 12,
-        "index": 64
+        "index": 55
        },
        {
         "id": "sergey",
         "rank": 13,
-        "index": 64
+        "index": 55
        },
        {
         "id": "smith",
         "rank": 14,
-        "index": 64
+        "index": 55
        },
        {
         "id": "eugene",
         "rank": 15,
-        "index": 64
+        "index": 55
        }
       ],
       "lan": [
@@ -10650,11 +10650,27 @@
       },
       {
        "ids": [
+        "hector",
+        "mia",
+        "vulcanus"
+       ],
+       "score": 97419498
+      },
+      {
+       "ids": [
         "jeronimo",
         "mia",
         "rufus"
        ],
        "score": 93753291
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "rufus"
+       ],
+       "score": 91544231
       },
       {
        "ids": [
@@ -10682,43 +10698,27 @@
       },
       {
        "ids": [
-        "natalia",
-        "mia",
+        "hector",
+        "freya",
         "vulcanus"
        ],
-       "score": 84527508
+       "score": 85468980
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "vulcanus"
+       ],
+       "score": 84984796
       },
       {
        "ids": [
         "hector",
         "mia",
-        "vulcanus"
+        "ligeia"
        ],
-       "score": 83849072
-      },
-      {
-       "ids": [
-        "jeronimo",
-        "reina",
-        "vulcanus"
-       ],
-       "score": 83513518
-      },
-      {
-       "ids": [
-        "jeronimo",
-        "freya",
-        "rufus"
-       ],
-       "score": 82434869
-      },
-      {
-       "ids": [
-        "jeronimo",
-        "flora",
-        "vulcanus"
-       ],
-       "score": 80816027
+       "score": 84660661
       }
      ],
      "slotRank": {
@@ -10729,14 +10729,14 @@
         "index": 100
        },
        {
-        "id": "natalia",
+        "id": "hector",
         "rank": 2,
-        "index": 83
+        "index": 95
        },
        {
-        "id": "hector",
+        "id": "natalia",
         "rank": 3,
-        "index": 82
+        "index": 83
        },
        {
         "id": "flint",
@@ -11025,6 +11025,14 @@
       },
       {
        "ids": [
+        "hector",
+        "mia",
+        "vulcanus"
+       ],
+       "score": 254205825
+      },
+      {
+       "ids": [
         "jeronimo",
         "mia",
         "rufus"
@@ -11065,6 +11073,14 @@
       },
       {
        "ids": [
+        "hector",
+        "mia",
+        "rufus"
+       ],
+       "score": 228852471
+      },
+      {
+       "ids": [
         "jeronimo",
         "molly",
         "vulcanus"
@@ -11073,27 +11089,11 @@
       },
       {
        "ids": [
-        "hector",
-        "mia",
-        "vulcanus"
-       ],
-       "score": 218795240
-      },
-      {
-       "ids": [
         "jeronimo",
         "flora",
         "vulcanus"
        ],
        "score": 210473191
-      },
-      {
-       "ids": [
-        "jeronimo",
-        "karol",
-        "vulcanus"
-       ],
-       "score": 209205806
       }
      ],
      "slotRank": {
@@ -11104,14 +11104,14 @@
         "index": 100
        },
        {
-        "id": "natalia",
+        "id": "hector",
         "rank": 2,
-        "index": 83
+        "index": 89
        },
        {
-        "id": "hector",
+        "id": "natalia",
         "rank": 3,
-        "index": 77
+        "index": 83
        },
        {
         "id": "flint",
@@ -11419,7 +11419,71 @@
         "mia",
         "cara"
        ],
-       "score": 48734875
+       "score": 56622297
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "cara"
+       ],
+       "score": 52803827
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "vulcanus"
+       ],
+       "score": 51425159
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "rufus"
+       ],
+       "score": 50699637
+      },
+      {
+       "ids": [
+        "hector",
+        "dominic",
+        "vulcanus"
+       ],
+       "score": 49131028
+      },
+      {
+       "ids": [
+        "hector",
+        "freya",
+        "vulcanus"
+       ],
+       "score": 48521736
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "vulcanus"
+       ],
+       "score": 48229115
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "ligeia"
+       ],
+       "score": 47470615
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "rufus"
+       ],
+       "score": 47253969
       },
       {
        "ids": [
@@ -11428,70 +11492,6 @@
         "cara"
        ],
        "score": 46053117
-      },
-      {
-       "ids": [
-        "hector",
-        "molly",
-        "cara"
-       ],
-       "score": 45448314
-      },
-      {
-       "ids": [
-        "hector",
-        "mia",
-        "vulcanus"
-       ],
-       "score": 44261693
-      },
-      {
-       "ids": [
-        "hector",
-        "mia",
-        "rufus"
-       ],
-       "score": 43637235
-      },
-      {
-       "ids": [
-        "flint",
-        "molly",
-        "cara"
-       ],
-       "score": 42947389
-      },
-      {
-       "ids": [
-        "hector",
-        "dominic",
-        "vulcanus"
-       ],
-       "score": 42287131
-      },
-      {
-       "ids": [
-        "flint",
-        "mia",
-        "vulcanus"
-       ],
-       "score": 41821390
-      },
-      {
-       "ids": [
-        "hector",
-        "freya",
-        "vulcanus"
-       ],
-       "score": 41762713
-      },
-      {
-       "ids": [
-        "hector",
-        "molly",
-        "vulcanus"
-       ],
-       "score": 41510854
       }
      ],
      "slotRank": {
@@ -11504,77 +11504,77 @@
        {
         "id": "flint",
         "rank": 2,
-        "index": 94
+        "index": 81
        },
        {
         "id": "eleonora",
         "rank": 3,
-        "index": 77
+        "index": 66
        },
        {
         "id": "magnus",
         "rank": 4,
-        "index": 75
+        "index": 65
        },
        {
         "id": "hervor",
         "rank": 5,
-        "index": 73
+        "index": 62
        },
        {
         "id": "elif",
         "rank": 6,
-        "index": 71
+        "index": 61
        },
        {
         "id": "gregory",
         "rank": 7,
-        "index": 71
+        "index": 61
        },
        {
         "id": "ahmose",
         "rank": 8,
-        "index": 70
+        "index": 60
        },
        {
         "id": "wuming",
         "rank": 9,
-        "index": 67
+        "index": 58
        },
        {
         "id": "gatot",
         "rank": 10,
-        "index": 64
+        "index": 55
        },
        {
         "id": "sergey",
         "rank": 11,
-        "index": 64
+        "index": 55
        },
        {
         "id": "smith",
         "rank": 12,
-        "index": 64
+        "index": 55
        },
        {
         "id": "eugene",
         "rank": 13,
-        "index": 64
+        "index": 55
        },
        {
         "id": "edith",
         "rank": 14,
-        "index": 58
+        "index": 50
        },
        {
         "id": "gisela",
         "rank": 15,
-        "index": 58
+        "index": 50
        },
        {
         "id": "logan",
         "rank": 16,
-        "index": 58
+        "index": 50
        }
       ],
       "lan": [
@@ -11811,6 +11811,22 @@
       },
       {
        "ids": [
+        "hector",
+        "mia",
+        "cara"
+       ],
+       "score": 98668019
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "vulcanus"
+       ],
+       "score": 97419498
+      },
+      {
+       "ids": [
         "jeronimo",
         "dominic",
         "vulcanus"
@@ -11835,43 +11851,27 @@
       },
       {
        "ids": [
-        "jeronimo",
-        "freya",
-        "cara"
-       ],
-       "score": 90067473
-      },
-      {
-       "ids": [
-        "jeronimo",
-        "freya",
+        "hector",
+        "dominic",
         "vulcanus"
        ],
-       "score": 89816083
+       "score": 92844101
       },
       {
        "ids": [
-        "jeronimo",
+        "hector",
         "dominic",
-        "rufus"
-       ],
-       "score": 89222379
-      },
-      {
-       "ids": [
-        "jeronimo",
-        "mia",
-        "ligeia"
-       ],
-       "score": 88952155
-      },
-      {
-       "ids": [
-        "jeronimo",
-        "molly",
         "cara"
        ],
-       "score": 88115986
+       "score": 92633594
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "rufus"
+       ],
+       "score": 91544231
       }
      ],
      "slotRank": {
@@ -11882,14 +11882,14 @@
         "index": 100
        },
        {
-        "id": "natalia",
+        "id": "hector",
         "rank": 2,
-        "index": 83
+        "index": 95
        },
        {
-        "id": "hector",
+        "id": "natalia",
         "rank": 3,
-        "index": 82
+        "index": 83
        },
        {
         "id": "flint",
@@ -12209,6 +12209,14 @@
       },
       {
        "ids": [
+        "hector",
+        "mia",
+        "vulcanus"
+       ],
+       "score": 254205825
+      },
+      {
+       "ids": [
         "jeronimo",
         "mia",
         "rufus"
@@ -12225,6 +12233,22 @@
       },
       {
        "ids": [
+        "hector",
+        "dominic",
+        "vulcanus"
+       ],
+       "score": 241613243
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "cara"
+       ],
+       "score": 237916182
+      },
+      {
+       "ids": [
         "jeronimo",
         "dominic",
         "rufus"
@@ -12238,30 +12262,6 @@
         "vulcanus"
        ],
        "score": 235948559
-      },
-      {
-       "ids": [
-        "jeronimo",
-        "mia",
-        "ligeia"
-       ],
-       "score": 234946278
-      },
-      {
-       "ids": [
-        "jeronimo",
-        "freya",
-        "vulcanus"
-       ],
-       "score": 234219165
-      },
-      {
-       "ids": [
-        "jeronimo",
-        "reina",
-        "vulcanus"
-       ],
-       "score": 233125260
       }
      ],
      "slotRank": {
@@ -12272,14 +12272,14 @@
         "index": 100
        },
        {
-        "id": "natalia",
+        "id": "hector",
         "rank": 2,
-        "index": 83
+        "index": 89
        },
        {
-        "id": "hector",
+        "id": "natalia",
         "rank": 3,
-        "index": 77
+        "index": 83
        },
        {
         "id": "flint",
@@ -12604,7 +12604,7 @@
         "mia",
         "viveca"
        ],
-       "score": 75126332
+       "score": 87285039
       },
       {
        "ids": [
@@ -12612,7 +12612,15 @@
         "molly",
         "viveca"
        ],
-       "score": 70070982
+       "score": 81411514
+      },
+      {
+       "ids": [
+        "hector",
+        "estrella",
+        "viveca"
+       ],
+       "score": 74532180
       },
       {
        "ids": [
@@ -12621,6 +12629,14 @@
         "viveca"
        ],
        "score": 69210745
+      },
+      {
+       "ids": [
+        "hector",
+        "jessie",
+        "viveca"
+       ],
+       "score": 64961266
       },
       {
        "ids": [
@@ -12633,10 +12649,18 @@
       {
        "ids": [
         "hector",
-        "estrella",
+        "patrick",
         "viveca"
        ],
-       "score": 64149931
+       "score": 64517844
+      },
+      {
+       "ids": [
+        "hector",
+        "karol",
+        "viveca"
+       ],
+       "score": 62833884
       },
       {
        "ids": [
@@ -12653,30 +12677,6 @@
         "viveca"
        ],
        "score": 57250112
-      },
-      {
-       "ids": [
-        "hector",
-        "jessie",
-        "viveca"
-       ],
-       "score": 55912235
-      },
-      {
-       "ids": [
-        "hector",
-        "patrick",
-        "viveca"
-       ],
-       "score": 55530582
-      },
-      {
-       "ids": [
-        "hector",
-        "karol",
-        "viveca"
-       ],
-       "score": 54081195
       }
      ],
      "slotRank": {
@@ -12689,82 +12689,82 @@
        {
         "id": "flint",
         "rank": 2,
-        "index": 92
+        "index": 79
        },
        {
         "id": "eleonora",
         "rank": 3,
-        "index": 76
+        "index": 66
        },
        {
         "id": "elif",
         "rank": 4,
-        "index": 70
+        "index": 60
        },
        {
         "id": "gatot",
         "rank": 5,
-        "index": 64
+        "index": 55
        },
        {
         "id": "sergey",
         "rank": 6,
-        "index": 64
+        "index": 55
        },
        {
         "id": "smith",
         "rank": 7,
-        "index": 64
+        "index": 55
        },
        {
         "id": "eugene",
         "rank": 8,
-        "index": 64
+        "index": 55
        },
        {
         "id": "hank",
         "rank": 9,
-        "index": 52
+        "index": 45
        },
        {
         "id": "magnus",
         "rank": 10,
-        "index": 49
+        "index": 42
        },
        {
         "id": "hervor",
         "rank": 11,
-        "index": 47
+        "index": 41
        },
        {
         "id": "gregory",
         "rank": 12,
-        "index": 46
+        "index": 40
        },
        {
         "id": "ahmose",
         "rank": 13,
-        "index": 46
+        "index": 39
        },
        {
         "id": "wuming",
         "rank": 14,
-        "index": 44
+        "index": 38
        },
        {
         "id": "edith",
         "rank": 15,
-        "index": 38
+        "index": 33
        },
        {
         "id": "gisela",
         "rank": 16,
-        "index": 38
+        "index": 32
        },
        {
         "id": "logan",
         "rank": 17,
-        "index": 37
+        "index": 32
        }
       ],
       "lan": [
@@ -13003,11 +13003,27 @@
       },
       {
        "ids": [
+        "hector",
+        "mia",
+        "viveca"
+       ],
+       "score": 161788506
+      },
+      {
+       "ids": [
         "jeronimo",
         "dominic",
         "viveca"
        ],
        "score": 151642383
+      },
+      {
+       "ids": [
+        "hector",
+        "dominic",
+        "viveca"
+       ],
+       "score": 150526512
       },
       {
        "ids": [
@@ -13028,10 +13044,18 @@
       {
        "ids": [
         "hector",
-        "mia",
+        "molly",
         "viveca"
        ],
-       "score": 139251549
+       "score": 140364953
+      },
+      {
+       "ids": [
+        "hector",
+        "freya",
+        "viveca"
+       ],
+       "score": 140017170
       },
       {
        "ids": [
@@ -13048,30 +13072,6 @@
         "viveca"
        ],
        "score": 134360698
-      },
-      {
-       "ids": [
-        "jeronimo",
-        "estrella",
-        "viveca"
-       ],
-       "score": 129944397
-      },
-      {
-       "ids": [
-        "hector",
-        "dominic",
-        "viveca"
-       ],
-       "score": 129558338
-      },
-      {
-       "ids": [
-        "jeronimo",
-        "flora",
-        "viveca"
-       ],
-       "score": 128825966
       }
      ],
      "slotRank": {
@@ -13084,7 +13084,7 @@
        {
         "id": "hector",
         "rank": 2,
-        "index": 84
+        "index": 98
        },
        {
         "id": "natalia",
@@ -13416,6 +13416,22 @@
       },
       {
        "ids": [
+        "hector",
+        "mia",
+        "viveca"
+       ],
+       "score": 412787900
+      },
+      {
+       "ids": [
+        "hector",
+        "dominic",
+        "viveca"
+       ],
+       "score": 383683223
+      },
+      {
+       "ids": [
         "natalia",
         "mia",
         "viveca"
@@ -13448,14 +13464,6 @@
       },
       {
        "ids": [
-        "hector",
-        "mia",
-        "viveca"
-       ],
-       "score": 355287011
-      },
-      {
-       "ids": [
         "natalia",
         "dominic",
         "viveca"
@@ -13464,19 +13472,11 @@
       },
       {
        "ids": [
-        "jeronimo",
-        "estrella",
-        "viveca"
-       ],
-       "score": 331039929
-      },
-      {
-       "ids": [
         "hector",
-        "dominic",
+        "molly",
         "viveca"
        ],
-       "score": 330236583
+       "score": 334751114
       }
      ],
      "slotRank": {
@@ -13487,14 +13487,14 @@
         "index": 100
        },
        {
-        "id": "natalia",
+        "id": "hector",
         "rank": 2,
-        "index": 82
+        "index": 91
        },
        {
-        "id": "hector",
+        "id": "natalia",
         "rank": 3,
-        "index": 79
+        "index": 82
        },
        {
         "id": "flint",
@@ -13834,7 +13834,7 @@
         "mia",
         "aisling"
        ],
-       "score": 117087190
+       "score": 136036989
       },
       {
        "ids": [
@@ -13842,7 +13842,55 @@
         "ursar",
         "aisling"
        ],
-       "score": 111410952
+       "score": 129442088
+      },
+      {
+       "ids": [
+        "hector",
+        "freya",
+        "aisling"
+       ],
+       "score": 126033159
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "aisling"
+       ],
+       "score": 124771566
+      },
+      {
+       "ids": [
+        "hector",
+        "dominic",
+        "aisling"
+       ],
+       "score": 123589405
+      },
+      {
+       "ids": [
+        "hector",
+        "estrella",
+        "aisling"
+       ],
+       "score": 116496462
+      },
+      {
+       "ids": [
+        "hector",
+        "flora",
+        "aisling"
+       ],
+       "score": 112737684
+      },
+      {
+       "ids": [
+        "hector",
+        "sonya",
+        "aisling"
+       ],
+       "score": 112003150
       },
       {
        "ids": [
@@ -13855,58 +13903,10 @@
       {
        "ids": [
         "hector",
-        "freya",
+        "nora",
         "aisling"
        ],
-       "score": 108476882
-      },
-      {
-       "ids": [
-        "hector",
-        "molly",
-        "aisling"
-       ],
-       "score": 107391028
-      },
-      {
-       "ids": [
-        "hector",
-        "dominic",
-        "aisling"
-       ],
-       "score": 106373540
-      },
-      {
-       "ids": [
-        "hank",
-        "mia",
-        "aisling"
-       ],
-       "score": 102858922
-      },
-      {
-       "ids": [
-        "flint",
-        "ursar",
-        "aisling"
-       ],
-       "score": 102555384
-      },
-      {
-       "ids": [
-        "flint",
-        "freya",
-        "aisling"
-       ],
-       "score": 102528051
-      },
-      {
-       "ids": [
-        "flint",
-        "molly",
-        "aisling"
-       ],
-       "score": 101501361
+       "score": 110630868
       }
      ],
      "slotRank": {
@@ -13919,87 +13919,87 @@
        {
         "id": "flint",
         "rank": 2,
-        "index": 95
+        "index": 81
        },
        {
         "id": "hank",
         "rank": 3,
-        "index": 88
+        "index": 76
        },
        {
         "id": "magnus",
         "rank": 4,
-        "index": 83
+        "index": 71
        },
        {
         "id": "hervor",
         "rank": 5,
-        "index": 80
+        "index": 69
        },
        {
         "id": "gregory",
         "rank": 6,
-        "index": 78
+        "index": 67
        },
        {
         "id": "ahmose",
         "rank": 7,
-        "index": 78
+        "index": 67
        },
        {
         "id": "eleonora",
         "rank": 8,
-        "index": 77
+        "index": 66
        },
        {
         "id": "wuming",
         "rank": 9,
-        "index": 73
+        "index": 63
        },
        {
         "id": "elif",
         "rank": 10,
-        "index": 71
+        "index": 61
        },
        {
         "id": "edith",
         "rank": 11,
-        "index": 64
+        "index": 55
        },
        {
         "id": "seigel",
         "rank": 12,
-        "index": 64
+        "index": 55
        },
        {
         "id": "gisela",
         "rank": 13,
-        "index": 64
+        "index": 55
        },
        {
         "id": "gatot",
         "rank": 14,
-        "index": 64
+        "index": 55
        },
        {
         "id": "logan",
         "rank": 15,
-        "index": 64
+        "index": 55
        },
        {
         "id": "sergey",
         "rank": 16,
-        "index": 64
+        "index": 55
        },
        {
         "id": "smith",
         "rank": 17,
-        "index": 64
+        "index": 55
        },
        {
         "id": "eugene",
         "rank": 18,
-        "index": 64
+        "index": 55
        }
       ],
       "lan": [
@@ -14231,6 +14231,14 @@
       },
       {
        "ids": [
+        "hector",
+        "mia",
+        "aisling"
+       ],
+       "score": 232239773
+      },
+      {
+       "ids": [
         "jeronimo",
         "ursar",
         "aisling"
@@ -14239,11 +14247,27 @@
       },
       {
        "ids": [
+        "hector",
+        "ursar",
+        "aisling"
+       ],
+       "score": 220758605
+      },
+      {
+       "ids": [
         "jeronimo",
         "dominic",
         "aisling"
        ],
        "score": 215066702
+      },
+      {
+       "ids": [
+        "hector",
+        "dominic",
+        "aisling"
+       ],
+       "score": 210930910
       },
       {
        "ids": [
@@ -14264,10 +14288,10 @@
       {
        "ids": [
         "hector",
-        "mia",
+        "freya",
         "aisling"
        ],
-       "score": 199889035
+       "score": 200183603
       },
       {
        "ids": [
@@ -14276,30 +14300,6 @@
         "aisling"
        ],
        "score": 198188949
-      },
-      {
-       "ids": [
-        "jeronimo",
-        "reina",
-        "aisling"
-       ],
-       "score": 194487441
-      },
-      {
-       "ids": [
-        "hector",
-        "ursar",
-        "aisling"
-       ],
-       "score": 190007180
-      },
-      {
-       "ids": [
-        "flint",
-        "mia",
-        "aisling"
-       ],
-       "score": 188922895
       }
      ],
      "slotRank": {
@@ -14312,7 +14312,7 @@
        {
         "id": "hector",
         "rank": 2,
-        "index": 83
+        "index": 97
        },
        {
         "id": "natalia",
@@ -14642,6 +14642,14 @@
       },
       {
        "ids": [
+        "hector",
+        "mia",
+        "aisling"
+       ],
+       "score": 548152299
+      },
+      {
+       "ids": [
         "jeronimo",
         "dominic",
         "aisling"
@@ -14650,11 +14658,27 @@
       },
       {
        "ids": [
+        "hector",
+        "ursar",
+        "aisling"
+       ],
+       "score": 520433674
+      },
+      {
+       "ids": [
         "natalia",
         "mia",
         "aisling"
        ],
        "score": 500406661
+      },
+      {
+       "ids": [
+        "hector",
+        "dominic",
+        "aisling"
+       ],
+       "score": 497650453
       },
       {
        "ids": [
@@ -14679,30 +14703,6 @@
         "aisling"
        ],
        "score": 475365028
-      },
-      {
-       "ids": [
-        "natalia",
-        "ursar",
-        "aisling"
-       ],
-       "score": 475111165
-      },
-      {
-       "ids": [
-        "hector",
-        "mia",
-        "aisling"
-       ],
-       "score": 471795302
-      },
-      {
-       "ids": [
-        "jeronimo",
-        "mia",
-        "viveca"
-       ],
-       "score": 452444185
       }
      ],
      "slotRank": {
@@ -14713,14 +14713,14 @@
         "index": 100
        },
        {
-        "id": "natalia",
+        "id": "hector",
         "rank": 2,
-        "index": 83
+        "index": 90
        },
        {
-        "id": "hector",
+        "id": "natalia",
         "rank": 3,
-        "index": 78
+        "index": 83
        },
        {
         "id": "flint",
@@ -15092,12 +15092,12 @@
     "5": {
      "f2p": null,
      "mid": {
-      "rank": 2,
+      "rank": 3,
       "of": 9,
       "index": 83
      },
      "whale": {
-      "rank": 2,
+      "rank": 3,
       "of": 9,
       "index": 83
      }
@@ -15105,12 +15105,12 @@
     "6": {
      "f2p": null,
      "mid": {
-      "rank": 2,
+      "rank": 3,
       "of": 10,
       "index": 83
      },
      "whale": {
-      "rank": 2,
+      "rank": 3,
       "of": 10,
       "index": 83
      }
@@ -15123,7 +15123,7 @@
       "index": 83
      },
      "whale": {
-      "rank": 2,
+      "rank": 3,
       "of": 11,
       "index": 83
      }
@@ -15136,7 +15136,7 @@
       "index": 83
      },
      "whale": {
-      "rank": 2,
+      "rank": 3,
       "of": 12,
       "index": 83
      }
@@ -15144,12 +15144,12 @@
     "9": {
      "f2p": null,
      "mid": {
-      "rank": 2,
+      "rank": 3,
       "of": 13,
       "index": 83
      },
      "whale": {
-      "rank": 2,
+      "rank": 3,
       "of": 13,
       "index": 83
      }
@@ -15157,12 +15157,12 @@
     "10": {
      "f2p": null,
      "mid": {
-      "rank": 2,
+      "rank": 3,
       "of": 14,
       "index": 85
      },
      "whale": {
-      "rank": 2,
+      "rank": 3,
       "of": 14,
       "index": 85
      }
@@ -15175,7 +15175,7 @@
       "index": 82
      },
      "whale": {
-      "rank": 2,
+      "rank": 3,
       "of": 15,
       "index": 82
      }
@@ -15188,7 +15188,7 @@
       "index": 82
      },
      "whale": {
-      "rank": 2,
+      "rank": 3,
       "of": 16,
       "index": 82
      }
@@ -15196,12 +15196,12 @@
     "13": {
      "f2p": null,
      "mid": {
-      "rank": 2,
+      "rank": 3,
       "of": 17,
       "index": 83
      },
      "whale": {
-      "rank": 2,
+      "rank": 3,
       "of": 17,
       "index": 83
      }
@@ -15209,12 +15209,12 @@
     "14": {
      "f2p": null,
      "mid": {
-      "rank": 2,
+      "rank": 3,
       "of": 18,
       "index": 83
      },
      "whale": {
-      "rank": 2,
+      "rank": 3,
       "of": 18,
       "index": 83
      }
@@ -15227,7 +15227,7 @@
       "index": 82
      },
      "whale": {
-      "rank": 2,
+      "rank": 3,
       "of": 19,
       "index": 82
      }
@@ -15240,7 +15240,7 @@
       "index": 83
      },
      "whale": {
-      "rank": 2,
+      "rank": 3,
       "of": 20,
       "index": 83
      }
@@ -15586,7 +15586,7 @@
      "mid": {
       "rank": 2,
       "of": 12,
-      "index": 85
+      "index": 86
      },
      "whale": {
       "rank": 3,
@@ -16096,7 +16096,7 @@
      "f2p": {
       "rank": 2,
       "of": 7,
-      "index": 94
+      "index": 81
      },
      "mid": {
       "rank": 4,
@@ -16113,7 +16113,7 @@
      "f2p": {
       "rank": 2,
       "of": 8,
-      "index": 94
+      "index": 81
      },
      "mid": {
       "rank": 4,
@@ -16130,7 +16130,7 @@
      "f2p": {
       "rank": 2,
       "of": 9,
-      "index": 92
+      "index": 79
      },
      "mid": {
       "rank": 4,
@@ -16147,7 +16147,7 @@
      "f2p": {
       "rank": 2,
       "of": 10,
-      "index": 93
+      "index": 80
      },
      "mid": {
       "rank": 4,
@@ -16164,7 +16164,7 @@
      "f2p": {
       "rank": 2,
       "of": 11,
-      "index": 94
+      "index": 81
      },
      "mid": {
       "rank": 4,
@@ -16181,7 +16181,7 @@
      "f2p": {
       "rank": 2,
       "of": 12,
-      "index": 91
+      "index": 78
      },
      "mid": {
       "rank": 4,
@@ -16198,7 +16198,7 @@
      "f2p": {
       "rank": 2,
       "of": 13,
-      "index": 92
+      "index": 79
      },
      "mid": {
       "rank": 4,
@@ -16215,7 +16215,7 @@
      "f2p": {
       "rank": 2,
       "of": 14,
-      "index": 92
+      "index": 79
      },
      "mid": {
       "rank": 4,
@@ -16232,7 +16232,7 @@
      "f2p": {
       "rank": 2,
       "of": 15,
-      "index": 94
+      "index": 81
      },
      "mid": {
       "rank": 4,
@@ -16249,7 +16249,7 @@
      "f2p": {
       "rank": 2,
       "of": 16,
-      "index": 94
+      "index": 81
      },
      "mid": {
       "rank": 4,
@@ -16266,7 +16266,7 @@
      "f2p": {
       "rank": 2,
       "of": 17,
-      "index": 92
+      "index": 79
      },
      "mid": {
       "rank": 4,
@@ -16283,7 +16283,7 @@
      "f2p": {
       "rank": 2,
       "of": 18,
-      "index": 95
+      "index": 81
      },
      "mid": {
       "rank": 4,
@@ -16877,7 +16877,7 @@
      "f2p": {
       "rank": 7,
       "of": 7,
-      "index": 51
+      "index": 43
      },
      "mid": {
       "rank": 6,
@@ -16894,7 +16894,7 @@
      "f2p": {
       "rank": 8,
       "of": 8,
-      "index": 40
+      "index": 35
      },
      "mid": {
       "rank": 7,
@@ -16911,7 +16911,7 @@
      "f2p": {
       "rank": 6,
       "of": 9,
-      "index": 64
+      "index": 55
      },
      "mid": {
       "rank": 8,
@@ -16928,7 +16928,7 @@
      "f2p": {
       "rank": 7,
       "of": 10,
-      "index": 64
+      "index": 55
      },
      "mid": {
       "rank": 9,
@@ -16945,7 +16945,7 @@
      "f2p": {
       "rank": 11,
       "of": 11,
-      "index": 44
+      "index": 38
      },
      "mid": {
       "rank": 10,
@@ -16962,7 +16962,7 @@
      "f2p": {
       "rank": 9,
       "of": 12,
-      "index": 64
+      "index": 55
      },
      "mid": {
       "rank": 11,
@@ -16979,7 +16979,7 @@
      "f2p": {
       "rank": 13,
       "of": 13,
-      "index": 43
+      "index": 37
      },
      "mid": {
       "rank": 12,
@@ -16996,7 +16996,7 @@
      "f2p": {
       "rank": 14,
       "of": 14,
-      "index": 43
+      "index": 37
      },
      "mid": {
       "rank": 13,
@@ -17013,7 +17013,7 @@
      "f2p": {
       "rank": 12,
       "of": 15,
-      "index": 64
+      "index": 55
      },
      "mid": {
       "rank": 14,
@@ -17030,7 +17030,7 @@
      "f2p": {
       "rank": 16,
       "of": 16,
-      "index": 58
+      "index": 50
      },
      "mid": {
       "rank": 15,
@@ -17047,7 +17047,7 @@
      "f2p": {
       "rank": 17,
       "of": 17,
-      "index": 37
+      "index": 32
      },
      "mid": {
       "rank": 16,
@@ -17064,7 +17064,7 @@
      "f2p": {
       "rank": 15,
       "of": 18,
-      "index": 64
+      "index": 55
      },
      "mid": {
       "rank": 17,
@@ -17607,7 +17607,7 @@
      "f2p": {
       "rank": 6,
       "of": 7,
-      "index": 62
+      "index": 53
      },
      "mid": {
       "rank": 5,
@@ -17624,7 +17624,7 @@
      "f2p": {
       "rank": 6,
       "of": 8,
-      "index": 49
+      "index": 43
      },
      "mid": {
       "rank": 5,
@@ -17641,7 +17641,7 @@
      "f2p": {
       "rank": 3,
       "of": 9,
-      "index": 77
+      "index": 67
      },
      "mid": {
       "rank": 5,
@@ -17658,7 +17658,7 @@
      "f2p": {
       "rank": 3,
       "of": 10,
-      "index": 77
+      "index": 67
      },
      "mid": {
       "rank": 5,
@@ -17675,7 +17675,7 @@
      "f2p": {
       "rank": 8,
       "of": 11,
-      "index": 53
+      "index": 46
      },
      "mid": {
       "rank": 6,
@@ -17692,7 +17692,7 @@
      "f2p": {
       "rank": 5,
       "of": 12,
-      "index": 78
+      "index": 67
      },
      "mid": {
       "rank": 7,
@@ -17709,7 +17709,7 @@
      "f2p": {
       "rank": 10,
       "of": 13,
-      "index": 52
+      "index": 45
      },
      "mid": {
       "rank": 6,
@@ -17726,7 +17726,7 @@
      "f2p": {
       "rank": 10,
       "of": 14,
-      "index": 52
+      "index": 45
      },
      "mid": {
       "rank": 7,
@@ -17743,7 +17743,7 @@
      "f2p": {
       "rank": 6,
       "of": 15,
-      "index": 77
+      "index": 66
      },
      "mid": {
       "rank": 8,
@@ -17760,7 +17760,7 @@
      "f2p": {
       "rank": 8,
       "of": 16,
-      "index": 70
+      "index": 60
      },
      "mid": {
       "rank": 8,
@@ -17777,7 +17777,7 @@
      "f2p": {
       "rank": 13,
       "of": 17,
-      "index": 46
+      "index": 39
      },
      "mid": {
       "rank": 8,
@@ -17794,7 +17794,7 @@
      "f2p": {
       "rank": 7,
       "of": 18,
-      "index": 78
+      "index": 67
      },
      "mid": {
       "rank": 9,
@@ -18278,7 +18278,7 @@
    "cls": "inf",
    "gen": 5,
    "acq": "roulette",
-   "leaderSkill": "盾優先:与ダメ減衰(盾200/弓50%)+25%追撃",
+   "leaderSkill": "盾与ダメ200/弓与ダメ100(減衰・校正)/25%で200%追撃",
    "joinerSkill": null,
    "bearNoEffect": false,
    "ranks": {
@@ -18289,14 +18289,14 @@
       "index": 100
      },
      "mid": {
-      "rank": 3,
+      "rank": 2,
       "of": 9,
-      "index": 82
+      "index": 95
      },
      "whale": {
-      "rank": 3,
+      "rank": 2,
       "of": 9,
-      "index": 77
+      "index": 89
      }
     },
     "6": {
@@ -18306,14 +18306,14 @@
       "index": 100
      },
      "mid": {
-      "rank": 3,
+      "rank": 2,
       "of": 10,
-      "index": 82
+      "index": 95
      },
      "whale": {
-      "rank": 3,
+      "rank": 2,
       "of": 10,
-      "index": 77
+      "index": 89
      }
     },
     "7": {
@@ -18325,12 +18325,12 @@
      "mid": {
       "rank": 2,
       "of": 11,
-      "index": 85
+      "index": 99
      },
      "whale": {
-      "rank": 3,
+      "rank": 2,
       "of": 11,
-      "index": 80
+      "index": 92
      }
     },
     "8": {
@@ -18342,12 +18342,12 @@
      "mid": {
       "rank": 2,
       "of": 12,
-      "index": 85
+      "index": 98
      },
      "whale": {
-      "rank": 3,
+      "rank": 2,
       "of": 12,
-      "index": 80
+      "index": 92
      }
     },
     "9": {
@@ -18357,14 +18357,14 @@
       "index": 100
      },
      "mid": {
-      "rank": 3,
+      "rank": 2,
       "of": 13,
-      "index": 82
+      "index": 95
      },
      "whale": {
-      "rank": 3,
+      "rank": 2,
       "of": 13,
-      "index": 77
+      "index": 89
      }
     },
     "10": {
@@ -18374,14 +18374,14 @@
       "index": 100
      },
      "mid": {
-      "rank": 3,
+      "rank": 2,
       "of": 14,
-      "index": 84
+      "index": 98
      },
      "whale": {
-      "rank": 3,
+      "rank": 2,
       "of": 14,
-      "index": 79
+      "index": 91
      }
     },
     "11": {
@@ -18393,12 +18393,12 @@
      "mid": {
       "rank": 2,
       "of": 15,
-      "index": 84
+      "index": 98
      },
      "whale": {
-      "rank": 3,
+      "rank": 2,
       "of": 15,
-      "index": 79
+      "index": 91
      }
     },
     "12": {
@@ -18410,12 +18410,12 @@
      "mid": {
       "rank": 2,
       "of": 16,
-      "index": 84
+      "index": 98
      },
      "whale": {
-      "rank": 3,
+      "rank": 2,
       "of": 16,
-      "index": 79
+      "index": 91
      }
     },
     "13": {
@@ -18425,14 +18425,14 @@
       "index": 100
      },
      "mid": {
-      "rank": 3,
+      "rank": 2,
       "of": 17,
-      "index": 82
+      "index": 95
      },
      "whale": {
-      "rank": 3,
+      "rank": 2,
       "of": 17,
-      "index": 77
+      "index": 89
      }
     },
     "14": {
@@ -18442,14 +18442,14 @@
       "index": 100
      },
      "mid": {
-      "rank": 3,
+      "rank": 2,
       "of": 18,
-      "index": 82
+      "index": 95
      },
      "whale": {
-      "rank": 3,
+      "rank": 2,
       "of": 18,
-      "index": 77
+      "index": 89
      }
     },
     "15": {
@@ -18461,12 +18461,12 @@
      "mid": {
       "rank": 2,
       "of": 19,
-      "index": 84
+      "index": 98
      },
      "whale": {
-      "rank": 3,
+      "rank": 2,
       "of": 19,
-      "index": 79
+      "index": 91
      }
     },
     "16": {
@@ -18478,12 +18478,12 @@
      "mid": {
       "rank": 2,
       "of": 20,
-      "index": 83
+      "index": 97
      },
      "whale": {
-      "rank": 3,
+      "rank": 2,
       "of": 20,
-      "index": 78
+      "index": 90
      }
     }
    }
@@ -18931,7 +18931,7 @@
      "f2p": {
       "rank": 7,
       "of": 8,
-      "index": 47
+      "index": 41
      },
      "mid": {
       "rank": 6,
@@ -18948,7 +18948,7 @@
      "f2p": {
       "rank": 4,
       "of": 9,
-      "index": 74
+      "index": 64
      },
      "mid": {
       "rank": 6,
@@ -18965,7 +18965,7 @@
      "f2p": {
       "rank": 4,
       "of": 10,
-      "index": 74
+      "index": 64
      },
      "mid": {
       "rank": 6,
@@ -18982,7 +18982,7 @@
      "f2p": {
       "rank": 9,
       "of": 11,
-      "index": 51
+      "index": 44
      },
      "mid": {
       "rank": 7,
@@ -18999,7 +18999,7 @@
      "f2p": {
       "rank": 6,
       "of": 12,
-      "index": 74
+      "index": 64
      },
      "mid": {
       "rank": 8,
@@ -19016,7 +19016,7 @@
      "f2p": {
       "rank": 11,
       "of": 13,
-      "index": 50
+      "index": 43
      },
      "mid": {
       "rank": 9,
@@ -19033,7 +19033,7 @@
      "f2p": {
       "rank": 12,
       "of": 14,
-      "index": 50
+      "index": 43
      },
      "mid": {
       "rank": 10,
@@ -19050,7 +19050,7 @@
      "f2p": {
       "rank": 8,
       "of": 15,
-      "index": 74
+      "index": 64
      },
      "mid": {
       "rank": 10,
@@ -19067,7 +19067,7 @@
      "f2p": {
       "rank": 9,
       "of": 16,
-      "index": 67
+      "index": 58
      },
      "mid": {
       "rank": 10,
@@ -19084,7 +19084,7 @@
      "f2p": {
       "rank": 14,
       "of": 17,
-      "index": 44
+      "index": 38
      },
      "mid": {
       "rank": 11,
@@ -19101,7 +19101,7 @@
      "f2p": {
       "rank": 9,
       "of": 18,
-      "index": 73
+      "index": 63
      },
      "mid": {
       "rank": 11,
@@ -19525,7 +19525,7 @@
      "f2p": {
       "rank": 5,
       "of": 9,
-      "index": 64
+      "index": 55
      },
      "mid": {
       "rank": 7,
@@ -19542,7 +19542,7 @@
      "f2p": {
       "rank": 5,
       "of": 10,
-      "index": 64
+      "index": 55
      },
      "mid": {
       "rank": 7,
@@ -19559,7 +19559,7 @@
      "f2p": {
       "rank": 10,
       "of": 11,
-      "index": 44
+      "index": 38
      },
      "mid": {
       "rank": 8,
@@ -19576,7 +19576,7 @@
      "f2p": {
       "rank": 7,
       "of": 12,
-      "index": 64
+      "index": 55
      },
      "mid": {
       "rank": 9,
@@ -19593,7 +19593,7 @@
      "f2p": {
       "rank": 12,
       "of": 13,
-      "index": 43
+      "index": 37
      },
      "mid": {
       "rank": 10,
@@ -19610,7 +19610,7 @@
      "f2p": {
       "rank": 13,
       "of": 14,
-      "index": 43
+      "index": 37
      },
      "mid": {
       "rank": 11,
@@ -19627,7 +19627,7 @@
      "f2p": {
       "rank": 9,
       "of": 15,
-      "index": 64
+      "index": 55
      },
      "mid": {
       "rank": 11,
@@ -19644,7 +19644,7 @@
      "f2p": {
       "rank": 14,
       "of": 16,
-      "index": 58
+      "index": 50
      },
      "mid": {
       "rank": 12,
@@ -19661,7 +19661,7 @@
      "f2p": {
       "rank": 15,
       "of": 17,
-      "index": 38
+      "index": 33
      },
      "mid": {
       "rank": 13,
@@ -19678,7 +19678,7 @@
      "f2p": {
       "rank": 11,
       "of": 18,
-      "index": 64
+      "index": 55
      },
      "mid": {
       "rank": 13,
@@ -20068,7 +20068,7 @@
      "f2p": {
       "rank": 6,
       "of": 10,
-      "index": 64
+      "index": 55
      },
      "mid": {
       "rank": 8,
@@ -20085,7 +20085,7 @@
      "f2p": {
       "rank": 3,
       "of": 11,
-      "index": 64
+      "index": 55
      },
      "mid": {
       "rank": 9,
@@ -20102,7 +20102,7 @@
      "f2p": {
       "rank": 8,
       "of": 12,
-      "index": 64
+      "index": 55
      },
      "mid": {
       "rank": 10,
@@ -20119,7 +20119,7 @@
      "f2p": {
       "rank": 4,
       "of": 13,
-      "index": 64
+      "index": 55
      },
      "mid": {
       "rank": 11,
@@ -20136,7 +20136,7 @@
      "f2p": {
       "rank": 4,
       "of": 14,
-      "index": 64
+      "index": 55
      },
      "mid": {
       "rank": 12,
@@ -20153,7 +20153,7 @@
      "f2p": {
       "rank": 11,
       "of": 15,
-      "index": 64
+      "index": 55
      },
      "mid": {
       "rank": 13,
@@ -20170,7 +20170,7 @@
      "f2p": {
       "rank": 10,
       "of": 16,
-      "index": 64
+      "index": 55
      },
      "mid": {
       "rank": 14,
@@ -20187,7 +20187,7 @@
      "f2p": {
       "rank": 5,
       "of": 17,
-      "index": 64
+      "index": 55
      },
      "mid": {
       "rank": 15,
@@ -20204,7 +20204,7 @@
      "f2p": {
       "rank": 14,
       "of": 18,
-      "index": 64
+      "index": 55
      },
      "mid": {
       "rank": 16,
@@ -20560,7 +20560,7 @@
      "f2p": {
       "rank": 7,
       "of": 11,
-      "index": 56
+      "index": 48
      },
      "mid": {
       "rank": 5,
@@ -20577,7 +20577,7 @@
      "f2p": {
       "rank": 3,
       "of": 12,
-      "index": 83
+      "index": 71
      },
      "mid": {
       "rank": 5,
@@ -20594,7 +20594,7 @@
      "f2p": {
       "rank": 8,
       "of": 13,
-      "index": 56
+      "index": 48
      },
      "mid": {
       "rank": 5,
@@ -20611,7 +20611,7 @@
      "f2p": {
       "rank": 8,
       "of": 14,
-      "index": 56
+      "index": 48
      },
      "mid": {
       "rank": 6,
@@ -20628,7 +20628,7 @@
      "f2p": {
       "rank": 3,
       "of": 15,
-      "index": 83
+      "index": 71
      },
      "mid": {
       "rank": 5,
@@ -20645,7 +20645,7 @@
      "f2p": {
       "rank": 4,
       "of": 16,
-      "index": 75
+      "index": 65
      },
      "mid": {
       "rank": 5,
@@ -20662,7 +20662,7 @@
      "f2p": {
       "rank": 10,
       "of": 17,
-      "index": 49
+      "index": 42
      },
      "mid": {
       "rank": 6,
@@ -20679,7 +20679,7 @@
      "f2p": {
       "rank": 4,
       "of": 18,
-      "index": 83
+      "index": 71
      },
      "mid": {
       "rank": 6,
@@ -21001,7 +21001,7 @@
      "f2p": {
       "rank": 4,
       "of": 12,
-      "index": 78
+      "index": 67
      },
      "mid": {
       "rank": 6,
@@ -21018,7 +21018,7 @@
      "f2p": {
       "rank": 9,
       "of": 13,
-      "index": 53
+      "index": 45
      },
      "mid": {
       "rank": 7,
@@ -21035,7 +21035,7 @@
      "f2p": {
       "rank": 9,
       "of": 14,
-      "index": 53
+      "index": 45
      },
      "mid": {
       "rank": 8,
@@ -21052,7 +21052,7 @@
      "f2p": {
       "rank": 5,
       "of": 15,
-      "index": 78
+      "index": 67
      },
      "mid": {
       "rank": 7,
@@ -21069,7 +21069,7 @@
      "f2p": {
       "rank": 7,
       "of": 16,
-      "index": 71
+      "index": 61
      },
      "mid": {
       "rank": 7,
@@ -21086,7 +21086,7 @@
      "f2p": {
       "rank": 12,
       "of": 17,
-      "index": 46
+      "index": 40
      },
      "mid": {
       "rank": 9,
@@ -21103,7 +21103,7 @@
      "f2p": {
       "rank": 6,
       "of": 18,
-      "index": 78
+      "index": 67
      },
      "mid": {
       "rank": 8,
@@ -21391,7 +21391,7 @@
      "f2p": {
       "rank": 3,
       "of": 13,
-      "index": 75
+      "index": 64
      },
      "mid": {
       "rank": 8,
@@ -21408,7 +21408,7 @@
      "f2p": {
       "rank": 3,
       "of": 14,
-      "index": 75
+      "index": 64
      },
      "mid": {
       "rank": 9,
@@ -21425,7 +21425,7 @@
      "f2p": {
       "rank": 7,
       "of": 15,
-      "index": 77
+      "index": 66
      },
      "mid": {
       "rank": 9,
@@ -21442,7 +21442,7 @@
      "f2p": {
       "rank": 3,
       "of": 16,
-      "index": 77
+      "index": 66
      },
      "mid": {
       "rank": 9,
@@ -21459,7 +21459,7 @@
      "f2p": {
       "rank": 3,
       "of": 17,
-      "index": 76
+      "index": 66
      },
      "mid": {
       "rank": 10,
@@ -21476,7 +21476,7 @@
      "f2p": {
       "rank": 8,
       "of": 18,
-      "index": 77
+      "index": 66
      },
      "mid": {
       "rank": 10,
@@ -21730,7 +21730,7 @@
      "f2p": {
       "rank": 11,
       "of": 14,
-      "index": 52
+      "index": 45
      },
      "mid": {
       "rank": 5,
@@ -21747,7 +21747,7 @@
      "f2p": {
       "rank": 4,
       "of": 15,
-      "index": 80
+      "index": 69
      },
      "mid": {
       "rank": 6,
@@ -21764,7 +21764,7 @@
      "f2p": {
       "rank": 5,
       "of": 16,
-      "index": 73
+      "index": 62
      },
      "mid": {
       "rank": 6,
@@ -21781,7 +21781,7 @@
      "f2p": {
       "rank": 11,
       "of": 17,
-      "index": 47
+      "index": 41
      },
      "mid": {
       "rank": 7,
@@ -21798,7 +21798,7 @@
      "f2p": {
       "rank": 5,
       "of": 18,
-      "index": 80
+      "index": 69
      },
      "mid": {
       "rank": 7,
@@ -22018,7 +22018,7 @@
      "f2p": {
       "rank": 10,
       "of": 15,
-      "index": 64
+      "index": 55
      },
      "mid": {
       "rank": 12,
@@ -22035,7 +22035,7 @@
      "f2p": {
       "rank": 15,
       "of": 16,
-      "index": 58
+      "index": 50
      },
      "mid": {
       "rank": 13,
@@ -22052,7 +22052,7 @@
      "f2p": {
       "rank": 16,
       "of": 17,
-      "index": 38
+      "index": 32
      },
      "mid": {
       "rank": 14,
@@ -22069,7 +22069,7 @@
      "f2p": {
       "rank": 13,
       "of": 18,
-      "index": 64
+      "index": 55
      },
      "mid": {
       "rank": 15,
@@ -22255,7 +22255,7 @@
      "f2p": {
       "rank": 6,
       "of": 16,
-      "index": 71
+      "index": 61
      },
      "mid": {
       "rank": 11,
@@ -22272,7 +22272,7 @@
      "f2p": {
       "rank": 4,
       "of": 17,
-      "index": 70
+      "index": 60
      },
      "mid": {
       "rank": 12,
@@ -22289,7 +22289,7 @@
      "f2p": {
       "rank": 10,
       "of": 18,
-      "index": 71
+      "index": 61
      },
      "mid": {
       "rank": 12,
@@ -22441,7 +22441,7 @@
      "f2p": {
       "rank": 9,
       "of": 17,
-      "index": 52
+      "index": 45
      },
      "mid": {
       "rank": 5,
@@ -22458,7 +22458,7 @@
      "f2p": {
       "rank": 3,
       "of": 18,
-      "index": 88
+      "index": 76
      },
      "mid": {
       "rank": 5,
@@ -22576,7 +22576,7 @@
      "f2p": {
       "rank": 12,
       "of": 18,
-      "index": 64
+      "index": 55
      },
      "mid": {
       "rank": 14,

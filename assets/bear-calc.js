@@ -112,14 +112,18 @@ function j(e, t, a, r, l) {
       return s(1, 1 + e.p * e.v * t * n, 1 + e.v * t * n);
     }
     case "hector": {
+      /* 雷の突撃（公式wiki）: 盾兵与ダメ+200%・弓兵与ダメ+100%。攻撃のたびに前回の85%へ減衰し、10回の攻撃の間有効。
+         e.decay（既定0.85）・e.hits（既定10）・e.calib（校正係数。コミュニティ評価 ジェロニモ＞ヘクトー＞ナタリア に合わせる）で調整できる */
       const r = (e) => {
+        const dec = e_decay, hits = e_hits, cal = e_calib;
         let t = 0;
         for (let a = 0; a < n; a++) {
-          var d = a < 5 ? Math.pow(0.2, a) : 0;
-          t += e * d;
+          var d = a < hits ? Math.pow(dec, a) : 0;
+          t += e * d * cal;
         }
         return t / n;
       };
+      const e_decay = e.decay != null ? e.decay : 0.85, e_hits = e.hits != null ? e.hits : 10, e_calib = e.calib != null ? e.calib : 1;
       var __im = a.inf + a.mks;
       return (
         (1 + a.inf * r(e.infV * t) + a.mks * r(e.mksV * t)) *
