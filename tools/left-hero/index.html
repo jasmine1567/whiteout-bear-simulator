@@ -19,7 +19,7 @@
 <title>熊狩り 左英雄チェッカー｜乗りで効く英雄を一発判定 | ホワサバ ツールラボ</title>
 <meta name="description" content="ホワサバ熊狩り(Bear Hunt)の「左英雄」が乗りで効くかを一発判定。第1遠征スキルの有効/無効、4枠の組み合わせ最適化、世代別の候補一覧。集結に乗る前のチェックに。">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
-<link rel="stylesheet" href="/assets/site.css?v=96">
+<link rel="stylesheet" href="/assets/site.css?v=106">
 <script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
 <!-- ▼ AdSense承認後: コードスニペットを貼り付け ▼ -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=85">
@@ -47,6 +47,8 @@
 </div>
 <div id="updbox"></div>
 <p class="lead">集結に「乗る側」で意味を持つのは、編成の<b>左端の英雄の第1遠征スキルだけ</b>です。あなたが左に置こうとしている英雄が熊に効くのかを判定し、4人分そろえた時の相性まで診断します。</p>
+<section class="tool-about" id="tool-about"><div class="i18n-ja"><div class="tab-head"><h2>このツールについて</h2><a href="#tool-article">詳しい解説・FAQを見る ↓</a></div><div class="tab-grid"><div class="tab-col"><h3>🔍 このツールで分かること</h3><p>集結に「乗る」側で効果を発揮するのは、編成の左端に置いた英雄の第1遠征スキルだけです。このルールに沿って、あなたが選んだ英雄が熊狩りの集結で実際に貢献しているかを判定し、参加者4枠のスキルの種類のかたよりも確認できます。</p></div><div class="tab-col"><h3>🧮 計算・判定の考え方</h3><p>英雄マスタをもとに各英雄の第1遠征スキルを「与ダメ／攻撃／殺傷／確率系／熊には効果なし」に分類し、単体ボスである熊に効くかどうかを判定します。同じ種類のスキルは加算で頭打ちになるため、4枠の種類が分散しているほど集結全体のダメージが伸びやすいと評価します。</p></div><div class="tab-col"><h3>📝 使い方</h3><p>現在の世代を選び、一覧から参加者4人が左端に置く英雄をタップして選びます。判定結果に効果の有無・スキルの種類・入れ替え候補が表示されるので、効果なしと出た英雄は同じ兵種の別の英雄に替えてみてください。</p></div></div></div><div class="i18n-en"><div class="tab-head"><h2>About this tool</h2><a href="#tool-article">Full explanation & FAQ ↓</a></div><div class="tab-grid"><div class="tab-col"><h3>🔍 What this tool tells you</h3><p>When you join a rally, only the first expedition skill of the hero in the leftmost slot takes effect. Following that rule, this checker tells you whether the heroes you picked actually contribute to a Bear Hunt rally, and whether the four joiner slots overlap in skill type.</p></div><div class="tab-col"><h3>🧮 How it works</h3><p>Using the hero master data, each hero's first expedition skill is classified as damage / attack / lethality / proc / no effect on the bear (a single boss). Skills of the same type add up and plateau, so the more varied the four slots are, the higher the rally's damage is rated.</p></div><div class="tab-col"><h3>📝 How to use it</h3><p>Pick your current generation, then tap the heroes the four joiners place in their leftmost slot. The result shows whether each one works, its skill type and swap suggestions; replace any 'no effect' hero with another of the same troop type.</p></div></div></div></section>
+
 
 <div class="card">
   <label>現在の世代(これ以降の英雄は表示しません)</label>
@@ -82,7 +84,7 @@
 </dl>
 </div>
 
-<section class="tool-article">
+<section class="tool-article" id="tool-article">
 <div class="i18n-ja">
 <h2>左英雄チェッカーとは</h2>
 <p class="ta-lead">熊狩りの集結では、<strong>集結主（編成のいちばん左に置く英雄）の第1遠征スキル</strong>が、集結に参加する全員へ影響します。逆に、乗り手（集結に参加する側）の左英雄が常に効くとは限りません。本ツールは、<strong>あなたの「左英雄」が乗りで効くかどうかを一発で判定</strong>し、4枠の組み合わせ最適化や世代別の候補を提示する非公式チェッカーです。</p>
@@ -122,7 +124,7 @@
 </div>
   <div class="ta-meta">
     <strong>運営者</strong>：じゃすみん（1567サーバー / 同盟「bst」盟主）　|　<strong>連絡先</strong>：<a href="https://x.com/tegetege_m" target="_blank" rel="noopener">X @tegetege_m</a> ・ <a href="../../contact.html">お問い合わせ</a><br>
-    <strong>最終更新</strong>：2026年6月　|　ホワイトアウトサバイバルを実際にプレイし、ゲーム内での検証と公開情報をもとに作成しています。<br>
+    <strong>最終更新</strong>：2026年9月14日　|　ホワイトアウトサバイバルを実際にプレイし、ゲーム内での検証と公開情報をもとに作成しています。<br>
     ※ 本ツールはファンメイドの非公式コンテンツです。数値・判定は公開情報と実測に基づく推定であり、運営の内部仕様の完全な再現ではありません。仕様はアップデートで変わることがあります。Whiteout Survival は Century Games の商標であり、当サイトは同社と提携・公認関係にありません。
   </div>
 </div>
@@ -160,7 +162,7 @@
 </div>
   <div class="ta-meta">
     <strong>Operator</strong>: Jasmine (Server 1567 / leader of alliance &quot;bst&quot;)　|　<strong>Contact</strong>: <a href="https://x.com/tegetege_m" target="_blank" rel="noopener">X @tegetege_m</a> · <a href="../../contact.html">Contact</a><br>
-    <strong>Last updated</strong>: June 2026　|　Written by an active Whiteout Survival player, based on in-game testing and public information.<br>
+    <strong>Last updated</strong>: September 14, 2026　|　Written by an active Whiteout Survival player, based on in-game testing and public information.<br>
     * This is a fan-made, unofficial tool. Figures are estimates based on public data and measurements, not a reproduction of the game's internal formulas. Specs may change with updates. Whiteout Survival is a trademark of Century Games; this site is not affiliated with or endorsed by it.
   </div>
 </div>
@@ -169,7 +171,7 @@
 
 <script src="/assets/config.js?v=96"></script>
 <script src="/assets/heroes.js?v=88"></script>
-<script src="/assets/toolkit.js?v=96"></script>
+<script src="/assets/toolkit.js?v=106"></script>
 <script>
 document.getElementById('nav').innerHTML = WOS_NAV(2);
 document.getElementById('foot').innerHTML = WOS_FOOT(2);

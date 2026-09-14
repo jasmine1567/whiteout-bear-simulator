@@ -17,7 +17,7 @@
 <title>兵器工場争奪戦 フィールド作戦シミュレータ｜作戦計画・模擬戦 | ホワサバ ツールラボ</title>
 <meta name="description" content="ホワイトアウトサバイバル「兵器工場争奪戦」のフィールドツール。作戦シミュレータでチーム編成とフェーズ別の行動を計画し、模擬戦シミュレータで敵の動きを加えて占領ポイント・バフをリアルタイム試算。結果は共有リンクで共有可能。">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
-<link rel="stylesheet" href="/assets/site.css?v=96">
+<link rel="stylesheet" href="/assets/site.css?v=106">
 <script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
 <style>
   /* ===== 兵器工場争奪戦ツール(アイスブルー基調・スコープ .fs) ===== */
@@ -433,6 +433,8 @@
 <h1 id="h1"></h1>
 <div id="updbox"></div>
 <p class="lead" id="lead"></p>
+<section class="tool-about" id="tool-about"><div class="i18n-ja"><div class="tab-head"><h2>このツールについて</h2><a href="#tool-article">詳しい解説・FAQを見る ↓</a></div><div class="tab-grid"><div class="tab-col"><h3>🔍 このツールで分かること</h3><p>兵器工場争奪戦の60分の流れを、作戦シミュレータと模擬戦シミュレータの2モードで事前に確認できます。チームごとにフェーズ単位で担当拠点を割り当て、敵の強さを変えたときに占領ポイントがどう推移するか、どの拠点を守るべきかが分かります。</p></div><div class="tab-col"><h3>🧮 計算・判定の考え方</h3><p>実測と公開情報にもとづくイベントの基本ルール（準備時間、中央施設の開放時刻、四隅の武器工房の出現、占拠に約120秒、被占領時に蓄積ポイントの半分が散逸）をモデル化し、作戦どおりに自軍が動いたときのポイント推移を計算します。模擬戦では敵が格下／同格／格上の強さで自動的に攻防します。非公式の試算であり、細かな挙動は実際のゲームが優先されます。</p></div><div class="tab-col"><h3>📝 使い方</h3><p>作戦シミュレータでチーム（最大8）とリーダー名を設定し、フェーズごとに担当拠点を割り当ててから「ゲーム開始」で時間を進めます。模擬戦シミュレータでは敵の強さを選んで結果と戦況アドバイスを確認します。右上の「共有」からURLをコピーすると、同盟メンバーの画面でも同じ作戦が開けます。</p></div></div></div><div class="i18n-en"><div class="tab-head"><h2>About this tool</h2><a href="#tool-article">Full explanation & FAQ ↓</a></div><div class="tab-grid"><div class="tab-col"><h3>🔍 What this tool tells you</h3><p>Preview the 60-minute Foundry Battle in two modes: an operation planner and a mock battle. Assign facilities to each team per phase and see how occupation points move and which facilities to defend when the enemy's strength changes.</p></div><div class="tab-col"><h3>🧮 How it works</h3><p>The event's basic rules from measurements and public info (prep time, when the central facility opens, the corner weapon workshops, ~120 s to capture, half of a facility's stored points lost when captured) are modelled, and points are computed as your teams follow the plan. In mock battle the enemy attacks and defends automatically at weaker / equal / stronger strength. It's an unofficial estimate; the live game takes precedence.</p></div><div class="tab-col"><h3>📝 How to use it</h3><p>In the planner, set up to 8 teams and their leaders, assign facilities per phase and press Start to advance time. In the mock battle, choose the enemy strength and read the result and advice. Use Share (top right) to copy a URL that opens the same plan on your alliance members' screens.</p></div></div></div></section>
+
 
 <div class="fs" id="fs">
   <div class="fs-modebar" id="modeBar"></div>
@@ -470,7 +472,7 @@
 
 </div>
 
-<section class="tool-article">
+<section class="tool-article" id="tool-article">
 <div class="i18n-ja">
 <h2>兵器工場争奪戦 フィールドツールとは</h2>
 <p class="ta-lead">兵器工場争奪戦は、フィールド上の施設を占領してポイントを稼ぐ陣取りイベントです。本ツールは2つのモードで構成されます。<strong>作戦シミュレータ</strong>でチーム編成とフェーズごとの担当（どの施設を誰が取るか）を計画し、<strong>模擬戦シミュレータ</strong>で敵の動きを加えて、占領ポイント・バフ・優勢/劣勢の推移をリアルタイムに試算できます。作った作戦は共有リンクで仲間に配れます。</p>
@@ -519,7 +521,7 @@
 </div>
   <div class="ta-meta">
     <strong>運営者</strong>：じゃすみん（1567サーバー / 同盟「bst」盟主）　|　<strong>連絡先</strong>：<a href="https://x.com/tegetege_m" target="_blank" rel="noopener">X @tegetege_m</a> ・ <a href="../../contact.html">お問い合わせ</a><br>
-    <strong>最終更新</strong>：2026年6月　|　ホワイトアウトサバイバルを実際にプレイし、ゲーム内での検証と公開情報をもとに作成しています。<br>
+    <strong>最終更新</strong>：2026年9月14日　|　ホワイトアウトサバイバルを実際にプレイし、ゲーム内での検証と公開情報をもとに作成しています。<br>
     ※ 本ツールはファンメイドの非公式コンテンツです。数値・判定は公開情報と実測に基づく推定であり、運営の内部仕様の完全な再現ではありません。仕様はアップデートで変わることがあります。Whiteout Survival は Century Games の商標であり、当サイトは同社と提携・公認関係にありません。
   </div>
 </div>
@@ -566,7 +568,7 @@
 </div>
   <div class="ta-meta">
     <strong>Operator</strong>: Jasmine (Server 1567 / leader of alliance &quot;bst&quot;)　|　<strong>Contact</strong>: <a href="https://x.com/tegetege_m" target="_blank" rel="noopener">X @tegetege_m</a> · <a href="../../contact.html">Contact</a><br>
-    <strong>Last updated</strong>: June 2026　|　Written by an active Whiteout Survival player, based on in-game testing and public information.<br>
+    <strong>Last updated</strong>: September 14, 2026　|　Written by an active Whiteout Survival player, based on in-game testing and public information.<br>
     * This is a fan-made, unofficial tool. Figures are estimates based on public data and measurements, not a reproduction of the game's internal formulas. Specs may change with updates. Whiteout Survival is a trademark of Century Games; this site is not affiliated with or endorsed by it.
   </div>
 </div>
@@ -577,7 +579,7 @@
 <div class="fb-toast" id="toast" role="status" aria-live="polite"></div>
 
 <script src="/assets/config.js?v=96"></script>
-<script src="/assets/toolkit.js?v=96"></script>
+<script src="/assets/toolkit.js?v=106"></script>
 <script>
   try{
     document.getElementById('nav').innerHTML = window.WOS_NAV(2);

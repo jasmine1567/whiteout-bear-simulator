@@ -16,7 +16,7 @@
 <title>霜竜イベント 同盟配置計算ツール｜総力集計・ボーダー自動判定 | ホワサバ ツールラボ</title>
 <meta name="description" content="ホワイトアウトサバイバル「霜竜イベント」のサーバー内配置計算ツール。参加希望同盟の人数・総力を入力すると、最大3つの入れ物（集合先同盟）にどの同盟が入ればボーダー(上位100位)を超えられるかを自動計算。分割指示・共有テキスト生成に対応。">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
-<link rel="stylesheet" href="/assets/site.css?v=96">
+<link rel="stylesheet" href="/assets/site.css?v=106">
 <script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=85">
 <link rel="icon" type="image/png" href="/favicon.png?v=85">
@@ -220,6 +220,8 @@
 </p>
 
 <div id="updbox"></div>
+<section class="tool-about" id="tool-about"><div class="i18n-ja"><div class="tab-head"><h2>このツールについて</h2><a href="#tool-article">詳しい解説・FAQを見る ↓</a></div><div class="tab-grid"><div class="tab-col"><h3>🔍 このツールで分かること</h3><p>霜竜イベントで、参加希望同盟の総力を集計し、どの同盟がどの「入れ物」（集合先の同盟）に入ればすべての入れ物がエントリーボーダーを超えるかを計算します。空き枠と総力の両方を満たす振り分け案と、必要なら同盟を分割する案まで分かります。</p></div><div class="tab-col"><h3>🧮 計算・判定の考え方</h3><p>各入れ物の現在総力と空き人数、参加希望同盟の総力と人数を入力とし、ボーダーを超えつつ人数上限に収まる組み合わせを探索します。並べ替えだけでは全ての入れ物が超えられない場合は、1つの同盟を総力ベースで分割して複数の入れ物に配分する案を提示します。ボーダーは前回イベントの100位ラインを目安に設定してください。</p></div><div class="tab-col"><h3>📝 使い方</h3><p>STEP1で参加ボーダーを設定し、STEP2で入れ物の同盟、STEP3で参加希望の同盟を入力すると、配置結果が表示されます。結果はそのままコピーしてサーバーチャットや同盟チャットに貼り付けられます。抜ける予定のメンバーは空き人数から差し引いておくと正確です。</p></div></div></div><div class="i18n-en"><div class="tab-head"><h2>About this tool</h2><a href="#tool-article">Full explanation & FAQ ↓</a></div><div class="tab-grid"><div class="tab-col"><h3>🔍 What this tool tells you</h3><p>For the Frost Dragon event, total up the power of alliances that want to join and work out which alliance should move into which 'host' alliance so that every host clears the entry border. You get an assignment that satisfies both open slots and power, and a split plan if needed.</p></div><div class="tab-col"><h3>🧮 How it works</h3><p>Inputs are each host's current power and open slots plus each applicant alliance's power and headcount; the tool searches for combinations that clear the border while fitting the headcount cap. If reshuffling alone can't get every host over the line, it proposes splitting one alliance by power across several hosts. Set the border a little above last event's rank-100 line.</p></div><div class="tab-col"><h3>📝 How to use it</h3><p>STEP 1: set the entry border. STEP 2: enter the host alliances. STEP 3: enter the applicant alliances. The placement result appears and can be copied straight into server or alliance chat. Subtract members who plan to leave from the hosts' open slots for accuracy.</p></div></div></div></section>
+
 
 <div class="fd" id="fdApp">
   <div class="fd-head">
@@ -399,7 +401,7 @@
 </div>
 
 <!-- ===== 解説記事 ===== -->
-<article class="fd-article">
+<article class="fd-article" id="tool-article">
   <div class="i18n-ja">
     <h2>霜竜イベントの「入れ物」戦略とは</h2>
     <p>霜竜イベントは同盟単位でエントリーし、<b>エントリー可能なサーバーの中で同盟総力の上位100位以内</b>に入る必要があります。多くのサーバーでは単独同盟のままだと総力が足りないため、サーバー内の有志が1〜2同盟（強豪サーバーなら3同盟）に集まってボーダー超えを目指す「入れ物」戦略が定番です。</p>
@@ -433,7 +435,7 @@
     <span class="i18n-ja-inline"><strong>運営者</strong>: じゃすみん（1567サーバー / 同盟「bst」盟主）　|　<strong>お問い合わせ</strong>: <a href="https://x.com/tegetege_m" target="_blank" rel="noopener">X @tegetege_m</a> · <a href="../../contact.html">お問い合わせ</a><br>
     <strong>最終更新</strong>: 2026年7月　|　実プレイでの検証と公開情報をもとに作成しています。<br>
     ※ 本ツールはファンによる非公式ツールです。数値・判定は目安であり、イベント仕様はアップデートで変わることがあります。Whiteout Survival は Century Games の商標です。</span><span class="i18n-en-inline"><strong>Operator</strong>: Jasmine (Server 1567 / leader of alliance "bst")　|　<strong>Contact</strong>: <a href="https://x.com/tegetege_m" target="_blank" rel="noopener">X @tegetege_m</a> · <a href="../../contact.html">Contact</a><br>
-    <strong>Last updated</strong>: July 2026　|　Built from in-game testing and public information.<br>
+    <strong>Last updated</strong>: September 14, 2026　|　Built from in-game testing and public information.<br>
     * This is a fan-made, unofficial tool. Figures are estimates; event specs may change with updates. Whiteout Survival is a trademark of Century Games.</span>
   </div>
 </article>
@@ -442,7 +444,7 @@
 <div id="foot"></div>
 
 <script src="/assets/config.js?v=96"></script>
-<script src="/assets/toolkit.js?v=96"></script>
+<script src="/assets/toolkit.js?v=106"></script>
 <script>
   try{
     document.getElementById('nav').innerHTML = window.WOS_NAV(2);

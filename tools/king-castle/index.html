@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://whitesim-lab.com/assets/og-king-castle.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://whitesim-lab.com/assets/og-king-castle.png">
-<link rel="stylesheet" href="/assets/site.css?v=96">
+<link rel="stylesheet" href="/assets/site.css?v=106">
 <script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
 <style>
   :root{
@@ -146,6 +146,8 @@
     <span class="kc-sub">Castle Battle — Area Planner</span>
   </header>
   <p class="kc-intro" id="t-intro">サーバー(SvS)の2分割、同盟エリアの分割、都市配置を計画して、画像やXで共有できます。中心の太陽城(6×6)は設置不可エリアです。</p>
+<section class="tool-about" id="tool-about"><div class="i18n-ja"><div class="tab-head"><h2>このツールについて</h2><a href="#tool-article">詳しい解説・FAQを見る ↓</a></div><div class="tab-grid"><div class="tab-col"><h3>🔍 このツールで分かること</h3><p>王城戦（SvS）で、王城周辺のマス目をサーバーエリア・同盟エリアに分け、各同盟や主要メンバーの都市配置を計画して、一枚の地図として共有できます。「どこに誰が入るか」を開戦前に全員で確認するためのツールです。</p></div><div class="tab-col"><h3>🧮 計算・判定の考え方</h3><p>王城を中心としたマス目を、辺に沿った直線で自動分割する仕組みです。青＝自サーバー／赤＝敵サーバーの塗り分け、同盟エリアの分割数の指定、1マス＝1都市の登録という3段階で整理します。中心6×6（太陽城）は設置不可として扱います。ゲーム内の座標そのものではなく、配置の相対関係を共有するための図です。</p></div><div class="tab-col"><h3>📝 使い方</h3><p>モード1でサーバーエリアを塗り分け、モード2で同盟ごとの担当範囲を決め、モード3で都市を登録します。完成した配置は画像として保存し、同盟チャットやXに貼って共有してください。スマホでもマスをタップして操作できます。</p></div></div></div><div class="i18n-en"><div class="tab-head"><h2>About this tool</h2><a href="#tool-article">Full explanation & FAQ ↓</a></div><div class="tab-grid"><div class="tab-col"><h3>🔍 What this tool tells you</h3><p>For Castle Battle (SvS), split the grid around the castle into server and alliance areas, plan where each alliance's and key members' cities go, and share it as a single map so everyone knows who goes where before the battle starts.</p></div><div class="tab-col"><h3>🧮 How it works</h3><p>The grid centred on the castle is divided automatically with straight lines along its edges. Work in three stages: paint blue (your server) / red (enemy server), set how many alliance areas to split into, then register cities one per cell. The central 6×6 (Sun Castle) is treated as unplaceable. It shows relative placement, not in-game coordinates.</p></div><div class="tab-col"><h3>📝 How to use it</h3><p>Mode 1 paints the server areas, Mode 2 assigns alliance areas, Mode 3 registers cities. Export the finished plan as an image and post it in alliance chat or on X. Cells can be tapped on a phone as well.</p></div></div></div></section>
+
 
   <div class="kc-modes" id="kcModes">
     <button class="kc-mode on" data-mode="server"><span class="n">1</span><span id="t-m1">サーバーエリア</span></button>
@@ -255,7 +257,7 @@
 </div>
 
 
-<section class="tool-article">
+<section class="tool-article" id="tool-article">
 <div class="i18n-ja">
 <h2>王城戦エリア配置管理ツールとは</h2>
 <p class="ta-lead">王城戦（SvS / Castle Battle）は、サーバー同士がエリアを取り合う大型イベントです。勝つには、<strong>サーバーの2分割・同盟ごとのエリア分担・各都市の配置</strong>を事前にすり合わせておくことが重要になります。本ツールは、その<strong>配置プランを地図上で作成し、画像やXで共有</strong>できる無料の作戦ボードです。中心の太陽城（6×6）は設置不可エリアとして最初から考慮されています。</p>
@@ -290,7 +292,7 @@
 </div>
   <div class="ta-meta">
     <strong>運営者</strong>：じゃすみん（1567サーバー / 同盟「bst」盟主）　|　<strong>連絡先</strong>：<a href="https://x.com/tegetege_m" target="_blank" rel="noopener">X @tegetege_m</a> ・ <a href="../../contact.html">お問い合わせ</a><br>
-    <strong>最終更新</strong>：2026年6月　|　ホワイトアウトサバイバルを実際にプレイし、ゲーム内での検証と公開情報をもとに作成しています。<br>
+    <strong>最終更新</strong>：2026年9月14日　|　ホワイトアウトサバイバルを実際にプレイし、ゲーム内での検証と公開情報をもとに作成しています。<br>
     ※ 本ツールはファンメイドの非公式コンテンツです。数値・判定は公開情報と実測に基づく推定であり、運営の内部仕様の完全な再現ではありません。仕様はアップデートで変わることがあります。Whiteout Survival は Century Games の商標であり、当サイトは同社と提携・公認関係にありません。
   </div>
 </div>
@@ -324,14 +326,14 @@
 </div>
   <div class="ta-meta">
     <strong>Operator</strong>: Jasmine (Server 1567 / leader of alliance &quot;bst&quot;)　|　<strong>Contact</strong>: <a href="https://x.com/tegetege_m" target="_blank" rel="noopener">X @tegetege_m</a> · <a href="../../contact.html">Contact</a><br>
-    <strong>Last updated</strong>: June 2026　|　Written by an active Whiteout Survival player, based on in-game testing and public information.<br>
+    <strong>Last updated</strong>: September 14, 2026　|　Written by an active Whiteout Survival player, based on in-game testing and public information.<br>
     * This is a fan-made, unofficial tool. Figures are estimates based on public data and measurements, not a reproduction of the game's internal formulas. Specs may change with updates. Whiteout Survival is a trademark of Century Games; this site is not affiliated with or endorsed by it.
   </div>
 </div>
 </section>
 <div id="foot"></div>
 <script src="/assets/config.js?v=96"></script>
-<script src="/assets/toolkit.js?v=96"></script>
+<script src="/assets/toolkit.js?v=106"></script>
 <script>
   // nav/footer 注入(深さ2 = tools/king-castle/)
   try{

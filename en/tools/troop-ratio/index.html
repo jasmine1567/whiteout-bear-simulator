@@ -19,7 +19,7 @@
 <title>熊狩り 兵士比率シミュレータ｜10:30:60・10:10:80・1:1:8を比較 | ホワサバ ツールラボ</title>
 <meta name="description" content="ホワサバ熊狩り(Bear Hunt)の兵士比率を比較シミュレート。10:30:60・10:10:80・1:1:8など主要比率を、あなたの兵数で横並び比較。弓100%が落ちる理由も数値で確認。">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
-<link rel="stylesheet" href="/assets/site.css?v=96">
+<link rel="stylesheet" href="/assets/site.css?v=106">
 <script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
 <style>
   #bars{background:var(--night);border:1px solid var(--line);border-radius:10px;padding:8px 4px;margin-bottom:6px}
@@ -50,6 +50,8 @@
 <h1>熊狩り <span class="acc">兵士比率シミュレータ</span></h1>
 <div id="updbox"></div>
 <p class="lead">「10:30:60が良い」「いや弓100%だ」――比率の正解は<b>兵数とステータスで変わります</b>。あなたの数値で主要な比率を横並び比較し、どれが一番ダメージを出すかを判定します。</p>
+<section class="tool-about" id="tool-about"><div class="i18n-ja"><div class="tab-head"><h2>このツールについて</h2><a href="#tool-article">詳しい解説・FAQを見る ↓</a></div><div class="tab-grid"><div class="tab-col"><h3>🔍 このツールで分かること</h3><p>盾:槍:弓の比率を変えたとき、熊狩りのダメージがどのくらい変わるかを、自分の兵数と兵種別ステータスで横並び比較できます。「弓100%が最強」が成り立たない理由も数値で確認できます。</p></div><div class="tab-col"><h3>🧮 計算・判定の考え方</h3><p>熊狩ダメージ・シミュレーターと同じモデルを使い、合計兵数を固定して比率ごとの期待ダメージを相対値で計算します。兵種別の攻撃力ボーナスと兵種ごとの重み、盾または槍が0のときのペナルティを反映しているため、前衛を削りすぎた構成は不利に出ます。絶対値ではなく比率どうしの差を見るためのツールです。</p></div><div class="tab-col"><h3>📝 使い方</h3><p>合計兵数と、ゲーム内「ステータス」画面にある兵種別の攻撃力ボーナス%を入力し、比較したい比率をプリセットから選ぶか自分で追加します。グラフと表でいちばん高い比率が分かるので、その比率をシミュレーターで詳しく試算してください。</p></div></div></div><div class="i18n-en"><div class="tab-head"><h2>About this tool</h2><a href="#tool-article">Full explanation & FAQ ↓</a></div><div class="tab-grid"><div class="tab-col"><h3>🔍 What this tool tells you</h3><p>Compare side by side how Bear Hunt damage changes with the Inf:Lan:Mks ratio, using your own troop count and per-type stats. You can also see in numbers why '100% marksmen' is not the best answer.</p></div><div class="tab-col"><h3>🧮 How it works</h3><p>The same model as the Bear Hunt Damage Simulator is used: total troops are fixed and the expected damage of each ratio is computed as a relative value. Per-type attack bonuses, troop-type weights and the penalty for zero infantry or lancers are included, so builds with too little front line score lower. It is meant for comparing ratios, not for absolute values.</p></div><div class="tab-col"><h3>📝 How to use it</h3><p>Enter your total troops and the per-type attack bonus % from the in-game Stats screen, then pick preset ratios or add your own. The chart and table show the best ratio; take it to the simulator for a detailed estimate.</p></div></div></div></section>
+
 
 <div class="card">
   <div class="row">
@@ -89,7 +91,7 @@
 <p style="font-size:13px">兵士の量はダメージに対して逓減(平方根的)に効くため、1兵種に全振りすると伸びしろが頭打ちになります。さらに公開検証では、盾・槍がゼロの編成にはダメージの目減り(ペナルティ)が確認されています。弓は対歩兵の特性で効率が高い一方、槍・盾を少量混ぜて分散させた方が合計で勝つケースが多い――これが「弓寄せだが全振りはしない」が定番になる理由です。</p>
 </div>
 
-<section class="tool-article">
+<section class="tool-article" id="tool-article">
 <div class="i18n-ja">
 <h2>兵士比率シミュレータとは</h2>
 <p class="ta-lead">熊狩りのダメージは、歩兵・槍兵・弓兵（射手）の<strong>「比率」</strong>で大きく変わります。本ツールは、<strong>10:30:60・10:10:80・1:1:8</strong> といった主要な比率を、あなたの実際の兵数に当てはめて<strong>横並びで比較</strong>できる非公式シミュレータです。「なんとなく弓100%」を卒業し、数値で最適比率を選べます。</p>
@@ -130,7 +132,7 @@
 </div>
   <div class="ta-meta">
     <strong>運営者</strong>：じゃすみん（1567サーバー / 同盟「bst」盟主）　|　<strong>連絡先</strong>：<a href="https://x.com/tegetege_m" target="_blank" rel="noopener">X @tegetege_m</a> ・ <a href="../../contact.html">お問い合わせ</a><br>
-    <strong>最終更新</strong>：2026年6月　|　ホワイトアウトサバイバルを実際にプレイし、ゲーム内での検証と公開情報をもとに作成しています。<br>
+    <strong>最終更新</strong>：2026年9月14日　|　ホワイトアウトサバイバルを実際にプレイし、ゲーム内での検証と公開情報をもとに作成しています。<br>
     ※ 本ツールはファンメイドの非公式コンテンツです。数値・判定は公開情報と実測に基づく推定であり、運営の内部仕様の完全な再現ではありません。仕様はアップデートで変わることがあります。Whiteout Survival は Century Games の商標であり、当サイトは同社と提携・公認関係にありません。
   </div>
 </div>
@@ -169,7 +171,7 @@
 </div>
   <div class="ta-meta">
     <strong>Operator</strong>: Jasmine (Server 1567 / leader of alliance &quot;bst&quot;)　|　<strong>Contact</strong>: <a href="https://x.com/tegetege_m" target="_blank" rel="noopener">X @tegetege_m</a> · <a href="../../contact.html">Contact</a><br>
-    <strong>Last updated</strong>: June 2026　|　Written by an active Whiteout Survival player, based on in-game testing and public information.<br>
+    <strong>Last updated</strong>: September 14, 2026　|　Written by an active Whiteout Survival player, based on in-game testing and public information.<br>
     * This is a fan-made, unofficial tool. Figures are estimates based on public data and measurements, not a reproduction of the game's internal formulas. Specs may change with updates. Whiteout Survival is a trademark of Century Games; this site is not affiliated with or endorsed by it.
   </div>
 </div>
@@ -177,7 +179,7 @@
 <div id="foot"></div>
 
 <script src="/assets/config.js?v=96"></script>
-<script src="/assets/toolkit.js?v=96"></script>
+<script src="/assets/toolkit.js?v=106"></script>
 <script>
 document.getElementById('nav').innerHTML = WOS_NAV(2);
 document.getElementById('foot').innerHTML = WOS_FOOT(2);
@@ -258,7 +260,7 @@ window.addEventListener("DOMContentLoaded", function() {
   if (q(".lead")) q(".lead").innerHTML = 'Is 10:30:60 right, or 100% marksman? The best ratio <b>depends on your troop count and stats</b>. Compare the major ratios with your own numbers and see which deals the most damage.';
   var hs = document.querySelectorAll("h2");
   if (hs[0]) hs[0].textContent = "Predicted damage by ratio (relative)";
-  var TR = { "ホーム": "Home", "兵士比率シミュレータ": "Troop Ratio Simulator", "兵士の合計数": "Total troops", "盾兵 攻撃力ボーナス%": "Infantry attack bonus %", "槍兵 攻撃力ボーナス%": "Lancer attack bonus %", "弓兵 攻撃力ボーナス%": "Marksman attack bonus %", "※ 攻撃力はゲーム内「ステータス」画面の兵種別の値。殺傷力は本ツールでは攻撃力に比例とみなして簡易計算します(厳密な数値は熊狩シミュレーター本体をご利用ください)。": "* Attack values are the per-type figures from the in-game Stats screen. Lethality is approximated as proportional to attack here (for exact numbers, use the main Bear Hunt simulator).", "盾": "Inf", "槍": "Lan", "弓": "Mks", "⬆ 上の数値を変えると、バーがリアルタイムで伸び縮みします。自分のステータスでどの比率が伸びるか動かして確かめてください。": "⬆ Change the values above and the bars grow/shrink in real time. See which ratio wins for your stats.", "なぜ弓100%が最適にならないのか": "Why 100% marksman is not optimal", "兵士の量はダメージに対して逓減(平方根的)に効くため、1兵種に全振りすると伸びしろが頭打ちになります。さらに公開検証では、盾・槍がゼロの編成にはダメージの目減り(ペナルティ)が確認されています。弓は対歩兵の特性で効率が高い一方、槍・盾を少量混ぜて分散させた方が合計で勝つケースが多い――これが「弓寄せだが全振りはしない」が定番になる理由です。": "Troop count has diminishing (square-root-like) returns on damage, so all-in on one type plateaus. Public tests also show a penalty when infantry/lancer are zero. Marksman is efficient against infantry, but mixing in some lancer/infantry usually wins on total — which is why \"marksman-favored but not all-in\" is standard.", "→ 左英雄チェッカー": "→ Left-Hero Checker", "→ ダメージが伸びない原因診断": "→ Damage Doctor", "→ 兵士比率の考え方を記事で読む": "→ Read the troop-ratio guide", "英雄スキルや専用装備まで含めた正確なダメージは、本体シミュレーターで。": "For exact damage including hero skills and exclusive gear, use the main simulator.", "🐻 熊狩ダメージ・シミュレーターで詳細計算": "🐻 Detailed calculation in the Bear Hunt Simulator" };
+  var TR = { "ホーム": "Home", "比率別の予測ダメージ(相対比較)": "Predicted damage by ratio (relative)", "兵士比率シミュレータ": "Troop Ratio Simulator", "兵士の合計数": "Total troops", "盾兵 攻撃力ボーナス%": "Infantry attack bonus %", "槍兵 攻撃力ボーナス%": "Lancer attack bonus %", "弓兵 攻撃力ボーナス%": "Marksman attack bonus %", "※ 攻撃力はゲーム内「ステータス」画面の兵種別の値。殺傷力は本ツールでは攻撃力に比例とみなして簡易計算します(厳密な数値は熊狩シミュレーター本体をご利用ください)。": "* Attack values are the per-type figures from the in-game Stats screen. Lethality is approximated as proportional to attack here (for exact numbers, use the main Bear Hunt simulator).", "盾": "Inf", "槍": "Lan", "弓": "Mks", "⬆ 上の数値を変えると、バーがリアルタイムで伸び縮みします。自分のステータスでどの比率が伸びるか動かして確かめてください。": "⬆ Change the values above and the bars grow/shrink in real time. See which ratio wins for your stats.", "なぜ弓100%が最適にならないのか": "Why 100% marksman is not optimal", "兵士の量はダメージに対して逓減(平方根的)に効くため、1兵種に全振りすると伸びしろが頭打ちになります。さらに公開検証では、盾・槍がゼロの編成にはダメージの目減り(ペナルティ)が確認されています。弓は対歩兵の特性で効率が高い一方、槍・盾を少量混ぜて分散させた方が合計で勝つケースが多い――これが「弓寄せだが全振りはしない」が定番になる理由です。": "Troop count has diminishing (square-root-like) returns on damage, so all-in on one type plateaus. Public tests also show a penalty when infantry/lancer are zero. Marksman is efficient against infantry, but mixing in some lancer/infantry usually wins on total — which is why \"marksman-favored but not all-in\" is standard.", "→ 左英雄チェッカー": "→ Left-Hero Checker", "→ ダメージが伸びない原因診断": "→ Damage Doctor", "→ 兵士比率の考え方を記事で読む": "→ Read the troop-ratio guide", "英雄スキルや専用装備まで含めた正確なダメージは、本体シミュレーターで。": "For exact damage including hero skills and exclusive gear, use the main simulator.", "🐻 熊狩ダメージ・シミュレーターで詳細計算": "🐻 Detailed calculation in the Bear Hunt Simulator" };
 
   function tr(s) { var k = s.replace(/\s+/g, " ").trim(); return TR[k] != null ? s.replace(k, TR[k]) : s; }
   var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
