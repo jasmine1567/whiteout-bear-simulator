@@ -17,7 +17,7 @@
 <title id="pgtitle">ホワサバ熊狩り攻略 計算ツール&データ解析 | ホワサバ ツールラボ</title>
 <meta name="description" id="pgdesc" content="ホワイトアウト・サバイバルの熊狩り(Bear Hunt)攻略。ダメージシミュレーターを中心に、左英雄チェッカー・兵士比率比較・指揮官タイプ診断など遊べる無料ツールと11本の攻略記事。">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com https://platform.twitter.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://docs.google.com https://www.youtube-nocookie.com https://platform.twitter.com https://syndication.twitter.com; object-src 'none'; base-uri 'none'">
-<link rel="stylesheet" href="/assets/site.css?v=108">
+<link rel="stylesheet" href="/assets/site.css?v=109">
 <script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=85">
 <link rel="icon" type="image/png" href="/favicon.png?v=85">
@@ -64,92 +64,139 @@
 </script>
 </head><body>
 <div id="nav"></div>
-<div class="wrap wide">
-<h1 id="hero-h1" style="font-size:22px;margin-bottom:4px">ホワイトアウト・サバイバル 熊狩り攻略</h1>
-<p class="lead" id="hero-lead" style="margin-bottom:8px">熊狩り(Bear Hunt)を攻略する無料ツール&amp;攻略集。数字で納得して、楽しく強くなろう。</p>
 
-<!-- メインツール2本(並列) -->
-<div class="feature-2">
-<a class="hero-flag" id="flagLink" href="tools/bear-hunt/index.html">
-  <div class="hf-in">
-    <div class="hf-text">
-      <span class="hf-badge" id="hfBadge"></span>
-      <div class="hf-title" id="hfTitle"></div>
-      <div class="hf-desc" id="hfDesc"></div>
-      <div class="hf-feats" id="hfFeats"></div>
-      <span class="hf-cta" id="hfCta"></span>
+<!-- ===== ヒーロー ===== -->
+<section class="hm-hero">
+  <div class="hm-hero-bg" aria-hidden="true"></div>
+  <div class="hm-in hm-hero-in">
+    <div class="hm-hero-text">
+      <div class="i18n-ja">
+        <p class="hm-eyebrow">Whiteout Survival — Bear Hunt Lab</p>
+        <h1 id="hero-h1" class="hm-h1">熊狩りを、<span class="acc">数字で</span>攻略する。</h1>
+        <p class="hm-lead">ホワイトアウト・サバイバルの熊狩り（Bear Hunt）を中心に、集結ダメージの試算・英雄の判定・世代別のおすすめ構成・イベントの配置計画まで。実際にプレイしながら検証した、無料の攻略ツールと解説記事です。</p>
+        <div class="hm-cta">
+          <a class="hm-btn hm-btn-p" href="tools/bear-hunt/index.html"><span class="ms-slot" data-ms="pets"></span>ダメージ・シミュレーター<span class="ms-slot hm-arr" data-ms="arrow_forward"></span></a>
+          <a class="hm-btn hm-btn-s" href="stats/index.html"><span class="ms-slot" data-ms="bar_chart"></span>世代別のおすすめ構成</a>
+        </div>
+      </div>
+      <div class="i18n-en">
+        <p class="hm-eyebrow">Whiteout Survival — Bear Hunt Lab</p>
+        <h1 class="hm-h1">Beat the Bear Hunt <span class="acc">by the numbers.</span></h1>
+        <p class="hm-lead">Free calculators and guides for Whiteout Survival's Bear Hunt and alliance events: rally damage estimates, left-hero checks, best builds by generation and event placement planners — all verified by an active player.</p>
+        <div class="hm-cta">
+          <a class="hm-btn hm-btn-p" href="tools/bear-hunt/index.html"><span class="ms-slot" data-ms="pets"></span>Damage Simulator<span class="ms-slot hm-arr" data-ms="arrow_forward"></span></a>
+          <a class="hm-btn hm-btn-s" href="stats/index.html"><span class="ms-slot" data-ms="bar_chart"></span>Best builds by generation</a>
+        </div>
+      </div>
+      <ul class="hm-stats">
+        <li><b>9</b><span class="i18n-ja-inline">計算ツール</span><span class="i18n-en-inline">tools</span></li>
+        <li><b>62</b><span class="i18n-ja-inline">英雄データ</span><span class="i18n-en-inline">heroes</span></li>
+        <li><b>16</b><span class="i18n-ja-inline">世代別ページ</span><span class="i18n-en-inline">generations</span></li>
+        <li><b>12</b><span class="i18n-ja-inline">攻略記事</span><span class="i18n-en-inline">guides</span></li>
+      </ul>
     </div>
-    <div class="hf-visual">
-      <div class="hf-bear">🐻</div>
-      <div class="hf-minibars">
-        <div class="hf-mb" style="width:90%;animation-delay:0s"></div>
-        <div class="hf-mb" style="width:70%;animation-delay:.3s"></div>
-        <div class="hf-mb" style="width:80%;animation-delay:.6s"></div>
+    <div class="hm-hero-card" aria-hidden="true">
+      <div class="hm-card-top">
+        <span class="hm-card-k"><span class="i18n-ja-inline">予測ダメージポイント</span><span class="i18n-en-inline">Estimated damage points</span></span>
+        <span class="hm-card-v">38,540,000</span>
+        <span class="hm-card-sub"><span class="i18n-ja-inline">1ラリーの期待値 ／ 第16世代</span><span class="i18n-en-inline">per rally · Gen 16</span></span>
+      </div>
+      <div class="hm-card-rows">
+        <div class="hm-row"><span class="hm-row-l"><i class="hm-dot inf"></i><span class="i18n-ja-inline">盾兵</span><span class="i18n-en-inline">Infantry</span></span><span class="hm-bar"><i style="width:34%"></i></span><span class="hm-row-v">10%</span></div>
+        <div class="hm-row"><span class="hm-row-l"><i class="hm-dot lan"></i><span class="i18n-ja-inline">槍兵</span><span class="i18n-en-inline">Lancer</span></span><span class="hm-bar"><i style="width:58%"></i></span><span class="hm-row-v">30%</span></div>
+        <div class="hm-row"><span class="hm-row-l"><i class="hm-dot mks"></i><span class="i18n-ja-inline">弓兵</span><span class="i18n-en-inline">Marksman</span></span><span class="hm-bar"><i style="width:92%"></i></span><span class="hm-row-v">60%</span></div>
+      </div>
+      <div class="hm-card-foot">
+        <span class="hm-chip"><span class="ms-slot" data-ms="trending_up"></span><span class="i18n-ja-inline">次の1手：専用装備 Lv7→10 で +12%</span><span class="i18n-en-inline">Next move: gear Lv7→10 for +12%</span></span>
       </div>
     </div>
   </div>
-</a>
-<a class="hero-flag kc-flag" id="kcLink" href="tools/king-castle/index.html">
-  <div class="hf-in">
-    <div class="hf-text">
-      <span class="hf-badge" id="kcBadge"></span>
-      <div class="hf-title" id="kcTitle"></div>
-      <div class="hf-desc" id="kcDesc"></div>
-      <div class="hf-feats" id="kcFeats"></div>
-      <span class="hf-cta" id="kcCta"></span>
+</section>
+
+<div class="wrap wide hm-body">
+
+<!-- ===== 主要ツール ===== -->
+<section class="hm-sec" id="tools">
+  <div class="hm-sec-head">
+    <div>
+      <p class="hm-kicker"><span class="i18n-ja-inline">TOOLS</span><span class="i18n-en-inline">TOOLS</span></p>
+      <h2 class="hm-h2"><span class="i18n-ja-inline">主要ツール</span><span class="i18n-en-inline">Featured tools</span></h2>
     </div>
-    <div class="hf-visual">
-      <div class="kc-diamond" aria-hidden="true">
-        <span class="kc-d kc-d-n"></span><span class="kc-d kc-d-e"></span>
-        <span class="kc-d kc-d-s"></span><span class="kc-d kc-d-w"></span>
-        <span class="kc-d kc-d-c"></span>
-      </div>
-    </div>
+    <p class="hm-sec-note"><span class="i18n-ja-inline">すべて無料・登録不要。スマホからも使えます。</span><span class="i18n-en-inline">All free, no sign-up, phone-friendly.</span></p>
   </div>
-</a>
-<a class="hero-flag fb-flag" id="fbLink" href="tools/foundry-battle/index.html">
-  <div class="hf-in">
-    <div class="hf-text">
-      <span class="hf-badge" id="fbBadge"></span>
-      <div class="hf-title" id="fbTitle"></div>
-      <div class="hf-desc" id="fbDesc"></div>
-      <div class="hf-feats" id="fbFeats"></div>
-      <span class="hf-cta" id="fbCta"></span>
-    </div>
-    <div class="hf-visual">
-      <div class="hf-bear" aria-hidden="true">🏭</div>
-      <div class="hf-minibars">
-        <div class="hf-mb" style="width:85%;animation-delay:0s"></div>
-        <div class="hf-mb" style="width:65%;animation-delay:.3s"></div>
-        <div class="hf-mb" style="width:75%;animation-delay:.6s"></div>
-      </div>
-    </div>
+  <div class="hm-feat">
+    <a class="hm-fcard hm-fcard-main" href="tools/bear-hunt/index.html">
+      <span class="hm-fbadge"><span class="i18n-ja-inline">看板ツール</span><span class="i18n-en-inline">Flagship</span></span>
+      <span class="hm-fico"><span class="ms-slot" data-ms="pets"></span></span>
+      <span class="hm-ftitle"><span class="i18n-ja-inline">熊狩ダメージ・シミュレーター</span><span class="i18n-en-inline">Bear Hunt Damage Simulator</span></span>
+      <span class="hm-fdesc"><span class="i18n-ja-inline">集結主の英雄・参加者の左英雄・兵士比率・ステータスから、集結1回のダメージポイントを推定。確率スキルの幅と「次に強化すべき順」まで分かります。</span><span class="i18n-en-inline">Estimate one rally's damage points from your leader heroes, joiners' left heroes, troop ratio and stats — with probability ranges and a ranked "what to upgrade next".</span></span>
+      <span class="hm-fchips"><span class="i18n-ja-inline"><i>全62英雄</i><i>強化ランキング</i><i>実測補正</i><i>統計に投稿</i></span><span class="i18n-en-inline"><i>62 heroes</i><i>Upgrade ranking</i><i>Calibration</i><i>Submit to stats</i></span></span>
+      <span class="hm-fstepsw"><span class="i18n-ja"><span class="hm-fsteps"><span><b>STEP 1</b>世代と集結主の英雄を選ぶ</span><span><b>STEP 2</b>編成画面の攻撃%・殺傷%を入力</span><span><b>STEP 3</b>参加者の左英雄を4人選ぶ</span><span><b>STEP 4</b>兵数と比率を決めて結果を見る</span></span></span><span class="i18n-en"><span class="hm-fsteps"><span><b>STEP 1</b>Pick generation & leader heroes</span><span><b>STEP 2</b>Enter ATK% / Lethality%</span><span><b>STEP 3</b>Choose 4 joiners' left heroes</span><span><b>STEP 4</b>Set troops & ratio, read the result</span></span></span></span>
+      <span class="hm-fgo"><span class="i18n-ja-inline">シミュレーターを開く</span><span class="i18n-en-inline">Open the simulator</span><span class="ms-slot" data-ms="arrow_forward"></span></span>
+    </a>
+    <a class="hm-fcard" href="tools/king-castle/index.html">
+      <span class="hm-fico alt1"><span class="ms-slot" data-ms="castle"></span></span>
+      <span class="hm-ftitle"><span class="i18n-ja-inline">王城戦エリア配置管理</span><span class="i18n-en-inline">Castle Battle Area Planner</span></span>
+      <span class="hm-fdesc"><span class="i18n-ja-inline">SvSのサーバー2分割・同盟エリア・都市配置をマス目で計画し、画像で共有。</span><span class="i18n-en-inline">Plan the SvS server split, alliance areas and city placement on a grid, then share as an image.</span></span>
+      <span class="hm-fgo"><span class="i18n-ja-inline">ツールを開く</span><span class="i18n-en-inline">Open the planner</span><span class="ms-slot" data-ms="arrow_forward"></span></span>
+    </a>
+    <a class="hm-fcard" href="tools/foundry-battle/index.html">
+      <span class="hm-fico alt2"><span class="ms-slot" data-ms="factory"></span></span>
+      <span class="hm-ftitle"><span class="i18n-ja-inline">兵器工場争奪戦シミュレーター</span><span class="i18n-en-inline">Foundry Battle Simulator</span></span>
+      <span class="hm-fdesc"><span class="i18n-ja-inline">フィールド上で作戦を組み、敵を加えた模擬戦で占領ポイントの推移を試算。</span><span class="i18n-en-inline">Plan operations on the field map and run a mock battle to see how capture points evolve.</span></span>
+      <span class="hm-fgo"><span class="i18n-ja-inline">ツールを開く</span><span class="i18n-en-inline">Open the simulator</span><span class="ms-slot" data-ms="arrow_forward"></span></span>
+    </a>
   </div>
-</a>
-</div>
-<style>
-  /* 主要3ツール: 3枚目(兵器工場)は横長で全幅に。ツール本体と同じアイスブルー系で差別化 */
-  .feature-2 .fb-flag{grid-column:1/-1;
-    background:linear-gradient(135deg,#e7f4fa 0%,#f2fafd 100%);
-    border:1px solid #cfe4f0;box-shadow:0 10px 30px rgba(60,140,190,.12)}
-  .feature-2 .fb-flag:hover{border-color:#1696c2}
-  .feature-2 .fb-flag .hf-mb{background:linear-gradient(90deg,#38b7dd,#1696c2)}
-</style>
+  <div class="hm-grid" id="playGrid"></div>
+</section>
 
 <div class="ad-slot"></div>
 
-<!-- その他のツール -->
-<div class="sec-head" id="tools"><span class="sh-ico">🎮</span><span class="sh-t" id="playT"></span><span class="sh-line"></span></div>
-<div class="tool-grid" id="playGrid"></div>
+<!-- ===== 世代別構成 ===== -->
+<section class="hm-sec hm-gens">
+  <div class="hm-gens-in">
+    <div class="hm-gens-text">
+      <p class="hm-kicker light">GEN BUILDS</p>
+      <h2 class="hm-h2 light"><span class="i18n-ja-inline">世代別 熊狩りのおすすめ英雄・最強構成</span><span class="i18n-en-inline">Best Bear Hunt heroes &amp; builds by generation</span></h2>
+      <p class="hm-gens-lead"><span class="i18n-ja-inline">あなたのサーバーの世代を選ぶだけ。無課金・中課金・石油王の課金帯別に、集結主が使うべき盾・槍・弓の英雄と理論上の最強構成、みんなの実測データ、口コミをまとめています。</span><span class="i18n-en-inline">Pick your server's generation: rally-leader picks for F2P, mid and whale tiers, the theoretical best build, live submissions and reviews.</span></p>
+      <div class="hm-cta">
+        <a class="hm-btn hm-btn-p" href="stats/index.html"><span class="ms-slot" data-ms="leaderboard"></span><span class="i18n-ja-inline">世代別まとめを見る</span><span class="i18n-en-inline">Open the generation hub</span></a>
+        <a class="hm-btn hm-btn-g" href="submit/index.html"><span class="ms-slot" data-ms="edit_note"></span><span class="i18n-ja-inline">自分の構成を投稿</span><span class="i18n-en-inline">Submit your build</span></a>
+      </div>
+    </div>
+    <div class="hm-gengrid" id="genGrid"></div>
+  </div>
+</section>
 
+<!-- ===== 攻略ガイド ===== -->
+<section class="hm-sec" id="guides">
+  <div class="hm-sec-head">
+    <div>
+      <p class="hm-kicker">GUIDES</p>
+      <h2 class="hm-h2"><span class="i18n-ja-inline">攻略ガイド</span><span class="i18n-en-inline">Guides</span></h2>
+    </div>
+    <p class="hm-sec-note"><span class="i18n-ja-inline">ツールの背景にある考え方を、文章でじっくり解説しています。</span><span class="i18n-en-inline">The thinking behind the tools, explained in depth.</span></p>
+  </div>
+  <div class="hm-gcards" id="guideCards"></div>
+</section>
 
-
-<!-- 読み物(アコーディオン・閉) -->
-<div class="read-sec">
-<div class="sec-head"><span class="sh-ico">📖</span><span class="sh-t" id="readT"></span><span class="sh-line"></span></div>
-<p style="font-size:12.5px;color:var(--muted);margin:-6px 0 12px" id="readNote"></p>
-<div id="readCats"></div>
-</div>
+<!-- ===== 運営者 ===== -->
+<section class="hm-sec hm-owner">
+  <img class="hm-owner-img" src="/assets/owner.png" alt="じゃすみん" width="72" height="72" loading="lazy" onerror="this.style.display='none'">
+  <div class="hm-owner-text">
+    <p class="hm-kicker">ABOUT</p>
+    <div class="i18n-ja">
+      <h2 class="hm-h2 sm">運営者：じゃすみん（1567サーバー／同盟「bst」盟主）</h2>
+      <p>実際にプレイしながら、ゲーム内での検証と公開情報をもとに、ツールと記事を手作業で作成・更新しています。数値はすべて推定値で、実測キャリブレーションで自分の環境に合わせられます。ご意見・誤りのご指摘はお気軽にどうぞ。</p>
+      <div class="hm-owner-links"><a href="about.html"><span class="ms-slot" data-ms="person"></span>運営者情報</a><a href="contact.html"><span class="ms-slot" data-ms="mail"></span>お問い合わせ</a><a href="changelog.html"><span class="ms-slot" data-ms="history"></span>更新履歴</a><a href="https://x.com/tegetege_m" target="_blank" rel="noopener noreferrer">𝕏 @tegetege_m</a></div>
+    </div>
+    <div class="i18n-en">
+      <h2 class="hm-h2 sm">Run by Jasmine (Server 1567 / leader of alliance "bst")</h2>
+      <p>Every tool and article is built and updated by hand from in-game testing and public information. All figures are estimates; use the calibration feature to fit them to your own account. Feedback and corrections are always welcome.</p>
+      <div class="hm-owner-links"><a href="about.html"><span class="ms-slot" data-ms="person"></span>About</a><a href="contact.html"><span class="ms-slot" data-ms="mail"></span>Contact</a><a href="changelog.html"><span class="ms-slot" data-ms="history"></span>Changelog</a><a href="https://x.com/tegetege_m" target="_blank" rel="noopener noreferrer">𝕏 @tegetege_m</a></div>
+    </div>
+  </div>
+</section>
 
 <style>
   /* 公式動画埋め込み(YouTube公式の埋め込み機能) */
@@ -205,7 +252,7 @@
   <h2>運営者・サイトの方針</h2>
   <p>運営者は <strong>じゃすみん（1567サーバー / 同盟「bst」盟主）</strong>です。広告や提携リンクを含む場合がありますが、内容は実プレイでの検証を優先し、読者が「数字で納得して」遊べることを第一に作っています。ご意見・誤りのご指摘は <a href="contact.html">お問い合わせ</a> または X（<a href="https://x.com/tegetege_m" target="_blank" rel="noopener">@tegetege_m</a>）までお気軽にどうぞ。<a href="about.html">運営者情報</a>・<a href="privacy.html">プライバシーポリシー</a>・<a href="terms.html">利用規約</a> もあわせてご確認ください。</p>
   <div class="ta-meta">
-    ※ 当サイトはファンによる非公式の攻略サイトであり、Century Games および Whiteout Survival 運営とは提携・公認関係にありません。数値・判定は公開情報と実測に基づく推定で、内部仕様の完全な再現ではなく、アップデートで変わることがあります。Whiteout Survival は Century Games の商標です。最終更新：2026年6月。
+    ※ 当サイトはファンによる非公式の攻略サイトであり、Century Games および Whiteout Survival 運営とは提携・公認関係にありません。数値・判定は公開情報と実測に基づく推定で、内部仕様の完全な再現ではなく、アップデートで変わることがあります。Whiteout Survival は Century Games の商標です。最終更新：2026年9月14日。
   </div>
 </div>
 <div class="i18n-en">
@@ -250,131 +297,53 @@
   <h2>Operator &amp; policy</h2>
   <p>This site is run by <strong>Jasmine (Server 1567 / leader of alliance "bst")</strong>. It may contain ads and affiliate links, but content prioritizes in-game testing so you can play "by the numbers." For feedback or corrections, reach us via <a href="contact.html">Contact</a> or X (<a href="https://x.com/tegetege_m" target="_blank" rel="noopener">@tegetege_m</a>). See also <a href="about.html">About</a>, <a href="privacy.html">Privacy Policy</a> and <a href="terms.html">Terms</a>.</p>
   <div class="ta-meta">
-    * This is an unofficial, fan-made strategy site, not affiliated with or endorsed by Century Games or the Whiteout Survival team. Figures and judgments are estimates based on public information and measurement, not a reproduction of internal specs, and may change with updates. Whiteout Survival is a trademark of Century Games. Last updated: June 2026.
+    * This is an unofficial, fan-made strategy site, not affiliated with or endorsed by Century Games or the Whiteout Survival team. Figures and judgments are estimates based on public information and measurement, not a reproduction of internal specs, and may change with updates. Whiteout Survival is a trademark of Century Games. Last updated: September 14, 2026.
   </div>
 </div>
 </section>
 
-<div id="about-sec"></div>
 </div>
 <div id="foot"></div>
-<script src="/assets/config.js?v=96"></script><script src="/assets/toolkit.js?v=108"></script>
+<script src="/assets/config.js?v=96"></script><script src="/assets/toolkit.js?v=109"></script>
 <script>
-var PLAY = [
-  ["tools/frost-dragon/index.html", "霜竜イベント 配置計算", "Frost Dragon Placement", "参加同盟をどの入れ物に入れるか自動計算", "Auto-assign alliances to clear the border", "❄", "tt-c3", "新", "New"],
-  ["tools/hero-list/index.html", "英雄一覧・データベース", "Hero Database", "全62英雄を世代・兵種・スキルで検索", "Search all 62 heroes", "📖", "tt-c1", "新", "New"],
-  ["tools/left-hero/index.html", "左英雄チェッカー", "Left-Hero Checker", "乗りで効く英雄を一発判定", "Instantly check your left hero", "🔍", "tt-c3", null, null],
-  ["tools/troop-ratio/index.html", "兵士比率シミュレータ", "Troop Ratio Simulator", "比率を変えるとバーが動く!", "Bars move as you tweak ratios!", "📊", "tt-c4", null, null],
-  ["tools/damage-doctor/index.html", "ダメージ原因診断", "Damage Doctor", "低い原因を質問で特定", "Find why your damage is low", "🩺", "tt-c5", null, null],
-  ["tools/commander-type/index.html", "指揮官タイプ診断", "Commander Type Quiz", "あなたは何タイプ?Xでシェア", "Your type? Share on X", "🎉", "tt-c2", "人気", "Popular"]
-];
-var READ = [{ "ico": "🔰", "tj": "はじめての方へ", "te": "Getting Started", "items": [
-    ["guides/beginner-faq.html", "熊狩り初心者FAQ", "Bear Hunt beginner FAQ", "新", "New"],
-    ["guides/how-to-use.html", "シミュレーターの使い方", "How to use the simulator", null, null],
-    ["guides/bear-hunt-guide.html", "ダメージの仕組みを徹底解説", "How damage works (full guide)", null, null]
-  ] }, { "ico": "⚔️", "tj": "編成・戦術", "te": "Formation & Tactics", "items": [
-    ["guides/left-hero.html", "左英雄とは?4枠ルール完全解説", "What is the left hero? 4-slot rule", null, null],
-    ["guides/troop-ratio.html", "兵士比率は何が正解?", "What troop ratio is best?", null, null],
-    ["guides/leader-formation.html", "集結主におすすめの編成", "Best rally-leader formations", null, null],
-    ["guides/common-myths.html", "よくある勘違い7選", "7 common myths", "新", "New"]
-  ] }, { "ico": "💰", "tj": "育成・課金", "te": "Progression & Spending", "items": [
-    ["guides/cyril-expert.html", "シリル徹底研究:全スキルと育成優先度", "Cyrille deep-dive: skills & priority", "新", "New"],
-    ["guides/f2p-damage.html", "無課金でダメージを伸ばす方法", "Grow damage free-to-play", null, null],
-    ["guides/light-spender.html", "微課金の投資先ランキング", "Light-spender investment ranking", null, null],
-    ["guides/cyril-talent.html", "シリルはどこまで強い?天賦検証", "How strong is Cyrille? Talent verified", null, null],
-    ["guides/damage-not-growing.html", "ダメージが伸びない原因まとめ", "Why damage isn't growing", null, null]
-  ] }];
 (function() {
   var EN = (window.WOS_LANG === 'en');
   document.getElementById('htmlroot').lang = EN ? 'en' : 'ja';
   if (EN) {
     document.getElementById('pgtitle').textContent = 'Whiteout Survival Bear Hunt Tools & Guides | Whiteout Tools Lab';
-    document.getElementById('pgdesc').content = 'Whiteout Survival Bear Hunt: a damage simulator plus left-hero checker, troop-ratio compare, a commander-type quiz, and 11 guides. Free.';
+    document.getElementById('pgdesc').content = 'Whiteout Survival Bear Hunt: a damage simulator plus left-hero checker, troop-ratio compare, best builds by generation, event planners and 12 guides. Free.';
   }
-  document.getElementById('hero-h1').innerHTML = EN ? 'Whiteout Survival — Bear Hunt' : 'ホワイトアウト・サバイバル 熊狩り攻略';
-  document.getElementById('hero-lead').textContent = EN ?
-    'Free tools and guides to crush the Bear Hunt event — decide by the numbers, and have fun doing it.' :
-    '熊狩り(Bear Hunt)を攻略する無料ツール&攻略集。数字で納得して、楽しく強くなろう。';
-
-  // 花形
-  document.getElementById('hfBadge').textContent = EN ? '★ FLAGSHIP TOOL' : '★ 看板ツール';
-  document.getElementById('hfTitle').innerHTML = EN ?
-    '🐻 Bear Hunt<br><span class="acc">Damage Simulator</span>' :
-    '🐻 熊狩ダメージ<br><span class="acc">シミュレーター</span>';
-  document.getElementById('hfDesc').textContent = EN ?
-    'Set your heroes, troops, gear and the Cyrille talent to estimate one rally\'s damage. 62 heroes, probability-skill ranges, and a ranked "what to upgrade next".' :
-    '英雄・兵士・専用装備・シリル天賦を設定して、集結1回のダメージを試算。全62英雄収録、確率スキルのダメージ幅、「次に強化すべき順」ランキングまで。';
-  var feats = EN ? ['62 heroes', 'Upgrade ranking', 'Calibration', 'Damage range'] : ['全62英雄', '強化ランキング', '実測補正', 'ダメージ幅'];
-  document.getElementById('hfFeats').innerHTML = feats.map(function(f) { return '<span class="hf-feat">✓ ' + f + '</span>'; }).join('');
-  document.getElementById('hfCta').innerHTML = (EN ? 'Open the Simulator' : 'シミュレーターを使う') + ' →';
-  if (EN) document.getElementById('flagLink').href = 'tools/bear-hunt/index.html';
-
-  // 華やかツール
-  document.getElementById('playT').textContent = EN ? 'More tools' : 'その他のツール';
-  document.getElementById('playGrid').innerHTML = PLAY.map(function(p) {
-    var href = p[0] + (EN ? '' : '');
-    var name = EN ? p[2] : p[1],
-      desc = EN ? p[4] : p[3],
-      badge = EN ? p[8] : p[7];
-    return '<a class="tool-tile ' + p[6] + '" href="' + href + '">' +
-      (badge ? '<span class="tt-badge">' + badge + '</span>' : '') +
-      '<span class="tt-ico">' + p[5] + '</span>' +
-      '<div class="tt-name">' + name + '</div>' +
-      '<div class="tt-desc">' + desc + '</div>' +
-      '<div class="tt-go">' + (EN ? 'TRY IT →' : 'あそぶ →') + '</div></a>';
+  var ic = window.WOS_ICON || function(){ return ''; };
+  var MENU = window.WOS_MENU || [];
+  function esc(t){ return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+  /* その他のツール: MENU の「ツール」から主要3本を除いた6本 */
+  var FEATURED = { 'tools/bear-hunt/index.html':1, 'tools/king-castle/index.html':1, 'tools/foundry-battle/index.html':1 };
+  var BADGE = { 'tools/frost-dragon/index.html':['新','New'], 'tools/hero-list/index.html':['新','New'], 'tools/commander-type/index.html':['人気','Popular'] };
+  var tools = MENU.filter(function(c){ return c.id==='tools'; })[0];
+  var tiles = [];
+  if (tools) tools.groups.forEach(function(g){ g.items.forEach(function(it){ if(!FEATURED[it[0]]) tiles.push(it); }); });
+  document.getElementById('playGrid').innerHTML = tiles.map(function(it){
+    var b = BADGE[it[0]];
+    return '<a class="hm-tile" href="' + it[0] + '">' +
+      (b ? '<span class="hm-tbadge">' + (EN ? b[1] : b[0]) + '</span>' : '') +
+      '<span class="hm-tico">' + ic(it[5] || 'handyman') + '</span>' +
+      '<span class="hm-tname">' + esc(EN ? it[2] : it[1]) + '</span>' +
+      '<span class="hm-tdesc">' + esc(EN ? it[4] : it[3]) + '</span>' +
+      '<span class="hm-tgo">' + (EN ? 'Open' : '開く') + ic('arrow_forward') + '</span></a>';
   }).join('');
-
-  // 王城戦ツール
-  document.getElementById('kcBadge').textContent = EN ? '◆ STRATEGY TOOL' : '◆ 戦略ツール';
-  document.getElementById('kcTitle').innerHTML = EN ?
-    '◆ Castle Battle<br><span class="acc">Area Planner</span>' :
-    '◆ 王城戦<br><span class="acc">エリア配置管理</span>';
-  document.getElementById('kcDesc').textContent = EN ?
-    'Plan your SvS server split, divide alliance areas by ratio, and place cities on the isometric castle map. Share as an image or on X.' :
-    '王城戦(SvS)のサーバー2分割、比率での同盟エリア分割、都市配置をひし形マップ上で計画。画像やXで共有できます。';
-  var kcFeats = EN ? ['Server split', 'Alliance areas', 'City placement', 'Image & X share'] :
-    ['サーバー分割', '同盟エリア', '都市配置', '画像/X共有'];
-  document.getElementById('kcFeats').innerHTML = kcFeats.map(function(f) { return '<span class="hf-feat">✓ ' + f + '</span>'; }).join('');
-  document.getElementById('kcCta').innerHTML = (EN ? 'Open the Planner' : 'ツールを使う') + ' →';
-  if (EN) document.getElementById('kcLink').href = 'tools/king-castle/index.html';
-
-  // 兵器工場戦ツール
-  document.getElementById('fbBadge').textContent = EN ? '◆ EVENT TOOL' : '◆ イベントツール';
-  document.getElementById('fbTitle').innerHTML = EN ?
-    '🏭 Foundry Battle<br><span class="acc">Field Simulator</span>' :
-    '🏭 兵器工場争奪戦<br><span class="acc">シミュレーター</span>';
-  document.getElementById('fbDesc').textContent = EN ?
-    'Plan operations on the foundry map and run a mock battle with enemies to estimate how capture points evolve. Share the plan with your alliance.' :
-    '兵器工場マップで作戦を計画し、敵を加えた模擬戦で占領ポイントの推移を試算。作戦はそのまま同盟に共有できます。';
-  var fbFeats = EN ? ['Op planner', 'Mock battle', 'Point simulation', 'Share'] :
-    ['作戦プランニング', '模擬戦', 'ポイント試算', '共有'];
-  document.getElementById('fbFeats').innerHTML = fbFeats.map(function(f) { return '<span class="hf-feat">✓ ' + f + '</span>'; }).join('');
-  document.getElementById('fbCta').innerHTML = (EN ? 'Open the Simulator' : 'ツールを使う') + ' →';
-  if (EN) document.getElementById('fbLink').href = 'tools/foundry-battle/index.html';
-
-  // 読み物アコーディオン
-  document.getElementById('readT').textContent = EN ? 'Reading material' : 'じっくり読む攻略記事';
-  document.getElementById('readNote').textContent = EN ? 'Optional deep-dives — open a category when you have time.' : '時間のあるときにどうぞ。気になるカテゴリだけ開けます。';
-  document.getElementById('readCats').innerHTML = READ.map(function(c) {
-    var items = c.items.map(function(it) {
-      var href = it[0] + (EN ? '' : '');
-      var title = EN ? it[2] : it[1],
-        badge = EN ? it[4] : it[3];
-      return '<a class="cat-item" href="' + href + '"><div class="ci-title">' + title +
-        (badge ? '<span class="ci-badge">' + badge + '</span>' : '') + '</div></a>';
+  /* 世代チップ */
+  var gens = '';
+  for (var g = 1; g <= 16; g++) gens += '<a class="hm-gen" href="stats/gen-' + (g < 10 ? '0' + g : g) + '/index.html"><small>' + (EN ? 'Gen' : '第') + '</small>' + g + (EN ? '' : '<small>世代</small>') + '</a>';
+  document.getElementById('genGrid').innerHTML = gens;
+  /* 攻略ガイド: MENU の3グループをカードに */
+  var guides = MENU.filter(function(c){ return c.id==='guides'; })[0];
+  var NEWG = { 'guides/beginner-faq.html':1, 'guides/common-myths.html':1, 'guides/cyril-expert.html':1 };
+  document.getElementById('guideCards').innerHTML = (guides ? guides.groups : []).map(function(gr){
+    var items = gr.items.map(function(it){
+      return '<li><a href="' + it[0] + '">' + ic('article') + '<span>' + esc(EN ? it[2] : it[1]) + '</span>' + (NEWG[it[0]] ? '<em>' + (EN ? 'New' : '新') + '</em>' : '') + '</a></li>';
     }).join('');
-    return '<div class="cat"><div class="cat-head"><span class="cat-ico">' + c.ico + '</span>' +
-      '<div class="cat-meta"><div class="cat-title">' + (EN ? c.te : c.tj) + '</div></div>' +
-      '<span class="cat-arrow">▼</span></div>' +
-      '<div class="cat-body"><div class="cat-body-in">' + items + '</div></div></div>';
+    return '<div class="hm-gcard"><div class="hm-gcard-h"><span class="hm-gico">' + ic(gr.icon || 'menu_book') + '</span><span>' + esc(EN ? gr.h[1] : gr.h[0]) + '</span></div><ul>' + items + '</ul></div>';
   }).join('');
-  document.querySelectorAll('.cat-head').forEach(function(head) {
-    head.onclick = function() { head.parentNode.classList.toggle('open'); };
-  });
-
-  document.getElementById('about-sec').innerHTML = EN ?
-    '<h2>About this site</h2><p>Our tools run on an estimation model from public specs and community verification. Absolute values have error, but the calibration feature fits them to your account. See <a href="about.html">About</a> and <a href="terms.html">Terms</a>.</p>' :
-    '<h2>このサイトについて</h2><p>当サイトのツールは、公開仕様とコミュニティ検証に基づく推定モデルで動作します。絶対値には誤差がありますが、実測キャリブレーションで自分の環境に合わせられます。詳しくは<a href="about.html">運営者情報</a>と<a href="terms.html">利用規約</a>を。</p>';
   document.getElementById('nav').innerHTML = WOS_NAV(0);
   document.getElementById('foot').innerHTML = WOS_FOOT(0);
 })();
