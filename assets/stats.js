@@ -282,7 +282,7 @@
       + '<textarea id="st-comment" maxlength="200" rows="3" placeholder="' + t('例: ブランシュに替えて1割伸びた。無課金ならヘクトーで十分','e.g. Swapped to Blanchette and gained ~10%. Hector is enough for F2P') + '"></textarea>'
       + '<div class="row"><div><label>' + t('表示名（任意・16文字まで）','Display name (optional, 16 chars)') + '</label><input type="text" id="st-nick" maxlength="16" placeholder="' + t('空欄なら「匿名」','Blank = Anonymous') + '"></div><div style="align-self:flex-end"><span class="hint" id="st-count">0 / 200</span></div></div>'
       + '<label class="consent" style="margin:10px 0 0"><input type="checkbox" id="st-hidedmg"><span>' + t('口コミにダメージを表示しない（統計の集計には使われます）','Hide my damage in the review (still used for aggregate stats)') + '</span></label></div>';
-    html += '<label class="consent"><input type="checkbox" id="st-consent"><span>' + t('匿名の統計データとして送信し、当サイトで集計・公開することに同意します（個人を特定する情報は送信されません。「ひとこと」と表示名は口コミとして公開されます）。','I agree to submit this as anonymous statistics for aggregation and publication on this site. No identifying information is sent; the one-liner and display name are published as a review.') + ' <a href="' + (W.WOS_BASE||'') + '/privacy.html" target="_blank" rel="noopener">' + t('プライバシーポリシー','Privacy policy') + '</a></span></label>'
+    html += '<label class="consent"><input type="checkbox" id="st-consent"><span>' + t('匿名の統計データとして送信し、当サイトで集計・公開することに同意します（個人を特定する情報は送信されません。「ひとこと」と表示名は口コミとして公開されます）。','I agree to submit this as anonymous statistics for aggregation and publication on this site. No identifying information is sent; the one-liner and display name are published as a review.') + ' <a href="' + (W.WOS_BASE||'') + '/privacy.html' + '\" target="_blank" rel="noopener">' + t('プライバシーポリシー','Privacy policy') + '</a></span></label>'
       + (W.WOS_TURNSTILE_SITEKEY ? '<div class="cf-turnstile" data-sitekey="' + esc(W.WOS_TURNSTILE_SITEKEY) + '" data-size="flexible" style="margin:8px 0"></div>' : '')
       + '<button type="button" class="submit-btn" id="st-submit" disabled>' + t('統計に投稿する','Submit to stats') + '</button>'
       + '<p class="note" id="st-prev" style="margin-top:6px"></p>'
@@ -442,7 +442,8 @@
     }
     if(reviewBody) html += '<div class="swap">💬 ' + t('ひとことは口コミとして世代ページに掲載されました。','Your one-liner is now shown in the generation page\'s Reviews block.') + '</div>';
     html += '<p class="note">' + t('投稿はこのブラウザに保存され、次回は上書き更新になります。','Saved in this browser; your next submission updates this one.') + '</p>';
-    html += '<p><a class="btn" href="' + base + '/stats/gen-' + String(d.gen).padStart(2,'0') + '/index.html">' + t('この世代の統計を見る','See stats for this generation') + '</a></p></div>';
+    var genHref = base + '/stats/gen-' + String(d.gen).padStart(2,'0') + '/index.html';
+    html += '<p><a class="btn" href="' + genHref + '">' + t('この世代の統計を見る','See stats for this generation') + '</a></p></div>';
     return html;
   }
 

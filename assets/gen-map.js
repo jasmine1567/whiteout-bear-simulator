@@ -29,7 +29,8 @@
     920,   /* gen 13 */
     1000,  /* gen 14 */
     1080,  /* gen 15 */
-    1160   /* gen 16 */
+    1160,  /* gen 16 */
+    1240   /* gen 17（推定: 80日周期を外挿。公式の解放日が判明したら修正） */
   ];
   var MAX = UNLOCK.length - 1;
 
@@ -74,6 +75,7 @@
     elif: 'roulette',       /* G14 盾 */
     estrella: 'roulette',   /* G15 槍 */
     aisling: 'roulette',    /* G16 弓 */
+    aiden: 'roulette',      /* G17 盾 */
     /* ---- イベント（デイリー割引・氷原支配者・最強王国・英雄集結） ---- */
     philly: 'event',        /* G2  フレンダー */
     greg: 'event',          /* G3  グレッグ */
@@ -90,6 +92,7 @@
     dominic: 'event',       /* G14 ドミニク */
     viveca: 'event',        /* G15 ヴィヴィカ */
     seigel: 'event',        /* G16 シガー */
+    bertha: 'event',        /* G17 ベルサ */
     /* ---- 英雄殿堂 ---- */
     alonso: 'hall',         /* G2  アロンゾ */
     logan: 'hall',          /* G3  ローガン */
@@ -106,6 +109,7 @@
     cara: 'hall',           /* G14 カーラ */
     hank: 'hall',           /* G15 ハンク */
     ursar: 'hall',          /* G16 ウルタール */
+    eleanor: 'hall',        /* G17 エリノ */
     /* ---- 第1世代の特例 ---- */
     natalia: 'paid',        /* 初回チャージ / VIP1-6 */
     jeronimo: 'paid',       /* VIP7-12 */

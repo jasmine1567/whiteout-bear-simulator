@@ -27,6 +27,8 @@
      共有アセット(CSS/JS/画像)は常にルート直下の /assets を参照する。
      引数 depth は後方互換のため受け取るが未使用。 */
   var B = (window.WOS_BASE || '');
+  var MAXGEN = 17;   /* 世代別ページの最大世代（gen-map.js と合わせる） */
+  window.WOS_MAXGEN = MAXGEN;
   var T = function(ja,en){ return EN ? en : ja; };
   var esc = function(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); };
 
@@ -56,7 +58,7 @@
     { id:'stats', icon:'bar_chart', label:['世代別構成','Gen Builds'], href:'stats/index.html',
       all:['世代別まとめのトップへ','Open the generation hub'],
       groups:[
-        { h:['世代を選ぶ','Pick a generation'], sub:['集結主のおすすめ構成・英雄評価','Rally-leader builds & hero ratings'], gens:16 },
+        { h:['世代を選ぶ','Pick a generation'], sub:['集結主のおすすめ構成・英雄評価','Rally-leader builds & hero ratings'], gens:MAXGEN },
         { h:['統計メニュー','Stats menu'], items:[
           ['stats/index.html','世代別まとめ(トップ)','Generation hub','','','leaderboard'],
           ['submit/index.html','自分の構成を投稿する','Submit your build','','','edit_note'],
@@ -121,7 +123,7 @@
   }
   function genLinks(){
     var d = B + '/', out = '';
-    for(var g=1; g<=16; g++){
+    for(var g=1; g<=MAXGEN; g++){
       var href = d + 'stats/gen-' + (g<10?'0'+g:g) + '/index.html';
       var cur = normPath(href) === HERE;
       out += '<a class="nav-gen'+(cur?' is-here':'')+'" href="'+href+'"'+(cur?' aria-current="page"':'')+'><small>'+(EN?'Gen':'第')+'</small>'+g+(EN?'':'<small>世代</small>')+'</a>';
@@ -272,7 +274,7 @@
       var links = '';
       c.groups.forEach(function(gr){
         if(gr.gens){
-          var gs=''; for(var g=1; g<=16; g++){ gs += '<a href="'+d+'stats/gen-'+(g<10?'0'+g:g)+'/index.html">'+(EN?'G'+g:'第'+g)+'</a>'; }
+          var gs=''; for(var g=1; g<=MAXGEN; g++){ var gh=d+'stats/gen-'+(g<10?'0'+g:g)+'/index.html'; gs += '<a href="'+gh+'">'+(EN?'G'+g:'第'+g)+'</a>'; }
           links += '<div class="foot-gens">'+gs+'</div>'; return;
         }
         gr.items.forEach(function(it){ links += '<a href="'+d+it[0]+'">'+esc(EN?it[2]:it[1])+'</a>'; });
@@ -373,13 +375,13 @@
     'guides/common-myths.html':['2026-06-21','2026-07-24'],'guides/cyril-expert.html':['2026-07-24','2026-07-24'],
     'guides/cyril-talent.html':['2026-06-21','2026-07-24'],'guides/damage-not-growing.html':['2026-06-21','2026-07-24'],
     'guides/f2p-damage.html':['2026-06-21','2026-07-24'],'guides/how-to-use.html':['2026-06-21','2026-09-03'],
-    'guides/leader-formation.html':['2026-06-21','2026-09-04'],'guides/left-hero.html':['2026-06-21','2026-09-02'],
+    'guides/leader-formation.html':['2026-06-21','2026-10-01'],'guides/left-hero.html':['2026-06-21','2026-09-02'],
     'guides/light-spender.html':['2026-06-21','2026-07-24'],'guides/troop-ratio.html':['2026-06-21','2026-07-24'],
     /* ツール: [公開日, 最終更新] */
-    'tools/bear-hunt':['2026-06-16','2026-09-14'],'tools/left-hero':['2026-06-16','2026-09-14'],
-    'tools/troop-ratio':['2026-06-16','2026-09-14'],'tools/damage-doctor':['2026-06-16','2026-09-14'],
+    'tools/bear-hunt':['2026-06-16','2026-10-01'],'tools/left-hero':['2026-06-16','2026-10-01'],
+    'tools/troop-ratio':['2026-06-16','2026-10-01'],'tools/damage-doctor':['2026-06-16','2026-09-14'],
     'tools/commander-type':['2026-06-16','2026-09-14'],'tools/king-castle':['2026-06-19','2026-09-14'],
-    'tools/foundry-battle':['2026-06-26','2026-09-14'],'tools/hero-list':['2026-06-26','2026-09-14'],
+    'tools/foundry-battle':['2026-06-26','2026-09-14'],'tools/hero-list':['2026-06-26','2026-10-01'],
     'tools/frost-dragon':['2026-07-04','2026-09-14']
   };
   window.WOS_PAGE_DATES = PAGE_DATES;
@@ -413,11 +415,11 @@
       var pub=dates[0], upd=dates[1];
       var base=(window.WOS_BASE||'');
       var html = EN
-        ? '<div class="wos-byline"><span>'+ic('stylus')+(isTool?'Made by':'Written by')+' <a href="'+base+'/about.html"><b>Jasmine</b></a></span>'
+        ? '<div class="wos-byline"><span>'+ic('stylus')+(isTool?'Made by':'Written by')+' <a href="'+base+'/about.html' + '\"><b>Jasmine</b></a></span>'
           +'<span>'+ic('calendar_today')+'Published <time datetime="'+pub+'">'+pub+'</time></span>'
           +'<span>'+ic('update')+'Last updated <time datetime="'+upd+'">'+upd+'</time></span>'
           +'<span>'+ic('verified')+'Verified on Server 1567</span></div>'
-        : '<div class="wos-byline"><span>'+ic('stylus')+(isTool?'制作：':'執筆：')+'<a href="'+base+'/about.html"><b>じゃすみん</b></a></span>'
+        : '<div class="wos-byline"><span>'+ic('stylus')+(isTool?'制作：':'執筆：')+'<a href="'+base+'/about.html' + '\"><b>じゃすみん</b></a></span>'
           +'<span>'+ic('calendar_today')+(isTool?'公開日：':'初回公開：')+'<time datetime="'+pub+'">'+pub+'</time></span>'
           +'<span>'+ic('update')+'最終更新：<time datetime="'+upd+'">'+upd+'</time></span>'
           +'<span>'+ic('verified')+'検証環境：1567サーバー</span></div>';
@@ -595,19 +597,19 @@
       var html = isStats ? (EN
         ? '<div class="wos-toolnote"><h3>About these statistics (please read)</h3>'
           +'<p>Live figures are aggregated from <b>anonymous, self-reported</b> user submissions over the last 90 days and skew toward this site\'s users. Theoretical builds are <b>model estimates</b> from the simulator\'s formula, not measurements. '
-          +'Method: <a href="'+base+'/stats/methodology.html">Methodology</a> · Privacy: <a href="'+base+'/privacy.html">Privacy policy</a> · Change history: <a href="'+base+'/changelog.html">Changelog</a></p></div>'
+          +'Method: <a href="'+base+'/stats/methodology.html' + '\">Methodology</a> · Privacy: <a href="'+base+'/privacy.html' + '\">Privacy policy</a> · Change history: <a href="'+base+'/changelog.html' + '\">Changelog</a></p></div>'
         : '<div class="wos-toolnote"><h3>統計についての注意（必ずお読みください）</h3>'
           +'<p>実測の数値は利用者の<b>匿名・自己申告</b>による投稿を直近90日で集計したもので、当サイトの利用者に偏ります。理論最適構成はシミュレーターの計算式による<b>推定値</b>であり、実戦の記録ではありません。'
-          +'集計方法：<a href="'+base+'/stats/methodology.html">集計方法と計算の前提</a> ／ 取り扱い：<a href="'+base+'/privacy.html">プライバシーポリシー</a> ／ 変更の記録：<a href="'+base+'/changelog.html">更新履歴</a></p></div>')
+          +'集計方法：<a href="'+base+'/stats/methodology.html' + '\">集計方法と計算の前提</a> ／ 取り扱い：<a href="'+base+'/privacy.html' + '\">プライバシーポリシー</a> ／ 変更の記録：<a href="'+base+'/changelog.html' + '\">更新履歴</a></p></div>')
         : EN
         ? '<div class="wos-toolnote"><h3>About these results (please read)</h3>'
           +'<p>This tool\'s output is an <b>estimate</b> based on public specs and community/our own verification — not a reproduction of the game\'s internal formulas. Absolute values contain error; use the calibration/measurement features to fit them to your own account. Results may change with game updates.</p>'
           +'<p>Verification environment: Server 1567 (Whiteout Survival) · Last updated: '+upd+' · '
-          +'How our numbers are checked: <a href="'+base+'/about.html">About</a> · Change history: <a href="'+base+'/changelog.html">Changelog</a></p></div>'
+          +'How our numbers are checked: <a href="'+base+'/about.html' + '\">About</a> · Change history: <a href="'+base+'/changelog.html' + '\">Changelog</a></p></div>'
         : '<div class="wos-toolnote"><h3>計算結果についての注意（必ずお読みください）</h3>'
           +'<p>このツールの計算結果は、公開仕様とコミュニティ／当サイトの検証にもとづく<b>推定値</b>であり、ゲーム内部の計算式をそのまま再現したものではありません。絶対値には誤差が含まれます。実測キャリブレーション機能で自分の環境に合わせてご利用ください。ゲームのアップデートにより結果が変わることがあります。</p>'
           +'<p>検証環境：1567サーバー ／ 最終更新：'+upd+' ／ '
-          +'数値の検証方法：<a href="'+base+'/about.html">運営者情報</a> ／ 変更の記録：<a href="'+base+'/changelog.html">更新履歴</a></p></div>';
+          +'数値の検証方法：<a href="'+base+'/about.html' + '\">運営者情報</a> ／ 変更の記録：<a href="'+base+'/changelog.html' + '\">更新履歴</a></p></div>';
       injectCss();
       var el=document.createElement('div'); el.innerHTML=html;
       var ft=wrap.querySelector(':scope > footer');

@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-04T04:29:52.240Z",
+ "generatedAt": "2026-10-01T05:03:14.629Z",
  "model": {
   "ratio": [
    1,
@@ -13806,7 +13806,7 @@
    "gen": 16,
    "unlockDay": 1160,
    "rangeFrom": 1160,
-   "rangeTo": null,
+   "rangeTo": 1239,
    "heroes": [
     {
      "id": "seigel",
@@ -14216,6 +14216,23 @@
         "index": 4
        }
       ]
+     },
+     "next": {
+      "gen": 17,
+      "from": [
+       "hector",
+       "mia",
+       "aisling"
+      ],
+      "to": [
+       "hector",
+       "bertha",
+       "aisling"
+      ],
+      "changed": [
+       "lan"
+      ],
+      "gainPct": 9.8
      }
     },
     "mid": {
@@ -14619,6 +14636,23 @@
         "index": 5
        }
       ]
+     },
+     "next": {
+      "gen": 17,
+      "from": [
+       "jeronimo",
+       "mia",
+       "aisling"
+      ],
+      "to": [
+       "jeronimo",
+       "mia",
+       "eleanor"
+      ],
+      "changed": [
+       "mks"
+      ],
+      "gainPct": 16.8
      }
     },
     "whale": {
@@ -15022,6 +15056,1292 @@
         "index": 6
        }
       ]
+     },
+     "next": {
+      "gen": 17,
+      "from": [
+       "jeronimo",
+       "mia",
+       "aisling"
+      ],
+      "to": [
+       "jeronimo",
+       "mia",
+       "eleanor"
+      ],
+      "changed": [
+       "mks"
+      ],
+      "gainPct": 23.8
+     }
+    }
+   }
+  },
+  "17": {
+   "gen": 17,
+   "unlockDay": 1240,
+   "rangeFrom": 1240,
+   "rangeTo": null,
+   "heroes": [
+    {
+     "id": "aiden",
+     "cls": "inf",
+     "acq": "roulette"
+    },
+    {
+     "id": "bertha",
+     "cls": "lan",
+     "acq": "event"
+    },
+    {
+     "id": "eleanor",
+     "cls": "mks",
+     "acq": "hall"
+    }
+   ],
+   "byTier": {
+    "f2p": {
+     "evaluated": 4477,
+     "top": [
+      {
+       "ids": [
+        "hector",
+        "bertha",
+        "aisling"
+       ],
+       "score": 149373089
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "eleanor"
+       ],
+       "score": 146696907
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "eleanor"
+       ],
+       "score": 136857869
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "aisling"
+       ],
+       "score": 136036989
+      },
+      {
+       "ids": [
+        "hector",
+        "ursar",
+        "aisling"
+       ],
+       "score": 129442088
+      },
+      {
+       "ids": [
+        "hector",
+        "freya",
+        "aisling"
+       ],
+       "score": 126033159
+      },
+      {
+       "ids": [
+        "hector",
+        "molly",
+        "aisling"
+       ],
+       "score": 124771566
+      },
+      {
+       "ids": [
+        "hector",
+        "dominic",
+        "aisling"
+       ],
+       "score": 123589405
+      },
+      {
+       "ids": [
+        "hector",
+        "estrella",
+        "eleanor"
+       ],
+       "score": 123004181
+      },
+      {
+       "ids": [
+        "flint",
+        "mia",
+        "eleanor"
+       ],
+       "score": 119342369
+      }
+     ],
+     "slotRank": {
+      "inf": [
+       {
+        "id": "hector",
+        "rank": 1,
+        "index": 100
+       },
+       {
+        "id": "flint",
+        "rank": 2,
+        "index": 80
+       },
+       {
+        "id": "aiden",
+        "rank": 3,
+        "index": 72
+       },
+       {
+        "id": "hank",
+        "rank": 4,
+        "index": 69
+       },
+       {
+        "id": "eleonora",
+        "rank": 5,
+        "index": 66
+       },
+       {
+        "id": "magnus",
+        "rank": 6,
+        "index": 65
+       },
+       {
+        "id": "hervor",
+        "rank": 7,
+        "index": 62
+       },
+       {
+        "id": "elif",
+        "rank": 8,
+        "index": 61
+       },
+       {
+        "id": "gregory",
+        "rank": 9,
+        "index": 61
+       },
+       {
+        "id": "ahmose",
+        "rank": 10,
+        "index": 61
+       },
+       {
+        "id": "wuming",
+        "rank": 11,
+        "index": 57
+       },
+       {
+        "id": "gatot",
+        "rank": 12,
+        "index": 55
+       },
+       {
+        "id": "sergey",
+        "rank": 13,
+        "index": 55
+       },
+       {
+        "id": "smith",
+        "rank": 14,
+        "index": 55
+       },
+       {
+        "id": "eugene",
+        "rank": 15,
+        "index": 55
+       },
+       {
+        "id": "edith",
+        "rank": 16,
+        "index": 50
+       },
+       {
+        "id": "seigel",
+        "rank": 17,
+        "index": 50
+       },
+       {
+        "id": "gisela",
+        "rank": 18,
+        "index": 50
+       },
+       {
+        "id": "logan",
+        "rank": 19,
+        "index": 50
+       }
+      ],
+      "lan": [
+       {
+        "id": "bertha",
+        "rank": 1,
+        "index": 100
+       },
+       {
+        "id": "mia",
+        "rank": 2,
+        "index": 98
+       },
+       {
+        "id": "molly",
+        "rank": 3,
+        "index": 92
+       },
+       {
+        "id": "ursar",
+        "rank": 4,
+        "index": 87
+       },
+       {
+        "id": "freya",
+        "rank": 5,
+        "index": 84
+       },
+       {
+        "id": "dominic",
+        "rank": 6,
+        "index": 83
+       },
+       {
+        "id": "estrella",
+        "rank": 7,
+        "index": 82
+       },
+       {
+        "id": "flora",
+        "rank": 8,
+        "index": 75
+       },
+       {
+        "id": "sonya",
+        "rank": 9,
+        "index": 75
+       },
+       {
+        "id": "patrick",
+        "rank": 10,
+        "index": 75
+       },
+       {
+        "id": "nora",
+        "rank": 11,
+        "index": 74
+       },
+       {
+        "id": "reina",
+        "rank": 12,
+        "index": 74
+       },
+       {
+        "id": "jessie",
+        "rank": 13,
+        "index": 73
+       },
+       {
+        "id": "lloyd",
+        "rank": 14,
+        "index": 72
+       },
+       {
+        "id": "karol",
+        "rank": 15,
+        "index": 71
+       },
+       {
+        "id": "philly",
+        "rank": 16,
+        "index": 65
+       },
+       {
+        "id": "fred",
+        "rank": 17,
+        "index": 64
+       },
+       {
+        "id": "renee",
+        "rank": 18,
+        "index": 63
+       },
+       {
+        "id": "lingxue",
+        "rank": 19,
+        "index": 63
+       },
+       {
+        "id": "lumak",
+        "rank": 20,
+        "index": 63
+       },
+       {
+        "id": "charlie",
+        "rank": 21,
+        "index": 63
+       },
+       {
+        "id": "gordon",
+        "rank": 22,
+        "index": 59
+       }
+      ],
+      "mks": [
+       {
+        "id": "aisling",
+        "rank": 1,
+        "index": 100
+       },
+       {
+        "id": "eleanor",
+        "rank": 2,
+        "index": 98
+       },
+       {
+        "id": "viveca",
+        "rank": 3,
+        "index": 58
+       },
+       {
+        "id": "vulcanus",
+        "rank": 4,
+        "index": 40
+       },
+       {
+        "id": "cara",
+        "rank": 5,
+        "index": 38
+       },
+       {
+        "id": "rufus",
+        "rank": 6,
+        "index": 34
+       },
+       {
+        "id": "ligeia",
+        "rank": 7,
+        "index": 32
+       },
+       {
+        "id": "blanchette",
+        "rank": 8,
+        "index": 28
+       },
+       {
+        "id": "xura",
+        "rank": 9,
+        "index": 17
+       },
+       {
+        "id": "bradley",
+        "rank": 10,
+        "index": 17
+       },
+       {
+        "id": "hendrik",
+        "rank": 11,
+        "index": 12
+       },
+       {
+        "id": "lynn",
+        "rank": 12,
+        "index": 10
+       },
+       {
+        "id": "wayne",
+        "rank": 13,
+        "index": 9
+       },
+       {
+        "id": "zinman",
+        "rank": 14,
+        "index": 8
+       },
+       {
+        "id": "gwen",
+        "rank": 15,
+        "index": 8
+       },
+       {
+        "id": "alonso",
+        "rank": 16,
+        "index": 7
+       },
+       {
+        "id": "bahiti",
+        "rank": 17,
+        "index": 7
+       },
+       {
+        "id": "seoyoon",
+        "rank": 18,
+        "index": 7
+       },
+       {
+        "id": "jasser",
+        "rank": 19,
+        "index": 6
+       },
+       {
+        "id": "greg",
+        "rank": 20,
+        "index": 6
+       },
+       {
+        "id": "gina",
+        "rank": 21,
+        "index": 6
+       },
+       {
+        "id": "cloris",
+        "rank": 22,
+        "index": 5
+       }
+      ]
+     }
+    },
+    "mid": {
+     "evaluated": 8954,
+     "top": [
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "eleanor"
+       ],
+       "score": 280471441
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "bertha",
+        "eleanor"
+       ],
+       "score": 276423950
+      },
+      {
+       "ids": [
+        "hector",
+        "bertha",
+        "eleanor"
+       ],
+       "score": 269984178
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "eleanor"
+       ],
+       "score": 266795713
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "ursar",
+        "eleanor"
+       ],
+       "score": 258015204
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "dominic",
+        "eleanor"
+       ],
+       "score": 252970821
+      },
+      {
+       "ids": [
+        "hector",
+        "ursar",
+        "eleanor"
+       ],
+       "score": 249678946
+      },
+      {
+       "ids": [
+        "hector",
+        "dominic",
+        "eleanor"
+       ],
+       "score": 244747329
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "freya",
+        "eleanor"
+       ],
+       "score": 241382845
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "aisling"
+       ],
+       "score": 240029964
+      }
+     ],
+     "slotRank": {
+      "inf": [
+       {
+        "id": "jeronimo",
+        "rank": 1,
+        "index": 100
+       },
+       {
+        "id": "hector",
+        "rank": 2,
+        "index": 96
+       },
+       {
+        "id": "natalia",
+        "rank": 3,
+        "index": 84
+       },
+       {
+        "id": "flint",
+        "rank": 4,
+        "index": 77
+       },
+       {
+        "id": "hank",
+        "rank": 5,
+        "index": 72
+       },
+       {
+        "id": "aiden",
+        "rank": 6,
+        "index": 69
+       },
+       {
+        "id": "magnus",
+        "rank": 7,
+        "index": 67
+       },
+       {
+        "id": "hervor",
+        "rank": 8,
+        "index": 65
+       },
+       {
+        "id": "gregory",
+        "rank": 9,
+        "index": 64
+       },
+       {
+        "id": "ahmose",
+        "rank": 10,
+        "index": 64
+       },
+       {
+        "id": "eleonora",
+        "rank": 11,
+        "index": 63
+       },
+       {
+        "id": "wuming",
+        "rank": 12,
+        "index": 61
+       },
+       {
+        "id": "elif",
+        "rank": 13,
+        "index": 59
+       },
+       {
+        "id": "gatot",
+        "rank": 14,
+        "index": 53
+       },
+       {
+        "id": "sergey",
+        "rank": 15,
+        "index": 53
+       },
+       {
+        "id": "smith",
+        "rank": 16,
+        "index": 53
+       },
+       {
+        "id": "eugene",
+        "rank": 17,
+        "index": 53
+       },
+       {
+        "id": "edith",
+        "rank": 18,
+        "index": 53
+       },
+       {
+        "id": "seigel",
+        "rank": 19,
+        "index": 52
+       },
+       {
+        "id": "gisela",
+        "rank": 20,
+        "index": 52
+       },
+       {
+        "id": "logan",
+        "rank": 21,
+        "index": 52
+       }
+      ],
+      "lan": [
+       {
+        "id": "mia",
+        "rank": 1,
+        "index": 100
+       },
+       {
+        "id": "bertha",
+        "rank": 2,
+        "index": 99
+       },
+       {
+        "id": "ursar",
+        "rank": 3,
+        "index": 92
+       },
+       {
+        "id": "dominic",
+        "rank": 4,
+        "index": 90
+       },
+       {
+        "id": "freya",
+        "rank": 5,
+        "index": 86
+       },
+       {
+        "id": "molly",
+        "rank": 6,
+        "index": 85
+       },
+       {
+        "id": "reina",
+        "rank": 7,
+        "index": 81
+       },
+       {
+        "id": "flora",
+        "rank": 8,
+        "index": 77
+       },
+       {
+        "id": "estrella",
+        "rank": 9,
+        "index": 77
+       },
+       {
+        "id": "sonya",
+        "rank": 10,
+        "index": 76
+       },
+       {
+        "id": "nora",
+        "rank": 11,
+        "index": 75
+       },
+       {
+        "id": "lloyd",
+        "rank": 12,
+        "index": 74
+       },
+       {
+        "id": "karol",
+        "rank": 13,
+        "index": 71
+       },
+       {
+        "id": "patrick",
+        "rank": 14,
+        "index": 69
+       },
+       {
+        "id": "jessie",
+        "rank": 15,
+        "index": 68
+       },
+       {
+        "id": "philly",
+        "rank": 16,
+        "index": 65
+       },
+       {
+        "id": "fred",
+        "rank": 17,
+        "index": 65
+       },
+       {
+        "id": "gordon",
+        "rank": 18,
+        "index": 60
+       },
+       {
+        "id": "renee",
+        "rank": 19,
+        "index": 60
+       },
+       {
+        "id": "lingxue",
+        "rank": 20,
+        "index": 59
+       },
+       {
+        "id": "lumak",
+        "rank": 21,
+        "index": 59
+       },
+       {
+        "id": "charlie",
+        "rank": 22,
+        "index": 59
+       }
+      ],
+      "mks": [
+       {
+        "id": "eleanor",
+        "rank": 1,
+        "index": 100
+       },
+       {
+        "id": "aisling",
+        "rank": 2,
+        "index": 86
+       },
+       {
+        "id": "viveca",
+        "rank": 3,
+        "index": 60
+       },
+       {
+        "id": "vulcanus",
+        "rank": 4,
+        "index": 38
+       },
+       {
+        "id": "cara",
+        "rank": 5,
+        "index": 38
+       },
+       {
+        "id": "rufus",
+        "rank": 6,
+        "index": 37
+       },
+       {
+        "id": "ligeia",
+        "rank": 7,
+        "index": 34
+       },
+       {
+        "id": "blanchette",
+        "rank": 8,
+        "index": 25
+       },
+       {
+        "id": "xura",
+        "rank": 9,
+        "index": 21
+       },
+       {
+        "id": "bradley",
+        "rank": 10,
+        "index": 16
+       },
+       {
+        "id": "hendrik",
+        "rank": 11,
+        "index": 15
+       },
+       {
+        "id": "wayne",
+        "rank": 12,
+        "index": 12
+       },
+       {
+        "id": "alonso",
+        "rank": 13,
+        "index": 11
+       },
+       {
+        "id": "gwen",
+        "rank": 14,
+        "index": 10
+       },
+       {
+        "id": "lynn",
+        "rank": 15,
+        "index": 9
+       },
+       {
+        "id": "greg",
+        "rank": 16,
+        "index": 9
+       },
+       {
+        "id": "zinman",
+        "rank": 17,
+        "index": 8
+       },
+       {
+        "id": "bahiti",
+        "rank": 18,
+        "index": 7
+       },
+       {
+        "id": "seoyoon",
+        "rank": 19,
+        "index": 6
+       },
+       {
+        "id": "jasser",
+        "rank": 20,
+        "index": 6
+       },
+       {
+        "id": "gina",
+        "rank": 21,
+        "index": 5
+       },
+       {
+        "id": "cloris",
+        "rank": 22,
+        "index": 5
+       }
+      ]
+     }
+    },
+    "whale": {
+     "evaluated": 10164,
+     "top": [
+      {
+       "ids": [
+        "jeronimo",
+        "mia",
+        "eleanor"
+       ],
+       "score": 750372314
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "bertha",
+        "eleanor"
+       ],
+       "score": 690556771
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "ursar",
+        "eleanor"
+       ],
+       "score": 689849247
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "dominic",
+        "eleanor"
+       ],
+       "score": 676726763
+      },
+      {
+       "ids": [
+        "hector",
+        "mia",
+        "eleanor"
+       ],
+       "score": 667249259
+      },
+      {
+       "ids": [
+        "hector",
+        "bertha",
+        "eleanor"
+       ],
+       "score": 630496561
+      },
+      {
+       "ids": [
+        "hector",
+        "ursar",
+        "eleanor"
+       ],
+       "score": 624038746
+      },
+      {
+       "ids": [
+        "natalia",
+        "mia",
+        "eleanor"
+       ],
+       "score": 619570573
+      },
+      {
+       "ids": [
+        "hector",
+        "dominic",
+        "eleanor"
+       ],
+       "score": 612042678
+      },
+      {
+       "ids": [
+        "jeronimo",
+        "reina",
+        "eleanor"
+       ],
+       "score": 607955267
+      }
+     ],
+     "slotRank": {
+      "inf": [
+       {
+        "id": "jeronimo",
+        "rank": 1,
+        "index": 100
+       },
+       {
+        "id": "hector",
+        "rank": 2,
+        "index": 89
+       },
+       {
+        "id": "natalia",
+        "rank": 3,
+        "index": 83
+       },
+       {
+        "id": "flint",
+        "rank": 4,
+        "index": 72
+       },
+       {
+        "id": "hank",
+        "rank": 5,
+        "index": 67
+       },
+       {
+        "id": "aiden",
+        "rank": 6,
+        "index": 64
+       },
+       {
+        "id": "magnus",
+        "rank": 7,
+        "index": 63
+       },
+       {
+        "id": "hervor",
+        "rank": 8,
+        "index": 61
+       },
+       {
+        "id": "gregory",
+        "rank": 9,
+        "index": 60
+       },
+       {
+        "id": "ahmose",
+        "rank": 10,
+        "index": 59
+       },
+       {
+        "id": "eleonora",
+        "rank": 11,
+        "index": 58
+       },
+       {
+        "id": "wuming",
+        "rank": 12,
+        "index": 57
+       },
+       {
+        "id": "elif",
+        "rank": 13,
+        "index": 54
+       },
+       {
+        "id": "edith",
+        "rank": 14,
+        "index": 49
+       },
+       {
+        "id": "seigel",
+        "rank": 15,
+        "index": 49
+       },
+       {
+        "id": "gisela",
+        "rank": 16,
+        "index": 49
+       },
+       {
+        "id": "gatot",
+        "rank": 17,
+        "index": 49
+       },
+       {
+        "id": "logan",
+        "rank": 18,
+        "index": 49
+       },
+       {
+        "id": "sergey",
+        "rank": 19,
+        "index": 49
+       },
+       {
+        "id": "smith",
+        "rank": 20,
+        "index": 49
+       },
+       {
+        "id": "eugene",
+        "rank": 21,
+        "index": 49
+       }
+      ],
+      "lan": [
+       {
+        "id": "mia",
+        "rank": 1,
+        "index": 100
+       },
+       {
+        "id": "bertha",
+        "rank": 2,
+        "index": 92
+       },
+       {
+        "id": "ursar",
+        "rank": 3,
+        "index": 92
+       },
+       {
+        "id": "dominic",
+        "rank": 4,
+        "index": 90
+       },
+       {
+        "id": "reina",
+        "rank": 5,
+        "index": 81
+       },
+       {
+        "id": "freya",
+        "rank": 6,
+        "index": 80
+       },
+       {
+        "id": "molly",
+        "rank": 7,
+        "index": 79
+       },
+       {
+        "id": "flora",
+        "rank": 8,
+        "index": 72
+       },
+       {
+        "id": "estrella",
+        "rank": 9,
+        "index": 72
+       },
+       {
+        "id": "karol",
+        "rank": 10,
+        "index": 71
+       },
+       {
+        "id": "sonya",
+        "rank": 11,
+        "index": 71
+       },
+       {
+        "id": "nora",
+        "rank": 12,
+        "index": 70
+       },
+       {
+        "id": "lloyd",
+        "rank": 13,
+        "index": 69
+       },
+       {
+        "id": "fred",
+        "rank": 14,
+        "index": 65
+       },
+       {
+        "id": "patrick",
+        "rank": 15,
+        "index": 64
+       },
+       {
+        "id": "jessie",
+        "rank": 16,
+        "index": 63
+       },
+       {
+        "id": "philly",
+        "rank": 17,
+        "index": 61
+       },
+       {
+        "id": "gordon",
+        "rank": 18,
+        "index": 56
+       },
+       {
+        "id": "renee",
+        "rank": 19,
+        "index": 56
+       },
+       {
+        "id": "lingxue",
+        "rank": 20,
+        "index": 56
+       },
+       {
+        "id": "lumak",
+        "rank": 21,
+        "index": 56
+       },
+       {
+        "id": "charlie",
+        "rank": 22,
+        "index": 55
+       }
+      ],
+      "mks": [
+       {
+        "id": "eleanor",
+        "rank": 1,
+        "index": 100
+       },
+       {
+        "id": "aisling",
+        "rank": 2,
+        "index": 81
+       },
+       {
+        "id": "viveca",
+        "rank": 3,
+        "index": 60
+       },
+       {
+        "id": "vulcanus",
+        "rank": 4,
+        "index": 38
+       },
+       {
+        "id": "cara",
+        "rank": 5,
+        "index": 36
+       },
+       {
+        "id": "rufus",
+        "rank": 6,
+        "index": 34
+       },
+       {
+        "id": "ligeia",
+        "rank": 7,
+        "index": 32
+       },
+       {
+        "id": "blanchette",
+        "rank": 8,
+        "index": 23
+       },
+       {
+        "id": "xura",
+        "rank": 9,
+        "index": 20
+       },
+       {
+        "id": "bradley",
+        "rank": 10,
+        "index": 15
+       },
+       {
+        "id": "hendrik",
+        "rank": 11,
+        "index": 14
+       },
+       {
+        "id": "alonso",
+        "rank": 12,
+        "index": 12
+       },
+       {
+        "id": "wayne",
+        "rank": 13,
+        "index": 11
+       },
+       {
+        "id": "gwen",
+        "rank": 14,
+        "index": 10
+       },
+       {
+        "id": "lynn",
+        "rank": 15,
+        "index": 9
+       },
+       {
+        "id": "greg",
+        "rank": 16,
+        "index": 8
+       },
+       {
+        "id": "zinman",
+        "rank": 17,
+        "index": 8
+       },
+       {
+        "id": "bahiti",
+        "rank": 18,
+        "index": 7
+       },
+       {
+        "id": "seoyoon",
+        "rank": 19,
+        "index": 6
+       },
+       {
+        "id": "jasser",
+        "rank": 20,
+        "index": 6
+       },
+       {
+        "id": "gina",
+        "rank": 21,
+        "index": 5
+       },
+       {
+        "id": "cloris",
+        "rank": 22,
+        "index": 5
+       }
+      ]
      }
     }
    }
@@ -15244,6 +16564,19 @@
       "of": 20,
       "index": 83
      }
+    },
+    "17": {
+     "f2p": null,
+     "mid": {
+      "rank": 3,
+      "of": 21,
+      "index": 84
+     },
+     "whale": {
+      "rank": 3,
+      "of": 21,
+      "index": 83
+     }
     }
    }
   },
@@ -15461,6 +16794,19 @@
      "whale": {
       "rank": 1,
       "of": 20,
+      "index": 100
+     }
+    },
+    "17": {
+     "f2p": null,
+     "mid": {
+      "rank": 1,
+      "of": 21,
+      "index": 100
+     },
+     "whale": {
+      "rank": 1,
+      "of": 21,
       "index": 100
      }
     }
@@ -15746,6 +17092,23 @@
       "of": 21,
       "index": 78
      }
+    },
+    "17": {
+     "f2p": {
+      "rank": 3,
+      "of": 22,
+      "index": 92
+     },
+     "mid": {
+      "rank": 6,
+      "of": 22,
+      "index": 85
+     },
+     "whale": {
+      "rank": 7,
+      "of": 22,
+      "index": 79
+     }
     }
    }
   },
@@ -16029,6 +17392,23 @@
       "of": 21,
       "index": 9
      }
+    },
+    "17": {
+     "f2p": {
+      "rank": 14,
+      "of": 22,
+      "index": 8
+     },
+     "mid": {
+      "rank": 17,
+      "of": 22,
+      "index": 8
+     },
+     "whale": {
+      "rank": 17,
+      "of": 22,
+      "index": 8
+     }
     }
    }
   },
@@ -16295,6 +17675,23 @@
       "of": 20,
       "index": 74
      }
+    },
+    "17": {
+     "f2p": {
+      "rank": 2,
+      "of": 19,
+      "index": 80
+     },
+     "mid": {
+      "rank": 4,
+      "of": 21,
+      "index": 77
+     },
+     "whale": {
+      "rank": 4,
+      "of": 21,
+      "index": 72
+     }
     }
    }
   },
@@ -16559,6 +17956,23 @@
      "whale": {
       "rank": 16,
       "of": 21,
+      "index": 61
+     }
+    },
+    "17": {
+     "f2p": {
+      "rank": 16,
+      "of": 22,
+      "index": 65
+     },
+     "mid": {
+      "rank": 16,
+      "of": 22,
+      "index": 65
+     },
+     "whale": {
+      "rank": 17,
+      "of": 22,
       "index": 61
      }
     }
@@ -16827,6 +18241,23 @@
       "of": 21,
       "index": 14
      }
+    },
+    "17": {
+     "f2p": {
+      "rank": 16,
+      "of": 22,
+      "index": 7
+     },
+     "mid": {
+      "rank": 13,
+      "of": 22,
+      "index": 11
+     },
+     "whale": {
+      "rank": 12,
+      "of": 22,
+      "index": 12
+     }
     }
    }
   },
@@ -17076,6 +18507,23 @@
       "of": 20,
       "index": 50
      }
+    },
+    "17": {
+     "f2p": {
+      "rank": 19,
+      "of": 19,
+      "index": 50
+     },
+     "mid": {
+      "rank": 21,
+      "of": 21,
+      "index": 52
+     },
+     "whale": {
+      "rank": 18,
+      "of": 21,
+      "index": 49
+     }
     }
    }
   },
@@ -17323,6 +18771,23 @@
      "whale": {
       "rank": 1,
       "of": 21,
+      "index": 100
+     }
+    },
+    "17": {
+     "f2p": {
+      "rank": 2,
+      "of": 22,
+      "index": 98
+     },
+     "mid": {
+      "rank": 1,
+      "of": 22,
+      "index": 100
+     },
+     "whale": {
+      "rank": 1,
+      "of": 22,
       "index": 100
      }
     }
@@ -17574,6 +19039,23 @@
       "of": 21,
       "index": 10
      }
+    },
+    "17": {
+     "f2p": {
+      "rank": 20,
+      "of": 22,
+      "index": 6
+     },
+     "mid": {
+      "rank": 16,
+      "of": 22,
+      "index": 9
+     },
+     "whale": {
+      "rank": 16,
+      "of": 22,
+      "index": 8
+     }
     }
    }
   },
@@ -17806,6 +19288,23 @@
       "of": 20,
       "index": 60
      }
+    },
+    "17": {
+     "f2p": {
+      "rank": 10,
+      "of": 19,
+      "index": 61
+     },
+     "mid": {
+      "rank": 10,
+      "of": 21,
+      "index": 64
+     },
+     "whale": {
+      "rank": 10,
+      "of": 21,
+      "index": 59
+     }
     }
    }
   },
@@ -18036,6 +19535,23 @@
      "whale": {
       "rank": 4,
       "of": 21,
+      "index": 81
+     }
+    },
+    "17": {
+     "f2p": {
+      "rank": 12,
+      "of": 22,
+      "index": 74
+     },
+     "mid": {
+      "rank": 7,
+      "of": 22,
+      "index": 81
+     },
+     "whale": {
+      "rank": 5,
+      "of": 22,
       "index": 81
      }
     }
@@ -18270,6 +19786,23 @@
       "of": 21,
       "index": 11
      }
+    },
+    "17": {
+     "f2p": {
+      "rank": 12,
+      "of": 22,
+      "index": 10
+     },
+     "mid": {
+      "rank": 15,
+      "of": 22,
+      "index": 9
+     },
+     "whale": {
+      "rank": 15,
+      "of": 22,
+      "index": 9
+     }
     }
    }
   },
@@ -18485,6 +20018,23 @@
       "of": 20,
       "index": 90
      }
+    },
+    "17": {
+     "f2p": {
+      "rank": 1,
+      "of": 19,
+      "index": 100
+     },
+     "mid": {
+      "rank": 2,
+      "of": 21,
+      "index": 96
+     },
+     "whale": {
+      "rank": 2,
+      "of": 21,
+      "index": 89
+     }
     }
    }
   },
@@ -18698,6 +20248,23 @@
      "whale": {
       "rank": 11,
       "of": 21,
+      "index": 70
+     }
+    },
+    "17": {
+     "f2p": {
+      "rank": 11,
+      "of": 22,
+      "index": 74
+     },
+     "mid": {
+      "rank": 11,
+      "of": 22,
+      "index": 75
+     },
+     "whale": {
+      "rank": 12,
+      "of": 22,
       "index": 70
      }
     }
@@ -18915,6 +20482,23 @@
       "of": 21,
       "index": 12
      }
+    },
+    "17": {
+     "f2p": {
+      "rank": 15,
+      "of": 22,
+      "index": 8
+     },
+     "mid": {
+      "rank": 14,
+      "of": 22,
+      "index": 10
+     },
+     "whale": {
+      "rank": 14,
+      "of": 22,
+      "index": 10
+     }
     }
    }
   },
@@ -19111,6 +20695,23 @@
      "whale": {
       "rank": 11,
       "of": 20,
+      "index": 57
+     }
+    },
+    "17": {
+     "f2p": {
+      "rank": 11,
+      "of": 19,
+      "index": 57
+     },
+     "mid": {
+      "rank": 12,
+      "of": 21,
+      "index": 61
+     },
+     "whale": {
+      "rank": 12,
+      "of": 21,
       "index": 57
      }
     }
@@ -19311,6 +20912,23 @@
       "of": 21,
       "index": 56
      }
+    },
+    "17": {
+     "f2p": {
+      "rank": 18,
+      "of": 22,
+      "index": 63
+     },
+     "mid": {
+      "rank": 19,
+      "of": 22,
+      "index": 60
+     },
+     "whale": {
+      "rank": 19,
+      "of": 22,
+      "index": 56
+     }
     }
    }
   },
@@ -19509,6 +21127,23 @@
       "of": 21,
       "index": 13
      }
+    },
+    "17": {
+     "f2p": {
+      "rank": 13,
+      "of": 22,
+      "index": 9
+     },
+     "mid": {
+      "rank": 12,
+      "of": 22,
+      "index": 12
+     },
+     "whale": {
+      "rank": 13,
+      "of": 22,
+      "index": 11
+     }
     }
    }
   },
@@ -19690,6 +21325,23 @@
       "of": 20,
       "index": 50
      }
+    },
+    "17": {
+     "f2p": {
+      "rank": 16,
+      "of": 19,
+      "index": 50
+     },
+     "mid": {
+      "rank": 18,
+      "of": 21,
+      "index": 53
+     },
+     "whale": {
+      "rank": 14,
+      "of": 21,
+      "index": 49
+     }
     }
    }
   },
@@ -19869,6 +21521,23 @@
      "whale": {
       "rank": 17,
       "of": 21,
+      "index": 56
+     }
+    },
+    "17": {
+     "f2p": {
+      "rank": 22,
+      "of": 22,
+      "index": 59
+     },
+     "mid": {
+      "rank": 18,
+      "of": 22,
+      "index": 60
+     },
+     "whale": {
+      "rank": 18,
+      "of": 22,
       "index": 56
      }
     }
@@ -20052,6 +21721,23 @@
       "of": 21,
       "index": 18
      }
+    },
+    "17": {
+     "f2p": {
+      "rank": 10,
+      "of": 22,
+      "index": 17
+     },
+     "mid": {
+      "rank": 10,
+      "of": 22,
+      "index": 16
+     },
+     "whale": {
+      "rank": 10,
+      "of": 22,
+      "index": 15
+     }
     }
    }
   },
@@ -20216,6 +21902,23 @@
       "of": 20,
       "index": 50
      }
+    },
+    "17": {
+     "f2p": {
+      "rank": 12,
+      "of": 19,
+      "index": 55
+     },
+     "mid": {
+      "rank": 14,
+      "of": 21,
+      "index": 53
+     },
+     "whale": {
+      "rank": 17,
+      "of": 21,
+      "index": 49
+     }
     }
    }
   },
@@ -20378,6 +22081,23 @@
      "whale": {
       "rank": 10,
       "of": 21,
+      "index": 71
+     }
+    },
+    "17": {
+     "f2p": {
+      "rank": 9,
+      "of": 22,
+      "index": 75
+     },
+     "mid": {
+      "rank": 10,
+      "of": 22,
+      "index": 76
+     },
+     "whale": {
+      "rank": 11,
+      "of": 22,
       "index": 71
      }
     }
@@ -20544,6 +22264,23 @@
       "of": 21,
       "index": 17
      }
+    },
+    "17": {
+     "f2p": {
+      "rank": 11,
+      "of": 22,
+      "index": 12
+     },
+     "mid": {
+      "rank": 11,
+      "of": 22,
+      "index": 15
+     },
+     "whale": {
+      "rank": 11,
+      "of": 22,
+      "index": 14
+     }
     }
    }
   },
@@ -20691,6 +22428,23 @@
       "of": 20,
       "index": 65
      }
+    },
+    "17": {
+     "f2p": {
+      "rank": 6,
+      "of": 19,
+      "index": 65
+     },
+     "mid": {
+      "rank": 7,
+      "of": 21,
+      "index": 67
+     },
+     "whale": {
+      "rank": 7,
+      "of": 21,
+      "index": 63
+     }
     }
    }
   },
@@ -20836,6 +22590,23 @@
      "whale": {
       "rank": 13,
       "of": 21,
+      "index": 65
+     }
+    },
+    "17": {
+     "f2p": {
+      "rank": 17,
+      "of": 22,
+      "index": 64
+     },
+     "mid": {
+      "rank": 17,
+      "of": 22,
+      "index": 65
+     },
+     "whale": {
+      "rank": 14,
+      "of": 22,
       "index": 65
      }
     }
@@ -20985,6 +22756,23 @@
       "of": 21,
       "index": 24
      }
+    },
+    "17": {
+     "f2p": {
+      "rank": 9,
+      "of": 22,
+      "index": 17
+     },
+     "mid": {
+      "rank": 9,
+      "of": 22,
+      "index": 21
+     },
+     "whale": {
+      "rank": 9,
+      "of": 22,
+      "index": 20
+     }
     }
    }
   },
@@ -21114,6 +22902,23 @@
       "rank": 8,
       "of": 20,
       "index": 61
+     }
+    },
+    "17": {
+     "f2p": {
+      "rank": 9,
+      "of": 19,
+      "index": 61
+     },
+     "mid": {
+      "rank": 9,
+      "of": 21,
+      "index": 64
+     },
+     "whale": {
+      "rank": 9,
+      "of": 21,
+      "index": 60
      }
     }
    }
@@ -21245,6 +23050,23 @@
       "of": 21,
       "index": 81
      }
+    },
+    "17": {
+     "f2p": {
+      "rank": 5,
+      "of": 22,
+      "index": 84
+     },
+     "mid": {
+      "rank": 5,
+      "of": 22,
+      "index": 86
+     },
+     "whale": {
+      "rank": 6,
+      "of": 22,
+      "index": 80
+     }
     }
    }
   },
@@ -21375,6 +23197,23 @@
       "of": 21,
       "index": 29
      }
+    },
+    "17": {
+     "f2p": {
+      "rank": 8,
+      "of": 22,
+      "index": 28
+     },
+     "mid": {
+      "rank": 8,
+      "of": 22,
+      "index": 25
+     },
+     "whale": {
+      "rank": 8,
+      "of": 22,
+      "index": 23
+     }
     }
    }
   },
@@ -21488,6 +23327,23 @@
       "of": 20,
       "index": 60
      }
+    },
+    "17": {
+     "f2p": {
+      "rank": 5,
+      "of": 19,
+      "index": 66
+     },
+     "mid": {
+      "rank": 11,
+      "of": 21,
+      "index": 63
+     },
+     "whale": {
+      "rank": 11,
+      "of": 21,
+      "index": 58
+     }
     }
    }
   },
@@ -21599,6 +23455,23 @@
      "whale": {
       "rank": 12,
       "of": 21,
+      "index": 69
+     }
+    },
+    "17": {
+     "f2p": {
+      "rank": 14,
+      "of": 22,
+      "index": 72
+     },
+     "mid": {
+      "rank": 12,
+      "of": 22,
+      "index": 74
+     },
+     "whale": {
+      "rank": 13,
+      "of": 22,
       "index": 69
      }
     }
@@ -21714,6 +23587,23 @@
       "of": 21,
       "index": 41
      }
+    },
+    "17": {
+     "f2p": {
+      "rank": 6,
+      "of": 22,
+      "index": 34
+     },
+     "mid": {
+      "rank": 6,
+      "of": 22,
+      "index": 37
+     },
+     "whale": {
+      "rank": 6,
+      "of": 22,
+      "index": 34
+     }
     }
    }
   },
@@ -21809,6 +23699,23 @@
       "rank": 7,
       "of": 20,
       "index": 62
+     }
+    },
+    "17": {
+     "f2p": {
+      "rank": 7,
+      "of": 19,
+      "index": 62
+     },
+     "mid": {
+      "rank": 8,
+      "of": 21,
+      "index": 65
+     },
+     "whale": {
+      "rank": 8,
+      "of": 21,
+      "index": 61
      }
     }
    }
@@ -21906,6 +23813,23 @@
       "of": 21,
       "index": 72
      }
+    },
+    "17": {
+     "f2p": {
+      "rank": 15,
+      "of": 22,
+      "index": 71
+     },
+     "mid": {
+      "rank": 13,
+      "of": 22,
+      "index": 71
+     },
+     "whale": {
+      "rank": 10,
+      "of": 22,
+      "index": 71
+     }
     }
    }
   },
@@ -22002,6 +23926,23 @@
       "of": 21,
       "index": 39
      }
+    },
+    "17": {
+     "f2p": {
+      "rank": 7,
+      "of": 22,
+      "index": 32
+     },
+     "mid": {
+      "rank": 7,
+      "of": 22,
+      "index": 34
+     },
+     "whale": {
+      "rank": 7,
+      "of": 22,
+      "index": 32
+     }
     }
    }
   },
@@ -22081,6 +24022,23 @@
       "of": 20,
       "index": 50
      }
+    },
+    "17": {
+     "f2p": {
+      "rank": 18,
+      "of": 19,
+      "index": 50
+     },
+     "mid": {
+      "rank": 20,
+      "of": 21,
+      "index": 52
+     },
+     "whale": {
+      "rank": 16,
+      "of": 21,
+      "index": 49
+     }
     }
    }
   },
@@ -22158,6 +24116,23 @@
      "whale": {
       "rank": 8,
       "of": 21,
+      "index": 72
+     }
+    },
+    "17": {
+     "f2p": {
+      "rank": 8,
+      "of": 22,
+      "index": 75
+     },
+     "mid": {
+      "rank": 8,
+      "of": 22,
+      "index": 77
+     },
+     "whale": {
+      "rank": 8,
+      "of": 22,
       "index": 72
      }
     }
@@ -22239,6 +24214,23 @@
       "of": 21,
       "index": 47
      }
+    },
+    "17": {
+     "f2p": {
+      "rank": 4,
+      "of": 22,
+      "index": 40
+     },
+     "mid": {
+      "rank": 4,
+      "of": 22,
+      "index": 38
+     },
+     "whale": {
+      "rank": 4,
+      "of": 22,
+      "index": 38
+     }
     }
    }
   },
@@ -22301,6 +24293,23 @@
       "of": 20,
       "index": 55
      }
+    },
+    "17": {
+     "f2p": {
+      "rank": 8,
+      "of": 19,
+      "index": 61
+     },
+     "mid": {
+      "rank": 13,
+      "of": 21,
+      "index": 59
+     },
+     "whale": {
+      "rank": 13,
+      "of": 21,
+      "index": 54
+     }
     }
    }
   },
@@ -22361,6 +24370,23 @@
      "whale": {
       "rank": 3,
       "of": 21,
+      "index": 90
+     }
+    },
+    "17": {
+     "f2p": {
+      "rank": 6,
+      "of": 22,
+      "index": 83
+     },
+     "mid": {
+      "rank": 4,
+      "of": 22,
+      "index": 90
+     },
+     "whale": {
+      "rank": 4,
+      "of": 22,
       "index": 90
      }
     }
@@ -22425,6 +24451,23 @@
       "of": 21,
       "index": 44
      }
+    },
+    "17": {
+     "f2p": {
+      "rank": 5,
+      "of": 22,
+      "index": 38
+     },
+     "mid": {
+      "rank": 5,
+      "of": 22,
+      "index": 38
+     },
+     "whale": {
+      "rank": 5,
+      "of": 22,
+      "index": 36
+     }
     }
    }
   },
@@ -22469,6 +24512,23 @@
       "rank": 5,
       "of": 20,
       "index": 68
+     }
+    },
+    "17": {
+     "f2p": {
+      "rank": 4,
+      "of": 19,
+      "index": 69
+     },
+     "mid": {
+      "rank": 5,
+      "of": 21,
+      "index": 72
+     },
+     "whale": {
+      "rank": 5,
+      "of": 21,
+      "index": 67
      }
     }
    }
@@ -22515,6 +24575,23 @@
       "of": 21,
       "index": 73
      }
+    },
+    "17": {
+     "f2p": {
+      "rank": 7,
+      "of": 22,
+      "index": 82
+     },
+     "mid": {
+      "rank": 9,
+      "of": 22,
+      "index": 77
+     },
+     "whale": {
+      "rank": 9,
+      "of": 22,
+      "index": 72
+     }
     }
    }
   },
@@ -22560,6 +24637,23 @@
       "of": 21,
       "index": 75
      }
+    },
+    "17": {
+     "f2p": {
+      "rank": 3,
+      "of": 22,
+      "index": 58
+     },
+     "mid": {
+      "rank": 3,
+      "of": 22,
+      "index": 60
+     },
+     "whale": {
+      "rank": 3,
+      "of": 22,
+      "index": 60
+     }
     }
    }
   },
@@ -22587,6 +24681,23 @@
       "rank": 14,
       "of": 20,
       "index": 50
+     }
+    },
+    "17": {
+     "f2p": {
+      "rank": 17,
+      "of": 19,
+      "index": 50
+     },
+     "mid": {
+      "rank": 19,
+      "of": 21,
+      "index": 52
+     },
+     "whale": {
+      "rank": 15,
+      "of": 21,
+      "index": 49
      }
     }
    }
@@ -22616,6 +24727,23 @@
       "of": 21,
       "index": 93
      }
+    },
+    "17": {
+     "f2p": {
+      "rank": 4,
+      "of": 22,
+      "index": 87
+     },
+     "mid": {
+      "rank": 3,
+      "of": 22,
+      "index": 92
+     },
+     "whale": {
+      "rank": 3,
+      "of": 22,
+      "index": 92
+     }
     }
    }
   },
@@ -22642,6 +24770,107 @@
      "whale": {
       "rank": 1,
       "of": 21,
+      "index": 100
+     }
+    },
+    "17": {
+     "f2p": {
+      "rank": 1,
+      "of": 22,
+      "index": 100
+     },
+     "mid": {
+      "rank": 2,
+      "of": 22,
+      "index": 86
+     },
+     "whale": {
+      "rank": 2,
+      "of": 22,
+      "index": 81
+     }
+    }
+   }
+  },
+  "aiden": {
+   "id": "aiden",
+   "cls": "inf",
+   "gen": 17,
+   "acq": "roulette",
+   "leaderSkill": "攻撃15/2T毎攻撃50(按分)",
+   "joinerSkill": null,
+   "bearNoEffect": false,
+   "ranks": {
+    "17": {
+     "f2p": {
+      "rank": 3,
+      "of": 19,
+      "index": 72
+     },
+     "mid": {
+      "rank": 6,
+      "of": 21,
+      "index": 69
+     },
+     "whale": {
+      "rank": 6,
+      "of": 21,
+      "index": 64
+     }
+    }
+   }
+  },
+  "bertha": {
+   "id": "bertha",
+   "cls": "lan",
+   "gen": 17,
+   "acq": "event",
+   "leaderSkill": "殺傷25/槍:2回毎50%追撃(校正・同種追撃は1つ分)/弓攻撃15(按分)/被ダメ+12(按分)",
+   "joinerSkill": "殺傷+5→25%(オブサベーション)",
+   "bearNoEffect": false,
+   "ranks": {
+    "17": {
+     "f2p": {
+      "rank": 1,
+      "of": 22,
+      "index": 100
+     },
+     "mid": {
+      "rank": 2,
+      "of": 22,
+      "index": 99
+     },
+     "whale": {
+      "rank": 2,
+      "of": 22,
+      "index": 92
+     }
+    }
+   }
+  },
+  "eleanor": {
+   "id": "eleanor",
+   "cls": "mks",
+   "gen": 17,
+   "acq": "hall",
+   "leaderSkill": "敵防御-25/弓:50%で50%追撃(校正)/弓与ダメ20(按分)",
+   "joinerSkill": "敵防御-25%(至高の推理/防御down枠)",
+   "bearNoEffect": false,
+   "ranks": {
+    "17": {
+     "f2p": {
+      "rank": 2,
+      "of": 22,
+      "index": 98
+     },
+     "mid": {
+      "rank": 1,
+      "of": 22,
+      "index": 100
+     },
+     "whale": {
+      "rank": 1,
+      "of": 22,
       "index": 100
      }
     }
