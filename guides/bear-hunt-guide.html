@@ -117,80 +117,6 @@
 <dd>A. 内部計算式は非公開のため「制約付きの推定値」です。同条件の実測ダメージを1件入力するキャリブレーション機能を使うと、あなたの環境(未入力の装備・ペット・専門家など)を吸収して精度が大きく上がります。</dd>
 <dt>Q. スキルレベル5未満でも参加バフ枠に入れますか?</dt>
 <dd>A. 入れますが、後からより高いスキルレベルの参加者が来ると枠を奪われます。同盟で枠を固定したい場合は、Lv5のメンバー4人を最初に乗せるのが確実です。</dd>
-</dl></div><div id="bodyen" style="display:none"><h1 id="art-h1">How Bear Hunt damage works — a full guide</h1>
-<h2>What kind of event is Bear Hunt?</h2>
-<p>Bear Hunt is an alliance event where you start the "bear trap" and everyone repeatedly rallies for 30 minutes, competing on total damage dealt to the bear. The bear doesn't counterattack, so no troops die — it's purely about dealing as much damage as possible. Rewards tie to both your personal damage and the alliance total, so raising per-rally efficiency directly raises rewards.</p>
-<p>The official YouTube channel also has a Bear Hunt guide video — a good way to see the event flow first. This article then goes deeper into the damage math the video doesn't cover.</p>
-<div class="wos-media"><div class="vid"><iframe loading="lazy" src="https://www.youtube-nocookie.com/embed/GZnGqdpOxvA" title="熊狩行動攻略ガイド | ホワサバ初心者ガイド" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
-<div class="cap">Source: "熊狩行動攻略ガイド | ホワサバ初心者ガイド" from the <a href="https://www.youtube.com/@WhiteoutSurvivalOfficial_JA" target="_blank" rel="noopener noreferrer">official Whiteout Survival Japan YouTube channel</a> (video in Japanese), via YouTube's official embed feature. Video copyright belongs to Century Games.</div></div>
-<h2>The big picture of what affects damage</h2>
-<p>Bear damage is thought to be the product of roughly five layers:</p>
-<ul>
-<li><b>Troop quantity & quality</b> — troop count, troop Tier, army/per-type attack and lethality bonuses</li>
-<li><b>Rally leader's heroes</b> — 3 heroes' expedition skills (up to 9), the heroes' own expedition stats, and exclusive-gear rally bonuses</li>
-<li><b>Joiner hero skills</b> — each joiner's left hero first expedition skill, only the top 4 by skill level apply</li>
-<li><b>Event-specific bonus</b> — trap upgrade level (anti-bear attack bonus)</li>
-<li><b>Point bonus</b> — expert Cyrille's "Hunter's Heart" talent (up to +30% to your earned points)</li>
-</ul>
-<h2>A deeper look at the damage formula (community hypotheses)</h2>
-<p>As a bit of deeper "reading," here are the community-proposed ideas about the Bear Hunt damage formula. Since the official exact formula isn't published, the below is fan verification/estimation — but it's widely supported for explaining real damage trends well.</p>
-
-<h3>Basic structure: Attack × Lethality ÷ Defense</h3>
-<p>Community breakdowns (e.g. Kingshot-family, considered the same engine family as WoS) express per-troop attack roughly as:</p>
-<p><code>attack per troop = base attack × (1 + attack bonus) × base lethality ÷ 100</code></p>
-<p>Multiply by troop count and divide by bear defense for damage: <code>damage ≈ effective force × attack-per-troop ÷ bear defense</code>. Because attack and lethality multiply, <b>a low value on either side caps the whole</b> — the theoretical basis for "raise attack and lethality in balance."</p>
-
-<h3>Most important: effective force scales by square root</h3>
-<p>The crucial point: troop count isn't applied linearly but <b>compressed by square root</b>. The community formula expresses effective force roughly as <code>effective force = √(troops × baseline)</code>. This explains the commonly-observed "double the troops, only ~1.4× damage (√2)."</p>
-<p>Because of this crowding decay, cramming one type loses efficiency. Leading with high-damage marksman but mixing lancers beats pure marksman — every ratio debate traces back to this hypothesis. Our simulator implements the decay strength as an adjustable "crowding decay ρ" you can fine-tune to your measurements.</p>
-
-<h3>The "displayed stats aren't the real numbers" claim</h3>
-<p>Another famous community point: <b>the troop attack/lethality shown in the training camp aren't the actual internal values</b>. Even if "T6 marksman attack 10 / lethality 11" shows, tests report the internal calc uses a totally different scale (e.g. attack ~974). So judging "marksman is weak, only attack 10" from displayed values is wrong; comparing via a tool that estimates the internal scale is closer to reality.</p>
-
-<div class="callout"><b>⚠ These are "hypotheses"</b><br>The above is estimation from community verification, not a full reconstruction of the official internal formula. Our simulator is likewise a "constraint-based estimate." That's exactly why calibrating with your own measured points (adjusting factor C) to fit your environment is most accurate. Don't take hypotheses at face value — verify with your own numbers. That's the fastest route to mastering Bear Hunt.</div>
-<h2>Understanding the joiner "4 slots" correctly</h2>
-<p>This is the most misunderstood part. On the joiner side, only the "first expedition skill" of the hero placed at the far left (slot 1) becomes a buff candidate for the whole rally. Hero level and stars don't matter; only skill level is read. There are 4 slots, first-come by default, but a later joiner replaces a slot only if their skill level is higher than one already taken.</p>
-<p>Another key point is how buffs combine. Same-type skills add; different types multiply. Four "+25% all-army DMG" sum to +100% (2.0x), but splitting into two "+25% DMG" and two "+25% ATK" gives 1.5x1.5 = 2.25x — about 12% more at the same skill level. Spreading DMG / ATK / Lethality / enemy-DMG-taken / proc types is the theoretical optimum.</p>
-<h2>How should you decide the troop ratio?</h2>
-<p>Since the bear doesn't counterattack, infantry (the tank role) seems unnecessary. But tests show "100% marksman" deals about 20% less than a balanced build, and mixing in a little infantry/lancer does better. The standard is Inf 10 : Lan 30 : Mks 60, and if you're short on marksman, leaning toward lancer is safe. Our simulator builds this measured tendency (the zero-troop penalty) into its model.</p>
-<table>
-<tr><th>Ratio (Inf:Lan:Mks)</th><th>Notes</th></tr>
-<tr><td>10:30:60</td><td>The well-regarded standard. Default pick.</td></tr>
-<tr><td>10:10:80</td><td>Marksman-focused; for heavy marksman buffs</td></tr>
-<tr><td>20:40:40</td><td>Alternative when short on marksman</td></tr>
-<tr><td>0:0:100</td><td>Not recommended; loses a lot to the penalty</td></tr>
-</table>
-<h2>Don't forget Cyrille, trap upgrades and exclusive gear</h2>
-<p>Expert Cyrille's "Hunter's Heart" talent increases the damage points you earn in Bear Hunt (+2% at Lv1, +30% at Lv11). It boosts points, not combat power, so its value is very high — a priority if you care about Bear Hunt. The trap upgrade level applies to everyone as an anti-bear attack bonus (up to +25%). Also, heroes like Jeronimo and Mia have exclusive gear with bonuses such as "rally troop attack +5–15%", which is added on top when used as the leader.</p>
-<h2>So what should you upgrade first?</h2>
-<p>Priority depends on your account, so there's no single answer. That's exactly why our Bear Hunt damage simulator computes things like "ATK +10%", "Lethality +10%", "Tier up", "Cyrille +1 Lv" and "swap hero" from your current setup, and ranks how much each single move raises damage. Enter your stats and try it.</p>
-<div class="cta"><a class="btn" href="../tools/bear-hunt/index.html">🐻 Try the simulator</a></div>
-<h2>Third-party verification: what moves damage, and by how much</h2>
-<p>Separately from our model, Japanese strategy site Altema published an in-game test changing one factor at a time from the same baseline (the official WOS Japan X account featured the article). The per-factor gains are concrete and useful for prioritizing — open the panel below for the numbers.</p>
-<details class="wos-acc"><summary>📊 View the data: measured damage gain per factor (Altema)</summary><div class="wos-acc-in">
-<p>Baseline: Gen-4 SR heroes (Lv80, 0 stars) dealing 698,518 damage. Gains from changing one factor at a time:</p>
-<table>
-<tr><th>Factor changed</th><th>Measured gain</th></tr>
-<tr><td>Heroes SR → SSR</td><td>~+210%</td></tr>
-<tr><td>Damage-buff skills equipped</td><td>~+33%</td></tr>
-<tr><td>Legendary gear upgraded</td><td>~+16%</td></tr>
-<tr><td>Hero levels raised</td><td>~+15%</td></tr>
-<tr><td>Troop buff items used</td><td>~+10%</td></tr>
-<tr><td>Chief gear upgraded</td><td>~+3.7%</td></tr>
-<tr><td>Pet skill active</td><td>~+1%</td></tr>
-</table>
-<p>Combined, the upgrades reached ~+422% (8,716,271 damage). The pattern — hero quality (rarity & skills) largest, gear/levels mid-size, boosts on top — matches our model and this article's priority order well.</p>
-<p style="font-size:11px;color:#6b7385">Source: <a href="https://altema.jp/whiteoutsurvival/kumakarikensyou" target="_blank" rel="noopener noreferrer">Altema, "Bear Hunt damage verification" (JP)</a>. Values are as of the test and may shift with generations and updates.</p>
-</div></details>
-<div class="tw-embed"><blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">⚔️イベント検証攻略記事のご紹介⚔️ 【熊狩行動でダメージが出る方法を検証してみた】…ダメージ上昇のヒントとしてご活用くださいね!</p>&mdash; Whiteout Survival Japan (Official) (@WOS_Japan) <a href="https://x.com/WOS_Japan/status/1866769908379660506">View on X</a></blockquote></div>
-<h2>FAQ</h2>
-<dl class="faq">
-<dt>Q. Do joiner hero level or gear affect damage?</dt>
-<dd>A. No. On the joiner side only the left hero's first expedition skill (its skill level) applies, and joiners' heroes themselves don't attack the bear (confirmed by testing). Troops do contribute, so sending high-Tier troops at full capacity matters.</dd>
-<dt>Q. Are the simulator's numbers accurate?</dt>
-<dd>A. The internal formula is undisclosed, so they are "constraint-based estimates". Using the calibration feature (enter one measured rally damage under the same conditions) absorbs your account's hidden factors (gear/pets/experts) and greatly improves accuracy.</dd>
-<dt>Q. Can a skill below level 5 still take a buff slot?</dt>
-<dd>A. Yes, but a later joiner with a higher skill level will take the slot. To lock slots in your alliance, send four Lv5 members in first.</dd>
 </dl></div>
 <div class="relbar" id="relbar"></div></div><nav class="relposts" aria-label="関連記事"><h2 class="relposts-h">Related articles</h2><ul><li><a href="troop-ratio.html">What's the right troop ratio?</a></li><li><a href="leader-formation.html">Rally leader: recommended formations & heroes</a></li><li><a href="damage-not-growing.html">Why your damage isn't growing, and fixes</a></li><li><a href="cyril-talent.html">How strong is Cyril? Talent tested in numbers</a></li></ul></nav>
 <div id="foot"></div>
@@ -201,7 +127,7 @@ document.getElementById("pgtitle").textContent=EN?"How Bear Hunt damage works \u
 document.getElementById("pgdesc").content=EN?"A full guide to how Whiteout Survival Bear Hunt damage works: troops, leader, joiner 4 slots, troop ratio, Cyrille and exclusive gear.":"ホワサバ熊狩行動のダメージの仕組みを徹底解説。兵力・集結主・参加者4枠・兵種比率・シリル・専用装備までの総合ガイド。";
 document.getElementById("crumb").innerHTML=EN?"<a href=\"../index.html\">Home</a> &gt; Bear Hunt guide":"<a href=\"../index.html\">ホーム</a> &gt; 熊狩攻略ガイド";
 document.getElementById("updbox").innerHTML=WOS_UPDATEBOX({date:"2026-06-15",gen:16,note:"総合解説",note_en:"Full guide"});
-if(EN){document.getElementById("bodyja").style.display="none";document.getElementById("bodyen").style.display="block";}
+if(EN){var bj=document.getElementById("bodyja"),be=document.getElementById("bodyen");if(bj)bj.style.display="none";if(be)be.style.display="block";}
 document.getElementById("relbar").innerHTML='<a href="../tools/left-hero/index.html'+(EN?"":"")+'">'+(EN?"→ Left-Hero Checker":"→ Left-Hero Checker")+'</a>'+'<a href="../tools/troop-ratio/index.html'+(EN?"":"")+'">'+(EN?"→ Troop Ratio Simulator":"→ Troop Ratio Simulator")+'</a>'+'<a href="../tools/bear-hunt/index.html'+(EN?"":"")+'">'+(EN?"→ Damage Simulator":"→ Bear Hunt Simulator")+'</a>';
 document.getElementById("nav").innerHTML=WOS_NAV(1);
 document.getElementById("foot").innerHTML=WOS_FOOT(1);})();</script><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>

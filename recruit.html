@@ -41,7 +41,9 @@
 <div id="nav"></div>
 <div class="wrap">
 <div class="crumb" id="crumb"></div>
-<div id="bodyja" style="display:none"><h1>同盟「bst」メンバー募集</h1>
+
+
+<div id="body"><h1>同盟「bst」メンバー募集</h1>
 <a class="owner-mini" href="about.html">
   <img src="/assets/owner.png" alt="じゃすみん" onerror="this.style.display='none'">
   <div><div class="om-name">運営者: じゃすみん</div><div class="om-sub">1567サーバー 同盟bst 盟主 ・ プロフィールを見る →</div></div>
@@ -57,23 +59,6 @@
 </div>
 <div class="callout tip"><span class="ico">📩</span><div>「楽しそう」と思ったら、<a href="https://x.com/tegetege_m" target="_blank" rel="noopener noreferrer">X（@tegetege_m）</a> までお気軽にどうぞ。移民の相談・質問だけでも歓迎です。</div></div>
 <p class="note">※ このページは運営者の同盟に関する案内です。当サイトのツール・攻略記事の利用に、同盟への加入は必要ありません。</p></div>
-<div id="bodyen" style="display:none"><h1>Alliance "bst" is recruiting</h1>
-<a class="owner-mini" href="about.html">
-  <img src="/assets/owner.png" alt="Jasmine" onerror="this.style.display='none'">
-  <div><div class="om-name">Owner: Jasmine</div><div class="om-sub">Leader of alliance bst, Server 1567 ・ View profile →</div></div>
-</a>
-<p>Our alliance <b>bst</b> on Server 1567 is looking for new members (migrants). Whether you pour your heart into Bear Hunt or just want to play at your own pace, if the vibe sounds right, please consider migrating.</p>
-<div class="join-grid">
-  <div class="join-card good"><div class="jc-ico">😌</div><div class="jc-t">Play at your own pace</div><div class="jc-d">No quotas at all. Play the events you like, as much as you like, on your own schedule.</div></div>
-  <div class="join-card good"><div class="jc-ico">🤝</div><div class="jc-t">Friendly within the server</div><div class="jc-d">A calm, drama-free atmosphere with members who help each other out.</div></div>
-  <div class="join-card good"><div class="jc-ico">🌍</div><div class="jc-t">Active in SvS & cross-server events</div><div class="jc-d">Easygoing, but we actively join and enjoy cross-server events like SvS.</div></div>
-  <div class="join-card good"><div class="jc-ico">🐻</div><div class="jc-t">Bear Hunt enthusiasts on board</div><div class="jc-d">We have dedicated Bear Hunt players, so you can research together and enjoy watching your damage grow.</div></div>
-  <div class="join-card good"><div class="jc-ico">🛠️</div><div class="jc-t">Request any tool you want</div><div class="jc-d">Want a specific calculator or helper? Jasmine will build any tool you ask for.</div></div>
-  <div class="join-card warn"><div class="jc-ico">⚠</div><div class="jc-t">For hardcore / heavy-spend players</div><div class="jc-d">We have no maxed-out hardcore players, so this isn't suited to heavy spenders wanting to fight at the very front of SvS. Please keep that in mind.</div></div>
-</div>
-<div class="callout tip"><span class="ico">📩</span><div>If it sounds fun, reach out to <a href="https://x.com/tegetege_m" target="_blank" rel="noopener noreferrer">X (@tegetege_m)</a> anytime. Questions about migrating are very welcome.</div></div>
-<p class="note">* This page is about the operator's own alliance. You do NOT need to join any alliance to use the tools and guides on this site.</p></div>
-<div id="body"></div>
 </div>
 <div id="foot"></div>
 <script src="/assets/config.js?v=96"></script>
@@ -85,7 +70,7 @@
   document.getElementById('pgtitle').textContent = EN?'Alliance recruitment | Whiteout Tools Lab':'同盟メンバー募集 | ホワサバ ツールラボ';
   document.getElementById('pgdesc').content = EN?'Recruitment page for alliance "bst" on Server 1567 in Whiteout Survival.':'1567サーバーの同盟「bst」のメンバー募集ページ。マイペースに楽しめる雰囲気、SvS・熊狩りの検証仲間を募集中。';
   document.getElementById('crumb').innerHTML = EN?'<a href="index.html">Home</a> &gt; <a href="about.html">About</a> &gt; Recruitment':'<a href="index.html">ホーム</a> &gt; <a href="about.html">運営者情報</a> &gt; 同盟募集';
-  document.getElementById('body').innerHTML = document.getElementById(EN?'bodyen':'bodyja').innerHTML;
+  var srcEl=document.getElementById(EN?'bodyen':'bodyja'); if(srcEl) document.getElementById('body').innerHTML = srcEl.innerHTML;
   document.getElementById('nav').innerHTML = WOS_NAV(0);
   document.getElementById('foot').innerHTML = WOS_FOOT(0);
 })();

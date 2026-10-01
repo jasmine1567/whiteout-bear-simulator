@@ -43,7 +43,7 @@ ACQ_JA = {"roulette": "ルーレット", "event": "デイリー割引・氷原�
 ACQ_EN = {"roulette": "Lucky Wheel", "event": "Daily Deals / Frostfield Ruler etc.", "hall": "Hall of Heroes", "paid": "Paid only", "login": "Login reward", "common": "Permanent"}
 
 class Tr:
-    def __init__(self): self.m = {"盾": "INF", "槍": "LAN", "弓": "MKS"}
+    def __init__(self): self.m = {"盾": "INF", "槍": "LAN", "弓": "MKS", "ホワサバ ツールラボ": "Whiteout Tools Lab", "ホーム": "Home", "世代別 熊狩り構成": "Bear Hunt builds by generation"}
     def __call__(self, ja, en):
         self.m[ja] = en
         k = " ".join(ja.split())          # クライアント側 tr() は空白正規化＋trim したキーで引くため、正規化版も登録
@@ -128,7 +128,7 @@ def head(title_ja, desc_ja, path, ld=""):
 <div id="nav"></div>
 """
 
-def tail(tr, title_en, crumb_en, h1_en, lead_en, extra_js="", desc_en=""):
+def tail(tr, title_en, crumb_en, h1_en, lead_en, extra_js="", desc_en="", faq_en=None):
     desc_js = f'var md=q("meta[name=description]"); if(md) md.setAttribute("content", {json.dumps(desc_en, ensure_ascii=False)});' if desc_en else ""
     return f"""<div id="foot"></div>
 <script src="/assets/config.js?v={V}"></script>
@@ -170,7 +170,9 @@ window.addEventListener("DOMContentLoaded", function() {{
   var crumb = document.querySelector(".crumb");
   if (crumb) crumb.innerHTML = {json.dumps(crumb_en, ensure_ascii=False)};
 }});
-</script></body>
+</script>
+<!--EN-META {json.dumps({"title": title_en, "description": desc_en, "h1": h1_en, "lead": lead_en, "crumb": crumb_en, "faq": faq_en or []}, ensure_ascii=False)}-->
+</body>
 </html>
 """
 
@@ -178,6 +180,13 @@ window.addEventListener("DOMContentLoaded", function() {{
 def gen_strip(cur):
     return '<div class="gen-strip">' + "".join(
         f'<a href="/stats/{gen_dir(g)}/index.html"{" class=on" if g == cur else ""}>G{g}</a>' for g in GENS) + '</div>'
+
+def en_names(text):
+    """タグを除いた英語文中に残る「盾ジェロニモG1」形式の英雄表記を「INF Jeronimo (G1)」に直す"""
+    for h in HEROES.values():
+        text = text.replace(f"{CLS_JA[h['cls']]}{h['name']}G{h['gen']}", f"{CLS_EN[h['cls']]} {h['en']} (G{h['gen']})")
+        text = text.replace(f"{CLS_JA[h['cls']]}{h['name']}", f"{CLS_EN[h['cls']]} {h['en']}")
+    return text
 
 def bi(ja, en):
     """静的HTMLの日英切替: 日本語を表示し、英語ページでは data-en に置き換える（TR辞書に頼らない自由文用）"""
@@ -441,7 +450,8 @@ def faq_section(g, tr):
                 'Enter your formation-screen ATK% / Lethality% into the <a href="/tools/bear-hunt/index.html">Bear Hunt Simulator</a>. The “Simulate this build” button above opens it with this generation’s best heroes pre-set.'))
     items = "".join(f'<details class="faq"><summary>{bi(esc(q), qen)}</summary><div class="faq-a">{bi(a, aen)}</div></details>' for q, a, _t, qen, aen in qas)
     ld = ld_faq([(q, t_) for q, _a, t_, _qe, _ae in qas])
-    return f'<h2 id="faq">{tr("よくある質問","FAQ")}</h2><div class="faq-list">{items}</div>', ld
+    faq_en = [(qen, en_names(re.sub(r"<[^>]+>", "", aen))) for _q, _a, _t, qen, aen in qas]
+    return f'<h2 id="faq">{tr("よくある質問","FAQ")}</h2><div class="faq-list">{items}</div>', ld, faq_en
 
 # ---------------- 口コミ（投稿フォームの「ひとこと」） ----------------
 def reviews_section(g, tr):
@@ -575,7 +585,7 @@ def build_gen(g):
         + (f'<a href="/stats/{gen_dir(prev_g)}/index.html">← {tr(f"第{prev_g}世代の熊狩り構成", f"Gen {prev_g} builds")}</a>' if prev_g else "<span></span>")
         + f'<a href="/stats/index.html">{tr("世代一覧","All generations")}</a>'
         + (f'<a href="/stats/{gen_dir(next_g)}/index.html">{tr(f"第{next_g}世代の熊狩り構成", f"Gen {next_g} builds")} →</a>' if next_g else "<span></span>") + '</div>')
-    faq_html, faq_ld = faq_section(g, tr)
+    faq_html, faq_ld, faq_en = faq_section(g, tr)
     toc = (f'<nav class="toc" aria-label="目次" data-aria-en="Contents"><a href="#best">🏆 {tr("理想の構成","Ideal build")}</a><a href="#heroes">🆕 {tr("新英雄の評価","New heroes")}</a>'
            f'<a href="#compare">📊 {tr("英雄ランキング","Hero rankings")}</a><a href="#next">⏭️ {tr("次の世代","Next gen")}</a><a href="#reviews">💬 {tr("口コミ","Reviews")}</a><a href="#faq">❓ FAQ</a></nav>')
     body = f"""<div class="wrap wide" data-live-page="{g}">
@@ -617,7 +627,7 @@ def build_gen(g):
     crumb_en = f'<a href="/en/index.html">Home</a> &gt; <a href="/en/stats/index.html">Bear Hunt builds by generation</a> &gt; Gen {g}'
     ld = jsonld([ld_article(f"第{g}世代の熊狩り おすすめ英雄・最強構成", desc_ja, path, PUB_GEN.get(g, PUBLISHED)),
                  ld_crumbs([("ホーム", "/"), ("世代別 熊狩り構成", "/stats/"), (f"第{g}世代", path)]), faq_ld])
-    return head(title_ja, desc_ja, path, ld) + body + tail(tr, title_en, crumb_en, h1_en, tr.m[lead_ja], desc_en=desc_en)
+    return head(title_ja, desc_ja, path, ld) + body + tail(tr, title_en, crumb_en, h1_en, tr.m[lead_ja], desc_en=desc_en, faq_en=faq_en)
 
 # ---------------- ハブ ----------------
 def hub_gen_card(g, tr, featured=False):
@@ -737,7 +747,8 @@ def build_hub():
                  ld_crumbs([("ホーム", "/"), ("世代別 熊狩り構成", path)]),
                  ld_faq([(q, a) for q, a, _qe, _ae in faq])])
     h1_en = f'Bear Hunt Best Heroes &amp; Builds<br><span class="acc">by generation (Gen 1–{MAXG})</span>'
-    return head(title_ja, desc_ja, path, ld) + body + tail(tr, title_en, crumb_en, h1_en, tr.m[lead_ja], desc_en=desc_en)
+    faq_en = [(qe, en_names(re.sub(r"<[^>]+>", "", ae))) for _q, _a, qe, ae in faq]
+    return head(title_ja, desc_ja, path, ld) + body + tail(tr, title_en, crumb_en, h1_en, tr.m[lead_ja], desc_en=desc_en, faq_en=faq_en)
 
 # ---------------- 方法論 ----------------
 def build_methodology():

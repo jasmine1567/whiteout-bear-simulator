@@ -76,7 +76,7 @@ window.addEventListener("DOMContentLoaded", function() {
   
   if (q("h1")) q("h1").innerHTML = "Submit your <span class=\"acc\">Bear Hunt build</span>";
   if (q(".lead")) q(".lead").innerHTML = "Pick your generation, tier and three heroes. Nothing identifying is sent.";
-  var TR = {"盾": "INF", "槍": "LAN", "弓": "MKS", "世代・課金帯・英雄3人を選ぶだけ。個人を特定する情報は送信されません。": "Pick your generation, tier and three heroes. Nothing identifying is sent.", "ホーム": "Home", "世代別統計": "Generation stats", "構成を投稿": "Submit", "熊狩り構成を": "Submit your", "投稿する": "Bear Hunt build", "投稿するとすぐに、同じ世代の中での位置と、あなたの課金帯の理論最適との差が分かります": "Right after submitting you see your rank in your generation and the gap to your tier’s theoretical best", "投稿は世代ごとに1件。同じ世代に再投稿すると上書き、別の世代なら別の投稿になります": "One submission per generation: re-submitting the same generation updates it, another generation adds a new one", "熊狩ダメージ・シミュレーターの結果画面からも1クリックで投稿できます。": "You can also submit straight from the Bear Hunt Simulator's result panel.", "シミュレーターへ": "Open the simulator", "世代別統計を見る": "See generation stats", "集計方法と計算の前提": "Methodology"};
+  var TR = {"盾": "INF", "槍": "LAN", "弓": "MKS", "ホワサバ ツールラボ": "Whiteout Tools Lab", "ホーム": "Home", "世代別 熊狩り構成": "Bear Hunt builds by generation", "世代・課金帯・英雄3人を選ぶだけ。個人を特定する情報は送信されません。": "Pick your generation, tier and three heroes. Nothing identifying is sent.", "世代別統計": "Generation stats", "構成を投稿": "Submit", "熊狩り構成を": "Submit your", "投稿する": "Bear Hunt build", "投稿するとすぐに、同じ世代の中での位置と、あなたの課金帯の理論最適との差が分かります": "Right after submitting you see your rank in your generation and the gap to your tier’s theoretical best", "投稿は世代ごとに1件。同じ世代に再投稿すると上書き、別の世代なら別の投稿になります": "One submission per generation: re-submitting the same generation updates it, another generation adds a new one", "熊狩ダメージ・シミュレーターの結果画面からも1クリックで投稿できます。": "You can also submit straight from the Bear Hunt Simulator's result panel.", "シミュレーターへ": "Open the simulator", "世代別統計を見る": "See generation stats", "集計方法と計算の前提": "Methodology"};
   function tr(s) { var k = s.replace(/\s+/g, " ").trim(); if (TR[k] != null) return s.replace(k, TR[k]);
     var m = k.match(/^((?:[^\u3040-\u30ff\u4e00-\u9faf]*?\s)?)(.+?)(\s→)?$/); if (!m) return s; var kk = m[2]; return TR[kk] != null ? s.replace(kk, TR[kk]) : s; }
   var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
@@ -94,5 +94,7 @@ window.addEventListener("DOMContentLoaded", function() {
   var crumb = document.querySelector(".crumb");
   if (crumb) crumb.innerHTML = "<a href=\"/en/index.html\">Home</a> &gt; <a href=\"/en/stats/index.html\">Generation stats</a> &gt; Submit";
 });
-</script></body>
+</script>
+<!--EN-META {"title": "Submit Your Bear Hunt Build | Whiteout Tools Lab", "description": "", "h1": "Submit your <span class=\"acc\">Bear Hunt build</span>", "lead": "Pick your generation, tier and three heroes. Nothing identifying is sent.", "crumb": "<a href=\"/en/index.html\">Home</a> &gt; <a href=\"/en/stats/index.html\">Generation stats</a> &gt; Submit", "faq": []}-->
+</body>
 </html>

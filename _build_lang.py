@@ -135,6 +135,183 @@ def strip_lang(html, lang_to_remove):
         out.append(html[pos:m.start()]); pos = i; removed += 1
     return ''.join(out), removed
 
+
+# ---------- 英語ページの静的メタ情報 ----------
+# 旧来は title/description/h1 を JS が実行時に差し替えていたため、英語ページの静的HTMLは日本語のままだった。
+# _src/_en_meta.json の値を <title>, meta description, og:/twitter:, JSON-LD(headline/description), #art-h1 に埋め込む。
+_EN_META_PATH = os.path.join(ROOT, "_src", "_en_meta.json")
+EN_META = {}
+if os.path.exists(_EN_META_PATH):
+    import json as _json
+    with open(_EN_META_PATH, encoding="utf-8") as f:
+        EN_META = {k: v for k, v in _json.load(f).items() if not k.startswith("_")}
+
+def _attr(v):
+    return v.replace("&", "&amp;").replace('"', "&quot;").replace("<", "&lt;")
+
+_EN_META_INLINE_RE = re.compile(r'<!--EN-META (\{.*?\})-->', re.S)
+def apply_en_meta(html, rel):
+    m = EN_META.get(rel)
+    if not m:
+        # 生成ページ(_build_stats.py)は HTML 内の <!--EN-META {...}--> から読む
+        mm = _EN_META_INLINE_RE.search(html)
+        if not mm:
+            return html
+        m = _json.loads(mm.group(1)); m["_h1_any"] = True
+        html = html.replace(mm.group(0), "")
+    t, d, h1 = m.get("title"), m.get("description"), m.get("h1")
+    if t:
+        html = re.sub(r'(<title[^>]*>)[^<]*(</title>)', lambda x: x.group(1) + _attr(t) + x.group(2), html, count=1)
+        html = re.sub(r'(<meta property="og:title" content=")[^"]*(")', lambda x: x.group(1) + _attr(t) + x.group(2), html, count=1)
+        html = re.sub(r'(<meta name="twitter:title" content=")[^"]*(")', lambda x: x.group(1) + _attr(t) + x.group(2), html, count=1)
+    if d:
+        html = re.sub(r'(<meta name="description"[^>]*content=")[^"]*(")', lambda x: x.group(1) + _attr(d) + x.group(2), html, count=1)
+        html = re.sub(r'(<meta property="og:description" content=")[^"]*(")', lambda x: x.group(1) + _attr(d) + x.group(2), html, count=1)
+        html = re.sub(r'(<meta name="twitter:description" content=")[^"]*(")', lambda x: x.group(1) + _attr(d) + x.group(2), html, count=1)
+    # JSON-LD: Article/WebPage の headline と最初の description を英語に
+    def fix_ld(mm):
+        body = mm.group(2)
+        if t:
+            body = re.sub(r'"headline":"[^"]*"', '"headline":' + _json.dumps(t.split(" | ")[0], ensure_ascii=False), body, count=1)
+        if d:
+            body = re.sub(r'"description":"[^"]*"', '"description":' + _json.dumps(d, ensure_ascii=False), body, count=1)
+        body = body.replace('"inLanguage":"ja"', '"inLanguage":"en"').replace('"inLanguage": "ja"', '"inLanguage": "en"')
+        return mm.group(1) + body + mm.group(3)
+    html = _LD_RE.sub(fix_ld, html)
+    if m.get("faq"):
+        faq_ld = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+            {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in m["faq"]]}
+        new_ld = _json.dumps(faq_ld, ensure_ascii=False, separators=(',', ':'))
+        html = re.sub(r'(<script type="application/ld\+json">)\{"@context":"https://schema\.org","@type":"FAQPage".*?(</script>)',
+                      lambda x: x.group(1) + new_ld + x.group(2), html, count=1, flags=re.S)
+    if m.get("lead"):
+        html = re.sub(r'(<p class="lead"[^>]*>).*?(</p>)', lambda x: x.group(1) + m["lead"] + x.group(2), html, count=1, flags=re.S)
+    if m.get("crumb"):
+        html = re.sub(r'(<div class="crumb"[^>]*>).*?(</div>)', lambda x: x.group(1) + m["crumb"] + x.group(2), html, count=1, flags=re.S)
+    if h1:
+        if 'id="art-h1"' in html:
+            # 既に英語の h1 が残っている（bodyen 側に h1 がある）ページは触らない
+            html = re.sub(r'(<h1 id="art-h1"[^>]*>)(.*?)(</h1>)',
+                          lambda x: x.group(1) + (h1 if _JP_RE.search(x.group(2)) else x.group(2)) + x.group(3), html, count=1, flags=re.S)
+        elif m.get("_h1_any"):
+            html = re.sub(r'(<h1(?:\s[^>]*)?>).*?(</h1>)', lambda x: x.group(1) + h1 + x.group(2), html, count=1, flags=re.S)
+    return html
+
+# ---------- #bodyja / #bodyen 方式（記事・運営ページ）の言語純化 ----------
+def strip_body_lang(html, lang_to_remove):
+    """<div id="bodyja">…</div> / <div id="bodyen" style="display:none">…</div> のうち、表示しない側を削除する。"""
+    target = "bodyja" if lang_to_remove == "ja" else "bodyen"
+    m = re.search(r'<div id="%s"[^>]*>' % target, html)
+    if not m:
+        return html, 0
+    depth = 1; i = m.end()
+    pair = re.compile(r'<(/?)div\b[^<>]*?(/?)>', re.I)
+    while depth > 0:
+        pm = pair.search(html, i)
+        if not pm: raise ValueError('unclosed #%s' % target)
+        if pm.group(1) == '/': depth -= 1
+        elif pm.group(2) != '/': depth += 1
+        i = pm.end()
+    html = html[:m.start()] + html[i:]
+    keep = "bodyen" if lang_to_remove == "ja" else "bodyja"
+    # 残った本文を最初から表示状態にする（JS に頼らない）
+    html = re.sub(r'(<div id="%s")\s+style="display:\s*none"' % keep, r'\1', html, count=1)
+    # 「#body に JS でコピーする」方式のページは、残った本文を #body に直接入れて元ブロックを消す
+    if re.search(r'<div id="body">\s*</div>', html):
+        km = re.search(r'<div id="%s"[^>]*>' % keep, html)
+        if km:
+            kc = _find_close(html, km.end(), "div")
+            if kc:
+                inner = html[km.end():kc[0]]
+                html = html[:km.start()] + html[kc[1]:]
+                html = re.sub(r'<div id="body">\s*</div>', lambda x: '<div id="body">' + inner + '</div>', html, count=1)
+    return html, 1
+
+
+# ---------- TR辞書方式（_build_stats.py 生成ページ）の静的翻訳 ----------
+# 生成ページは日本語HTML＋JSの TR 辞書で実行時に英語化していた。英語ミラーでは同じ規則をビルド時に適用し、
+# 静的HTMLの段階で英語にしておく（実行時の翻訳はそのまま残るが、英語化済みテキストには何もしない）。
+_JP_RE = re.compile(r'[ぁ-ゖァ-ヶ一-龯]')
+_TR_DICT_RE = re.compile(r'var TR = (\{.*?\});\n', re.S)
+_HERO_EN = None
+def hero_en_map():
+    global _HERO_EN
+    if _HERO_EN is None:
+        _HERO_EN = {}
+        try:
+            with open(os.path.join(ROOT, "assets", "heroes.js"), encoding="utf-8") as f:
+                m = re.search(r'window\.WOS_HERO_EN\s*=\s*(\{.*?\});', f.read(), re.S)
+            if m: _HERO_EN = _json.loads(m.group(1))
+        except Exception:
+            _HERO_EN = {}
+    return _HERO_EN
+
+def _find_close(html, pos, tag):
+    """pos = 開始タグ直後。同名タグの深さを数えて対応する閉じタグの開始位置と終了位置を返す"""
+    depth = 1; i = pos
+    pair = re.compile(r'<(/?)%s\b[^<>]*?(/?)>' % re.escape(tag), re.I)
+    while depth > 0:
+        pm = pair.search(html, i)
+        if not pm: return None
+        if pm.group(1) == '/': depth -= 1
+        elif pm.group(2) != '/': depth += 1
+        i = pm.end()
+    return pm.start(), pm.end()
+
+def static_translate_en(html):
+    m = _TR_DICT_RE.search(html)
+    if not m:
+        return html
+    TR = _json.loads(m.group(1))
+    def tr(sv):
+        k = " ".join(sv.split())
+        if not k: return sv
+        if k in TR: return sv.replace(k, TR[k])
+        mm = re.match(r'^((?:[^぀-ヿ一-龯]*?\s)?)(.+?)(\s→)?$', k)
+        if mm and mm.group(2) in TR: return sv.replace(mm.group(2), TR[mm.group(2)])
+        return sv
+    # 1) data-en: 要素の中身を英語HTMLに置換（入れ子の span を考慮）
+    out = []; pos = 0
+    for om in re.finditer(r'<(span|li|p|div|h[1-6]|td|th)\b[^<>]*\sdata-en="([^"]*)"[^<>]*>', html):
+        if om.start() < pos: continue
+        cl = _find_close(html, om.end(), om.group(1))
+        if not cl: continue
+        out.append(html[pos:om.end()]); out.append(_html_unescape(om.group(2))); pos = cl[0]
+    out.append(html[pos:]); html = ''.join(out)
+    # 2) data-title-en / data-aria-en
+    html = re.sub(r'title="[^"]*"(\s[^<>]*?)data-title-en="([^"]*)"', r'title="\2"\1data-title-en="\2"', html)
+    html = re.sub(r'aria-label="[^"]*"(\s[^<>]*?)data-aria-en="([^"]*)"', r'aria-label="\2"\1data-aria-en="\2"', html)
+    # 3) 英雄名 (data-hero): 名前テキストだけ英語に
+    HE = hero_en_map()
+    def hero_sub(mm):
+        hid = mm.group(1); inner = mm.group(2)
+        en = HE.get(hid)
+        if not en: return mm.group(0)
+        inner2 = re.sub(r'(</span>)?([^<]*[ぁ-ゖァ-ヶ一-龯][^<]*)(<span class="g">|$)',
+                        lambda x: (x.group(1) or '') + en + x.group(3), inner, count=1)
+        return mm.group(0).replace(inner, inner2, 1)
+    html = re.sub(r'<span(?: class="[^"]*")? data-hero="([a-z0-9_-]+)"(?: class="[^"]*")?>((?:<span class="cls">[^<]*</span>)?[^<]*(?:<span class="g">[^<]*</span>)?)</span>', hero_sub, html)
+    # 3b) JSON-LD（FAQ の質問・回答など）の文字列値も辞書で英語化
+    def ld_walk(v):
+        if isinstance(v, str): return tr(v) if _JP_RE.search(v) else v
+        if isinstance(v, list): return [ld_walk(x) for x in v]
+        if isinstance(v, dict): return {k: ld_walk(x) for k, x in v.items()}
+        return v
+    def ld_tr(mm):
+        try: obj = _json.loads(mm.group(2))
+        except Exception: return mm.group(0)
+        return mm.group(1) + _json.dumps(ld_walk(obj), ensure_ascii=False, separators=(',', ':')) + mm.group(3)
+    html = _LD_RE.sub(ld_tr, html)
+    # 4) テキストノード: script/style の外側だけ、日本語を含むものを辞書で置換
+    parts = re.split(r'(<script\b.*?</script>|<style\b.*?</style>|<!--.*?-->|<[^>]+>)', html, flags=re.S)
+    for i in range(0, len(parts), 2):
+        t = parts[i]
+        if t and _JP_RE.search(t): parts[i] = tr(t)
+    return ''.join(parts)
+
+import html as _htmlmod
+def _html_unescape(v): return _htmlmod.unescape(v)
+
 # ---------- 1. transform root pages in place ----------
 # 日英併記の原本は _src/ に置く(GitHub Pages は _ 始まりのディレクトリを公開しない)。
 # _src/ に無いページ(_build_stats.py が生成する stats/ submit/ など)はルートのファイルを原本として扱う。
@@ -153,6 +330,8 @@ for rel in ROOT_PAGES:
     # 日本語ページ: 英語ブロックを除去する前に、英語ミラー用の原本(両言語入り)を保持
     SRC[rel] = html
     html, n_en = strip_lang(html, "en")
+    html, _ = strip_body_lang(html, "en")
+    # 生成ページの <!--EN-META--> コメントは、_build_lang.py を単独で再実行しても英語版を作れるよう日本語側にも残す
     if os.path.exists(sp):
         html = html.replace("<!DOCTYPE html>", "<!DOCTYPE html>\n" + (GEN_NOTE % rel).rstrip("\n"), 1)
     os.makedirs(os.path.dirname(fp) or ROOT, exist_ok=True)
@@ -189,6 +368,9 @@ for rel in ROOT_PAGES:
     html = html.replace('<html lang="ja"', '<html lang="en"', 1)  # static lang hint
     html = en_prefix_links(html)                    # ルート絶対のページリンクを /en/ 配下へ
     html, n_ja = strip_lang(html, "ja")             # 英語ページ: 日本語ブロックを除去
+    html, _ = strip_body_lang(html, "ja")           # 記事・運営ページの #bodyja を除去
+    html = apply_en_meta(html, rel)                 # title / description / h1 を静的に英語へ
+    html = static_translate_en(html)                # TR辞書方式のページを静的に英語化
     if rel in SRC and os.path.exists(os.path.join(SRC_DIR, rel)):
         html = html.replace("<!DOCTYPE html>", "<!DOCTYPE html>\n" + (GEN_NOTE % rel).rstrip("\n"), 1)
     with open(fp, "w", encoding="utf-8") as f:

@@ -63,34 +63,7 @@
 <h2>なぜ実測とズレることがあるのか</h2>
 <p>このツールは、公開仕様とコミュニティ検証に基づく「制約付き推定」モデルで動いています。ゲーム内部の正確な計算式は公開されていないため、補正なしの素の値は実際のポイントとズレることがあります。これは仕様であり、バグではありません。</p>
 <p>だからこそ用意しているのが<b>実測キャリブレーション</b>です。あなたの実測ポイントを1回入力すれば、ツールが自動で補正係数Cを算出し、以降はあなたの環境に合った絶対値で表示されます。一度校正すれば、英雄やペット、比率を変えたときの「相対的な伸び」を正確に比較できるようになります。まずは1回、実測値で校正してから使うのがおすすめです。</p>
-<div class="cta"><a class="btn" href="../tools/bear-hunt/index.html">🐻 シミュレーターを開く</a></div></div><div id="bodyen" style="display:none"><h1 id="art-h1">How to use the <span class="acc">Bear Hunt Simulator</span></h1>
-<p class="lead">For first-timers: a step-by-step guide to which in-game screens to check and what to enter. Takes about 1 minute.</p>
-<ol class="steps">
-<li><b>STEP 1: Enter your stats.</b> Tap the lord icon (top-left), open "Stats" in your profile. You'll see "Army Attack", "Army Lethality" and per-type values like "Infantry Attack/Lethality". Enter those numbers as-is — they already include research, gear, charms and pets, so no manual adding is needed. For troop Tier, pick the tier of the troops you currently send to Bear Hunt (T10, FC1, etc.).</li>
-<li><b>STEP 2: Pick the rally leader's heroes.</b> First set "Current generation" to your server's latest (heroes newer than this won't appear). Tap the Inf/Lancer/Mks slots to pick the heroes the leader uses. Set skill level (1-5) at the top-right of each card, and gear level (0-10) for heroes with exclusive gear. Frame color shows rarity (blue=R, purple=SR, gold=SSR).</li>
-<li><b>STEP 3: Pick 4 joiner heroes.</b> Choose the 4 "left heroes" of joiners that get buff slots. Spreading skill types (DMG / ATK / Lethality / proc) multiplies your output. Heroes whose first skill doesn't work on the bear show "No bear skill".</li>
-<li><b>STEP 4: Set troops, ratio and the Cyrille talent.</b> Enter total troops, then tap a ratio preset (e.g. 10:30:60) to auto-split. Save your go-to ratio with "+ Save this ratio". If you've leveled Cyrille, set the "Hunter's Heart" talent level; if your alliance's trap isn't maxed, set the trap upgrade bonus %.</li>
-</ol>
-<h2>Reading the result</h2>
-<ul>
-<li><b>Predicted damage points</b> — the average for one rally.</li>
-<li><b>Damage range</b> — if you picked probability skills (e.g. 50% chance), it shows the floor (all miss) and ceiling (all proc).</li>
-<li><b>What to upgrade next</b> — a ranking auto-computed from your current setup showing how much each single move raises damage. Use it to prioritize.</li>
-</ul>
-<div class="callout tip"><span class="ico">🎯</span><div><b>For more accuracy (calibration):</b> open "Real-measure calibration", enter the damage from one real rally done with the same setup, and press "Auto-calibrate". A calibration factor is computed from the ratio of estimate to measurement, so later figures become absolute values fitted to your account. Re-calibrate after big gear or pet updates.</div></div>
-<h2>Common input pitfalls</h2>
-<p>To get accurate results, here are some common input questions.</p>
-<ul>
-<li><b>Enter the "%" values</b> — profile values like "Army Attack" are shown as percentages. Enter that % number as-is (e.g. 120 for 120%), not a raw value. Enter 0 for any zero field.</li>
-<li><b>Select Tier and FC (Fire Crystal) separately</b> — troop Tier (T1-11) and Fire Crystal level (FC0-10) are independent axes. Cases like "T10 but raised to FC8" or "FC10 but no T11 yet" are entered correctly. Don't forget to set FC separately from Tier.</li>
-<li><b>Only the pets/buff items you use</b> — Cave Lion (attack), Saber-tooth Tiger (lethality), Giant Chameleon (enemy defense down), and 2-hour boosts (attack/lethality/defense-down) — only enter the ones you actually use. Leave unused fields at 0.</li>
-<li><b>Set exclusive gear Lv on the hero card</b> — each leader hero card has an exclusive-gear Lv field (0-10). Stat boosts apply automatically based on generation and level.</li>
-</ul>
-
-<h2>Why it can differ from your actual points</h2>
-<p>This tool runs on a "constraint-based estimate" model from public specs and community verification. Since the game's exact internal formula isn't published, the raw (uncorrected) value can differ from your actual points. This is by design, not a bug.</p>
-<p>That's exactly what <b>real-measure calibration</b> is for. Enter your measured points once and the tool auto-computes factor C, then shows absolute values fitted to your account. After calibrating once, you can accurately compare the "relative gains" from changing heroes, pets or ratios. We recommend calibrating with a real value first.</p>
-<div class="cta"><a class="btn" href="../tools/bear-hunt/index.html">🐻 Open the simulator</a></div></div>
+<div class="cta"><a class="btn" href="../tools/bear-hunt/index.html">🐻 シミュレーターを開く</a></div></div>
 <div class="relbar" id="relbar"></div></div><nav class="relposts" aria-label="関連記事"><h2 class="relposts-h">Related articles</h2><ul><li><a href="bear-hunt-guide.html">How Bear Hunt damage works (full guide)</a></li><li><a href="beginner-faq.html">Bear Hunt beginner FAQ</a></li><li><a href="troop-ratio.html">What's the right troop ratio?</a></li><li><a href="damage-not-growing.html">Why your damage isn't growing, and fixes</a></li></ul></nav>
 <div id="foot"></div>
 <script src="/assets/config.js?v=96"></script><script src="/assets/toolkit.js?v=111"></script>
@@ -100,7 +73,7 @@ document.getElementById("pgtitle").textContent=EN?"How to use the Bear Hunt Simu
 document.getElementById("pgdesc").content=EN?"Beginner guide to the Bear Hunt damage simulator: which in-game values to enter, step by step.":"熊狩ダメージ・シミュレーターの使い方を初心者向けに解説。ゲーム内のどの数値を入力するかをステップごとに説明。";
 document.getElementById("crumb").innerHTML=EN?"<a href=\"../index.html\">Home</a> &gt; How to use":"<a href=\"../index.html\">ホーム</a> &gt; 使い方ガイド";
 document.getElementById("updbox").innerHTML=WOS_UPDATEBOX({date:"2026-06-15",gen:16,note:"STEP式の使い方",note_en:"Step-by-step guide"});
-if(EN){document.getElementById("bodyja").style.display="none";document.getElementById("bodyen").style.display="block";}
+if(EN){var bj=document.getElementById("bodyja"),be=document.getElementById("bodyen");if(bj)bj.style.display="none";if(be)be.style.display="block";}
 document.getElementById("relbar").innerHTML='<a href="../tools/left-hero/index.html'+(EN?"":"")+'">'+(EN?"→ Left-Hero Checker":"→ Left-Hero Checker")+'</a>'+'<a href="../tools/troop-ratio/index.html'+(EN?"":"")+'">'+(EN?"→ Troop Ratio Simulator":"→ Troop Ratio Simulator")+'</a>'+'<a href="../tools/bear-hunt/index.html'+(EN?"":"")+'">'+(EN?"→ Damage Simulator":"→ Bear Hunt Simulator")+'</a>';
 document.getElementById("nav").innerHTML=WOS_NAV(1);
 document.getElementById("foot").innerHTML=WOS_FOOT(1);})();</script></body></html>

@@ -43,7 +43,9 @@
 <div id="nav"></div>
 <div class="wrap">
 <div class="crumb" id="crumb"></div>
-<div id="bodyja" style="display:none"><h1>お問い合わせ</h1>
+
+
+<div id="body"><h1>お問い合わせ</h1>
 <a class="owner-mini" href="about.html">
   <img src="/assets/owner.png" alt="じゃすみん" onerror="this.style.display='none'">
   <div><div class="om-name">運営者: じゃすみん</div><div class="om-sub">1567サーバー 同盟bst 盟主 ・ プロフィールを見る →</div></div>
@@ -61,25 +63,6 @@
 <li>検証データ(実測ダメージとその時の編成)のご提供は、ツールの精度向上に直接役立ちます。</li>
 <li>返信には数日いただく場合があります。あらかじめご了承ください。</li>
 </ul></div>
-<div id="bodyen" style="display:none"><h1>Contact</h1>
-<a class="owner-mini" href="about.html">
-  <img src="/assets/owner.png" alt="Jasmine" onerror="this.style.display='none'">
-  <div><div class="om-name">Owner: Jasmine</div><div class="om-sub">Leader of alliance bst, Server 1567 ・ View profile →</div></div>
-</a>
-<p>For feedback, requests, bug reports, data contributions, or rights-related inquiries, please reach out via the following.</p>
-<div class="card">
-<h3>X (Twitter)</h3>
-<p>A DM or reply to <a href="https://x.com/tegetege_m" target="_blank" rel="noopener noreferrer">@tegetege_m</a> is checked fastest.</p>
-<h3>Contact form</h3>
-<p><a href="https://docs.google.com/forms/d/e/1FAIpQLSfgqgKKPsBBryezhwaJPBCPCqVBcZZnV48lk-xHru0bTspeKg/viewform" target="_blank" rel="noopener noreferrer">Contact form (Google Forms)</a></p>
-</div>
-<h2>When contacting us</h2>
-<ul>
-<li>For bug reports, please include your device/browser and the inputs when it occurred.</li>
-<li>Verification data (measured damage and the formation used) directly improves tool accuracy.</li>
-<li>Replies may take a few days. Thank you for your understanding.</li>
-</ul></div>
-<div id="body"></div>
 </div>
 <div id="foot"></div>
 <script src="/assets/config.js?v=96"></script>
@@ -91,7 +74,7 @@
   document.getElementById('pgtitle').textContent = EN?'Contact | Whiteout Tools Lab':'お問い合わせ | ホワサバ ツールラボ';
   document.getElementById('pgdesc').content = EN?'How to contact Whiteout Tools Lab.':'ホワサバ ツールラボへのお問い合わせ方法。';
   document.getElementById('crumb').innerHTML = EN?'<a href="index.html">Home</a> &gt; Contact':'<a href="index.html">ホーム</a> &gt; お問い合わせ';
-  document.getElementById('body').innerHTML = document.getElementById(EN?'bodyen':'bodyja').innerHTML;
+  var srcEl=document.getElementById(EN?'bodyen':'bodyja'); if(srcEl) document.getElementById('body').innerHTML = srcEl.innerHTML;
   document.getElementById('nav').innerHTML = WOS_NAV(0);
   document.getElementById('foot').innerHTML = WOS_FOOT(0);
 })();
