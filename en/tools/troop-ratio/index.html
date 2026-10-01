@@ -17,8 +17,8 @@
   gtag('config', 'G-Y8YMCVQDMG');
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>熊狩り 兵士比率シミュレータ｜10:30:60・10:10:80・1:1:8を比較 | ホワサバ ツールラボ</title>
-<meta name="description" content="ホワサバ熊狩り(Bear Hunt)の兵士比率を比較シミュレート。10:30:60・10:10:80・1:1:8など主要比率を、あなたの兵数で横並び比較。弓100%が落ちる理由も数値で確認。">
+<title>Troop Ratio Simulator for Bear Hunt | Whiteout Tools Lab</title>
+<meta name="description" content="Compare Bear Hunt troop ratios in Whiteout Survival — 10:30:60, 10:10:80, 1:1:8 and your own — side by side with your troop count and stats.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
 <link rel="stylesheet" href="/assets/site.css?v=111">
 <script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
@@ -34,8 +34,8 @@
 <link rel="apple-touch-icon" href="/favicon.png?v=85">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ホワサバ ツールラボ">
-<meta property="og:title" content="熊狩り 兵士比率シミュレータ｜10:30:60・10:10:80・1:1:8を比較 | ホワサバ ツールラボ">
-<meta property="og:description" content="ホワサバ熊狩り(Bear Hunt)の兵士比率を比較シミュレート。10:30:60・10:10:80・1:1:8など主要比率を、あなたの兵数で横並び比較。弓100%が落ちる理由も数値で確認。">
+<meta property="og:title" content="Troop Ratio Simulator for Bear Hunt | Whiteout Tools Lab">
+<meta property="og:description" content="Compare Bear Hunt troop ratios in Whiteout Survival — 10:30:60, 10:10:80, 1:1:8 and your own — side by side with your troop count and stats.">
 <meta property="og:url" content="https://whitesim-lab.com/en/tools/troop-ratio/">
 <meta property="og:image" content="https://whitesim-lab.com/favicon.png?v=85">
 <meta name="twitter:card" content="summary">
@@ -46,9 +46,9 @@
 <body>
 <div id="nav"></div>
 <div class="wrap wide">
-<div class="crumb"><a href="../../index.html">ホーム</a> &gt; 兵士比率シミュレータ</div>
+<div class="crumb"><a href="../../index.html">Home</a> &gt; Troop Ratio Simulator</div>
 
-<h1>熊狩り <span class="acc">兵士比率シミュレータ</span></h1>
+<h1>熊狩り <span class="acc">Troop Ratio Simulator</span></h1>
 <div id="updbox"></div>
 <p class="lead">「10:30:60が良い」「いや弓100%だ」――比率の正解は<b>兵数とステータスで変わります</b>。あなたの数値で主要な比率を横並び比較し、どれが一番ダメージを出すかを判定します。</p>
 <section class="tool-about" id="tool-about"><div class="i18n-en"><div class="tab-head"><h2>About this tool</h2><a href="#tool-article">Full explanation & FAQ<span class="ms-slot" data-ms="keyboard_arrow_down"></span></a></div><div class="tab-grid"><div class="tab-col"><h3><span class="ms-slot" data-ms="lightbulb"></span>What this tool tells you</h3><p>Compare side by side how Bear Hunt damage changes with the Inf:Lan:Mks ratio, using your own troop count and per-type stats. You can also see in numbers why '100% marksmen' is not the best answer.</p></div><div class="tab-col"><h3><span class="ms-slot" data-ms="calculate"></span>How it works</h3><p>The same model as the Bear Hunt Damage Simulator is used: total troops are fixed and the expected damage of each ratio is computed as a relative value. Per-type attack bonuses, troop-type weights and the penalty for zero infantry or lancers are included, so builds with too little front line score lower. It is meant for comparing ratios, not for absolute values.</p></div><div class="tab-col"><h3><span class="ms-slot" data-ms="touch_app"></span>How to use it</h3><p>Enter your total troops and the per-type attack bonus % from the in-game Stats screen, then pick preset ratios or add your own. The chart and table show the best ratio; take it to the simulator for a detailed estimate.</p></div></div></div></section>
@@ -56,40 +56,40 @@
 
 <div class="card">
   <div class="row">
-    <div style="max-width:220px"><label>兵士の合計数</label><input type="number" id="total" value="200000" step="10000"></div>
-    <div style="max-width:160px"><label data-i18n="inf">盾兵 攻撃力ボーナス%</label><input type="number" id="aInf" value="280" step="5"></div>
-    <div style="max-width:160px"><label data-i18n="lan">槍兵 攻撃力ボーナス%</label><input type="number" id="aLan" value="290" step="5"></div>
-    <div style="max-width:160px"><label data-i18n="mks">弓兵 攻撃力ボーナス%</label><input type="number" id="aMks" value="300" step="5"></div>
+    <div style="max-width:220px"><label>Total troops</label><input type="number" id="total" value="200000" step="10000"></div>
+    <div style="max-width:160px"><label data-i18n="inf">Infantry attack bonus %</label><input type="number" id="aInf" value="280" step="5"></div>
+    <div style="max-width:160px"><label data-i18n="lan">Lancer attack bonus %</label><input type="number" id="aLan" value="290" step="5"></div>
+    <div style="max-width:160px"><label data-i18n="mks">Marksman attack bonus %</label><input type="number" id="aMks" value="300" step="5"></div>
   </div>
-  <p class="note" style="margin-top:6px">※ 攻撃力はゲーム内「ステータス」画面の兵種別の値。殺傷力は本ツールでは攻撃力に比例とみなして簡易計算します(厳密な数値は熊狩シミュレーター本体をご利用ください)。</p>
+  <p class="note" style="margin-top:6px">* Attack values are the per-type figures from the in-game Stats screen. Lethality is approximated as proportional to attack here (for exact numbers, use the main Bear Hunt simulator).</p>
 </div>
 
 <div class="mini-leg">
-  <span><span class="seg" style="width:14px;background:var(--inf)"></span> 盾</span>
-  <span><span class="seg" style="width:14px;background:var(--lan)"></span> 槍</span>
-  <span><span class="seg" style="width:14px;background:var(--mks)"></span> 弓</span>
+  <span><span class="seg" style="width:14px;background:var(--inf)"></span> Inf</span>
+  <span><span class="seg" style="width:14px;background:var(--lan)"></span> Lan</span>
+  <span><span class="seg" style="width:14px;background:var(--mks)"></span> Mks</span>
 </div>
 
-<h2>比率別の予測ダメージ(相対比較)</h2>
-<p style="font-size:12.5px;color:var(--muted);margin-bottom:8px">⬆ 上の数値を変えると、バーがリアルタイムで伸び縮みします。自分のステータスでどの比率が伸びるか動かして確かめてください。</p>
+<h2>Predicted damage by ratio (relative)</h2>
+<p style="font-size:12.5px;color:var(--muted);margin-bottom:8px">⬆ Change the values above and the bars grow/shrink in real time. See which ratio wins for your stats.</p>
 <div id="bars"></div>
 <div id="verdict"></div>
 
 <div class="ad-slot"><!-- AdSense承認後 --></div>
 
 <div class="cta">
-  <p>英雄スキルや専用装備まで含めた正確なダメージは、本体シミュレーターで。</p>
-  <a class="btn" href="../bear-hunt/index.html">🐻 熊狩ダメージ・シミュレーターで詳細計算</a>
+  <p>For exact damage including hero skills and exclusive gear, use the main simulator.</p>
+  <a class="btn" href="../bear-hunt/index.html">🐻 Detailed calculation in the Bear Hunt Simulator</a>
 </div>
 
 <div class="relbar">
-  <a href="../left-hero/index.html">→ 左英雄チェッカー</a>
-  <a href="../damage-doctor/index.html">→ ダメージが伸びない原因診断</a>
-  <a href="../../guides/troop-ratio.html">→ 兵士比率の考え方を記事で読む</a>
+  <a href="../left-hero/index.html">→ Left-Hero Checker</a>
+  <a href="../damage-doctor/index.html">→ Damage Doctor</a>
+  <a href="../../guides/troop-ratio.html">→ Read the troop-ratio guide</a>
 </div>
 
-<h2>なぜ弓100%が最適にならないのか</h2>
-<p style="font-size:13px">兵士の量はダメージに対して逓減(平方根的)に効くため、1兵種に全振りすると伸びしろが頭打ちになります。さらに公開検証では、盾・槍がゼロの編成にはダメージの目減り(ペナルティ)が確認されています。弓は対歩兵の特性で効率が高い一方、槍・盾を少量混ぜて分散させた方が合計で勝つケースが多い――これが「弓寄せだが全振りはしない」が定番になる理由です。</p>
+<h2>Why 100% marksman is not optimal</h2>
+<p style="font-size:13px">Troop count has diminishing (square-root-like) returns on damage, so all-in on one type plateaus. Public tests also show a penalty when infantry/lancer are zero. Marksman is efficient against infantry, but mixing in some lancer/infantry usually wins on total — which is why "marksman-favored but not all-in" is standard.</p>
 </div>
 
 <section class="tool-article" id="tool-article">

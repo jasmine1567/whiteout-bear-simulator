@@ -46,7 +46,7 @@
 <h3>2026年10月1日</h3>
 <ul>
 <li><a href="stats/gen-17/index.html">第17世代</a>に対応。新英雄 エイダン（盾・ルーレット）・ベルサ（槍・イベント）・エリノ（弓・英雄殿堂）の集結主スキルを公式wikiの遠征スキルからモデル化し、熊狩シミュレーター・左英雄チェッカー・英雄一覧（全65英雄）・世代別ページ（第1〜17世代）に追加。ベルサの追撃は既存英雄と同じ校正ルール（半減・同種は1つ分）で、攻略サイトの推奨（槍はミア／ドミニク、弓はエリノ）と矛盾しない範囲に置いています。第17世代の解放日（サーバー1,240日目）は80日周期からの推定です。</li>
-<li>日本語ページから英語本文、英語ページから日本語本文を取り除くようビルドを変更（表示は変わりません）。各ページのHTMLが軽くなり、検索エンジンにも1ページ1言語として伝わるようになりました。</li>
+<li>日本語ページから英語本文、英語ページから日本語本文を取り除くようビルドを変更（表示は変わりません）。英語ページの title・説明文・見出し・構造化データも静的に英語化し、世代別ページの英語版は本文ごと英語で書き出すようにしました。各ページのHTMLが軽くなり、検索エンジンにも1ページ1言語として伝わるようになります。</li>
 <li>英語版ページ内のリンクが日本語版へ飛ぶ問題と、Search Console に出ていた存在しないURL（JS文字列の誤検出）への対策を再適用。</li>
 </ul>
 </div>
@@ -132,7 +132,7 @@
 <h3>October 1, 2026</h3>
 <ul>
 <li>Added <a href="stats/gen-17/index.html">Generation 17</a>: Aiden (infantry, Lucky Wheel), Bertha (lancer, events) and Eleanor (marksman, Hall of Heroes). Their leader skills are modelled from the official wiki's expedition skills and added to the simulator, Left-Hero Checker, Hero Database (65 heroes) and the generation pages (Gen 1–17). Bertha's follow-ups use the same calibration as existing heroes (halved, same-type counted once) so the ranking stays consistent with strategy-site picks (Mia/Dominic for lancer, Eleanor for marksman). Gen 17's unlock day (server day 1,240) is extrapolated from the 80-day cadence.</li>
-<li>The build now strips the English text from Japanese pages and the Japanese text from English pages (no visible change). Pages are lighter and search engines see one language per page.</li>
+<li>The build now strips the English text from Japanese pages and the Japanese text from English pages (no visible change). English pages also get static English titles, descriptions, headings and structured data, and the generation pages are now written out in English rather than translated in the browser. Pages are lighter and search engines see one language per page.</li>
 <li>Re-applied the fixes for English-page links jumping to the Japanese site and for the non-existent URLs Search Console picked up from JS strings.</li>
 </ul>
 </div>
@@ -223,7 +223,7 @@
   document.getElementById('pgtitle').textContent = EN?'Changelog | Whiteout Tools Lab':'更新履歴 | ホワサバ ツールラボ';
   document.getElementById('pgdesc').content = EN?'Changelog for Whiteout Tools Lab: new tools, calibrations, data updates and site changes.':'ホワサバ ツールラボの更新履歴。ツールの追加・計算補正・データ更新・サイト構造の変更の記録。';
   document.getElementById('crumb').innerHTML = EN?'<a href="index.html">Home</a> &gt; Changelog':'<a href="index.html">ホーム</a> &gt; 更新履歴';
-  document.getElementById('body').innerHTML = document.getElementById(EN?'bodyen':'bodyja').innerHTML;
+  var srcEl=document.getElementById(EN?'bodyen':'bodyja'); if(srcEl) document.getElementById('body').innerHTML = srcEl.innerHTML;
   document.getElementById('nav').innerHTML = WOS_NAV(0);
   document.getElementById('foot').innerHTML = WOS_FOOT(0);
 })();

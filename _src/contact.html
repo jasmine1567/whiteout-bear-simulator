@@ -90,7 +90,7 @@
   document.getElementById('pgtitle').textContent = EN?'Contact | Whiteout Tools Lab':'お問い合わせ | ホワサバ ツールラボ';
   document.getElementById('pgdesc').content = EN?'How to contact Whiteout Tools Lab.':'ホワサバ ツールラボへのお問い合わせ方法。';
   document.getElementById('crumb').innerHTML = EN?'<a href="index.html">Home</a> &gt; Contact':'<a href="index.html">ホーム</a> &gt; お問い合わせ';
-  document.getElementById('body').innerHTML = document.getElementById(EN?'bodyen':'bodyja').innerHTML;
+  var srcEl=document.getElementById(EN?'bodyen':'bodyja'); if(srcEl) document.getElementById('body').innerHTML = srcEl.innerHTML;
   document.getElementById('nav').innerHTML = WOS_NAV(0);
   document.getElementById('foot').innerHTML = WOS_FOOT(0);
 })();

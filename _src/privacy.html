@@ -57,6 +57,6 @@
 <script>(function(){var EN=(window.WOS_LANG==='en');document.getElementById('htmlroot').lang=EN?'en':'ja';
 document.getElementById('pgtitle').textContent=EN?'Privacy Policy | Whiteout Tools Lab':'プライバシーポリシー | ホワサバ ツールラボ';document.getElementById('pgdesc').content=EN?'Privacy policy: cookies, Google AdSense, and local storage handling.':'当サイトのプライバシーポリシー。Cookie・Google AdSense・ローカルストレージの取り扱い。';
 document.getElementById('crumb').innerHTML=EN?'<a href="index.html">Home</a> &gt; Privacy Policy':'<a href="index.html">ホーム</a> &gt; プライバシーポリシー';
-document.getElementById('body').innerHTML=document.getElementById(EN?'bodyen':'bodyja').innerHTML;
+var srcEl=document.getElementById(EN?'bodyen':'bodyja'); if(srcEl) document.getElementById('body').innerHTML = srcEl.innerHTML;
 document.getElementById('nav').innerHTML=WOS_NAV(0);document.getElementById('foot').innerHTML=WOS_FOOT(0);})();</script>
 </body></html>

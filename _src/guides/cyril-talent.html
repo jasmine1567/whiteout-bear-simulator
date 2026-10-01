@@ -97,7 +97,7 @@ document.getElementById("pgtitle").textContent=EN?"How strong is Cyrille in Bear
 document.getElementById("pgdesc").content=EN?"Verify Cyrille's Hunter's Heart talent in Bear Hunt: point bonus by level (up to +30%) and value.":"ホワサバ熊狩りのシリル天賦「狩人の心得」を数字で検証。Lv別のポイント補正(最大+30%)と費用対効果を解説。";
 document.getElementById("crumb").innerHTML=EN?"<a href=\"../index.html\">Home</a> &gt; Cyrille verified":"<a href=\"../index.html\">ホーム</a> &gt; シリル検証";
 document.getElementById("updbox").innerHTML=WOS_UPDATEBOX({date:"2026-06-15",gen:16,note:"シリル天賦の数値検証",note_en:"Cyrille talent verified"});
-if(EN){document.getElementById("bodyja").style.display="none";document.getElementById("bodyen").style.display="block";}
+if(EN){var bj=document.getElementById("bodyja"),be=document.getElementById("bodyen");if(bj)bj.style.display="none";if(be)be.style.display="block";}
 document.getElementById("relbar").innerHTML='<a href="../tools/bear-hunt/index.html'+(EN?"":"")+'">'+(EN?"→ Damage Simulator":"→ Bear Hunt Simulator")+'</a>'+'<a href="../tools/left-hero/index.html'+(EN?"":"")+'">'+(EN?"→ Left-Hero Checker":"→ Left-Hero Checker")+'</a>'+'<a href="../index.html'+(EN?"":"")+'">'+(EN?"→ All articles":"→ 記事一覧へ")+'</a>';
 document.getElementById("nav").innerHTML=WOS_NAV(1);
 document.getElementById("foot").innerHTML=WOS_FOOT(1);})();</script></body></html>

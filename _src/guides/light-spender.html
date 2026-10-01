@@ -136,7 +136,7 @@ document.getElementById("pgtitle").textContent=EN?"Light-spender investment rank
 document.getElementById("pgdesc").content=EN?"Light-spender ROI ranking for Bear Hunt: leader heroes, exclusive gear, research speedups.":"ホワサバ熊狩りを微課金で伸ばす投資先をROIで解説。集結主英雄・専用装備・研究加速の優先順位。";
 document.getElementById("crumb").innerHTML=EN?"<a href=\"../index.html\">Home</a> &gt; Light-spender":"<a href=\"../index.html\">ホーム</a> &gt; 微課金の投資先";
 document.getElementById("updbox").innerHTML=WOS_UPDATEBOX({date:"2026-06-15",gen:16,note:"微課金の投資効率",note_en:"Light-spender ROI"});
-if(EN){document.getElementById("bodyja").style.display="none";document.getElementById("bodyen").style.display="block";}
+if(EN){var bj=document.getElementById("bodyja"),be=document.getElementById("bodyen");if(bj)bj.style.display="none";if(be)be.style.display="block";}
 document.getElementById("relbar").innerHTML='<a href="../tools/bear-hunt/index.html'+(EN?"":"")+'">'+(EN?"→ Damage Simulator":"→ Bear Hunt Simulator")+'</a>'+'<a href="../tools/left-hero/index.html'+(EN?"":"")+'">'+(EN?"→ Left-Hero Checker":"→ Left-Hero Checker")+'</a>'+'<a href="../index.html'+(EN?"":"")+'">'+(EN?"→ All articles":"→ 記事一覧へ")+'</a>';
 document.getElementById("nav").innerHTML=WOS_NAV(1);
 document.getElementById("foot").innerHTML=WOS_FOOT(1);})();</script></body></html>

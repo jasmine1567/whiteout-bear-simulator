@@ -1,0 +1,127 @@
+{
+ "_comment": "英語ページ（/en/）に静的に埋め込む title / description / h1。_build_lang.py が <title>, meta description, og:*, twitter:*, JSON-LD の headline/description, #art-h1 を置き換える。ページを追加したらここにも1行足す。",
+ "index.html": {
+  "title": "Whiteout Survival Bear Hunt Tools & Guides | Whiteout Tools Lab",
+  "description": "Free Whiteout Survival Bear Hunt calculators and guides: a rally damage simulator, left-hero checker, troop-ratio compare, best builds by generation, event planners and 12 in-depth guides. Verified by an active player."
+ },
+ "about.html": {
+  "title": "About | Whiteout Tools Lab",
+  "description": "Operator info for Whiteout Tools Lab. Run by Jasmine (Server 1567, leader of alliance bst): verification experience, editorial policy, and how numbers are checked."
+ },
+ "contact.html": {
+  "title": "Contact | Whiteout Tools Lab",
+  "description": "How to contact Whiteout Tools Lab: feedback, bug reports, data contributions and rights inquiries via X or the contact form."
+ },
+ "privacy.html": {
+  "title": "Privacy Policy | Whiteout Tools Lab",
+  "description": "Privacy policy of Whiteout Tools Lab: cookies, Google AdSense and Analytics, browser storage, and how anonymous build submissions are handled."
+ },
+ "terms.html": {
+  "title": "Terms & Disclaimer | Whiteout Tools Lab",
+  "description": "Terms of use and disclaimer for Whiteout Tools Lab: the estimated nature of tool results, intellectual property, and submitted statistics."
+ },
+ "recruit.html": {
+  "title": "Alliance recruitment | Whiteout Tools Lab",
+  "description": "Alliance bst on Server 1567 is recruiting: a relaxed, friendly alliance that still shows up for SvS and loves Bear Hunt testing."
+ },
+ "changelog.html": {
+  "title": "Changelog | Whiteout Tools Lab",
+  "description": "Changelog of Whiteout Tools Lab: new tools, calculation corrections, data updates and site structure changes."
+ },
+ "guides/bear-hunt-guide.html": {
+  "title": "How Bear Hunt damage works (full guide) | Whiteout Tools Lab",
+  "description": "A complete explanation of how Bear Hunt damage is calculated in Whiteout Survival: attack, lethality, hero skills, troop ratio, exclusive gear and talents — and what actually moves the number.",
+  "h1": "How Bear Hunt damage works (full guide)"
+ },
+ "guides/beginner-faq.html": {
+  "title": "Bear Hunt beginner FAQ | Whiteout Tools Lab",
+  "description": "Answers to the questions every new Whiteout Survival player asks about Bear Hunt: who to put on the left, which troops to send, why damage differs between players, and how to grow.",
+  "h1": "Bear Hunt beginner FAQ: all the common questions answered"
+ },
+ "guides/common-myths.html": {
+  "title": "7 common Bear Hunt myths | Whiteout Tools Lab",
+  "description": "Seven things Whiteout Survival players believe about Bear Hunt that are wrong — 100% marksmen, 'strongest hero on the left', and more — checked against measured data.",
+  "h1": "7 common Bear Hunt myths"
+ },
+ "guides/cyril-expert.html": {
+  "title": "Cyrille deep-dive: every skill and upgrade priority | Whiteout Tools Lab",
+  "description": "Everything about the expert Cyrille in Whiteout Survival: all skills from the official wiki, how the +30% Bear Hunt talent works, and which skills to level first.",
+  "h1": "Cyrille deep-dive: every skill and upgrade priority"
+ },
+ "guides/cyril-talent.html": {
+  "title": "How strong is Cyrille in Bear Hunt? Talent verified | Whiteout Tools Lab",
+  "description": "Cyrille's Hunter's Heart talent raises Bear Hunt damage up to 30%. We verify the numbers, show what it costs to level, and when it is worth it.",
+  "h1": "How strong is Cyrille in Bear Hunt? Talent verified"
+ },
+ "guides/damage-not-growing.html": {
+  "title": "Why your Bear Hunt damage is not growing — causes and fixes | Whiteout Tools Lab",
+  "description": "The common reasons Bear Hunt damage stalls in Whiteout Survival — wrong left hero, troop ratio, overlapping skills, gear and talents — and how to fix each one.",
+  "h1": "Why your Bear Hunt damage is not growing - causes and fixes"
+ },
+ "guides/f2p-damage.html": {
+  "title": "How to grow Bear Hunt damage as F2P | Whiteout Tools Lab",
+  "description": "Free-to-play ways to raise Bear Hunt damage in Whiteout Survival: hero picks from the Lucky Wheel, talents, research and gear that cost nothing but time.",
+  "h1": "How to grow Bear Hunt damage as F2P"
+ },
+ "guides/how-to-use.html": {
+  "title": "How to use the Bear Hunt Damage Simulator | Whiteout Tools Lab",
+  "description": "Step-by-step guide to the Bear Hunt Damage Simulator: where to find each stat in the game, how to enter heroes and joiners, and how to read the result.",
+  "h1": "How to use the Bear Hunt Damage Simulator"
+ },
+ "guides/leader-formation.html": {
+  "title": "Best rally-leader formations and hero choices for Bear Hunt | Whiteout Tools Lab",
+  "description": "Which heroes a Bear Hunt rally leader should run in Whiteout Survival: skill types that multiply, per-class recommendations by generation, and skills to avoid.",
+  "h1": "Best rally-leader formations and hero choices"
+ },
+ "guides/left-hero.html": {
+  "title": "What is the left hero? Joiner heroes and the 4-slot rule | Whiteout Tools Lab",
+  "description": "In Bear Hunt only the leftmost hero's first expedition skill counts when you join a rally. How the 4 joiner slots are chosen, which heroes work, and common mistakes.",
+  "h1": "What is the left hero? Joiner heroes and the 4-slot rule"
+ },
+ "guides/light-spender.html": {
+  "title": "Light-spender investment ranking for Bear Hunt | Whiteout Tools Lab",
+  "description": "Where a light spender should put money to raise Bear Hunt damage in Whiteout Survival, ranked by damage gained per yen.",
+  "h1": "Light-spender investment ranking for Bear Hunt"
+ },
+ "guides/troop-ratio.html": {
+  "title": "Best Bear Hunt troop ratio? 10:30:60 vs 10:10:80 vs 1:1:8 | Whiteout Tools Lab",
+  "description": "Which infantry:lancer:marksman ratio gives the most Bear Hunt damage in Whiteout Survival? The major ratios compared, and why 100% marksmen is not the answer.",
+  "h1": "Best troop ratio? 10:30:60 vs 10:10:80 vs 1:1:8"
+ },
+ "tools/bear-hunt/index.html": {
+  "title": "Bear Hunt Damage Simulator | Whiteout Tools Lab",
+  "description": "Unofficial Whiteout Survival Bear Hunt damage simulator: set heroes, troops, exclusive gear and the Cyrille talent to estimate one rally's damage points, with probability ranges and a ranked 'what to upgrade next'."
+ },
+ "tools/left-hero/index.html": {
+  "title": "Left-Hero Checker for Bear Hunt | Whiteout Tools Lab",
+  "description": "Instantly check whether your left hero works when joining a Bear Hunt rally in Whiteout Survival: first expedition skill validity, 4-slot combinations and generation filters."
+ },
+ "tools/troop-ratio/index.html": {
+  "title": "Troop Ratio Simulator for Bear Hunt | Whiteout Tools Lab",
+  "description": "Compare Bear Hunt troop ratios in Whiteout Survival — 10:30:60, 10:10:80, 1:1:8 and your own — side by side with your troop count and stats."
+ },
+ "tools/damage-doctor/index.html": {
+  "title": "Damage Doctor: why is my Bear Hunt damage low? | Whiteout Tools Lab",
+  "description": "Answer a few questions to find out why your Bear Hunt damage is low in Whiteout Survival: left hero, troop ratio, rally-leader picks, gear and more, with fixes."
+ },
+ "tools/commander-type/index.html": {
+  "title": "Bear Hunt Commander Type Quiz | Whiteout Tools Lab",
+  "description": "Six questions sort your Whiteout Survival Bear Hunt play style into one of six commander types, with strengths, cautions and recommended tools. Share on X."
+ },
+ "tools/king-castle/index.html": {
+  "title": "Castle Battle Area Planner (SvS) | Whiteout Tools Lab",
+  "description": "Free planner for Whiteout Survival Castle Battle (SvS): split the server areas, assign alliance zones and place cities on the castle grid, then share as an image or on X."
+ },
+ "tools/foundry-battle/index.html": {
+  "title": "Foundry Battle Simulator | Whiteout Tools Lab",
+  "description": "Whiteout Survival Foundry Battle field tool: plan team assignments per phase and run a mock battle against enemies to see how capture points evolve. Share the plan with your alliance."
+ },
+ "tools/frost-dragon/index.html": {
+  "title": "Frost Dragon Alliance Placement Calculator | Whiteout Tools Lab",
+  "description": "Whiteout Survival Frost Dragon event placement calculator: enter applicant alliances' power and headcount and get an assignment that clears the entry border for every host alliance."
+ },
+ "tools/hero-list/index.html": {
+  "title": "Hero Database: all 65 Whiteout Survival heroes by generation, class and role | Whiteout Tools Lab",
+  "description": "All 65 Whiteout Survival heroes with expedition skills, exclusive gear and roles for Bear Hunt and PvP, filterable by generation, class, rarity and role."
+ }
+}

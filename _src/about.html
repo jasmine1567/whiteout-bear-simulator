@@ -50,7 +50,7 @@
 <p><b>プレイ環境:</b> ホワイトアウト・サバイバル 1567サーバー ／ 同盟「bst」盟主</p>
 <p><b>プレイ歴:</b> 熊狩り・SvS（王城戦）・兵器工場争奪戦・霜竜などのイベントに継続参加。同盟運営と集結編成の検証を担当。</p>
 <p><b>連絡先:</b> <a href="https://x.com/tegetege_m" target="_blank" rel="noopener noreferrer">X（@tegetege_m）</a> のDM、または<a href="contact.html">お問い合わせページ</a>をご利用ください。</p>
-<p><b>サイト開設日:</b> 2026年6月　／　<b>最終更新日:</b> 2026年7月24日</p>
+<p><b>サイト開設日:</b> 2026年6月　／　<b>最終更新日:</b> 2026年10月1日</p>
 </div>
 
 <h2>このサイトについて</h2>
@@ -88,7 +88,7 @@
 <p><b>Play environment:</b> Whiteout Survival, Server 1567 / leader of alliance "bst"</p>
 <p><b>Experience:</b> Active in Bear Hunt, SvS (Castle Battle), Foundry Battle and Frost Dragon; handles alliance leadership and rally-formation testing.</p>
 <p><b>Contact:</b> DM <a href="https://x.com/tegetege_m" target="_blank" rel="noopener noreferrer">X (@tegetege_m)</a>, or use the <a href="contact.html">contact page</a>.</p>
-<p><b>Launched:</b> June 2026　/　<b>Last updated:</b> July 24, 2026</p>
+<p><b>Launched:</b> June 2026　/　<b>Last updated:</b> October 1, 2026</p>
 </div>
 
 <h2>About this site</h2>
@@ -117,8 +117,8 @@ document.getElementById("htmlroot").lang=EN?"en":"ja";
 document.getElementById("pgtitle").textContent=EN?"About | Whiteout Tools Lab":"運営者情報 | ホワサバ ツールラボ";
 document.getElementById("pgdesc").content=EN?"Operator info for Whiteout Tools Lab. Run by Jasmine (Server 1567, leader of alliance bst): verification experience, editorial policy, and how numbers are checked.":"ホワサバ ツールラボの運営者情報。1567サーバー同盟bst盟主じゃすみんが運営。検証経験・コンテンツ方針・数値の検証方法・情報の訂正方針を掲載。";
 document.getElementById("crumb").innerHTML=EN?"<a href=\"index.html\">Home</a> &gt; About":"<a href=\"index.html\">ホーム</a> &gt; 運営者情報";
-var src=document.getElementById(EN?"bodyen":"bodyja").innerHTML;
-document.getElementById("body").innerHTML=src;
-document.getElementById("bodyja").remove();document.getElementById("bodyen").remove();
+var srcEl=document.getElementById(EN?"bodyen":"bodyja");
+if(srcEl){document.getElementById("body").innerHTML=srcEl.innerHTML;}
+["bodyja","bodyen"].forEach(function(i){var e=document.getElementById(i);if(e)e.remove();});
 document.getElementById("nav").innerHTML=WOS_NAV(0);
 document.getElementById("foot").innerHTML=WOS_FOOT(0);})();</script></body></html>

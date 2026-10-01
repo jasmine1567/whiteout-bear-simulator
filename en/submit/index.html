@@ -14,7 +14,7 @@
   gtag('config', 'G-Y8YMCVQDMG');
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>熊狩り構成を投稿する｜世代別統計 | ホワサバ ツールラボ</title>
+<title>Submit Your Bear Hunt Build | Whiteout Tools Lab</title>
 <meta name="description" content="集結主の熊狩り構成（盾・槍・弓の英雄）を匿名で投稿。投稿するとすぐに、同世代内の順位と課金帯別の理論最適との差が分かります。">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://api.whitesim-lab.com https://*.workers.dev https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://platform.twitter.com https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://challenges.cloudflare.com https://platform.twitter.com https://syndication.twitter.com https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
 <link rel="stylesheet" href="/assets/site.css?v=111">
@@ -26,7 +26,7 @@
 <link rel="apple-touch-icon" href="/favicon.png?v=85">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ホワサバ ツールラボ">
-<meta property="og:title" content="熊狩り構成を投稿する｜世代別統計 | ホワサバ ツールラボ">
+<meta property="og:title" content="Submit Your Bear Hunt Build | Whiteout Tools Lab">
 <meta property="og:description" content="集結主の熊狩り構成（盾・槍・弓の英雄）を匿名で投稿。投稿するとすぐに、同世代内の順位と課金帯別の理論最適との差が分かります。">
 <meta property="og:url" content="https://whitesim-lab.com/en/submit/">
 <meta property="og:image" content="https://whitesim-lab.com/favicon.png?v=85">
@@ -39,19 +39,19 @@
 <body>
 <div id="nav"></div>
 <div class="wrap">
-<div class="crumb"><a href="/en/index.html">ホーム</a> &gt; <a href="/en/stats/index.html">世代別統計</a> &gt; 構成を投稿</div>
-<h1>熊狩り構成を <span class="acc">投稿する</span></h1>
+<div class="crumb"><a href="/en/index.html">Home</a> &gt; <a href="/en/stats/index.html">Generation stats</a> &gt; Submit</div>
+<h1>Submit your <span class="acc">Bear Hunt build</span></h1>
 <div id="updbox"></div>
-<p class="lead">世代・課金帯・英雄3人を選ぶだけ。個人を特定する情報は送信されません。</p>
+<p class="lead">Pick your generation, tier and three heroes. Nothing identifying is sent.</p>
 <ul class="kv-list" style="margin-bottom:14px">
-<li>投稿するとすぐに、同じ世代の中での位置と、あなたの課金帯の理論最適との差が分かります</li>
-<li>投稿は世代ごとに1件。同じ世代に再投稿すると上書き、別の世代なら別の投稿になります</li>
+<li>Right after submitting you see your rank in your generation and the gap to your tier’s theoretical best</li>
+<li>One submission per generation: re-submitting the same generation updates it, another generation adds a new one</li>
 </ul>
 <div id="submit-form"><div class="skel"></div><div class="skel" style="width:60%"></div></div>
-<p class="note" style="margin-top:14px">熊狩ダメージ・シミュレーターの結果画面からも1クリックで投稿できます。 <a href="/en/tools/bear-hunt/index.html">シミュレーターへ</a></p>
+<p class="note" style="margin-top:14px">You can also submit straight from the Bear Hunt Simulator's result panel. <a href="/en/tools/bear-hunt/index.html">Open the simulator</a></p>
 <div class="relbar">
-  <a href="/en/stats/index.html">→ 世代別統計を見る</a>
-  <a href="/en/stats/methodology.html">→ 集計方法と計算の前提</a>
+  <a href="/en/stats/index.html">→ See generation stats</a>
+  <a href="/en/stats/methodology.html">→ Methodology</a>
 </div>
 </div>
 <div id="foot"></div>
@@ -76,7 +76,7 @@ window.addEventListener("DOMContentLoaded", function() {
   
   if (q("h1")) q("h1").innerHTML = "Submit your <span class=\"acc\">Bear Hunt build</span>";
   if (q(".lead")) q(".lead").innerHTML = "Pick your generation, tier and three heroes. Nothing identifying is sent.";
-  var TR = {"盾": "INF", "槍": "LAN", "弓": "MKS", "世代・課金帯・英雄3人を選ぶだけ。個人を特定する情報は送信されません。": "Pick your generation, tier and three heroes. Nothing identifying is sent.", "ホーム": "Home", "世代別統計": "Generation stats", "構成を投稿": "Submit", "熊狩り構成を": "Submit your", "投稿する": "Bear Hunt build", "投稿するとすぐに、同じ世代の中での位置と、あなたの課金帯の理論最適との差が分かります": "Right after submitting you see your rank in your generation and the gap to your tier’s theoretical best", "投稿は世代ごとに1件。同じ世代に再投稿すると上書き、別の世代なら別の投稿になります": "One submission per generation: re-submitting the same generation updates it, another generation adds a new one", "熊狩ダメージ・シミュレーターの結果画面からも1クリックで投稿できます。": "You can also submit straight from the Bear Hunt Simulator's result panel.", "シミュレーターへ": "Open the simulator", "世代別統計を見る": "See generation stats", "集計方法と計算の前提": "Methodology"};
+  var TR = {"盾": "INF", "槍": "LAN", "弓": "MKS", "ホワサバ ツールラボ": "Whiteout Tools Lab", "ホーム": "Home", "世代別 熊狩り構成": "Bear Hunt builds by generation", "世代・課金帯・英雄3人を選ぶだけ。個人を特定する情報は送信されません。": "Pick your generation, tier and three heroes. Nothing identifying is sent.", "世代別統計": "Generation stats", "構成を投稿": "Submit", "熊狩り構成を": "Submit your", "投稿する": "Bear Hunt build", "投稿するとすぐに、同じ世代の中での位置と、あなたの課金帯の理論最適との差が分かります": "Right after submitting you see your rank in your generation and the gap to your tier’s theoretical best", "投稿は世代ごとに1件。同じ世代に再投稿すると上書き、別の世代なら別の投稿になります": "One submission per generation: re-submitting the same generation updates it, another generation adds a new one", "熊狩ダメージ・シミュレーターの結果画面からも1クリックで投稿できます。": "You can also submit straight from the Bear Hunt Simulator's result panel.", "シミュレーターへ": "Open the simulator", "世代別統計を見る": "See generation stats", "集計方法と計算の前提": "Methodology"};
   function tr(s) { var k = s.replace(/\s+/g, " ").trim(); if (TR[k] != null) return s.replace(k, TR[k]);
     var m = k.match(/^((?:[^\u3040-\u30ff\u4e00-\u9faf]*?\s)?)(.+?)(\s→)?$/); if (!m) return s; var kk = m[2]; return TR[kk] != null ? s.replace(kk, TR[kk]) : s; }
   var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
@@ -94,5 +94,7 @@ window.addEventListener("DOMContentLoaded", function() {
   var crumb = document.querySelector(".crumb");
   if (crumb) crumb.innerHTML = "<a href=\"/en/index.html\">Home</a> &gt; <a href=\"/en/stats/index.html\">Generation stats</a> &gt; Submit";
 });
-</script></body>
+</script>
+
+</body>
 </html>

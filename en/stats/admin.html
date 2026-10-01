@@ -105,7 +105,7 @@ window.addEventListener("DOMContentLoaded", function() {
   
   if (q("h1")) q("h1").innerHTML = "Review <span class=\"acc\">admin</span>";
   if (q(".lead")) q(".lead").innerHTML = "Operator only.";
-  var TR = {"盾": "INF", "槍": "LAN", "弓": "MKS"};
+  var TR = {"盾": "INF", "槍": "LAN", "弓": "MKS", "ホワサバ ツールラボ": "Whiteout Tools Lab", "ホーム": "Home", "世代別 熊狩り構成": "Bear Hunt builds by generation"};
   function tr(s) { var k = s.replace(/\s+/g, " ").trim(); if (TR[k] != null) return s.replace(k, TR[k]);
     var m = k.match(/^((?:[^\u3040-\u30ff\u4e00-\u9faf]*?\s)?)(.+?)(\s→)?$/); if (!m) return s; var kk = m[2]; return TR[kk] != null ? s.replace(kk, TR[kk]) : s; }
   var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
@@ -123,5 +123,7 @@ window.addEventListener("DOMContentLoaded", function() {
   var crumb = document.querySelector(".crumb");
   if (crumb) crumb.innerHTML = "Admin";
 });
-</script></body>
+</script>
+<!--EN-META {"title": "Review admin | Whiteout Tools Lab", "description": "", "h1": "Review <span class=\"acc\">admin</span>", "lead": "Operator only.", "crumb": "Admin", "faq": []}-->
+</body>
 </html>

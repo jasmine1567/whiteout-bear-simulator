@@ -16,8 +16,8 @@
   gtag('config', 'G-Y8YMCVQDMG');
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title id="pgtitle">更新履歴 | ホワサバ ツールラボ</title>
-<meta name="description" id="pgdesc" content="ホワサバ ツールラボの更新履歴。ツールの追加・計算補正・データ更新・サイト構造の変更の記録。">
+<title id="pgtitle">Changelog | Whiteout Tools Lab</title>
+<meta name="description" id="pgdesc" content="Changelog of Whiteout Tools Lab: new tools, calculation corrections, data updates and site structure changes.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://docs.google.com; object-src 'none'; base-uri 'none'">
 <link rel="stylesheet" href="/assets/site.css?v=111">
 <script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
@@ -27,8 +27,8 @@
 <link rel="apple-touch-icon" href="/favicon.png?v=85">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ホワサバ ツールラボ">
-<meta property="og:title" content="更新履歴 | ホワサバ ツールラボ">
-<meta property="og:description" content="ホワサバ ツールラボの更新履歴。">
+<meta property="og:title" content="Changelog | Whiteout Tools Lab">
+<meta property="og:description" content="Changelog of Whiteout Tools Lab: new tools, calculation corrections, data updates and site structure changes.">
 <meta property="og:url" content="https://whitesim-lab.com/en/changelog.html">
 <meta property="og:image" content="https://whitesim-lab.com/favicon.png?v=85">
 <meta name="twitter:card" content="summary">
@@ -40,100 +40,18 @@
 <div id="nav"></div>
 <div class="wrap">
 <div class="crumb" id="crumb"></div>
-<div id="bodyja" style="display:none"><h1>更新履歴</h1>
-<p class="lead">ツールの追加、計算式の補正、データ更新、サイト構造の変更などを記録しています。ゲームのアップデートに合わせて、検証結果はこのページに追記していきます。</p>
 
-<div class="card">
-<h3>2026年10月1日</h3>
-<ul>
-<li><a href="stats/gen-17/index.html">第17世代</a>に対応。新英雄 エイダン（盾・ルーレット）・ベルサ（槍・イベント）・エリノ（弓・英雄殿堂）の集結主スキルを公式wikiの遠征スキルからモデル化し、熊狩シミュレーター・左英雄チェッカー・英雄一覧（全65英雄）・世代別ページ（第1〜17世代）に追加。ベルサの追撃は既存英雄と同じ校正ルール（半減・同種は1つ分）で、攻略サイトの推奨（槍はミア／ドミニク、弓はエリノ）と矛盾しない範囲に置いています。第17世代の解放日（サーバー1,240日目）は80日周期からの推定です。</li>
-<li>日本語ページから英語本文、英語ページから日本語本文を取り除くようビルドを変更（表示は変わりません）。各ページのHTMLが軽くなり、検索エンジンにも1ページ1言語として伝わるようになりました。</li>
-<li>英語版ページ内のリンクが日本語版へ飛ぶ問題と、Search Console に出ていた存在しないURL（JS文字列の誤検出）への対策を再適用。</li>
-</ul>
-</div>
 
-<div class="card">
-<h3>2026年9月14日</h3>
-<ul>
-<li>トップページを刷新。黒背景のヒーロー（見出し・主要導線・サイト規模）、主要3ツールとその他ツールのカード、世代別構成へのバンド、攻略ガイドの3カテゴリカード、運営者カードという構成にし、絵文字をやめて Material Symbols に統一。</li>
-<li>ヘッダーナビゲーションを「ツール／世代別構成／攻略ガイド／サイト情報」の4つの大カテゴリに整理し、そこから中カテゴリ・各ページへ開く階層メニューに変更。PCではドロップダウン、スマホではメニューボタンからのアコーディオンで、全ページ（9ツール・16世代ページ・12記事・運営者情報やお問い合わせなど）にヘッダーから直接たどり着けるようにしました。キーボード操作（Tab／Enter／Esc）にも対応。</li>
-<li>フッターも同じ4カテゴリのサイトマップ形式に変更。ヘッダー・フッター・各種見出しのアイコンを Google の Material Symbols（Apache-2.0）に統一し、メニューを黒背景のパネル型デザインに刷新。</li>
-<li>全ツールページの冒頭に「このツールについて」（このツールで分かること／計算・判定の考え方／使い方）を追加。日本語・英語の両方で掲載。</li>
-<li>全ツールページに制作者・公開日・最終更新日・検証環境の表示を追加。世代別ページにも初回公開日を表示。</li>
-<li>英語版の英雄一覧ページで日本語が表示される不具合と、兵士比率シミュレータの見出しの未翻訳を修正。英語ページ内のリンク（世代別ページからシミュレーターへ等）が日本語ページへ飛んでいた問題を修正し、英語ページは英語ページのまま巡回できるようにしました。</li>
-</ul>
-</div>
 
-<div class="card">
-<h3>2026年9月4日</h3>
-<ul>
-<li>ヘクトーの集結主スキル「雷の突撃」を公式wikiの数値（盾兵与ダメ+200%・弓兵与ダメ+100%、攻撃ごとに85%へ減衰・10回）でモデル化し直し、コミュニティ評価（ジェロニモ＞ヘクトー＞ナタリア）に合わせて校正。世代別ページの盾枠ランキングと「集結主におすすめの編成」記事の順位を統一。同記事の槍枠の順位も世代別ページの理論ランキングに合わせて更新。</li>
-</ul>
-</div>
 
-<div class="card">
-<h3>2026年9月3日</h3>
-<ul>
-<li>世代別ページを「<a href="stats/index.html">熊狩りのおすすめ英雄・最強構成 世代別まとめ</a>」として全面改修。各世代ページの先頭に「結論」と「理想の英雄構成」（課金帯を選ぶと最強の集結主3人を大きく表示）を置き、ワンタップで熊狩シミュレーターに構成をセットできるようにした。よくある質問・構造化データを追加。</li>
-<li>熊狩シミュレーターのSTEP1に、選択中の世代のおすすめ構成ページへのリンクを追加。統計の投稿フォームには結果欄の予測ダメージが自動で入るようにした。</li>
-<li>各世代ページに「口コミ」欄を追加。投稿フォームに「ひとこと」（任意・200文字）と表示名を足し、構成と一緒に新しい順で表示。URL・不適切な表現は投稿時に弾き、通報3件で自動非表示（運営者が確認）。理論最適の「石油王」は全ステータスMAX（専用装備Lv10・火晶Lv10・T12）で計算していることを明記。</li>
-</ul>
-</div>
-
-<div class="card">
-<h3>2026年9月2日</h3>
-<ul>
-<li>「<a href="stats/index.html">世代別統計</a>」を新設。利用者の投稿から集結主の熊狩り構成（盾・槍・弓）を世代ごとに集計し、課金帯別の理論最適構成と並べて公開。<a href="submit/index.html">投稿ページ</a>と、熊狩シミュレーターからの1クリック投稿を追加。</li>
-<li>熊狩ダメージ・シミュレーターの計算コアを共有モジュール（bear-calc.js）に切り出し。計算結果は従来と同一（回帰テスト2,113ケースで確認）。</li>
-<li>英雄マスタ（heroes.js）を最新のスキルデータに統一。左英雄チェッカーで、熊狩では効果のない英雄（レネ・ゴードン）を「熊で効果なし」と表示するよう修正。</li>
-<li>応援（OFUSE）導線を全ページから撤去。</li>
-<li>プライバシーポリシー・利用規約に統計データの取り扱いを追記。</li>
-</ul>
-</div>
-<div class="card">
-<h3>2026年7月24日</h3>
-<ul>
-<li>攻略記事「<a href="guides/cyril-expert.html">シリル徹底研究：全スキルと育成優先度</a>」を公開。公式wikiのステータスを一覧化し、Xやコミュニティの評判を掲載。</li>
-<li>全攻略記事に「出典・参考文献」欄を追加（公式・攻略サイト・コミュニティ・当サイト検証をバッジで区別）。主要記事には第三者の実測データを折りたたみ形式で追加し、「弓100%は約2割低下」などの記述に出典を付与。</li>
-<li>トップページ・初心者FAQ・熊狩り解説記事に、公式YouTubeチャンネル「ホワサバ初心者ガイド」シリーズの動画を埋め込み（YouTube公式の埋め込み機能を利用・出典と著作権帰属を明記）。シリル記事に専門家システムの公式Xポストを追加。</li>
-<li>日本語ページと英語ページを別URLに分離（日本語＝<code>/</code>、英語＝<code>/en/</code>）。各ページに <code>hreflang</code> と自己参照 <code>canonical</code> を設定。</li>
-<li>プライバシーポリシーの「広告の配信について」を、第三者配信・Cookie・オプトアウトの記載を含めて補強。</li>
-<li>運営者情報を再構成し、検証経験・コンテンツ方針・数値の検証方法・訂正方針を明記。同盟の仲間募集は<a href="recruit.html">専用ページ</a>へ分離。</li>
-<li>各ツールページに、使い方・入力項目の意味・結果の読み方・注意事項の解説を追加。</li>
-<li>各攻略記事に、執筆者・公開日・最終更新日・検証環境の表示を追加。</li>
-<li>この更新履歴ページを新設。</li>
-</ul>
-</div>
-
-<div class="card">
-<h3>2026年7月4日</h3>
-<ul><li>「霜竜イベント 同盟配置計算ツール」を公開。</li></ul>
-</div>
-
-<div class="card">
-<h3>2026年6月26日</h3>
-<ul><li>「兵器工場争奪戦 フィールドツール」を公開。</li><li>「英雄一覧・データベース（全62英雄）」を公開。</li></ul>
-</div>
-
-<div class="card">
-<h3>2026年6月19日</h3>
-<ul><li>「王城戦エリア配置管理ツール」を公開。</li></ul>
-</div>
-
-<div class="card">
-<h3>2026年6月16日</h3>
-<ul><li>サイトを公開。「熊狩ダメージ・シミュレーター」ほか初期ツールと攻略記事を公開。</li></ul>
-</div>
-</div>
-
-<div id="bodyen" style="display:none"><h1>Changelog</h1>
+<div id="body"><h1>Changelog</h1>
 <p class="lead">A record of new tools, formula calibrations, data updates and site-structure changes. Verification results are added here as the game updates.</p>
 
 <div class="card">
 <h3>October 1, 2026</h3>
 <ul>
 <li>Added <a href="stats/gen-17/index.html">Generation 17</a>: Aiden (infantry, Lucky Wheel), Bertha (lancer, events) and Eleanor (marksman, Hall of Heroes). Their leader skills are modelled from the official wiki's expedition skills and added to the simulator, Left-Hero Checker, Hero Database (65 heroes) and the generation pages (Gen 1–17). Bertha's follow-ups use the same calibration as existing heroes (halved, same-type counted once) so the ranking stays consistent with strategy-site picks (Mia/Dominic for lancer, Eleanor for marksman). Gen 17's unlock day (server day 1,240) is extrapolated from the 80-day cadence.</li>
-<li>The build now strips the English text from Japanese pages and the Japanese text from English pages (no visible change). Pages are lighter and search engines see one language per page.</li>
+<li>The build now strips the English text from Japanese pages and the Japanese text from English pages (no visible change). English pages also get static English titles, descriptions, headings and structured data, and the generation pages are now written out in English rather than translated in the browser. Pages are lighter and search engines see one language per page.</li>
 <li>Re-applied the fixes for English-page links jumping to the Japanese site and for the non-existent URLs Search Console picked up from JS strings.</li>
 </ul>
 </div>
@@ -211,8 +129,6 @@
 <ul><li>Site launched with the "Bear Hunt Damage Simulator" and the initial tools and guides.</li></ul>
 </div>
 </div>
-
-<div id="body"></div>
 </div>
 <div id="foot"></div>
 <script src="/assets/config.js?v=96"></script>
@@ -224,7 +140,7 @@
   document.getElementById('pgtitle').textContent = EN?'Changelog | Whiteout Tools Lab':'更新履歴 | ホワサバ ツールラボ';
   document.getElementById('pgdesc').content = EN?'Changelog for Whiteout Tools Lab: new tools, calibrations, data updates and site changes.':'ホワサバ ツールラボの更新履歴。ツールの追加・計算補正・データ更新・サイト構造の変更の記録。';
   document.getElementById('crumb').innerHTML = EN?'<a href="index.html">Home</a> &gt; Changelog':'<a href="index.html">ホーム</a> &gt; 更新履歴';
-  document.getElementById('body').innerHTML = document.getElementById(EN?'bodyen':'bodyja').innerHTML;
+  var srcEl=document.getElementById(EN?'bodyen':'bodyja'); if(srcEl) document.getElementById('body').innerHTML = srcEl.innerHTML;
   document.getElementById('nav').innerHTML = WOS_NAV(0);
   document.getElementById('foot').innerHTML = WOS_FOOT(0);
 })();
