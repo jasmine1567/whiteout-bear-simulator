@@ -9,9 +9,9 @@ import os, re, json, html, subprocess
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 BASE_URL = "https://whitesim-lab.com"
-V = "103"            # 共有アセットの版数
-HV = "86"           # heroes.js の版数
-UPDATED = "2026-09-03"
+V = "111"            # 共有アセットの版数
+HV = "89"           # heroes.js の版数
+UPDATED = "2026-10-01"
 NOTES_DIR = os.path.join(ROOT, "_stats_notes")
 DEFAULT_TIER = "whale"   # 理論側のデフォルト表示（石油王）
 
@@ -44,7 +44,11 @@ ACQ_EN = {"roulette": "Lucky Wheel", "event": "Daily Deals / Frostfield Ruler et
 
 class Tr:
     def __init__(self): self.m = {"盾": "INF", "槍": "LAN", "弓": "MKS"}
-    def __call__(self, ja, en): self.m[ja] = en; return ja
+    def __call__(self, ja, en):
+        self.m[ja] = en
+        k = " ".join(ja.split())          # クライアント側 tr() は空白正規化＋trim したキーで引くため、正規化版も登録
+        if k and k != ja: self.m[k] = en
+        return ja
     def script(self): return json.dumps(self.m, ensure_ascii=False)
 
 def esc(s): return html.escape(str(s), quote=True)
@@ -160,6 +164,8 @@ window.addEventListener("DOMContentLoaded", function() {{
     node.nodeValue = tr(v);
   }});
   document.querySelectorAll("[data-en]").forEach(function(el){{ el.innerHTML = el.getAttribute("data-en"); }});
+  document.querySelectorAll("[data-title-en]").forEach(function(el){{ el.setAttribute("title", el.getAttribute("data-title-en")); }});
+  document.querySelectorAll("[data-aria-en]").forEach(function(el){{ el.setAttribute("aria-label", el.getAttribute("data-aria-en")); }});
   if (window.WOS_STATS && WOS_STATS.relabelHeroes) WOS_STATS.relabelHeroes();
   var crumb = document.querySelector(".crumb");
   if (crumb) crumb.innerHTML = {json.dumps(crumb_en, ensure_ascii=False)};
@@ -273,7 +279,7 @@ def theory_rank_list(rows, limit=5):
     if not rows: return '<div class="note">—</div>'
     out = []
     for i, r in enumerate(rows[:limit]):
-        nd = '<span class="nd" title="集結主スキル未登録・ステのみ">※</span>' if not HEROES[r["id"]]["leader"] and not HEROES[r["id"]]["bearNoEffect"] else ""
+        nd = '<span class="nd" title="集結主スキル未登録・ステのみ" data-title-en="Leader skill not registered — stats only">※</span>' if not HEROES[r["id"]]["leader"] and not HEROES[r["id"]]["bearNoEffect"] else ""
         out.append(f'<div class="rk-row"><span class="rk-n">{i+1}</span><span class="rk-h">{hero_html(r["id"])}{nd}</span><span class="rk-v">{r["index"]}</span>'
                    f'<span class="rk-bar"><i style="width:{r["index"]}%"></i></span></div>')
     return "".join(out)
@@ -300,10 +306,10 @@ def tier_chips(tk, tr):
     paid = tr("課金限定英雄あり", "paid-only heroes") if td["paid"] else tr("課金限定英雄なし", "no paid-only heroes")
     mx = f'<span class="chip max">👑 {tr("全ステータスMAX", "Everything maxed")}</span>' if tk == "whale" else ""
     return (f'{mx}<span class="chip">{paid}</span>'
-            f'<span class="chip">{tr("ルーレット以外のSSR ", "Non-wheel SSRs: ")}{td["hallSlots"]}{tr("体まで", " max")}</span>'
-            f'<span class="chip">{tr("専用装備 Lv", "Gear Lv")}{td["gear"]}{tr("（最大）", " (max)") if td["gear"] >= 10 else ""}</span>'
-            f'<span class="chip">{tr("火晶 Lv", "FC Lv")}{td["fc"]}{tr("（最大）", " (max)") if td["fc"] >= 10 else ""}</span>'
-            f'<span class="chip">{tr("兵種 T", "Troops T")}{td["tier"]}{tr("（最大）", " (max)") if td["tier"] >= 12 else ""}</span>')
+            f'<span class="chip">{bi("ルーレット以外のSSR " + str(td["hallSlots"]) + "体まで", "Non-wheel SSRs: " + str(td["hallSlots"]) + " max")}</span>'
+            f'<span class="chip">{bi("専用装備 Lv" + str(td["gear"]) + ("（最大）" if td["gear"] >= 10 else ""), "Gear Lv" + str(td["gear"]) + (" (max)" if td["gear"] >= 10 else ""))}</span>'
+            f'<span class="chip">{bi("火晶 Lv" + str(td["fc"]) + ("（最大）" if td["fc"] >= 10 else ""), "FC Lv" + str(td["fc"]) + (" (max)" if td["fc"] >= 10 else ""))}</span>'
+            f'<span class="chip">{bi("兵種 T" + str(td["tier"]) + ("（最大）" if td["tier"] >= 12 else ""), "Troops T" + str(td["tier"]) + (" (max)" if td["tier"] >= 12 else ""))}</span>')
 
 def tier_picker(tr, big=True):
     """課金帯の選択UI。big=True はページの核（説明付きの大きなボタン）、False は下部の小さなタブ。同じ data-group で連動"""
@@ -311,7 +317,7 @@ def tier_picker(tr, big=True):
         btns = "".join(
             f'<button type="button" data-tier="{t["key"]}" class="tp-btn"><span class="tp-ic">{TIER_ICON[t["key"]]}</span>'
             f'<span class="tp-t">{tr(t["label"], t["label_en"])}</span><span class="tp-d">{tr(*TIER_DESC[t["key"]])}</span></button>' for t in TIERS)
-        return f'<div class="tier-tabs tier-picker" data-group="cmp" data-default="{DEFAULT_TIER}" role="group" aria-label="課金帯">{btns}</div>'
+        return f'<div class="tier-tabs tier-picker" data-group="cmp" data-default="{DEFAULT_TIER}" role="group" aria-label="課金帯" data-aria-en="Spending tier">{btns}</div>'
     btns = "".join(f'<button type="button" data-tier="{t["key"]}">{TIER_ICON[t["key"]]} {tr(t["label"], t["label_en"])}</button>' for t in TIERS)
     return f'<div class="tier-tabs tier-mini" data-group="cmp" data-default="{DEFAULT_TIER}"><span class="tm-lab">{tr("課金帯：","Tier: ")}</span>{btns}</div>'
 
@@ -336,7 +342,7 @@ def best_section(g, tr):
             idx = next((r["index"] for r in rows if r["id"] == hid), 100)
             runner = next((r for r in rows if r["id"] != hid), None)
             new = f'<span class="bt-new">{tr("この世代の新英雄","NEW this gen")}</span>' if h["gen"] == g else ""
-            nd = f' <span class="nd" title="集結主スキル未登録・ステのみ">※</span>' if not h["leader"] and not h["bearNoEffect"] else ""
+            nd = f' <span class="nd" title="集結主スキル未登録・ステのみ" data-title-en="Leader skill not registered — stats only">※</span>' if not h["leader"] and not h["bearNoEffect"] else ""
             alt = (f'<div class="bt-alt">{tr("次点：","Runner-up: ")}{hero_html(runner["id"])} <span class="bt-idx">{runner["index"]}</span></div>'
                    if runner else "")
             tiles += (f'<div class="best-tile {c}"><div class="bt-cls">{cls_badge(c)}<span>{tr(CLS_JA[c] + "枠", CLS_EN[c] + " slot")}</span>{new}</div>'
@@ -458,9 +464,12 @@ def sim_cta(g, tr):
 <a class="sc-sub" href="/tools/bear-hunt/index.html">{tr("自分の構成で開く","Open with my own build")}</a></div>
 </div></div>"""
 
-def byline(tr):
-    return (f'<div class="st-byline">✍ {tr("執筆：","By ")}<a href="/about.html"><b>{tr("じゃすみん","Jasmine")}</b></a>'
-            f'<span class="sep">|</span>{tr("最終更新：","Updated ")}{UPDATED}<span class="sep">|</span>{tr("検証環境：1567サーバー","Verified on Server 1567")}</div>')
+def byline(tr, pub=None):
+    pub = pub or PUBLISHED
+    return (f'<div class="st-byline"><span><i class="ms-slot" data-ms="stylus"></i>{tr("執筆：","By ")}<a href="/about.html"><b>{tr("じゃすみん","Jasmine")}</b></a></span>'
+            f'<span><i class="ms-slot" data-ms="calendar_today"></i>{tr("初回公開：","Published ")}<time datetime="{pub}">{pub}</time></span>'
+            f'<span><i class="ms-slot" data-ms="update"></i>{tr("最終更新：","Updated ")}<time datetime="{UPDATED}">{UPDATED}</time></span>'
+            f'<span><i class="ms-slot" data-ms="verified"></i>{tr("検証環境：1567サーバー","Verified on Server 1567")}</span></div>')
 
 def compare_section(g, tr):
     e = theory["gens"][str(g)]
@@ -473,18 +482,18 @@ def compare_section(g, tr):
         for c in CLS:
             cols += (f'<div class="cmp-col"><h4>{cls_badge(c)}{tr(CLS_JA[c] + "枠", CLS_EN[c] + " slot")}</h4><div class="cmp-half">'
                      f'<div><div class="lab th">{tr("理論","THEORY")}</div>{theory_rank_list(b["slotRank"][c])}</div>'
-                     f'<div><div class="lab lv">{tr("実測","LIVE")}</div><div data-live="slot" data-tier="{t["key"]}" data-cls="{c}"><div class="skel"></div><div class="skel" style="width:70%"></div></div></div>'
+                     f'<div class="live-col" hidden><div class="lab lv">{tr("実測","LIVE")}</div><div data-live="slot" data-tier="{t["key"]}" data-cls="{c}"><div class="skel"></div><div class="skel" style="width:70%"></div></div></div>'
                      f'</div></div>')
         trio = (f'<div class="cmp-trio"><h4>{tr("3人の組み合わせ TOP3","Top-3 trios")} <span data-live="srctag" data-tier="{t["key"]}"></span></h4><div class="cmp-half">'
                 f'<div><div class="lab th">{tr("理論","THEORY")}</div>{theory_trio_list(b["top"])}</div>'
-                f'<div><div class="lab lv">{tr("実測","LIVE")}</div><div data-live="trio" data-tier="{t["key"]}"><div class="skel"></div></div></div></div></div>')
+                f'<div class="live-col" hidden><div class="lab lv">{tr("実測","LIVE")}</div><div data-live="trio" data-tier="{t["key"]}"><div class="skel"></div></div></div></div></div>')
         panes += f'<div class="tier-pane" data-group="cmp" data-tier="{t["key"]}">{assump}<div class="cmp-grid">{cols}</div>{trio}</div>'
-    return f"""<h2 id="compare">{tr("理論 vs 実測：各枠の英雄ランキング","Theory vs Live: per-slot hero rankings")}</h2>
+    return f"""<h2 id="compare"><span class="h-theory">{tr(f"第{g}世代の各枠の英雄ランキング（理論値）", f"Gen {g} per-slot hero rankings (theory)")}</span><span class="h-live" hidden>{tr("理論 vs 実測：各枠の英雄ランキング","Theory vs Live: per-slot hero rankings")}</span></h2>
 <ul class="kv-list sec-lead">
-<li><b>{tr("理論","Theory")}</b>：{tr("その世代で入手できる英雄を盾×槍×弓で総当たりし、熊狩シミュレーターと同じ式で期待ダメージが高い順に並べたもの。数字は1位を100とした指数。","All obtainable INF×LAN×MKS combinations, ranked by the simulator’s formula. Numbers are an index (#1 = 100).")}</li>
-<li><b>{tr("実測","Live")}</b>：{tr("利用者の投稿から集計した採用率（直近90日）。数字は％。","Pick rate from user submissions (last 90 days), in %.")}</li>
+<li>{bi("<b>理論</b>：その世代で入手できる英雄を盾×槍×弓で総当たりし、熊狩シミュレーターと同じ式で期待ダメージが高い順に並べたもの。数字は1位を100とした指数。","<b>Theory</b>: all obtainable INF×LAN×MKS combinations, ranked by the simulator’s formula. Numbers are an index (#1 = 100).")}</li>
+<li class="live-col" hidden>{bi("<b>実測</b>：利用者の投稿から集計した採用率（直近90日）。数字は％。","<b>Live</b>: pick rate from user submissions (last 90 days), in %.")}</li>
 </ul>
-<div data-live="meta"><div class="skel" style="width:40%"></div></div>
+<div data-live="meta"></div>
 {tabs}{panes}
 <p class="note" style="margin-top:8px">※ {tr("集結主スキルのデータが未登録の英雄は、遠征ステータスだけで順位を計算しています（スキルが強い場合は過小評価になります）。","Heroes without registered leader-skill data are ranked by expedition stats only (they may be underrated if their skill is strong).")}</p>
 <div data-live="stats"></div>"""
@@ -492,7 +501,7 @@ def compare_section(g, tr):
 def next_section(g, tr):
     e = theory["gens"][str(g)]
     if g >= MAXG:
-        return f'<h2>{tr("次の世代でどうする？","What to do next generation")}</h2><div class="live-empty">{tr("第", "Gen ")}{g+1}{tr("世代はまだ実装されていません。実装されたらここに乗り換え予測が出ます。", " is not out yet. The swap forecast will appear here once it is.")}</div>'
+        return f'<h2>{tr("次の世代でどうする？","What to do next generation")}</h2><div class="live-empty">{bi(f"第{g+1}世代はまだ実装されていません。実装されたらここに乗り換え予測が出ます。", f"Gen {g+1} is not out yet. The swap forecast will appear here once it is.")}</div>'
     boxes = ""
     for t in TIERS:
         nx = e["byTier"][t["key"]].get("next")
@@ -538,6 +547,7 @@ def points_section(g, tr):
 
 # ---------------- 世代ページ ----------------
 PUBLISHED = "2026-09-02"
+PUB_GEN = {17: "2026-10-01"}   # 後から追加した世代の公開日
 
 def build_gen(g):
     tr = Tr()
@@ -566,14 +576,14 @@ def build_gen(g):
         + f'<a href="/stats/index.html">{tr("世代一覧","All generations")}</a>'
         + (f'<a href="/stats/{gen_dir(next_g)}/index.html">{tr(f"第{next_g}世代の熊狩り構成", f"Gen {next_g} builds")} →</a>' if next_g else "<span></span>") + '</div>')
     faq_html, faq_ld = faq_section(g, tr)
-    toc = (f'<nav class="toc" aria-label="目次"><a href="#best">🏆 {tr("理想の構成","Ideal build")}</a><a href="#heroes">🆕 {tr("新英雄の評価","New heroes")}</a>'
-           f'<a href="#compare">⚖️ {tr("理論 vs 実測","Theory vs Live")}</a><a href="#next">⏭️ {tr("次の世代","Next gen")}</a><a href="#reviews">💬 {tr("口コミ","Reviews")}</a><a href="#faq">❓ FAQ</a></nav>')
+    toc = (f'<nav class="toc" aria-label="目次" data-aria-en="Contents"><a href="#best">🏆 {tr("理想の構成","Ideal build")}</a><a href="#heroes">🆕 {tr("新英雄の評価","New heroes")}</a>'
+           f'<a href="#compare">📊 {tr("英雄ランキング","Hero rankings")}</a><a href="#next">⏭️ {tr("次の世代","Next gen")}</a><a href="#reviews">💬 {tr("口コミ","Reviews")}</a><a href="#faq">❓ FAQ</a></nav>')
     body = f"""<div class="wrap wide" data-live-page="{g}">
 <div class="crumb"><a href="/index.html">{tr("ホーム","Home")}</a> &gt; <a href="/stats/index.html">{tr("世代別 熊狩り構成","Bear Hunt builds by generation")}</a> &gt; {tr(f"第{g}世代", f"Gen {g}")}</div>
 <div class="eyebrow">{tr("ホワサバ（Whiteout Survival）熊狩り攻略 ／ 世代別ガイド","Whiteout Survival Bear Hunt · generation guide")}</div>
 <h1>{tr(f"第{g}世代の熊狩り", f"Gen {g} Bear Hunt:")} <span class="acc">{tr("おすすめ英雄・最強構成","Best Heroes &amp; Builds")}</span></h1>
 <div id="updbox"></div>
-{byline(tr)}
+{byline(tr, PUB_GEN.get(g, PUBLISHED))}
 <p class="lead">{lead_ja}</p>
 {gen_strip(g)}
 {tldr_section(g, tr)}
@@ -605,7 +615,7 @@ def build_gen(g):
 </div>
 """
     crumb_en = f'<a href="/en/index.html">Home</a> &gt; <a href="/en/stats/index.html">Bear Hunt builds by generation</a> &gt; Gen {g}'
-    ld = jsonld([ld_article(f"第{g}世代の熊狩り おすすめ英雄・最強構成", desc_ja, path, PUBLISHED),
+    ld = jsonld([ld_article(f"第{g}世代の熊狩り おすすめ英雄・最強構成", desc_ja, path, PUB_GEN.get(g, PUBLISHED)),
                  ld_crumbs([("ホーム", "/"), ("世代別 熊狩り構成", "/stats/"), (f"第{g}世代", path)]), faq_ld])
     return head(title_ja, desc_ja, path, ld) + body + tail(tr, title_en, crumb_en, h1_en, tr.m[lead_ja], desc_en=desc_en)
 
@@ -616,7 +626,7 @@ def hub_gen_card(g, tr, featured=False):
     best = e["byTier"]["whale"]["top"][0]["ids"]; f2 = e["byTier"]["f2p"]["top"][0]["ids"]
     chips = "".join(
         f'<span class="gh {h["cls"]}"><i>{CLS_JA[h["cls"]]}</i><span data-hero="{h["id"]}">{esc(HEROES[h["id"]]["name"])}</span>'
-        + ('<em title="ルーレット（無課金でも入手可）">🎡</em>' if h["acq"] == "roulette" else '<em title="デイリー割引・氷原支配者・最強王国・英雄集結">🎪</em>' if h["acq"] == "event" else '<em title="英雄殿堂">🏛</em>' if h["acq"] == "hall" else "") + '</span>' for h in gh)
+        + ('<em title="ルーレット（無課金でも入手可）" data-title-en="Lucky Wheel (F2P-obtainable)">🎡</em>' if h["acq"] == "roulette" else '<em title="デイリー割引・氷原支配者・最強王国・英雄集結" data-title-en="Daily Deals / Frostfield Ruler / Strongest Kingdom / Hero Gathering">🎪</em>' if h["acq"] == "event" else '<em title="英雄殿堂" data-title-en="Hall of Heroes">🏛</em>' if h["acq"] == "hall" else "") + '</span>' for h in gh)
     swap = [h for h in gh if hero_eval(h["id"], g)[0][0] == "v1"]
     verdict = (f'<div class="gc-verdict">{bi("🔁 乗り換え推奨：" + "・".join(HEROES[h["id"]]["name"] for h in swap), "🔁 Swap in: " + ", ".join(HEROES[h["id"]]["en"] for h in swap))}</div>' if swap
                else f'<div class="gc-verdict muted">— {tr("新英雄は据え置きで可","No swap needed")}</div>')
@@ -777,8 +787,8 @@ def build_methodology():
 <li>{tr("英雄の遠征ステータスを加算（シミュレーターの「かんたん入力」とは前提が違います）","Hero expedition stats are added (unlike the simulator’s simple-input mode)")}</li>
 <li>{tr("指数は各課金帯の1位を100とした相対値。絶対ダメージは出しません","Index relative to each tier’s #1 (=100). No absolute damage shown")}</li></ul></div>
 <div class="point"><div class="pt-h">{tr("固定しているもの","Held fixed")}</div><ul>
-<li>{tr("兵種比率：","Troop ratio: ")}{":".join(map(str, m["ratio"]))}{tr("（弓に大きく寄せた比率。ページには出しません）"," (heavily marksman-weighted, not shown)")}</li>
-<li>{tr("参加者（乗り）：","Joiners: ")}{"・".join(HEROES[j]["name"] for j in m["joiner"])}</li>
+<li>{bi("兵種比率：" + ":".join(map(str, m["ratio"])) + "（弓に大きく寄せた比率。ページには出しません）", "Troop ratio: " + ":".join(map(str, m["ratio"])) + " (heavily marksman-weighted, not shown)")}</li>
+<li>{bi("参加者（乗り）：" + "・".join(HEROES[j]["name"] for j in m["joiner"]), "Joiners: " + ", ".join(HEROES[j]["en"] for j in m["joiner"]))}</li>
 <li>{tr("係数：シミュレーターの上級者パラメータの初期値","Coefficients: the simulator’s default advanced parameters")}</li></ul></div>
 <div class="point" style="grid-column:1/-1"><div class="pt-h">{tr("課金帯モデル（暫定）","Spending-tier model (provisional)")}</div>
 <div style="overflow-x:auto"><table style="width:100%;font-size:12.5px;border-collapse:collapse"><thead><tr><th>{tr("課金帯","Tier")}</th><th>{tr("課金限定英雄","Paid-only heroes")}</th><th>{tr("ルーレット以外のSSR上限","Non-wheel SSR cap")}</th><th>{tr("専用装備Lv","Gear Lv")}</th><th>{tr("火晶Lv","FC Lv")}</th><th>Tier</th></tr></thead><tbody>{tiers_rows}</tbody></table></div>
