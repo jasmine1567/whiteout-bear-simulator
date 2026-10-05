@@ -18,7 +18,7 @@
 <title id="pgtitle">更新履歴 | ホワサバ ツールラボ</title>
 <meta name="description" id="pgdesc" content="ホワサバ ツールラボの更新履歴。ツールの追加・計算補正・データ更新・サイト構造の変更の記録。">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://docs.google.com; object-src 'none'; base-uri 'none'">
-<link rel="stylesheet" href="/assets/site.css?v=111">
+<link rel="stylesheet" href="/assets/site.css?v=114">
 <script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=85">
 <link rel="icon" type="image/png" href="/favicon.png?v=85">
@@ -41,6 +41,16 @@
 <div class="crumb" id="crumb"></div>
 <div id="bodyja" style="display:none"><h1>更新履歴</h1>
 <p class="lead">ツールの追加、計算式の補正、データ更新、サイト構造の変更などを記録しています。ゲームのアップデートに合わせて、検証結果はこのページに追記していきます。</p>
+
+<div class="card">
+<h3>2026年10月5日</h3>
+<ul>
+<li>熊狩シミュレーターで「敵の防御-25%」（ヘンドリック・ライジーア・エステラ・エリノ、周期発動のウルタール）を約1.14倍から1.25倍に変更。乗せ（参加者）で攻撃系を重ねるより防御ダウンを1枠入れた方が伸びる、という利用者の方のご指摘を反映したものです。</li>
+<li>計算データの誤りを修正。専用装備が「集結部隊の攻撃／殺傷+15%」なのに計算に入っていなかった6体（グエン・レネ・ゴードン・ヘンドリック・ブランシュ・ルーファス）を補完しました。これらを集結主に置いたときのダメージが、専用装備レベルに応じて上がります。</li>
+<li><a href="stats/index.html">世代別ページ</a>の理論ランキングの前提を見直して再計算。①参加者（乗せ）を固定せず、編成ごとに最適な4枠で比較 ②英雄を除いた素のステータスを現実的な値に引き上げ（新しい世代の英雄が実際以上に有利に出ていました）。前提は<a href="stats/methodology.html">集計方法</a>に記載しています。</li>
+<li><a href="tools/left-hero/index.html">左英雄チェッカー</a>の重複判定をシミュレーターと同じ枠の定義に統一（「敵防御ダウン」「敵被ダメUP」を独立した枠として判定）。<a href="guides/left-hero.html">左英雄の記事</a>と<a href="guides/leader-formation.html">集結主の記事</a>にも防御ダウンの扱いを追記しています。</li>
+</ul>
+</div>
 
 <div class="card">
 <h3>2026年10月1日</h3>
@@ -129,6 +139,16 @@
 <p class="lead">A record of new tools, formula calibrations, data updates and site-structure changes. Verification results are added here as the game updates.</p>
 
 <div class="card">
+<h3>October 5, 2026</h3>
+<ul>
+<li>The Bear Hunt Simulator now counts "enemy DEF -25%" (Hendrik, Ligeia, Estrella, Eleanor, and Ursar's periodic version) as x1.25 instead of about x1.14, following a player report that one DEF-down joiner beats stacking another attack joiner.</li>
+<li>Fixed a data error: six heroes whose exclusive gear gives "Rally Troops' Attack / Lethality +15%" (Gwen, Renee, Gordon, Hendrik, Blanchette, Rufus) were missing that bonus in the calculation. Their rally-leader damage now rises with gear level.</li>
+<li>Recomputed the theoretical rankings on the <a href="stats/index.html">generation pages</a> with revised assumptions: (1) joiners are no longer fixed, each line-up is compared with its best four; (2) base stats excluding heroes were raised to realistic values (newer-generation heroes were favoured more than they should be). See the <a href="stats/methodology.html">methodology page</a>.</li>
+<li>The <a href="tools/left-hero/index.html">Left-Hero Checker</a> now uses the same bucket definitions as the simulator ("enemy DEF-down" and "enemy DMG-taken" are their own buckets), and the <a href="guides/left-hero.html">left-hero</a> and <a href="guides/leader-formation.html">rally leader</a> guides explain DEF-down.</li>
+</ul>
+</div>
+
+<div class="card">
 <h3>October 1, 2026</h3>
 <ul>
 <li>Added <a href="stats/gen-17/index.html">Generation 17</a>: Aiden (infantry, Lucky Wheel), Bertha (lancer, events) and Eleanor (marksman, Hall of Heroes). Their leader skills are modelled from the official wiki's expedition skills and added to the simulator, Left-Hero Checker, Hero Database (65 heroes) and the generation pages (Gen 1–17). Bertha's follow-ups use the same calibration as existing heroes (halved, same-type counted once) so the ranking stays consistent with strategy-site picks (Mia/Dominic for lancer, Eleanor for marksman). Gen 17's unlock day (server day 1,240) is extrapolated from the 80-day cadence.</li>
@@ -215,7 +235,7 @@
 </div>
 <div id="foot"></div>
 <script src="/assets/config.js?v=96"></script>
-<script src="/assets/toolkit.js?v=111"></script>
+<script src="/assets/toolkit.js?v=114"></script>
 <script>
 (function(){
   var EN = (window.WOS_LANG==='en');

@@ -30,6 +30,53 @@
     petDefDown: '', buffDef: ''
   };
 
+  /* ====================================================================
+     MODEL … スキル倍率の「合成ルール」をここ1か所にまとめたもの。
+     ゲーム内の正確な式は未解析のため、すべて推定。解析や実測で分かったら
+     ここの値だけを直して `node _solve_theory.js` 以降を再実行すればよい。
+     変更履歴と根拠は claude/calc-model-spec.md（プロジェクト）に記録。
+     ※ 英雄個別の補正係数はここに置かない（2026-10-05 に LEADER_CALIB を撤去。個別補正はバグ扱い）。
+
+     1) BUCKET … スキルパーツの種類(k) → 合成枠。
+        同じ枠は 集結主3人＋乗せ4枠 をまたいで加算、違う枠どうしは乗算。
+        ここに無い種類は「種類＋兵種」（例 uptime, chance, tDmg:mks）がそのまま枠になる。
+        個別のパーツに b:'枠名' を書くとそれが最優先、次に tag（dtaken=敵被ダメUP枠）。
+        現在は空 ＝ 種類ごとに別枠（2026-10-01 以前と同じ）。
+        試した別案: 与ダメ系を1枠に統合
+          { dmg:'dmg', uptime:'dmg', chance:'dmg', chanceUptime:'dmg', tDmg:'dmg', tUptime:'dmg', flat:'dmg' }
+          → 兵種限定与ダメ（ルーファス等）や確率与ダメ（ミア）が大きく下がり、まとめすぎの可能性があるため 2026-10-05 に撤回。
+          実測（与ダメ乗せ3枚↔4枚の伸び）で確かめてから再検討する。
+     2) HECTOR_SPLIT … true にするとヘクトー「雷の突撃」の与ダメ部分を 'dmg' 枠へ加算（統合案とセット）。現在は false＝独立乗算。
+     3) DEFDOWN_FORM … 敵防御低下の換算。
+        'linear'  : 1 + Σx        （-25% → ×1.25。姉妹作 Kingshot の解析式に合わせた現行値）
+        'inverse' : 1 / (1 - Σx)  （-25% → ×1.333。防御ステータスを直接割る場合）
+        DEFDOWN_EFF は割引係数（2026-10-05 以前は 0.5・inverse ＝ ×1.143 相当だった）。
+        ペット/バフアイテムの防御低下（petDefDown・buffDef）も同じ式で換算する。
+     4) NDMG_RATE … 「通常攻撃ダメ+X%」を全体ダメージへ換算する割合。
+     5) NORM … 全体の水準合わせ（1＝補正なし）。実測と比べて全体が高い/低いときはここだけ動かす。
+     ==================================================================== */
+  var MODEL = {
+    version: '2026-10-05c',
+    BUCKET: {},
+    HECTOR_SPLIT: false,
+    DEFDOWN_FORM: 'linear',
+    DEFDOWN_EFF: 1,
+    DEFDOWN_CAP: 0.9,
+    NDMG_RATE: 0.8,
+    NORM: 1
+  };
+  /* パーツ → 合成枠の名前（シミュレーターの重複表示・左英雄チェッカーも同じ関数を使う） */
+  function bucketOf(p) {
+    if (p.b) return p.b;
+    if (p.tag) return p.tag;
+    return MODEL.BUCKET[p.k] || (p.k + (p.cls ? ':' + p.cls : ''));
+  }
+  /* 敵防御低下 x（0〜1）→ 倍率 */
+  function defdownMul(x) {
+    x = x < 0 ? 0 : x > MODEL.DEFDOWN_CAP ? MODEL.DEFDOWN_CAP : x;
+    return MODEL.DEFDOWN_FORM === 'inverse' ? 1 / (1 - x) : 1 + x;
+  }
+
   function createEngine(cfg, heroes, leaderSel, joinerSel) {
     cfg = cfg || {};
     /* index.html の module スコープ定数（L1041, L1512 相当） */
@@ -70,12 +117,11 @@ function j(e, t, a, r, l) {
     case "dmg":
       return 1 + e.v * t;
     case "ndmg":
-      return 1 + e.v * t * 0.8;
+      return 1 + e.v * t * MODEL.NDMG_RATE;
     case "defdown": {
-      var dEff = e.eff !== undefined ? e.eff : 0.5;
-      var dv = e.v * t * dEff;
-      dv = dv < 0 ? 0 : dv > 0.9 ? 0.9 : dv;
-      return 1 / (1 - dv);
+      /* 換算式と係数は MODEL.DEFDOWN_FORM / DEFDOWN_EFF。e.eff は個別スキルの按分用 */
+      var dEff = e.eff !== undefined ? e.eff : MODEL.DEFDOWN_EFF;
+      return defdownMul(e.v * t * dEff);
     }
     case "atk":
       return 1 + r.bA * e.v * t;
@@ -125,10 +171,11 @@ function j(e, t, a, r, l) {
       };
       const e_decay = e.decay != null ? e.decay : 0.85, e_hits = e.hits != null ? e.hits : 10, e_calib = e.calib != null ? e.calib : 1;
       var __im = a.inf + a.mks;
-      return (
-        (1 + a.inf * r(e.infV * t) + a.mks * r(e.mksV * t)) *
-        s(1, 1 + __im * e.blitzP * e.blitzV * t, 1 + __im * e.blitzV * t)
-      );
+      var __hd = 1 + a.inf * r(e.infV * t) + a.mks * r(e.mksV * t);                        /* 与ダメ部分 */
+      var __hb = s(1, 1 + __im * e.blitzP * e.blitzV * t, 1 + __im * e.blitzV * t);        /* 追撃部分 */
+      if (e.part === 'dmg') return __hd;
+      if (e.part === 'blitz') return __hb;
+      return __hd * __hb;
     }
   }
   return 1;
@@ -288,9 +335,16 @@ function P(e, n) {
       if (!sk || !sk.parts) return;
       var lv = sl.lv / 5;
       sk.parts.forEach(function (p) {
+        if (p.k === 'hector' && MODEL.HECTOR_SPLIT) {
+          /* 雷の突撃の与ダメ部分は与ダメ枠へ加算、追撃部分は独立枠（MODEL.HECTOR_SPLIT=false で従来の独立乗算） */
+          var hp = {}; for (var hk in p) hp[hk] = p[hk];
+          hp.part = 'dmg';   ab.dmg = (ab.dmg || 0) + (__JSKILL(hp, lv, r, t, e) - 1);
+          hp.part = 'blitz'; ab['follow:hector'] = (ab['follow:hector'] || 0) + (__JSKILL(hp, lv, r, t, e) - 1);
+          return;
+        }
         var mt = __JSKILL(p, lv, r, t, e);
         if (__ADD[p.k] || p.tag) {
-          var sg = p.tag ? p.tag : p.k + (p.cls ? ":" + p.cls : "");
+          var sg = bucketOf(p);   /* 枠の決め方は MODEL.BUCKET */
           ab[sg] = (ab[sg] || 0) + (mt - 1);
         } else {
           ml *= mt;
@@ -314,10 +368,9 @@ function P(e, n) {
   const L = mLeader,
     M = mLeader > 0 ? mAll / mLeader : 1;
   var dd = ((b(cfg.petDefDown) || 0) + (b(cfg.buffDef) || 0)) / 100;
-  dd = dd < 0 ? 0 : dd > 0.9 ? 0.9 : dd;
-  const ddMul = 1 / (1 - dd);
+  const ddMul = defdownMul(dd * MODEL.DEFDOWN_EFF);
   const I = (1 + t.bA * p) * (1 + g) * (1 + f) * F(s) * ddMul,
-    N = v * j * d * L * M * I * m * (1 + S / 100);
+    N = v * j * d * L * M * I * m * (1 + S / 100) * MODEL.NORM;
   return {
     score: N * R,
     neff: R * j,
@@ -355,5 +408,5 @@ function H() {
     };
   }
 
-  return { DEFAULTS: DEFAULTS, createEngine: createEngine };
+  return { DEFAULTS: DEFAULTS, MODEL: MODEL, bucketOf: bucketOf, defdownMul: defdownMul, createEngine: createEngine };
 });

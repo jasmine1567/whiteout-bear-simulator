@@ -19,7 +19,7 @@
 <title>熊狩り 左英雄チェッカー｜乗りで効く英雄を一発判定 | ホワサバ ツールラボ</title>
 <meta name="description" content="ホワサバ熊狩り(Bear Hunt)の「左英雄」が乗りで効くかを一発判定。第1遠征スキルの有効/無効、4枠の組み合わせ最適化、世代別の候補一覧。集結に乗る前のチェックに。">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
-<link rel="stylesheet" href="/assets/site.css?v=111">
+<link rel="stylesheet" href="/assets/site.css?v=114">
 <script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
 <!-- ▼ AdSense承認後: コードスニペットを貼り付け ▼ -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=85">
@@ -170,8 +170,9 @@
 <div id="foot"></div>
 
 <script src="/assets/config.js?v=96"></script>
-<script src="/assets/heroes.js?v=89"></script>
-<script src="/assets/toolkit.js?v=111"></script>
+<script src="/assets/heroes.js?v=91"></script>
+<script src="/assets/bear-calc.js?v=101"></script>
+<script src="/assets/toolkit.js?v=114"></script>
 <script>
 document.getElementById('nav').innerHTML = WOS_NAV(2);
 document.getElementById('foot').innerHTML = WOS_FOOT(2);
@@ -187,14 +188,10 @@ function bearEff(h){ return !!(h && h.joiner && !h.bearNoEffect); }
 // joiner第1スキルの種類分類(同種=加算 / 異種=乗算)
 function kindOf(h){
   if(!bearEff(h)) return null;
-  var p=h.joiner.parts[0];
-  if(p.k==='dmg'||p.k==='ndmg') return 'dmg';   /* ndmg=通常攻撃ダメUP も与ダメUP系として扱う */
-  if(p.k==='atk') return 'atk';
-  if(p.k==='leth') return 'leth';
-  if(p.k.indexOf('chance')===0||p.k==='periodic'||p.k==='uptime'||p.k.indexOf('t')===0) return 'proc:'+h.id;
-  return 'other';
+  /* 枠の決め方は計算コア（bear-calc.js の MODEL.BUCKET）と共通 */
+  return WOS_CALC.bucketOf(h.joiner.parts[0]);
 }
-var KIND_LABEL={dmg:t('与ダメUP系','DMG-up'),atk:t('攻撃UP系','ATK-up'),leth:t('殺傷UP系','Lethality-up')};
+var KIND_LABEL={dmg:t('与ダメUP系','DMG-up'),atk:t('攻撃UP系','ATK-up'),leth:t('殺傷UP系','Lethality-up'),defdown:t('敵防御ダウン系','Enemy DEF-down'),dtaken:t('敵被ダメUP系','Enemy DMG-taken'),ndmg:t('通常攻撃ダメUP系','Normal-attack DMG')};
 
 function buildPicker(){
   var g=gen(), html='';

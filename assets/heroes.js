@@ -275,6 +275,7 @@ window.WOS_HEROES = (function() {
     },
     {
       id: "gwen",
+      gear: { type: "leth", min: 0.05, max: 0.15, label: "集結殺傷+5→15%" },   /* 2026-10-05 補完: 英雄一覧・公式wikiでは集結発動の専用装備。計算データから漏れていた */
       name: "グエン",
       cls: "mks",
       gen: 5,
@@ -295,6 +296,7 @@ window.WOS_HEROES = (function() {
     },
     {
       id: "renee",
+      gear: { type: "leth", min: 0.05, max: 0.15, label: "集結殺傷+5→15%" },   /* 2026-10-05 補完: 英雄一覧・公式wikiでは集結発動の専用装備。計算データから漏れていた */
       name: "レネ",
       cls: "lan",
       gen: 6,
@@ -324,6 +326,7 @@ window.WOS_HEROES = (function() {
     },
     {
       id: "gordon",
+      gear: { type: "leth", min: 0.05, max: 0.15, label: "集結殺傷+5→15%" },   /* 2026-10-05 補完: 英雄一覧・公式wikiでは集結発動の専用装備。計算データから漏れていた */
       name: "ゴードン",
       cls: "lan",
       gen: 7,
@@ -379,6 +382,7 @@ window.WOS_HEROES = (function() {
     },
     {
       id: "hendrik",
+      gear: { type: "atk", min: 0.05, max: 0.15, label: "集結攻撃+5→15%(アビサル・ブレッシング)" },   /* 2026-10-05 補完: 英雄一覧・公式wikiでは集結発動の専用装備。計算データから漏れていた */
       name: "ヘンドリック",
       cls: "mks",
       gen: 8,
@@ -449,6 +453,7 @@ window.WOS_HEROES = (function() {
     },
     {
       id: "blanchette",
+      gear: { type: "leth", min: 0.05, max: 0.15, label: "集結殺傷+5→15%" },   /* 2026-10-05 補完: 英雄一覧・公式wikiでは集結発動の専用装備。計算データから漏れていた */
       name: "ブランシュ",
       cls: "mks",
       gen: 10,
@@ -487,6 +492,7 @@ window.WOS_HEROES = (function() {
     },
     {
       id: "rufus",
+      gear: { type: "atk", min: 0.05, max: 0.15, label: "集結攻撃+5→15%(ブレイジング・レギオン)" },   /* 2026-10-05 補完: 英雄一覧・公式wikiでは集結発動の専用装備。計算データから漏れていた */
       name: "ルーファス",
       cls: "mks",
       gen: 11,

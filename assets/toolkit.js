@@ -375,10 +375,10 @@
     'guides/common-myths.html':['2026-06-21','2026-07-24'],'guides/cyril-expert.html':['2026-07-24','2026-07-24'],
     'guides/cyril-talent.html':['2026-06-21','2026-07-24'],'guides/damage-not-growing.html':['2026-06-21','2026-07-24'],
     'guides/f2p-damage.html':['2026-06-21','2026-07-24'],'guides/how-to-use.html':['2026-06-21','2026-09-03'],
-    'guides/leader-formation.html':['2026-06-21','2026-10-01'],'guides/left-hero.html':['2026-06-21','2026-09-02'],
+    'guides/leader-formation.html':['2026-06-21','2026-10-05'],'guides/left-hero.html':['2026-06-21','2026-10-05'],
     'guides/light-spender.html':['2026-06-21','2026-07-24'],'guides/troop-ratio.html':['2026-06-21','2026-07-24'],
     /* ツール: [公開日, 最終更新] */
-    'tools/bear-hunt':['2026-06-16','2026-10-01'],'tools/left-hero':['2026-06-16','2026-10-01'],
+    'tools/bear-hunt':['2026-06-16','2026-10-05'],'tools/left-hero':['2026-06-16','2026-10-05'],
     'tools/troop-ratio':['2026-06-16','2026-10-01'],'tools/damage-doctor':['2026-06-16','2026-09-14'],
     'tools/commander-type':['2026-06-16','2026-09-14'],'tools/king-castle':['2026-06-19','2026-09-14'],
     'tools/foundry-battle':['2026-06-26','2026-09-14'],'tools/hero-list':['2026-06-26','2026-10-01'],

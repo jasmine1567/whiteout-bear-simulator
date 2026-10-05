@@ -20,7 +20,7 @@
 <title>What is the left hero? Joiner heroes and the 4-slot rule | Whiteout Tools Lab</title>
 <meta name="description" content="In Bear Hunt only the leftmost hero's first expedition skill counts when you join a rally. How the 4 joiner slots are chosen, which heroes work, and common mistakes.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
-<link rel="stylesheet" href="/assets/site.css?v=111">
+<link rel="stylesheet" href="/assets/site.css?v=114">
 <script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
 <!-- ▼ AdSense承認後: コードスニペットを貼り付け ▼ -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=85">
@@ -57,6 +57,7 @@
 <div class="ad-slot"></div>
 <h2>Why spreading skill types is stronger</h2>
 <p>Same-type skills add; different types multiply. Four +25% DMG sum to +100% (2.0x). But two +25% DMG and two +25% ATK give 1.5x1.5 = 2.25x, about 12% more at the same skill level. Spread DMG / ATK / Lethality / proc skills.</p>
+<p>An often-missed bucket is <b>enemy defense down</b> (first skill of Hendrik, Ligeia, Estrella and Eleanor: enemy DEF -25%). It multiplies with DMG, ATK and Lethality alike, and this site counts it as x1.25 per slot. The more attack or damage buffs the leader already carries, the more one DEF-down joiner beats a fourth attack joiner. If the leader already has DEF-down (e.g. Eleanor), it adds within the same bucket and gains less.</p>
 <h2>Common mistakes</h2>
 <ul><li>Placing a strong hero whose skill is useless on the bear.</li><li>Four identical DMG heroes (only adds).</li><li>Early-joining with a Lv1 hero and blocking a slot.</li></ul>
 <h2>How are the 4 slots chosen? (selection algorithm)</h2>
@@ -64,13 +65,13 @@
 <p>This is why "don't early-join with a Lv1 hero" is repeated. With only 4 slots, filling one with a low-level skill steals a slot that could have held a stronger buff, lowering the alliance's total. The rule: level your left hero to Lv5 before joining.</p>
 
 <h2>Recommended left heroes (F2P-friendly)</h2>
-<p>What works on the bear are skills that raise damage/attack/lethality. Among easily-obtained permanent heroes, the +25% damage types like <b>Jessie, Jasser, Seo-yoon</b> are staples. Level them to Lv5 and place them on the left to function well as rally buffs. For spenders, each generation's damage/attack/lethality skill holders are candidates, but the first step is fixing a hero "whose skill works on the bear" on your left. The Left-Hero Checker instantly tells you whether your heroes work on the bear.</p>
+<p>What works on the bear are skills that raise damage/attack/lethality, plus skills that lower enemy defense or raise enemy damage taken. Among easily-obtained permanent heroes, the +25% damage types like <b>Jessie, Jasser, Seo-yoon</b> are staples. Level them to Lv5 and place them on the left to function well as rally buffs. For spenders, each generation's damage/attack/lethality skill holders are candidates, along with the DEF -25% heroes Hendrik (Gen 8), Ligeia (Gen 12), Estrella (Gen 15) and Eleanor (Gen 17), but the first step is fixing a hero "whose skill works on the bear" on your left. The Left-Hero Checker instantly tells you whether your heroes work on the bear.</p>
 <div class="cta"><a class="btn" href="../tools/left-hero/index.html">Diagnose your 4 slots</a></div></div><div class="relbar"><a href="../tools/left-hero/index.html">→ Left-Hero Checker</a><a href="../tools/troop-ratio/index.html">→ Troop Ratio Simulator</a><a href="../tools/damage-doctor/index.html">→ Damage Doctor</a><a href="../tools/bear-hunt/index.html">→ Bear Hunt Simulator</a></div>
 </div>
 <nav class="relposts" aria-label="関連記事"><h2 class="relposts-h">Related articles</h2><ul><li><a href="leader-formation.html">Rally leader: recommended formations & heroes</a></li><li><a href="troop-ratio.html">What's the right troop ratio?</a></li><li><a href="bear-hunt-guide.html">How Bear Hunt damage works (full guide)</a></li><li><a href="common-myths.html">7 common Bear Hunt myths</a></li></ul></nav>
 <div id="foot"></div>
 <script src="/assets/config.js?v=96"></script>
-<script src="/assets/toolkit.js?v=111"></script>
+<script src="/assets/toolkit.js?v=114"></script>
 <script>
 document.getElementById('nav').innerHTML=WOS_NAV(1);
 document.getElementById('foot').innerHTML=WOS_FOOT(1);

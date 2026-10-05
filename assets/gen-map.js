@@ -139,17 +139,20 @@
      hallSlots : 3枠のうち「ルーレット以外で集めるSSR（英雄殿堂・イベント）」を何体まで使えるか
      paid      : 課金限定英雄を使えるか
      gear/fc/tier/base : 英雄装備・領主装備・宝石などの差を丸めた前提値
+     base = 英雄の遠征ステータスを除いた素のステータス%（team=部隊全体、per=兵種別）。
+       2026-10-05: 70〜160% 台だった値を現実寄りに引き上げ（低すぎて英雄の世代差＝遠征ステ差が過大に出ていた）。
+       f2p 合計 攻撃400/殺傷320、mid 700/580、whale 1200/1050 は運営者の目安値。
      ※ 数値は暫定。実測が集まったら各課金帯の中央値に置き換える。 */
   var TIERS = {
     f2p:   { key: 'f2p',   label: '無課金・微課金', label_en: 'F2P / light spender',
              hallSlots: 1, paid: false, gear: 1,  fc: 2, tier: 10,
-             base: { team: { a: 70,  l: 45  }, per: { a: 35, l: 22 } } },
+             base: { team: { a: 250, l: 200 }, per: { a: 150, l: 120 } } },
     mid:   { key: 'mid',   label: '中課金',        label_en: 'Mid spender',
              hallSlots: 2, paid: true,  gear: 5,  fc: 5, tier: 11,
-             base: { team: { a: 110, l: 75  }, per: { a: 55, l: 38 } } },
+             base: { team: { a: 450, l: 380 }, per: { a: 250, l: 200 } } },
     whale: { key: 'whale', label: '石油王',        label_en: 'Whale',
              hallSlots: 3, paid: true,  gear: 10, fc: 10, tier: 12,   /* 石油王＝全ステータスMAX（専用装備Lv10・火晶Lv10・T12）*/
-             base: { team: { a: 160, l: 110 }, per: { a: 80, l: 55 } } }
+             base: { team: { a: 800, l: 700 }, per: { a: 400, l: 350 } } }
   };
   var TIER_ORDER = ['f2p', 'mid', 'whale'];
 
@@ -169,7 +172,7 @@
 
   /* 理論ソルバーで内部固定する兵種比率（ページには表示しない） */
   var SOLVER_RATIO = [1, 4, 95];
-  /* 参加者は標準セットで固定 */
+  /* 旧: ソルバーの固定乗せ。2026-10-05 以降ソルバーは編成ごとの最適乗せを使うため未使用（参考として残す） */
   var SOLVER_JOINER = [
     { heroId: 'jessie', lv: 5 }, { heroId: 'jasser', lv: 5 },
     { heroId: 'seoyoon', lv: 5 }, { heroId: 'wayne', lv: 5 }

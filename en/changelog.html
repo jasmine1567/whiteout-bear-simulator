@@ -19,7 +19,7 @@
 <title id="pgtitle">Changelog | Whiteout Tools Lab</title>
 <meta name="description" id="pgdesc" content="Changelog of Whiteout Tools Lab: new tools, calculation corrections, data updates and site structure changes.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://docs.google.com; object-src 'none'; base-uri 'none'">
-<link rel="stylesheet" href="/assets/site.css?v=111">
+<link rel="stylesheet" href="/assets/site.css?v=114">
 <script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=85">
 <link rel="icon" type="image/png" href="/favicon.png?v=85">
@@ -46,6 +46,16 @@
 
 <div id="body"><h1>Changelog</h1>
 <p class="lead">A record of new tools, formula calibrations, data updates and site-structure changes. Verification results are added here as the game updates.</p>
+
+<div class="card">
+<h3>October 5, 2026</h3>
+<ul>
+<li>The Bear Hunt Simulator now counts "enemy DEF -25%" (Hendrik, Ligeia, Estrella, Eleanor, and Ursar's periodic version) as x1.25 instead of about x1.14, following a player report that one DEF-down joiner beats stacking another attack joiner.</li>
+<li>Fixed a data error: six heroes whose exclusive gear gives "Rally Troops' Attack / Lethality +15%" (Gwen, Renee, Gordon, Hendrik, Blanchette, Rufus) were missing that bonus in the calculation. Their rally-leader damage now rises with gear level.</li>
+<li>Recomputed the theoretical rankings on the <a href="stats/index.html">generation pages</a> with revised assumptions: (1) joiners are no longer fixed, each line-up is compared with its best four; (2) base stats excluding heroes were raised to realistic values (newer-generation heroes were favoured more than they should be). See the <a href="stats/methodology.html">methodology page</a>.</li>
+<li>The <a href="tools/left-hero/index.html">Left-Hero Checker</a> now uses the same bucket definitions as the simulator ("enemy DEF-down" and "enemy DMG-taken" are their own buckets), and the <a href="guides/left-hero.html">left-hero</a> and <a href="guides/leader-formation.html">rally leader</a> guides explain DEF-down.</li>
+</ul>
+</div>
 
 <div class="card">
 <h3>October 1, 2026</h3>
@@ -132,7 +142,7 @@
 </div>
 <div id="foot"></div>
 <script src="/assets/config.js?v=96"></script>
-<script src="/assets/toolkit.js?v=111"></script>
+<script src="/assets/toolkit.js?v=114"></script>
 <script>
 (function(){
   var EN = (window.WOS_LANG==='en');
