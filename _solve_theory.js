@@ -10,7 +10,7 @@
    - 計算式は熊狩シミュレーターと同一（bear-calc.js）。係数の既定値は CALC.DEFAULTS（= input の value 属性）
    - 英雄の遠征ステータスは加算する（applyHeroStats）。シミュレーターの「かんたん入力」とは前提が異なる
    - 兵種比率は GENMAP.SOLVER_RATIO で固定し、英雄の組み合わせだけを比較する
-   - 参加者は GENMAP.SOLVER_JOINER で固定
+   - 参加者（乗せ4枠）は固定しない。編成ごとに、その世代までの英雄の第1遠征スキルから最もダメージが伸びる4枠を選ぶ（同じスキルの重複可）
    - 課金帯ごとの装備・火晶・素ステは GENMAP.TIERS の暫定値 */
 'use strict';
 const fs = require('fs'), path = require('path'), vm = require('vm');
@@ -24,28 +24,46 @@ vm.runInContext(fs.readFileSync(path.join(ROOT, 'assets/heroes.js'), 'utf8'), sb
 const HEROES = sb.window.WOS_HEROES;
 const byId = Object.fromEntries(HEROES.map(h => [h.id, h]));
 
-const RATIO = GM.SOLVER_RATIO, JOINER = GM.SOLVER_JOINER, TOTAL = 100000;
+const RATIO = GM.SOLVER_RATIO, TOTAL = 100000;
 const counts = { inf: TOTAL * RATIO[0] / 100, lan: TOTAL * RATIO[1] / 100, mks: TOTAL * RATIO[2] / 100 };
 const TOP_N = 10;
 
-function evalComp(ids, tier) {
+/* 乗せ候補: その世代までの英雄の第1遠征スキル。中身が同じスキルは1つにまとめる（代表は世代の古い英雄） */
+function joinerPool(gen) {
+  const seen = {}, out = [];
+  HEROES.filter(h => h.joiner && !h.bearNoEffect && h.gen <= gen).sort((a, b) => a.gen - b.gen).forEach(h => {
+    const key = JSON.stringify(h.joiner.parts);
+    if (!seen[key]) { seen[key] = 1; out.push(h.id); }
+  });
+  return out;
+}
+/* 編成ごとの最適乗せ: 1枠ずつ、足したときに最もスコアが伸びるスキルを選ぶ（同枠は加算・別枠は乗算なので貪欲法で足りる） */
+function evalComp(ids, tier, pool) {
   const leader = ids.map(id => ({ heroId: id, lv: 5, gear: tier.gear }));
   const cfg = Object.assign({}, CALC.DEFAULTS, { tier: String(tier.tier), fcLevel: String(tier.fc) });
-  const eng = CALC.createEngine(cfg, HEROES, leader, JOINER);
+  const eng = CALC.createEngine(cfg, HEROES, leader, []);
   const add = eng.heroStats(leader);                    /* 遠征ステを加算（ソルバー専用） */
   const stats = { team: { a: tier.base.team.a, l: tier.base.team.l } };
   ['inf', 'lan', 'mks'].forEach(c => { stats[c] = { a: tier.base.per.a + add[c].a, l: tier.base.per.l + add[c].l }; });
-  return eng.score('ev', { counts, stats, leader, joiner: JOINER }).score;
+  const sc = J => eng.score('ev', { counts, stats, leader, joiner: J }).score;
+  const J = []; let best = sc(J);
+  for (let k = 0; k < 4; k++) {
+    let bi = null, bs = best;
+    for (const id of pool) { const s2 = sc(J.concat([{ heroId: id, lv: 5 }])); if (s2 > bs) { bs = s2; bi = id; } }
+    if (bi === null) break;
+    J.push({ heroId: bi, lv: 5 }); best = bs;
+  }
+  return { score: best, joiner: J.map(j => j.heroId) };
 }
 
 function solve(gen, tier) {
   const pool = cls => HEROES.filter(h => h.cls === cls && GM.usable(h, gen, tier));
-  const out = [];
+  const out = [], jp = joinerPool(gen);
   const best = { inf: {}, lan: {}, mks: {} };            /* 枠別: その英雄を置いたときの最高スコア */
   for (const a of pool('inf')) for (const b of pool('lan')) for (const c of pool('mks')) {
     if (GM.hallCount([a, b, c]) > tier.hallSlots) continue;
-    const sc = evalComp([a.id, b.id, c.id], tier);
-    out.push({ ids: [a.id, b.id, c.id], score: sc });
+    const r = evalComp([a.id, b.id, c.id], tier, jp), sc = r.score;
+    out.push({ ids: [a.id, b.id, c.id], score: sc, joiner: r.joiner });
     if (!(best.inf[a.id] > sc)) best.inf[a.id] = sc;
     if (!(best.lan[b.id] > sc)) best.lan[b.id] = sc;
     if (!(best.mks[c.id] > sc)) best.mks[c.id] = sc;
@@ -63,7 +81,7 @@ function solve(gen, tier) {
 const t0 = Date.now();
 const result = {
   generatedAt: new Date().toISOString(),
-  model: { ratio: RATIO, joiner: JOINER.map(j => j.heroId), totalTroops: TOTAL, applyHeroStats: true,
+  model: { ratio: RATIO, joiner: 'best', calcModel: CALC.MODEL, totalTroops: TOTAL, applyHeroStats: true,
            defaults: CALC.DEFAULTS, note: '計算式は熊狩シミュレーターと同一。推定値であり実戦の記録ではない。' },
   tiers: GM.TIER_ORDER.map(k => ({ key: k, label: GM.TIERS[k].label, label_en: GM.TIERS[k].label_en,
            hallSlots: GM.TIERS[k].hallSlots, paid: GM.TIERS[k].paid, gear: GM.TIERS[k].gear,
@@ -78,7 +96,7 @@ for (let g = 1; g <= GM.MAX; g++) {
     byTier: {} };
   for (const tk of GM.TIER_ORDER) {
     const r = solve(g, GM.TIERS[tk]);
-    entry.byTier[tk] = { evaluated: r.evaluated, top: r.top.map(t => ({ ids: t.ids, score: Math.round(t.score) })), slotRank: r.slotRank };
+    entry.byTier[tk] = { evaluated: r.evaluated, top: r.top.map(t => ({ ids: t.ids, score: Math.round(t.score), joiner: t.joiner })), slotRank: r.slotRank };
   }
   result.gens[g] = entry;
 }

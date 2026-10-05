@@ -9,9 +9,9 @@ import os, re, json, html, subprocess
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 BASE_URL = "https://whitesim-lab.com"
-V = "111"            # 共有アセットの版数
-HV = "89"           # heroes.js の版数
-UPDATED = "2026-10-01"
+V = "114"            # 共有アセットの版数
+HV = "91"           # heroes.js の版数
+UPDATED = "2026-10-05"
 NOTES_DIR = os.path.join(ROOT, "_stats_notes")
 DEFAULT_TIER = "whale"   # 理論側のデフォルト表示（石油王）
 
@@ -373,7 +373,7 @@ def best_section(g, tr):
 {tier_picker(tr, big=True)}
 </div>
 {panes}
-<p class="note">※ {tr("理論値は熊狩ダメージ・シミュレーターと同じ計算式による推定です。兵種比率・参加者・係数は固定（","Estimates use the same formula as the Bear Hunt Simulator. Ratio, joiners and coefficients are fixed (")}<a href="/stats/methodology.html">{tr("前提を見る","see methodology")}</a>{tr("）。",").")}</p>
+<p class="note">※ {tr("理論値は熊狩ダメージ・シミュレーターと同じ計算式による推定です。兵種比率と係数は固定、参加者（乗せ）は編成ごとに最適な4枠で計算（","Estimates use the same formula as the Bear Hunt Simulator. Ratio and coefficients are fixed; joiners are the best four for each line-up (")}<a href="/stats/methodology.html">{tr("前提を見る","see methodology")}</a>{tr("）。",").")}</p>
 </section>"""
 
 # ---------------- 結論（先に答え） ----------------
@@ -796,10 +796,14 @@ def build_methodology():
 <li>{tr("計算式は熊狩ダメージ・シミュレーターと同一（assets/bear-calc.js）","Same formula as the Bear Hunt Simulator (assets/bear-calc.js)")}</li>
 <li>{tr("その世代で入手できる英雄を 盾×槍×弓 で総当たり","Brute force over all obtainable INF × LAN × MKS")}</li>
 <li>{tr("英雄の遠征ステータスを加算（シミュレーターの「かんたん入力」とは前提が違います）","Hero expedition stats are added (unlike the simulator’s simple-input mode)")}</li>
+<li>{tr("同じ種類のスキルは加算、違う種類は乗算で合成します","Skills of the same type add; different types multiply")}</li>
+<li>{tr("敵の防御低下（-25%）は1.25倍として計算（2026年10月5日に変更。それ以前は約1.14倍）","Enemy DEF down (-25%) counts as x1.25 (changed Oct 5, 2026; previously about x1.14)")}</li>
+<li>{tr("英雄ごとの個別補正は行いません。攻略サイトの評価と順位が違う場合も、計算結果をそのまま掲載します","No per-hero adjustments are applied. Where the result differs from community tier lists, the computed result is shown as is")}</li>
 <li>{tr("指数は各課金帯の1位を100とした相対値。絶対ダメージは出しません","Index relative to each tier’s #1 (=100). No absolute damage shown")}</li></ul></div>
 <div class="point"><div class="pt-h">{tr("固定しているもの","Held fixed")}</div><ul>
 <li>{bi("兵種比率：" + ":".join(map(str, m["ratio"])) + "（弓に大きく寄せた比率。ページには出しません）", "Troop ratio: " + ":".join(map(str, m["ratio"])) + " (heavily marksman-weighted, not shown)")}</li>
-<li>{bi("参加者（乗り）：" + "・".join(HEROES[j]["name"] for j in m["joiner"]), "Joiners: " + ", ".join(HEROES[j]["en"] for j in m["joiner"]))}</li>
+<li>{tr("参加者（乗り）は固定せず、編成ごとに、その世代までの英雄の第1遠征スキルから最もダメージが伸びる4枠を選んで比較します（2026年10月5日に変更。それ以前はジェシー・ジャセル・ソユン・ウェインで固定）","Joiners are not fixed: for each line-up we pick the four first-expedition skills (from heroes up to that generation) that add the most damage (changed Oct 5, 2026; previously fixed to Jessie, Jasser, Seo-yoon and Wayne)")}</li>
+<li>{tr("英雄の遠征ステータスを除いた素のステータスは、無課金 攻撃400%／殺傷320%、中課金 700%／580%、石油王 1200%／1050% の目安値（2026年10月5日に引き上げ）","Base stats excluding hero expedition stats are rough guides: F2P 400% ATK / 320% Lethality, mid 700% / 580%, whale 1200% / 1050% (raised Oct 5, 2026)")}</li>
 <li>{tr("係数：シミュレーターの上級者パラメータの初期値","Coefficients: the simulator’s default advanced parameters")}</li></ul></div>
 <div class="point" style="grid-column:1/-1"><div class="pt-h">{tr("課金帯モデル（暫定）","Spending-tier model (provisional)")}</div>
 <div style="overflow-x:auto"><table style="width:100%;font-size:12.5px;border-collapse:collapse"><thead><tr><th>{tr("課金帯","Tier")}</th><th>{tr("課金限定英雄","Paid-only heroes")}</th><th>{tr("ルーレット以外のSSR上限","Non-wheel SSR cap")}</th><th>{tr("専用装備Lv","Gear Lv")}</th><th>{tr("火晶Lv","FC Lv")}</th><th>Tier</th></tr></thead><tbody>{tiers_rows}</tbody></table></div>
