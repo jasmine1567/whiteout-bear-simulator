@@ -40,7 +40,7 @@ window.t = function(ja, en){ return window.WOS_LANG==='en' ? (en!==undefined?en:
    REPLACE_ で始まる間はそのリンクは表示されません(誤公開防止)。
    不要にする場合は enabled:false。 */
 window.WOS_AFFILIATE = {
-  enabled: true,
+  enabled: false,   /* 2026-10-07: 収益化を行わない方針（ゲーム内画像の利用条件）。true に戻さないこと */
   vendors: {
     lootbar: { url: "REPLACE_WITH_LOOTBAR_AFFILIATE_URL" }, /* 本命: WoS直接トップアップ(最大10%/日本は www.lootbar.com/ja/top-up/whiteout-survival) */
     eneba: { url: "REPLACE_WITH_ENEBA_AFFILIATE_URL" }      /* 併載: 公式ギフトカード(地域非依存)。クリーンな“ログイン不要”重視ならSEAGMに差し替え可 */

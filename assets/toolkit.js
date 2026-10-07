@@ -18,6 +18,11 @@
     return '<svg class="ms'+(cls?' '+cls:'')+'" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="'+d+'"/></svg>';
   }
   window.WOS_ICON = ic;
+  /* 英雄アイコン（assets/hero-img.js）を全ページで読み込む。記事中の英雄名にアイコンが付く */
+  (function(){
+    if(window.WOS_heroImg || document.querySelector('script[src*="/assets/hero-img.js"]')) return;
+    var s = document.createElement('script'); s.src = '/assets/hero-img.js?v=121'; s.async = true; document.head.appendChild(s);
+  })();
   function langLink(){
     return EN
       ? '<a id="langtgl" href="#" onclick="WOS_setLang(\'ja\');return false" aria-label="日本語版に切り替え">'+ic('translate')+'<span>日本語</span></a>'
@@ -265,10 +270,10 @@
     var d = B + '/';
     var f = EN ? {
       desc:"Free, unofficial calculators and guides for Whiteout Survival's Bear Hunt — built and verified by an active player on Server 1567.",
-      note:"This is a fan-made, unofficial strategy site. Whiteout Survival is a trademark of Century Games; this site is not affiliated with the developer or operator."
+      note:"This is a fan-made, unofficial strategy site. Whiteout Survival is a trademark of Century Games; this site is not affiliated with the developer or operator. In-game images are © Century Games and are used on this non-commercial fan site, which carries no ads."
     } : {
       desc:"ホワイトアウト・サバイバルの熊狩りを中心に、無料で使える計算ツールと攻略記事を公開しています。1567サーバーで実際にプレイしながら検証しています。",
-      note:"本サイトはファンメイドの非公式攻略サイトです。Whiteout Survival は Century Games の商標であり、当サイトは開発元・運営元とは一切関係ありません。"
+      note:"本サイトはファンメイドの非公式攻略サイトです。Whiteout Survival は Century Games の商標であり、当サイトは開発元・運営元とは一切関係ありません。ゲーム内画像の権利は Century Games に帰属し、広告を掲載しない非営利のファンサイトとして利用しています。"
     };
     var cols = MENU.map(function(c){
       var links = '';

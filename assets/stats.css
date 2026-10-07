@@ -367,3 +367,24 @@ details.faq .faq-a .g{font-size:10px;color:var(--muted);margin:0 5px 0 2px}
 [data-live-page].live-on .cmp-half{grid-template-columns:1fr 1fr}
 @media(max-width:1000px){[data-live-page].live-on .cmp-half{grid-template-columns:1fr}}
 .live-col[hidden]{display:none!important}
+
+/* ---- v115: 乗せ英雄ランキング・偏差値 ---- */
+.jn-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:760px){.jn-grid{grid-template-columns:1fr}}
+.rk-h .jx{font-size:11px;font-weight:800;margin-left:2px;opacity:.75}
+.dv-wrap{display:grid;grid-template-columns:minmax(220px,1fr) minmax(240px,1.2fr);gap:16px;align-items:end;margin:10px 0}
+@media(max-width:640px){.dv-wrap{grid-template-columns:1fr}}
+.dv-table{width:100%;border-collapse:collapse;font-size:13.5px}
+.dv-table th,.dv-table td{padding:6px 8px;border-bottom:1px solid var(--panel2);text-align:left;font-variant-numeric:tabular-nums}
+.dv-table tbody th{font-weight:800}
+.dv-table tr.mid{background:rgba(255,122,47,.10)}
+.dv-hist{display:flex;align-items:flex-end;gap:3px;height:150px;padding:16px 0 18px}
+.dv-bar{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;position:relative;min-width:0}
+.dv-bar i{display:block;width:100%;min-height:2px;border-radius:3px 3px 0 0;background:var(--grad-teal)}
+.dv-bar .dv-n{font-size:10px;line-height:1.4;color:var(--muted)}
+.dv-bar .dv-x{position:absolute;bottom:-17px;left:0;font-size:10px;color:var(--muted)}
+
+/* ---- v117: 英雄アイコン画像 ---- */
+[data-hero] .hi{width:22px;height:22px;border-radius:50%;object-fit:cover;vertical-align:-5px;margin-right:4px;background:var(--panel2)}
+.hc-name[data-hero] .hi{width:40px;height:40px;border-radius:10px;vertical-align:middle;margin-right:8px}
+.bt-name[data-hero] .hi,.bt-name [data-hero] .hi{display:block;width:64px;height:64px;border-radius:16px;margin:0 auto 6px}

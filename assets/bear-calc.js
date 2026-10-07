@@ -112,7 +112,10 @@ function d(e) {
 
   /* --- j : index.html L1595-1659 より（数式は無改変） --- */
 function j(e, t, a, r, l) {
-  const s = (e, n, t) => ("min" === l ? e : "max" === l ? t : n);
+  /* l = 'ev' | 'min' | 'max'、または { roll(part) }（分布図用: 確率スキルが「10回の攻撃のうち何割で発動したか」を 0〜1 で返す。
+     0 なら min、1 なら max と同じ。期待値の計算式そのものは変えていない） */
+  const __part = e;
+  const s = (e, n, t) => ("min" === l ? e : "max" === l ? t : l && "function" === typeof l.roll ? e + (t - e) * l.roll(__part) : n);
   switch (e.k) {
     case "dmg":
       return 1 + e.v * t;
@@ -408,5 +411,5 @@ function H() {
     };
   }
 
-  return { DEFAULTS: DEFAULTS, MODEL: MODEL, bucketOf: bucketOf, defdownMul: defdownMul, createEngine: createEngine };
+  return { TURNS: 10, DEFAULTS: DEFAULTS, MODEL: MODEL, bucketOf: bucketOf, defdownMul: defdownMul, createEngine: createEngine };
 });

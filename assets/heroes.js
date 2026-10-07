@@ -734,7 +734,8 @@ window.WOS_CONST = {
   RAR_HEX: { R: "#3b82d6", SR: "#9b4fd6", SSR: "#e0a020" },
   MAX_GEN: 17
 };
-window.WOS_ICON = function(hero) {
+window.WOS_HERO_ICON = window.WOS_ICON = function(hero) {
+  var __im = window.WOS_heroImg && window.WOS_heroImg(hero); if (__im) return __im;   /* 画像があればそれを使う（assets/hero-img.js） */
   var C = window.WOS_CONST.CLS[hero.cls],
     c = C.c;
   var EN = (window.WOS_LANG || "ja") === "en";

@@ -25,9 +25,11 @@
   function genLabel(g){ return g === 0 ? t('常設','Perm.') : 'G' + g; }
   function heroHtml(id, withCls){
     var h = byId[id]; if(!h) return esc(id);
-    return '<span data-hero="' + esc(id) + '">' + (withCls ? '<span class="cls">' + clsName(h.cls) + '</span>' : '')
+    return '<span data-hero="' + esc(id) + '">' + pic(id) + (withCls ? '<span class="cls">' + clsName(h.cls) + '</span>' : '')
       + esc(heroName(id)) + '<span class="g">' + genLabel(h.gen) + '</span></span>';
   }
+  /* 英雄アイコン画像（assets/hero-img.js に登録がある英雄だけ。無ければ何も出さない） */
+  function pic(id){ var src = W.WOS_heroImg && W.WOS_heroImg(id); return src ? '<img class="hi" src="' + src + '" alt="" loading="lazy" decoding="async" width="22" height="22">' : ''; }
   function fmtM(n){ if(!isFinite(n)) return '—'; if(n >= 1e6) return (n/1e6).toFixed(2) + 'M'; if(n >= 1e3) return (n/1e3).toFixed(0) + 'K'; return String(Math.round(n)); }
   S.esc = esc; S.heroHtml = heroHtml; S.heroName = heroName; S.clsName = clsName;
   S.relabelHeroes = function(root){ relabelHeroes(root); };
@@ -36,7 +38,7 @@
     (root || D).querySelectorAll('[data-hero]').forEach(function(el){
       var h = byId[el.getAttribute('data-hero')]; if(!h) return;
       var g = el.querySelector('.g'), c = el.querySelector('.cls');
-      el.innerHTML = (c ? '<span class="cls">' + clsName(h.cls) + '</span>' : '') + esc(heroName(h.id)) + (g ? '<span class="g">' + genLabel(h.gen) + '</span>' : '');
+      el.innerHTML = pic(h.id) + (c ? '<span class="cls">' + clsName(h.cls) + '</span>' : '') + esc(heroName(h.id)) + (g ? '<span class="g">' + genLabel(h.gen) + '</span>' : '');
     });
   }
 
@@ -95,6 +97,39 @@
     });
     return html;
   }
+  /* 乗せ英雄（参加者）の人気ランキング: 英雄別の採用率と、4人の組み合わせ */
+  function joinersHtml(j){
+    if(!j || !j.heroes || !j.heroes.length) return '';
+    var sets = '';
+    (j.sets || []).slice(0, 5).forEach(function(c, i){
+      var cnt = {}, order = []; c.ids.forEach(function(id){ if(!cnt[id]){ cnt[id] = 0; order.push(id); } cnt[id]++; });
+      sets += '<div class="rk-row trio"><span class="rk-n">' + (i+1) + '</span><span class="rk-h">'
+        + order.map(function(id){ return heroHtml(id) + (cnt[id] > 1 ? '<span class="jx">×' + cnt[id] + '</span>' : ''); }).join(' ')
+        + '</span><span class="rk-v">' + c.pct + '%</span><span class="rk-bar live"><i style="width:' + Math.min(100, c.pct) + '%"></i></span></div>';
+    });
+    return '<h3 id="live-joiners">' + t('乗せ英雄（参加者）の人気ランキング','Most-used joiner heroes') + ' <span class="src-tag">n=' + j.n + '</span></h3>'
+      + '<p class="note">' + t('シミュレーターの「参加者の英雄」4枠の集計です。％は、その英雄を1枠以上入れている人の割合。','From the simulator’s four joiner slots. % = share of users with that hero in at least one slot.') + '</p>'
+      + '<div class="cmp-grid jn-grid"><div class="cmp-col"><h4>' + t('英雄別の採用率','Pick rate by hero') + '</h4>' + rankList(j.heroes, 8) + '</div>'
+      + '<div class="cmp-col"><h4>' + t('4人の組み合わせ TOP5','Top-5 joiner sets') + '</h4>' + (sets || '<div class="note">—</div>') + '</div></div>';
+  }
+  /* 偏差値: その世代の予測ダメージ（対数）の分布。偏差値→ダメージの対応表と、5刻みのヒストグラム */
+  function devHtml(d, gen){
+    if(!d || !d.marks) return '';
+    var max = 1; (d.hist || []).forEach(function(b){ if(b.n > max) max = b.n; });
+    var bars = (d.hist || []).map(function(b){
+      var lab = b.lo + '–' + (b.lo + 5);
+      return '<div class="dv-bar" title="' + t('偏差値 ','Score ') + lab + ': ' + b.n + t(' 件','') + '"><span class="dv-n">' + (b.n || '') + '</span><i style="height:' + Math.round(b.n / max * 100) + '%"></i><span class="dv-x">' + b.lo + '</span></div>';
+    }).join('');
+    var rows = d.marks.map(function(m){
+      return '<tr' + (m.score === 50 ? ' class="mid"' : '') + '><th>' + m.score + '</th><td>' + fmtM(m.damage) + '</td><td>' + (m.score === 50 ? t('ちょうど真ん中','Median') : m.score > 50 ? t('上位 約','Top ~') + (m.score === 60 ? 16 : 2) + '%' : t('下位 約','Bottom ~') + (m.score === 40 ? 16 : 2) + '%') + '</td></tr>';
+    }).join('');
+    var simHref = (W.WOS_BASE || '') + '/tools/bear-hunt/index.html?gen=' + gen;
+    return '<h3 id="live-dev">' + t('第' + gen + '世代の偏差値（1ラリーの予測ダメージ）','Gen ' + gen + ' score scale (estimated damage per rally)') + ' <span class="src-tag">n=' + d.n + '</span></h3>'
+      + '<p class="note">' + t('シミュレーターを使った人の予測ダメージから計算しています（平均50・標準偏差10。ダメージは桁の差が大きいため対数で計算）。補正係数Cなどの係数は全員同じ標準値にそろえて計算しているので、条件は同じです。','Computed from simulator users’ estimated damage (mean 50, SD 10, on a log scale because damage spans orders of magnitude). Coefficients such as the correction factor C are set to the same standard values for everyone.') + '</p>'
+      + '<div class="dv-wrap"><table class="dv-table"><thead><tr><th>' + t('偏差値','Score') + '</th><th>' + t('ダメージの目安','Damage') + '</th><th>' + t('位置','Position') + '</th></tr></thead><tbody>' + rows + '</tbody></table>'
+      + '<div class="dv-hist" role="img" aria-label="' + t('偏差値の分布','Score distribution') + '">' + bars + '</div></div>'
+      + '<p class="note"><a href="' + simHref + '">' + t('シミュレーターで自分の偏差値を見る','See your own score in the simulator') + ' →</a></p>';
+  }
   function fillAll(sel, html){ D.querySelectorAll(sel).forEach(function(el){ el.innerHTML = html; }); }
 
   /* 実測が公開されるまでは理論値だけを見せる（実測列・実測の説明・見出しは hidden のまま）。
@@ -107,13 +142,13 @@
   }
   S.renderCompare = function(gen){
     var page = D.querySelector('[data-live-page]'); if(!page) return;
-    var submitHref = (W.WOS_BASE || '') + '/submit/index.html?gen=' + gen;
+    var simHref = (W.WOS_BASE || '') + '/tools/bear-hunt/index.html?gen=' + gen;
     function notReady(n){
       showLive(false);
-      var html = n == null ? '' : '<p class="live-note">' + t('みんなの実測（採用率）は投稿が10件集まった世代から公開します。', 'Live pick rates open once a generation has 10 submissions.')
-        + ' ' + t('現在 ','Currently ') + '<b>' + n + '</b>' + t(' 件。',' so far.') + ' <a href="' + submitHref + '">' + t('構成を投稿する','Submit your build') + ' →</a></p>';
+      var html = n == null ? '' : '<p class="live-note">' + t('みんなの実測（採用率・偏差値）は、シミュレーターの利用データが10件集まった世代から公開します。', 'Live pick rates and scores open once a generation has 10 simulator records.')
+        + ' ' + t('現在 ','Currently ') + '<b>' + n + '</b>' + t(' 件。',' so far.') + ' <a href="' + simHref + '">' + t('シミュレーターで試算する（自動で集計に入ります）','Run the simulator (counted automatically)') + ' →</a></p>';
       fillAll('[data-live="meta"]', html);
-      fillAll('[data-live="stats"]', '');
+      fillAll('[data-live="stats"]', ''); fillAll('[data-live="joiners"]', ''); fillAll('[data-live="dev"]', '');
     }
     if(!API){ notReady(null); return; }
     getJSON('/v1/stats/' + gen).then(function(s){
@@ -121,7 +156,7 @@
       showLive(true);
       var d = new Date(s.updatedAt * 1000);
       var ref = s.n < 30 ? '<span class="badge-ref">' + t('参考値（30件未満）','indicative (<30)') + '</span>' : '';
-      fillAll('[data-live="meta"]', '<span class="live-meta">' + t('投稿 ','Submissions: ') + '<b>' + s.n + '</b>' + t(' 件 ／ 直近90日 ／ 更新 ',' · last 90 days · updated ') + d.toLocaleDateString(EN ? 'en-US' : 'ja-JP') + ref + '</span>');
+      fillAll('[data-live="meta"]', '<span class="live-meta">' + t('利用データ ','Records: ') + '<b>' + s.n + '</b>' + t(' 件 ／ 直近90日 ／ 更新 ',' · last 90 days · updated ') + d.toLocaleDateString(EN ? 'en-US' : 'ja-JP') + ref + '</span>');
       /* 課金帯ごと: 内訳があればそれを、無ければ全体（合算）を表示して明示 */
       GM.TIER_ORDER.forEach(function(tk){
         var b = (s.byTier && s.byTier[tk] && s.byTier[tk].slot) ? s.byTier[tk] : null;
@@ -138,6 +173,8 @@
       if(s.lag) st += '<div class="statcard"><div class="big" style="font-size:15px">' + clsName('inf') + ' ' + s.lag.inf + ' / ' + clsName('lan') + ' ' + s.lag.lan + ' / ' + clsName('mks') + ' ' + s.lag.mks + '</div><div class="lbl">' + t('平均で何世代前の英雄か','Avg generations behind, per slot') + '</div></div>';
       st += '</div>';
       fillAll('[data-live="stats"]', st);
+      fillAll('[data-live="joiners"]', joinersHtml(s.joiners));
+      fillAll('[data-live="dev"]', devHtml(s.dev, gen));
       relabelHeroes(page);
     }).catch(function(){ notReady(null); });
   };
@@ -392,7 +429,8 @@
         damage: FIELDS.damage ? ($('st-damage').value || null) : null, fc: FIELDS.fc ? ($('st-fc').value || null) : null,
         gear: FIELDS.gear ? [0,1,2].map(function(i){ return $('st-g' + i).value || null; }) : null,
         comment: cmt.value.trim() || null, nick: nick.value.trim() || null, showDamage: !hideDmg.checked,
-        editKey: editKey, turnstile: tsToken(container) };
+        editKey: editKey, turnstile: tsToken(container),
+        cid: (function(){ try{ if(localStorage.getItem('wos_usage_off') === '1') return undefined; var c = localStorage.getItem('wos_cid'); return /^[a-f0-9]{32}$/.test(c || '') ? c : undefined; }catch(e){ return undefined; } })() };
       if(!API){ err.textContent = t('投稿先が設定されていません。','Submission endpoint is not configured.'); btn.disabled = false; btn.textContent = t('統計に投稿する','Submit to stats'); return; }
       fetch(API + '/v1/submit', { method:'POST', mode:'cors', credentials:'omit', headers:{ 'content-type':'application/json' }, body: JSON.stringify(body) })
         .then(function(x){ return x.json().then(function(j){ return { ok: x.ok, j: j }; }); })
