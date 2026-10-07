@@ -10,7 +10,7 @@
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
-  gtag('consent','default',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'});
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'granted'});
   gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',region:['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH'],wait_for_update:500});
   gtag('js', new Date());
   gtag('config', 'G-Y8YMCVQDMG');
@@ -32,7 +32,6 @@
 <meta property="og:url" content="https://whitesim-lab.com/en/changelog.html">
 <meta property="og:image" content="https://whitesim-lab.com/favicon.png?v=85">
 <meta name="twitter:card" content="summary">
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4593324513914979" crossorigin="anonymous"></script>
 <link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/changelog.html"><link rel="alternate" hreflang="en" href="https://whitesim-lab.com/en/changelog.html"><link rel="alternate" hreflang="x-default" href="https://whitesim-lab.com/changelog.html">
 <link rel="canonical" href="https://whitesim-lab.com/en/changelog.html">
 </head>
@@ -46,6 +45,18 @@
 
 <div id="body"><h1>Changelog</h1>
 <p class="lead">A record of new tools, formula calibrations, data updates and site-structure changes. Verification results are added here as the game updates.</p>
+
+<div class="card">
+<h3>October 7, 2026</h3>
+<ul>
+<li>The site is now run as a non-commercial fan site without ads: all ad slots, ad code and affiliate links have been removed, and the advertising section of the <a href="privacy.html">Privacy Policy</a> was rewritten.</li>
+<li>Changed how the <a href="stats/index.html">generation stats</a> are collected. Previously only builds sent through the submission form were counted; now what you calculate in the <a href="tools/bear-hunt/index.html">Bear Hunt Simulator</a> is aggregated automatically and anonymously (you can stop and delete it anytime with "Opt out" in the result panel). Reviews are still posted through the form.</li>
+<li>Generation pages now show the most-used joiner heroes and a score scale (distribution of estimated damage) for that generation. The simulator's result panel also shows your own score within your generation (once a generation has 10 records).</li>
+<li>Damage used for the stats is recomputed with the correction factor C (standard 0.63) and the advanced coefficients set to the same values for everyone, so scores compare like with like even if you changed C on screen.</li>
+<li>The simulator's result panel now shows a distribution chart of damage per rally: how likely each range is depending on how often chance skills trigger (unlucky / typical / lucky). The score also comes with a small chart of your position within your generation.</li>
+<li>Inputs that cannot occur in the actual game (attack above 3000%, all eight stats identical, extreme troop counts, etc.) are excluded. The rules are listed under <a href="stats/methodology.html">Methodology</a>, and the <a href="privacy.html">Privacy Policy</a> has been updated.</li>
+</ul>
+</div>
 
 <div class="card">
 <h3>October 5, 2026</h3>
@@ -142,7 +153,7 @@
 </div>
 <div id="foot"></div>
 <script src="/assets/config.js?v=96"></script>
-<script src="/assets/toolkit.js?v=114"></script>
+<script src="/assets/toolkit.js?v=117"></script>
 <script>
 (function(){
   var EN = (window.WOS_LANG==='en');

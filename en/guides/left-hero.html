@@ -11,7 +11,7 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   // Consent Mode v2: 既定は許可、EEA/英国/スイスのみ同意取得まで拒否(CMPがupdateで上書き)
-  gtag('consent','default',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'});
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'granted'});
   gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',region:['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH'],wait_for_update:500});
   gtag('js', new Date());
   gtag('config', 'G-Y8YMCVQDMG');
@@ -22,7 +22,6 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
 <link rel="stylesheet" href="/assets/site.css?v=114">
 <script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
-<!-- ▼ AdSense承認後: コードスニペットを貼り付け ▼ -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=85">
 <link rel="icon" type="image/png" href="/favicon.png?v=85">
 <link rel="shortcut icon" href="/favicon.ico?v=85">
@@ -34,7 +33,6 @@
 <meta property="og:url" content="https://whitesim-lab.com/en/guides/left-hero.html">
 <meta property="og:image" content="https://whitesim-lab.com/favicon.png?v=85">
 <meta name="twitter:card" content="summary">
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4593324513914979" crossorigin="anonymous"></script>
 <link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/guides/left-hero.html"><link rel="alternate" hreflang="en" href="https://whitesim-lab.com/en/guides/left-hero.html"><link rel="alternate" hreflang="x-default" href="https://whitesim-lab.com/guides/left-hero.html">
 <link rel="canonical" href="https://whitesim-lab.com/en/guides/left-hero.html">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"What is the left hero? Joiner heroes and the 4-slot rule","description":"In Bear Hunt only the leftmost hero's first expedition skill counts when you join a rally. How the 4 joiner slots are chosen, which heroes work, and common mistakes.","image":"https://whitesim-lab.com/en/favicon.png?v=85","author":{"@type":"Organization","name":"ホワサバ ツールラボ"},"publisher":{"@type":"Organization","name":"ホワサバ ツールラボ","logo":{"@type":"ImageObject","url":"https://whitesim-lab.com/en/favicon.png?v=85"}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://whitesim-lab.com/en/guides/left-hero.html"},"inLanguage":"en"}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ホーム","item":"https://whitesim-lab.com/en/"},{"@type":"ListItem","position":2,"name":"攻略記事","item":"https://whitesim-lab.com/en/#read"},{"@type":"ListItem","position":3,"name":"【ホワサバ】熊狩りの左英雄とは?乗りで使うべき英雄と4枠ルール","item":"https://whitesim-lab.com/en/guides/left-hero.html"}]}</script>
@@ -54,7 +52,6 @@
 <li><b>Higher skill level overwrites.</b> A later, higher-level same-type skill displaces an earlier one.</li>
 <li><b>A low-level hero entering early blocks a slot</b> and lowers total damage.</li></ul>
 <p>To lock slots in your alliance, send four Lv5-skill members in first.</p>
-<div class="ad-slot"></div>
 <h2>Why spreading skill types is stronger</h2>
 <p>Same-type skills add; different types multiply. Four +25% DMG sum to +100% (2.0x). But two +25% DMG and two +25% ATK give 1.5x1.5 = 2.25x, about 12% more at the same skill level. Spread DMG / ATK / Lethality / proc skills.</p>
 <p>An often-missed bucket is <b>enemy defense down</b> (first skill of Hendrik, Ligeia, Estrella and Eleanor: enemy DEF -25%). It multiplies with DMG, ATK and Lethality alike, and this site counts it as x1.25 per slot. The more attack or damage buffs the leader already carries, the more one DEF-down joiner beats a fourth attack joiner. If the leader already has DEF-down (e.g. Eleanor), it adds within the same bucket and gains less.</p>
@@ -71,7 +68,7 @@
 <nav class="relposts" aria-label="関連記事"><h2 class="relposts-h">Related articles</h2><ul><li><a href="leader-formation.html">Rally leader: recommended formations & heroes</a></li><li><a href="troop-ratio.html">What's the right troop ratio?</a></li><li><a href="bear-hunt-guide.html">How Bear Hunt damage works (full guide)</a></li><li><a href="common-myths.html">7 common Bear Hunt myths</a></li></ul></nav>
 <div id="foot"></div>
 <script src="/assets/config.js?v=96"></script>
-<script src="/assets/toolkit.js?v=114"></script>
+<script src="/assets/toolkit.js?v=117"></script>
 <script>
 document.getElementById('nav').innerHTML=WOS_NAV(1);
 document.getElementById('foot').innerHTML=WOS_FOOT(1);

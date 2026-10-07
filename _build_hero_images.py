@@ -47,6 +47,8 @@ def main():
         if os.path.exists(p): man[h["id"]] = hashlib.md5(open(p, "rb").read()).hexdigest()[:6]
     js = open(JS, encoding="utf-8").read()
     js2 = re.sub(r"/\*HERO_IMGS\*/.*?/\*END\*/", lambda m: "/*HERO_IMGS*/" + json.dumps(man, separators=(",", ":")) + "/*END*/", js, flags=re.S)
+    names = {h["id"]: [h["name"], h["en"] or h["id"]] for h in hs}
+    js2 = re.sub(r"/\*HERO_NAMES\*/.*?/\*END\*/", lambda m: "/*HERO_NAMES*/" + json.dumps(names, ensure_ascii=False, separators=(",", ":")) + "/*END*/", js2, flags=re.S)
     open(JS, "w", encoding="utf-8").write(js2)
     missing = [h["name"] for h in hs if h["id"] not in man]
     print(f"画像あり: {len(man)} / {len(hs)} 体")
