@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS submissions (
   ratio_inf     INTEGER,
   ratio_lan     INTEGER,
   ratio_mks     INTEGER,
-  damage        INTEGER,                   -- 1ラリーの記録ダメージ（任意）
+  damage        INTEGER,                   -- 集結1回の記録ダメージ（任意）
   fc_level      INTEGER,
   gear_inf      INTEGER,
   gear_lan      INTEGER,

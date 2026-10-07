@@ -124,7 +124,7 @@
       return '<tr' + (m.score === 50 ? ' class="mid"' : '') + '><th>' + m.score + '</th><td>' + fmtM(m.damage) + '</td><td>' + (m.score === 50 ? t('ちょうど真ん中','Median') : m.score > 50 ? t('上位 約','Top ~') + (m.score === 60 ? 16 : 2) + '%' : t('下位 約','Bottom ~') + (m.score === 40 ? 16 : 2) + '%') + '</td></tr>';
     }).join('');
     var simHref = (W.WOS_BASE || '') + '/tools/bear-hunt/index.html?gen=' + gen;
-    return '<h3 id="live-dev">' + t('第' + gen + '世代の偏差値（1ラリーの予測ダメージ）','Gen ' + gen + ' score scale (estimated damage per rally)') + ' <span class="src-tag">n=' + d.n + '</span></h3>'
+    return '<h3 id="live-dev">' + t('第' + gen + '世代の偏差値（集結1回の予測ダメージ）','Gen ' + gen + ' score scale (estimated damage per rally)') + ' <span class="src-tag">n=' + d.n + '</span></h3>'
       + '<p class="note">' + t('シミュレーターを使った人の予測ダメージから計算しています（50が真ん中）。全員同じ条件で計算した値どうしで比べています。','Computed from simulator users’ estimated damage (50 is the middle). Everyone is compared under the same conditions.') + '</p>'
       + '<div class="dv-wrap"><table class="dv-table"><thead><tr><th>' + t('偏差値','Score') + '</th><th>' + t('ダメージの目安','Damage') + '</th><th>' + t('位置','Position') + '</th></tr></thead><tbody>' + rows + '</tbody></table>'
       + '<div class="dv-hist" role="img" aria-label="' + t('偏差値の分布','Score distribution') + '">' + bars + '</div></div>'
@@ -303,7 +303,7 @@
     }
     if(FIELDS.damage || FIELDS.fc){
       optional += '<div class="row">';
-      if(FIELDS.damage) optional += '<div><label>' + t('1ラリーの記録ダメージ','Damage per rally') + '</label><input type="number" id="st-damage" min="0" step="1000" placeholder="' + t('例: 38500000','e.g. 38500000') + '"><p class="hint">' + t('入れると同世代内の順位が出ます','Enables your rank within the generation') + '</p></div>';
+      if(FIELDS.damage) optional += '<div><label>' + t('集結1回の記録ダメージ','Damage per rally') + '</label><input type="number" id="st-damage" min="0" step="1000" placeholder="' + t('例: 38500000','e.g. 38500000') + '"><p class="hint">' + t('入れると同世代内の順位が出ます','Enables your rank within the generation') + '</p></div>';
       if(FIELDS.fc) optional += '<div><label>' + t('火晶（炉）レベル','Fire Crystal level') + '</label><input type="number" id="st-fc" min="0" max="20"></div>';
       optional += '</div>';
     }

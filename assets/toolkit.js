@@ -21,7 +21,7 @@
   /* 英雄アイコン（assets/hero-img.js）を全ページで読み込む。記事中の英雄名にアイコンが付く */
   (function(){
     if(window.WOS_heroImg || document.querySelector('script[src*="/assets/hero-img.js"]')) return;
-    var s = document.createElement('script'); s.src = '/assets/hero-img.js?v=122'; s.async = true; document.head.appendChild(s);
+    var s = document.createElement('script'); s.src = '/assets/hero-img.js?v=124'; s.async = true; document.head.appendChild(s);
   })();
   function langLink(){
     return EN

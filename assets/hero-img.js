@@ -95,6 +95,7 @@ window.WOS_heroImg = function(h){
           if(!standalone(text, m.index, m[0])) continue;
           if(!seen[id]){ seen[id] = 1; found.push(id); }
           if(used[id]) continue; used[id] = 1;
+          if(m.index === 0 && node.previousSibling && node.previousSibling.nodeType === 1 && node.previousSibling.classList.contains('hx')) continue;   /* すでに付いている */
           cuts.push({ i: m.index, id: id });
         }
         if(perBlock) perBlock.set(blk, used);
@@ -131,6 +132,7 @@ window.WOS_heroImg = function(h){
     cta.parentNode.insertBefore(box, cta.nextSibling);
   }
 
+  W.WOS_heroDecorate = function(roots){ if(!IMG) return; css(); decorate(roots); };
   function run(){
     if(!IMG) return;
     css(); cards(); band();

@@ -395,7 +395,7 @@ function H() {
     var __JSKILL = j;
 
     return {
-      score: P,          /* P : 1ラリーの期待ダメージ */
+      score: P,          /* P : 集結1回の期待ダメージ */
       expAtk: c,         /* c : 英雄の遠征攻撃ステ */
       expLeth: d,        /* d : 英雄の遠征殺傷ステ */
       skillPart: j,      /* j : スキル1パーツの倍率 */
