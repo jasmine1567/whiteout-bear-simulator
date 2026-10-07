@@ -76,7 +76,7 @@ for (let i=0;i<40;i++) await call('POST','/v1/submit',{ days:1200+i, tier:['f2p'
 for (let i=0;i<5;i++) await call('POST','/v1/submit',{ days:530+i, tier:'mid', inf:'gatot', lan:'mia', mks:'bradley' }, '10.0.1.'+i);
 await worker.scheduled({}, env);
 const s16 = JSON.parse(kv.get('stats:gen:16')), s8 = JSON.parse(kv.get('stats:gen:8')), sum = JSON.parse(kv.get('stats:summary'));
-t('summary に16世代分', Object.keys(sum.gens).length===16, JSON.stringify({g16:sum.gens[16], g8:sum.gens[8]}));
+t('summary に全世代分', Object.keys(sum.gens).length>=16, JSON.stringify({g16:sum.gens[16], g8:sum.gens[8]}));
 t('第16世代 n=42 公開', s16.n===42 && s16.published===true, 'n='+s16.n);
 r = await call('GET','/v1/stats/summary');
 await call('POST','/v1/submit',{ gen:12, tier:'mid', inf:'jeronimo', lan:'mia', mks:'rufus' },'10.0.2.1');
@@ -85,7 +85,7 @@ t('summary の件数は投稿直後に反映（第12世代 0→1、published は
 t('第8世代 n=5 は非公開', s8.n===5 && s8.published===false);
 t('盾枠1位はジェロニモ', s16.slot.inf[0].id==='jeronimo' && s16.slot.inf[0].pct>=60, JSON.stringify(s16.slot.inf[0]));
 t('組み合わせTOPが出る', s16.comps[0].ids.length===3 && s16.comps[0].count>=15, JSON.stringify(s16.comps[0]));
-t('ダメージ分位（外れ値90Mを除外）', s16.damage && s16.damage.p90 < 50000000, JSON.stringify(s16.damage));
+t('口コミ投稿だけの世代はダメージ統計を出さない（条件がそろっていないため）', s16.damage===null && s16.dev===null);
 t('平均世代ラグ', typeof s16.lag.inf==='number' && s16.lag.inf>10, JSON.stringify(s16.lag));
 t('n≥30 なので課金帯別内訳あり', Object.keys(s16.byTier).length===3, JSON.stringify(Object.fromEntries(Object.entries(s16.byTier).map(([k,v])=>[k,v.n]))));
 r = await call('GET','/v1/stats/16');
@@ -136,6 +136,59 @@ t('運営者が非表示', r.body.changed && !(await call('GET','/v1/reviews/10'
 r = await callA('POST','/v1/admin/reviews/'+rid,{ key:'wrong', action:'show' }); t('合言葉違いは403', r.status===403);
 r = await call('DELETE','/v1/submit/'+rid,{ editKey: rkey }); t('投稿者が削除すると口コミも消える', r.body.removed===true);
 t('cleanText/textProblem', mod.cleanText('  a\u0000b   c\r\n\r\n\r\nd ', 100)==='ab c\n\nd' && mod.textProblem('www.example.com')==='url' && mod.textProblem('ふつうの感想')===null && mod.textProblem('ゴミ構成', '')==='ng' && mod.textProblem('ぬるぽ', 'ぬるぽ')==='ng');
+
+console.log('--- 利用データの自動記録 ---');
+{
+  const cid = i => (i.toString(16).padStart(4,'0')).repeat(8);
+  const base = (i, o={}) => ({ cid: cid(i), gen: 9, leader: { inf:{id:'jeronimo',gear:3}, lan:{id:'mia',gear:0}, mks:{id:'bradley',gear:5} },
+    joiners: ['jessie','jasser','seoyoon','jessie'], tier: 10, fc: 3,
+    stats: { teamAtk:300+i, teamLeth:250, atkInf:180, lethInf:150, atkLan:190, lethLan:160, atkMks:220, lethMks:170 },
+    troops: [10000, 40000, 150000], damage: 2000000 + i*100000, calib: 0.63, ...o });
+  const cnt = w => db.prepare('select count(*) c from usage where '+w).get().c;
+  let u = await call('POST','/v1/usage', base(1), '50.0.0.1');
+  t('利用データを記録 → counted', u.status===200 && u.body.counted===true && cnt("status='ok' and gen=9")===1, JSON.stringify(u.body));
+  u = await call('POST','/v1/usage', base(1, { damage: 2500000 }), '50.0.0.1');
+  t('同じブラウザ×同じ世代は上書き（1件のまま・hits=2）', cnt('gen=9')===1 && db.prepare('select hits,damage,joiners,ratio_mks from usage where gen=9').get().hits===2);
+  t('乗せ英雄は並べ替えて保存・比率は兵数から計算', (x => x.joiners==='jasser,jessie,jessie,seoyoon' && x.ratio_mks===75)(db.prepare('select joiners,ratio_mks from usage where gen=9').get()));
+  u = await call('POST','/v1/usage', base(2, { stats: { teamAtk:99999, teamLeth:250, atkInf:180, lethInf:150, atkLan:190, lethLan:160, atkMks:220, lethMks:170 } }), '50.0.0.2');
+  t('攻撃% が非現実的 → flagged（保存はするが集計外）', u.body.counted===false && u.body.flag==='stat_range' && cnt("status='flagged'")===1, JSON.stringify(u.body));
+  const fl = async (i, o) => (await call('POST','/v1/usage', base(i, o), '50.0.1.'+i)).body.flag;
+  t('全部同じ数字 → stat_uniform', await fl(3, { stats: Object.fromEntries(['teamAtk','teamLeth','atkInf','lethInf','atkLan','lethLan','atkMks','lethMks'].map(k=>[k,999])) })==='stat_uniform');
+  t('ほぼ全部0 → stat_zero', await fl(4, { stats: Object.fromEntries(['teamAtk','teamLeth','atkInf','lethInf','atkLan','lethLan','atkMks','lethMks'].map((k,j)=>[k,j?0:10])) })==='stat_zero');
+  t('兵数が非現実的 → troops', await fl(5, { troops: [0, 0, 90000000] })==='troops');
+  t('補正係数Cが違っても除外しない（ダメージは共通の係数で計算済み）', await fl(6, { calib: 25 })===undefined && await fl(7, { calib: 0.01 })===undefined);
+  u = await call('POST','/v1/usage', base(8, { leader: { inf:{id:'mia'}, lan:{id:'mia'}, mks:{id:'bradley'} } }), '50.0.0.8');
+  t('兵種違いの英雄 → 400（保存しない）', u.status===400 && u.body.fields.includes('inf:cls') && cnt("cid_hash!=''")===7, JSON.stringify(u.body));
+  u = await call('POST','/v1/usage', base(9, { joiners: ['aisling'] }), '50.0.0.9');
+  t('未実装世代の乗せ英雄 → 400', u.status===400 && u.body.fields.includes('joiners'));
+  u = await worker.fetch(new Request('https://api.whitesim-lab.com/v1/usage', { method:'POST', headers:{ 'Origin':'https://evil.example' }, body: JSON.stringify(base(10)) }), env);
+  t('許可していないサイトからは 403', u.status===403);
+  u = await worker.fetch(Object.assign(new Request('https://api.whitesim-lab.com/v1/usage', { method:'POST', headers:{ 'Origin':'https://whitesim-lab.com', 'content-type':'text/plain' }, body: JSON.stringify(base(11)) }), { cf: { country: 'DE' } }), env);
+  t('EEA からは記録しない', (await u.json()).reason==='region' && cnt('gen=9')===7);
+  /* 第9世代に 30 件（うち1件は桁違いのダメージ）→ 集計 */
+  for (let i=20;i<50;i++) await call('POST','/v1/usage', base(i, { joiners: i%3 ? ['jessie','jasser','seoyoon','jessie'] : ['jessie','jessie','jessie','jessie'],
+    leader: { inf:{id: i%4 ? 'jeronimo':'flint'}, lan:{id:'mia'}, mks:{id:'bradley'} }, damage: i===49 ? 9e9 : 1000000 + (i-20)*200000 }), '60.0.0.'+i);
+  /* 口コミ投稿と紐づけ（二重に数えない） */
+  const sb = await call('POST','/v1/submit',{ gen:9, tier:'mid', inf:'jeronimo', lan:'mia', mks:'bradley', cid: cid(20), comment:'G9の感想' },'60.0.0.20');
+  t('口コミ投稿に cid → 利用データに課金帯と投稿IDが付く', (x => x.spend_tier==='mid' && x.sub_id===sb.body.id)(db.prepare('select spend_tier, sub_id from usage where spend_tier is not null').get()));
+  await worker.scheduled({}, env);
+  const s9 = JSON.parse(kv.get('stats:gen:9'));
+  t('第9世代 n=33（ok の利用データのみ・投稿は二重に数えない）', s9.n===33 && s9.published, 'n='+s9.n);
+  t('集結主の人気ランキング', s9.slot.inf[0].id==='jeronimo' && s9.comps[0].ids.join()==='jeronimo,mia,bradley', JSON.stringify(s9.comps[0]));
+  t('乗せ英雄の人気ランキング（英雄別・組み合わせ）', s9.joiners && s9.joiners.heroes[0].id==='jessie' && s9.joiners.heroes[0].pct===100 && s9.joiners.sets[0].ids.join()==='jasser,jessie,jessie,seoyoon', JSON.stringify(s9.joiners.sets[0]));
+  t('ダメージ分位は利用データから', s9.damage && s9.damage.n>=30 && s9.damage.median>1e6, JSON.stringify(s9.damage));
+  t('偏差値の母集団（桁違いの1件は除外）', s9.dev && s9.dev.n===32 && s9.dev.marks[2].score===50 && s9.dev.marks[2].damage>1e6 && s9.dev.marks[2].damage<1e7 && s9.dev.hist.reduce((a,b)=>a+b.n,0)===32, JSON.stringify(s9.dev.marks));
+  u = await call('POST','/v1/usage', base(1, { damage: s9.dev.marks[3].damage }), '50.0.0.1');
+  t('記録の応答に偏差値の母集団が付く', u.body.dev && u.body.dev.n===32 && Math.abs(50+10*(Math.log10(s9.dev.marks[3].damage)-u.body.dev.mu)/u.body.dev.sd-60)<0.1, JSON.stringify(u.body));
+  const sm = (await call('GET','/v1/stats/summary')).body;
+  t('summary の件数に利用データが入る', sm.gens[9].n===33, JSON.stringify(sm.gens[9]));
+  const envR = { ...env, USAGE_PER_IP_DAILY: '2' };
+  const cr = async i => (await worker.fetch(req('POST','/v1/usage', base(100+i, { gen: 4, leader:{ inf:{id:'jeronimo'}, lan:{id:'mia'}, mks:{id:'alonso'} }, joiners:[] }), '70.0.0.1'), envR)).status;
+  t('同じIPからの大量作成は 429', await cr(1)===200 && await cr(2)===200 && await cr(3)===429);
+  u = await call('DELETE','/v1/usage', { cid: cid(1) });
+  t('利用データの削除（統計に使わない）', u.body.removed===1 && cnt('gen=9')===36, JSON.stringify(u.body)+' '+cnt('gen=9'));
+  t('usageLimits は vars で上書きできる', mod.usageLimits({ USAGE_STAT_MAX: '500' }).statMax===500 && mod.usageLimits({}).statMax===3000);
+}
 
 console.log(`\n結果: ${pass} 件OK / ${fail} 件NG`);
 process.exit(fail?1:0);

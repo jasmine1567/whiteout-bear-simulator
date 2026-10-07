@@ -255,3 +255,37 @@ test/worker.test.mjs  ローカルテスト
 | 毎日 20:00 UTC | 集計して KV に保存 |
 
 無料枠の目安: 1日あたり Workers 10万リクエスト、D1 500万行読み取り、KV 10万読み取り。1日1万PVでも余裕があります。
+
+
+## v115（2026-10-07）: シミュレーター利用データの自動集計に更新する手順
+
+すでに Worker を公開済みの場合は、このフォルダで次の2つを順番に実行します（どちらも1回だけ）。
+
+```
+npx wrangler d1 execute whitesim-stats --remote --file=./migrations/003_usage.sql
+npx wrangler deploy
+```
+
+- 1行目で、利用データ用の表 `usage` を D1 に追加します（既存の投稿・口コミはそのまま残ります）
+- 2行目で、新しい Worker（`POST /v1/usage` の受付と、乗せ英雄ランキング・偏差値の集計）を公開します
+- **順番が大事です。** 先にサイト（GitHub Pages）だけ更新しても壊れませんが、Worker を更新するまで利用データは記録されません
+
+### 「現実的でない入力」の基準を変えたいとき
+
+`wrangler.toml` の `USAGE_` で始まる値を書き換えて `npx wrangler deploy` します。
+
+| 設定 | 既定 | 意味 |
+|---|---|---|
+| `USAGE_STAT_MAX` | 3000 | 攻撃%・殺傷% 1項目の上限。超えたら除外 |
+| `USAGE_STAT_SUM_MIN` | 50 | 攻撃%・殺傷% 8項目の合計の下限。未満は「ほぼ未入力」として除外 |
+| `USAGE_TROOPS_MIN` / `USAGE_TROOPS_MAX` | 1000 / 3000000 | 兵士の合計数の範囲 |
+| `USAGE_DAMAGE_MAX` | 50000000000 | 予測ダメージの上限 |
+| `USAGE_PER_IP_DAILY` | 40 | 同じIPから1日に新しく作れる記録の数（大量送信の防止） |
+
+除外されたデータは消さずに `status='flagged'` で残り、`flag` 列に理由が入ります。件数は D1 のコンソールで確認できます。
+
+```
+SELECT gen, status, flag, COUNT(*) FROM usage GROUP BY gen, status, flag ORDER BY gen;
+```
+
+基準をゆるめたあと、過去に除外した分は次に同じ人がシミュレーターを使ったときに判定し直されます。

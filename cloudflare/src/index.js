@@ -1,4 +1,6 @@
 /* whitesim-lab.com 統計API（Cloudflare Worker）
+   POST   /v1/usage           シミュレーターの利用データを自動記録（匿名ID×世代ごとに1件・上書き。非現実的な入力は flagged にして集計から除外）
+   DELETE /v1/usage           {cid} の利用データを削除（「統計に使わない」を選んだとき）
    POST   /v1/submit          構成を投稿（Turnstile検証・妥当性チェック・同日同一クライアントは上書き）
    DELETE /v1/submit/:id      編集キーで自分の投稿を削除
    GET    /v1/stats/summary   全世代のサンプル数（ハブ用）
@@ -100,6 +102,89 @@ export function textProblem(text, extraNg) {
   return null;
 }
 
+/* ---------- 利用データ（シミュレーターからの自動記録） ---------- */
+const STAT_KEYS = ['teamAtk', 'teamLeth', 'atkInf', 'lethInf', 'atkLan', 'lethLan', 'atkMks', 'lethMks'];
+/* 個人情報保護の同意が必要な地域（EEA・英国・スイス）からは記録しない（サイトの同意モードと同じ扱い） */
+const NO_LOG = new Set('AT,BE,BG,HR,CY,CZ,DK,EE,FI,FR,DE,GR,HU,IE,IT,LV,LT,LU,MT,NL,PL,PT,RO,SK,SI,ES,SE,IS,LI,NO,GB,CH'.split(','));
+/* 「現実的な入力」の範囲。wrangler.toml の [vars] で上書きできる */
+export function usageLimits(env = {}) {
+  const n = (k, d) => { const v = parseFloat(env[k]); return Number.isFinite(v) ? v : d; };
+  return {
+    statMax: n('USAGE_STAT_MAX', 3000),        /* 攻撃%・殺傷% 1項目の上限 */
+    statSumMin: n('USAGE_STAT_SUM_MIN', 50),   /* 8項目の合計の下限（ほぼ未入力を除外） */
+    troopsMin: n('USAGE_TROOPS_MIN', 1000),    /* 兵士の合計数 */
+    troopsMax: n('USAGE_TROOPS_MAX', 3000000),
+    damageMax: n('USAGE_DAMAGE_MAX', 5e10),    /* 予測ダメージの上限 */
+    perIpDaily: n('USAGE_PER_IP_DAILY', 40)    /* 同じIPから1日に新しく作れる記録の数 */
+  };
+}
+const num = (v, lo, hi) => { const n = typeof v === 'number' ? v : parseFloat(v); return Number.isFinite(n) && n >= lo && n <= hi ? n : null; };
+/* 形式チェック（壊れた・あり得ないデータは保存しない） */
+export function validateUsage(b) {
+  const e = [];
+  if (!b || typeof b !== 'object') return { errors: ['json'] };
+  const cid = typeof b.cid === 'string' && /^[a-f0-9]{32}$/.test(b.cid) ? b.cid : null; if (!cid) e.push('cid');
+  const gen = int(b.gen, 1, GM.MAX); if (gen === null) e.push('gen');
+  const heroes = {}, gear = {};
+  const L = b.leader && typeof b.leader === 'object' ? b.leader : {};
+  for (const c of CLS) {
+    const x = L[c] && typeof L[c] === 'object' ? L[c] : {}, h = byId[x.id];
+    if (!h) { e.push(c); continue; }
+    if (h.cls !== c) e.push(c + ':cls'); else if (gen !== null && h.gen > gen) e.push(c + ':gen');
+    heroes[c] = h; gear[c] = x.gear == null ? null : int(x.gear, 0, 10);
+  }
+  const joiners = [];
+  if (b.joiners != null && !Array.isArray(b.joiners)) e.push('joiners');
+  (Array.isArray(b.joiners) ? b.joiners : []).slice(0, 4).forEach(id => {
+    if (id == null || id === '') return;                       /* 空き枠 */
+    const h = byId[id];
+    if (!h || (gen !== null && h.gen > gen)) e.push('joiners'); else joiners.push(h.id);
+  });
+  joiners.sort();
+  const stats = {}; const S = b.stats && typeof b.stats === 'object' ? b.stats : {};
+  STAT_KEYS.forEach(k => { const v = num(S[k], -1e6, 1e6); if (v === null) e.push('stats:' + k); else stats[k] = Math.round(v * 10) / 10; });
+  const tier = int(b.tier, 1, 12); if (tier === null) e.push('tier');
+  const fc = b.fc == null || b.fc === '' ? null : int(b.fc, 0, 10);
+  let troops = null, ratio = [null, null, null];
+  if (Array.isArray(b.troops) && b.troops.length === 3) {
+    const t = b.troops.map(v => num(v, 0, 1e9));
+    if (t.every(v => v !== null)) {
+      troops = Math.round(t[0] + t[1] + t[2]);
+      if (troops > 0) { ratio = [Math.round(t[0] / troops * 100), Math.round(t[1] / troops * 100), 0]; ratio[2] = Math.max(0, 100 - ratio[0] - ratio[1]); }
+    }
+  }
+  if (troops === null) e.push('troops');
+  const damage = num(b.damage, 0, 1e15); if (damage === null) e.push('damage');
+  const calib = b.calib == null ? null : num(b.calib, 0, 1e6);
+  const sub = typeof b.sub === 'string' && /^[a-f0-9]{24}$/.test(b.sub) ? b.sub : null;
+  return { errors: e, cid, gen, heroes, gear, joiners, stats, tier, fc, troops, ratio, damage: damage === null ? null : Math.round(damage), calib, sub };
+}
+/* 現実性チェック。理由を返したデータは保存するが status='flagged' にして集計から外す（あとで基準を見直せるように捨てない） */
+export function realism(v, lim) {
+  const vals = STAT_KEYS.map(k => v.stats[k]);
+  if (vals.some(x => x < 0 || x > lim.statMax)) return 'stat_range';        /* ゲーム内であり得ない攻撃%・殺傷% */
+  if (vals.reduce((a, x) => a + x, 0) < lim.statSumMin) return 'stat_zero';  /* ほぼ全部 0（未入力同然） */
+  if (vals.every(x => x === vals[0])) return 'stat_uniform';                 /* 8項目すべて同じ数字（適当入力） */
+  if (v.troops < lim.troopsMin || v.troops > lim.troopsMax) return 'troops';
+  /* 補正係数C・詳細設定の係数はチェックしない: damage はブラウザ側で全員同じ既定の係数にそろえて計算した値が届く */
+  if (!(v.damage > 0) || v.damage > lim.damageMax) return 'damage_range';
+  return null;
+}
+/* 偏差値の母集団（ダメージの常用対数の平均・標準偏差）。両端の極端な値は四分位で除外 */
+export function devStats(damages) {
+  let xs = damages.filter(d => d > 0).map(d => Math.log10(d)).sort((a, b) => a - b);
+  if (xs.length >= 8) { const q1 = quantile(xs, 0.25), q3 = quantile(xs, 0.75), k = 3 * (q3 - q1); xs = xs.filter(x => x >= q1 - k && x <= q3 + k); }
+  if (xs.length < 5) return null;
+  const mu = xs.reduce((a, x) => a + x, 0) / xs.length;
+  const sd = Math.sqrt(xs.reduce((a, x) => a + (x - mu) * (x - mu), 0) / xs.length);
+  if (!(sd > 1e-6)) return null;
+  const at = s => Math.round(Math.pow(10, mu + sd * (s - 50) / 10));
+  const hist = []; for (let lo = 20; lo < 80; lo += 5) hist.push({ lo, n: 0 });
+  xs.forEach(x => { const s = 50 + 10 * (x - mu) / sd; const i = Math.max(0, Math.min(hist.length - 1, Math.floor((s - 20) / 5))); hist[i].n++; });
+  return { n: xs.length, mu: Math.round(mu * 1e5) / 1e5, sd: Math.round(sd * 1e5) / 1e5, scale: 'log10',
+           marks: [30, 40, 50, 60, 70].map(s => ({ score: s, damage: at(s) })), hist };
+}
+
 /* ---------- 投稿直後に返す診断 ---------- */
 function diagnose(v, rows) {
   const t = THEORY.gens[v.gen] && THEORY.gens[v.gen].byTier[v.tier];
@@ -145,11 +230,20 @@ function aggregate(rows, gen, env) {
     const rank = m => Object.entries(m).sort((a, b) => b[1] - a[1]).slice(0, 8).map(([k, c]) => ({ key: k, count: c, pct: Math.round(c / rs.length * 1000) / 10 }));
     const slotRank = {}; CLS.forEach(c => slotRank[c] = rank(slot[c]).map(x => ({ id: x.key, count: x.count, pct: x.pct })));
     const compRank = rank(comps).map(x => ({ ids: x.key.split('|'), count: x.count, pct: x.pct }));
-    const ds = iqrFilter(rs.map(r => r.damage).filter(d => d != null)).sort((a, b) => a - b);
+    /* ダメージの統計は利用データ（全員同じ係数で計算した予測値）だけで作る。口コミ投稿のダメージは実測や補正後の値が混ざるので入れない */
+    const dmgs = rs.filter(r => r.u).map(r => r.damage).filter(d => d != null);
+    const ds = iqrFilter(dmgs).sort((a, b) => a - b);
     const damage = ds.length >= 5 ? { n: ds.length, median: quantile(ds, 0.5), p75: quantile(ds, 0.75), p90: quantile(ds, 0.9) } : null;
     const lag = {}; CLS.forEach(c => lag[c] = Math.round(lagSum[c] / rs.length * 10) / 10);
     const ratioTop = rank(ratios).slice(0, 3);
-    return { n: rs.length, slot: slotRank, comps: compRank, damage, lag, ratio: ratioTop };
+    /* 乗せ英雄（参加者）: 英雄ごとの採用率（その英雄を1枠以上使っている人の割合）と、4人の組み合わせ */
+    const jr = rs.filter(r => r.joiners), jHero = {}, jSet = {};
+    jr.forEach(r => { const ids = r.joiners.split(','); new Set(ids).forEach(id => { jHero[id] = (jHero[id] || 0) + 1; }); jSet[r.joiners] = (jSet[r.joiners] || 0) + 1; });
+    const jrank = (m, lim) => Object.entries(m).sort((a, b) => b[1] - a[1]).slice(0, lim).map(([k, c]) => ({ key: k, count: c, pct: Math.round(c / jr.length * 1000) / 10 }));
+    const joiners = jr.length >= 5 ? { n: jr.length, heroes: jrank(jHero, 10).map(x => ({ id: x.key, count: x.count, pct: x.pct })),
+                                       sets: jrank(jSet, 5).map(x => ({ ids: x.key.split(','), count: x.count, pct: x.pct })) } : null;
+    const dev = devStats(dmgs);
+    return { n: rs.length, slot: slotRank, comps: compRank, damage, lag, ratio: ratioTop, joiners, dev };
   };
   Object.assign(out, block(rows));
   if (n >= minSplit) for (const tk of GM.TIER_ORDER) {
@@ -160,12 +254,29 @@ function aggregate(rows, gen, env) {
 }
 async function loadWindow(env) {
   const since = now() - parseInt(env.WINDOW_DAYS || '90', 10) * 86400;
+  /* 利用データ（自動記録・現実性チェック済みのみ）＋ 口コミ投稿（同じ人の利用データがあれば二重に数えない） */
   const { results } = await env.DB.prepare(
     `SELECT server_days, spend_tier, hero_inf, hero_lan, hero_mks, ratio_inf, ratio_lan, ratio_mks, damage
-       FROM submissions WHERE status='ok' AND created_at >= ?`).bind(since).all();
+       FROM submissions WHERE status='ok' AND created_at >= ?
+        AND id NOT IN (SELECT sub_id FROM usage WHERE status='ok' AND sub_id IS NOT NULL)`).bind(since).all();
   const byGen = {}; for (let g = 1; g <= GM.MAX; g++) byGen[g] = [];
   results.forEach(r => { const g = GM.genFromDays(r.server_days); (byGen[g] = byGen[g] || []).push(r); });
+  const us = await env.DB.prepare(
+    `SELECT gen, spend_tier, hero_inf, hero_lan, hero_mks, ratio_inf, ratio_lan, ratio_mks, damage, joiners
+       FROM usage WHERE status='ok' AND updated_at >= ?`).bind(since).all();
+  (us.results || []).forEach(r => { r.u = 1; if (byGen[r.gen]) byGen[r.gen].push(r); });
   return byGen;
+}
+/* 世代ごとの件数（D1 から即時）。集計対象と同じ条件で数える */
+async function liveCounts(env) {
+  const since = now() - parseInt(env.WINDOW_DAYS || '90', 10) * 86400;
+  const live = {}; for (let g = 1; g <= GM.MAX; g++) live[g] = 0;
+  const a = await env.DB.prepare(`SELECT server_days, COUNT(*) AS n FROM submissions WHERE status='ok' AND created_at>=?
+     AND id NOT IN (SELECT sub_id FROM usage WHERE status='ok' AND sub_id IS NOT NULL) GROUP BY server_days`).bind(since).all();
+  (a.results || []).forEach(r => { const g = GM.genFromDays(r.server_days); if (live[g] != null) live[g] += r.n; });
+  const b = await env.DB.prepare(`SELECT gen, COUNT(*) AS n FROM usage WHERE status='ok' AND updated_at>=? GROUP BY gen`).bind(since).all();
+  (b.results || []).forEach(r => { if (live[r.gen] != null) live[r.gen] += r.n; });
+  return live;
 }
 async function rebuildAll(env) {
   const byGen = await loadWindow(env);
@@ -208,10 +319,7 @@ export default {
         const sum = s ? JSON.parse(s) : await rebuildAll(env);
         /* 件数だけは D1 から即時反映（published の判定と実測の中身は日次集計のまま）。
            1回の SELECT で直近90日の行を数えるだけなので無料枠で十分収まる */
-        const since = now() - parseInt(env.WINDOW_DAYS || '90', 10) * 86400;
-        const { results } = await env.DB.prepare('SELECT server_days, COUNT(*) AS n FROM submissions WHERE status=\'ok\' AND created_at>=? GROUP BY server_days').bind(since).all();
-        const live = {}; for (let g = 1; g <= GM.MAX; g++) live[g] = 0;
-        (results || []).forEach(r => { const g = GM.genFromDays(r.server_days); if (live[g] != null) live[g] += r.n; });
+        const live = await liveCounts(env);
         for (let g = 1; g <= GM.MAX; g++) { sum.gens[g] = sum.gens[g] || { n: 0, published: false }; sum.gens[g].n = live[g]; }
         sum.liveCounts = true;
         return json(sum, 200, { ...h, 'cache-control': 'public, max-age=60' });
@@ -262,16 +370,61 @@ export default {
         if (s) {
           const agg = JSON.parse(s);
           if (!agg.published) {                          /* 未公開のうちは件数だけ D1 から最新を取る（「現在 N 件」を即時反映） */
-            const range = GM.rangeOf(g), since = now() - parseInt(env.WINDOW_DAYS || '90', 10) * 86400;
-            const c = await env.DB.prepare('SELECT COUNT(*) AS n FROM submissions WHERE status=\'ok\' AND created_at>=? AND server_days>=? AND server_days<=?')
-              .bind(since, range.from, range.to == null ? 99999 : range.to).first();
-            if (c && typeof c.n === 'number') agg.n = c.n;
+            const live = await liveCounts(env);
+            if (typeof live[g] === 'number') agg.n = live[g];
           }
           return json(agg, 200, { ...h, 'cache-control': 'public, max-age=' + (agg.published ? 600 : 60) });
         }
         const byGen = await loadWindow(env); const agg = aggregate(byGen[g], g, env);
         await env.STATS.put('stats:gen:' + g, JSON.stringify(agg));
         return json(agg, 200, h);
+      }
+      if (p === '/v1/usage' && (req.method === 'POST' || req.method === 'DELETE')) {
+        /* sendBeacon でも送れるよう content-type は問わない（text/plain の JSON）。許可したサイト以外からは受け付けない */
+        const origin = req.headers.get('Origin') || '';
+        if (!(env.ALLOWED_ORIGINS || '').split(',').map(s => s.trim()).includes(origin)) return json({ error: 'origin' }, 403, h);
+        const raw = await req.text(); if (raw.length > 4000) return json({ error: 'size' }, 413, h);
+        let body = null; try { body = JSON.parse(raw); } catch (_) {}
+        if (!body || typeof body !== 'object') return json({ error: 'json' }, 400, h);
+        const salt = env.CLIENT_SALT || '';
+        if (req.method === 'DELETE') {
+          if (typeof body.cid !== 'string' || !/^[a-f0-9]{32}$/.test(body.cid)) return json({ error: 'cid' }, 400, h);
+          const r = await env.DB.prepare('DELETE FROM usage WHERE cid_hash=?').bind(await sha256('cid|' + body.cid + '|' + salt)).run();
+          return json({ ok: true, removed: r.meta.changes }, 200, h);
+        }
+        const v = validateUsage(body); if (v.errors.length) return json({ error: 'invalid', fields: v.errors }, 400, h);
+        const country = (req.cf && req.cf.country) || '';
+        if (NO_LOG.has(country)) return json({ ok: true, counted: false, reason: 'region' }, 200, h);
+        const lim = usageLimits(env), flag = realism(v, lim), status = flag ? 'flagged' : 'ok';
+        const cidHash = await sha256('cid|' + v.cid + '|' + salt);
+        const clientHash = await sha256((req.headers.get('CF-Connecting-IP') || '') + '|' + salt);
+        const t = now(), s = v.stats;
+        const row = await env.DB.prepare('SELECT sub_id FROM usage WHERE cid_hash=? AND gen=?').bind(cidHash, v.gen).first();
+        const vals = [v.heroes.inf.id, v.heroes.lan.id, v.heroes.mks.id, v.gear.inf, v.gear.lan, v.gear.mks, v.joiners.join(','), v.tier, v.fc,
+          s.teamAtk, s.teamLeth, s.atkInf, s.lethInf, s.atkLan, s.lethLan, s.atkMks, s.lethMks, v.troops, v.ratio[0], v.ratio[1], v.ratio[2], v.damage, v.calib, status, flag];
+        if (row) {
+          await env.DB.prepare(`UPDATE usage SET updated_at=?, hits=hits+1, hero_inf=?, hero_lan=?, hero_mks=?, gear_inf=?, gear_lan=?, gear_mks=?, joiners=?, troop_tier=?, fc_level=?,
+              team_atk=?, team_leth=?, atk_inf=?, leth_inf=?, atk_lan=?, leth_lan=?, atk_mks=?, leth_mks=?, troops=?, ratio_inf=?, ratio_lan=?, ratio_mks=?, damage=?, calib=?, status=?, flag=?
+              WHERE cid_hash=? AND gen=?`).bind(t, ...vals, cidHash, v.gen).run();
+        } else {
+          const dayStart = t - (t % 86400);
+          const c = await env.DB.prepare('SELECT COUNT(*) AS n FROM usage WHERE client_hash=? AND created_at>=?').bind(clientHash, dayStart).first();
+          if (c && c.n >= lim.perIpDaily) return json({ error: 'rate' }, 429, h);
+          await env.DB.prepare(`INSERT INTO usage (cid_hash, gen, created_at, updated_at, hero_inf, hero_lan, hero_mks, gear_inf, gear_lan, gear_mks, joiners, troop_tier, fc_level,
+              team_atk, team_leth, atk_inf, leth_inf, atk_lan, leth_lan, atk_mks, leth_mks, troops, ratio_inf, ratio_lan, ratio_mks, damage, calib, status, flag, client_hash)
+              VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`).bind(cidHash, v.gen, t, t, ...vals, clientHash).run();
+        }
+        /* 同じ人の口コミ投稿があれば紐づける（集計で二重に数えない・課金帯を引き継ぐ） */
+        if (v.sub && !(row && row.sub_id)) {
+          const sb = await env.DB.prepare("SELECT spend_tier FROM submissions WHERE id=? AND status='ok' AND server_days>=? AND server_days<=?")
+            .bind(v.sub, GM.rangeOf(v.gen).from, GM.rangeOf(v.gen).to == null ? 99999 : GM.rangeOf(v.gen).to).first();
+          if (sb) await env.DB.prepare('UPDATE usage SET sub_id=?, spend_tier=? WHERE cid_hash=? AND gen=?').bind(v.sub, sb.spend_tier, cidHash, v.gen).run();
+        }
+        /* その世代の偏差値の母集団（日次集計）を返す。偏差値そのものはブラウザ側で計算する */
+        let dev = null, n = 0;
+        const ks = await env.STATS.get('stats:gen:' + v.gen);
+        if (ks) { const agg = JSON.parse(ks); n = agg.n || 0; if (agg.published && agg.dev) dev = { n: agg.dev.n, mu: agg.dev.mu, sd: agg.dev.sd }; }
+        return json({ ok: true, counted: !flag, flag: flag || undefined, gen: v.gen, n, dev }, 200, h);
       }
       if (req.method === 'POST' && p === '/v1/submit') {
         const body = await req.json().catch(() => null); if (!body) return json({ error: 'json' }, 400, h);
@@ -305,6 +458,11 @@ export default {
             .bind(id, t, t, v.days, v.tier, v.heroes.inf.id, v.heroes.lan.id, v.heroes.mks.id,
               v.ratio ? v.ratio[0] : null, v.ratio ? v.ratio[1] : null, v.ratio ? v.ratio[2] : null,
               v.damage, v.fc, v.gear[0], v.gear[1], v.gear[2], await sha256(editKey), clientHash, v.comment, v.nick, v.showDamage).run();
+        }
+        /* シミュレーターの利用データと紐づける（集計で二重に数えない・課金帯を引き継ぐ） */
+        if (typeof body.cid === 'string' && /^[a-f0-9]{32}$/.test(body.cid)) {
+          await env.DB.prepare('UPDATE usage SET sub_id=?, spend_tier=? WHERE cid_hash=? AND gen=?')
+            .bind(id, v.tier, await sha256('cid|' + body.cid + '|' + (env.CLIENT_SALT || '')), v.gen).run();
         }
         /* 診断: 同世代・直近の投稿と比較 */
         const range = GM.rangeOf(v.gen), since = t - parseInt(env.WINDOW_DAYS || '90', 10) * 86400;
