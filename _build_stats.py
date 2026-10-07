@@ -9,9 +9,9 @@ import os, re, json, html, subprocess
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 BASE_URL = "https://whitesim-lab.com"
-V = "114"            # 共有アセットの版数
-HV = "91"           # heroes.js の版数
-UPDATED = "2026-10-05"
+V = "117"            # 共有アセットの版数
+HV = "117"           # heroes.js の版数
+UPDATED = "2026-10-07"
 NOTES_DIR = os.path.join(ROOT, "_stats_notes")
 DEFAULT_TIER = "whale"   # 理論側のデフォルト表示（石油王）
 
@@ -65,7 +65,7 @@ GA = """<!-- Google tag (gtag.js) -->
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
-  gtag('consent','default',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'});
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'granted'});
   gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',region:['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','GB','CH','IS','LI','NO']});
   gtag('js', new Date());
   gtag('config', 'G-Y8YMCVQDMG');
@@ -120,7 +120,6 @@ def head(title_ja, desc_ja, path, ld=""):
 <meta property="og:url" content="{BASE_URL}{path}">
 <meta property="og:image" content="{BASE_URL}/favicon.png?v=85">
 <meta name="twitter:card" content="summary">
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4593324513914979" crossorigin="anonymous"></script>
 <link rel="canonical" href="{BASE_URL}{path}">
 {ld}
 </head>
@@ -133,6 +132,7 @@ def tail(tr, title_en, crumb_en, h1_en, lead_en, extra_js="", desc_en="", faq_en
     return f"""<div id="foot"></div>
 <script src="/assets/config.js?v={V}"></script>
 <script src="/assets/toolkit.js?v={V}"></script>
+<script src="/assets/hero-img.js?v={V}"></script>
 <script src="/assets/heroes.js?v={HV}"></script>
 <script src="/assets/gen-map.js?v={V}"></script>
 <script src="/assets/hero-posts.js?v={V}"></script>
@@ -501,12 +501,14 @@ def compare_section(g, tr):
     return f"""<h2 id="compare"><span class="h-theory">{tr(f"第{g}世代の各枠の英雄ランキング（理論値）", f"Gen {g} per-slot hero rankings (theory)")}</span><span class="h-live" hidden>{tr("理論 vs 実測：各枠の英雄ランキング","Theory vs Live: per-slot hero rankings")}</span></h2>
 <ul class="kv-list sec-lead">
 <li>{bi("<b>理論</b>：その世代で入手できる英雄を盾×槍×弓で総当たりし、熊狩シミュレーターと同じ式で期待ダメージが高い順に並べたもの。数字は1位を100とした指数。","<b>Theory</b>: all obtainable INF×LAN×MKS combinations, ranked by the simulator’s formula. Numbers are an index (#1 = 100).")}</li>
-<li class="live-col" hidden>{bi("<b>実測</b>：利用者の投稿から集計した採用率（直近90日）。数字は％。","<b>Live</b>: pick rate from user submissions (last 90 days), in %.")}</li>
+<li class="live-col" hidden>{bi("<b>実測</b>：熊狩シミュレーターの利用データ（匿名・自動集計）から出した採用率（直近90日）。数字は％。現実的でない入力は除外しています。","<b>Live</b>: pick rate from anonymous Bear Hunt Simulator usage data (last 90 days), in %. Unrealistic inputs are excluded.")}</li>
 </ul>
 <div data-live="meta"></div>
 {tabs}{panes}
 <p class="note" style="margin-top:8px">※ {tr("集結主スキルのデータが未登録の英雄は、遠征ステータスだけで順位を計算しています（スキルが強い場合は過小評価になります）。","Heroes without registered leader-skill data are ranked by expedition stats only (they may be underrated if their skill is strong).")}</p>
-<div data-live="stats"></div>"""
+<div data-live="stats"></div>
+<div data-live="joiners"></div>
+<div data-live="dev"></div>"""
 
 def next_section(g, tr):
     e = theory["gens"][str(g)]
@@ -769,13 +771,29 @@ def build_methodology():
 <div id="updbox"></div>
 <p class="lead">{lead_ja}</p>
 
-<h2>{tr("1. 実測（みんなの投稿）","1. Live data (submissions)")}</h2>
+<h2>{tr("1. 実測（シミュレーターの利用データ）","1. Live data (simulator usage)")}</h2>
+<ul class="kv-list sec-lead">
+<li>{bi("2026年10月7日から、<b>熊狩ダメージ・シミュレーターで試算した内容を匿名のまま自動で集計</b>しています（それ以前は投稿フォームから送られた分だけでした）。口コミ（ひとこと）はこれまで通り投稿フォームから送ります。","Since Oct 7, 2026, <b>what you calculate in the Bear Hunt Simulator is aggregated automatically and anonymously</b> (before that, only form submissions were counted). Reviews are still posted through the form.")}</li>
+<li>{bi("シミュレーターの結果欄にある「統計に使わない」を押すと、その端末からは以後送られず、送信済みの分も削除されます。","Press “Opt out” in the simulator’s result panel to stop sending from that device and delete what was already sent.")}</li>
+</ul>
 <div class="point-grid">
 <div class="point"><div class="pt-h">{tr("集めているもの","What we collect")}</div><ul>
-<li>{tr("サーバーの最新世代・課金帯（自己申告）","Latest generation on your server, spending tier (self-reported)")}</li>
-<li>{tr("集結主の盾・槍・弓の英雄","The three rally-leader heroes")}</li>
-<li>{tr("任意：1ラリーのダメージ・火晶レベル・専用装備Lv","Optional: damage per rally, FC level, gear levels")}</li>
-<li><b>{tr("集めないもの：","Not collected: ")}</b>{tr("同盟名・ゲームID・お名前。IPは塩付きハッシュのみ（連投防止用）","alliance, game ID, name. IP only as a salted hash for rate limiting")}</li></ul></div>
+<li>{tr("シミュレーターで選んだ世代、集結主の盾・槍・弓の英雄と専用装備Lv、乗せ英雄（参加者）4人","Generation selected in the simulator, the three rally-leader heroes with gear levels, and the four joiner heroes")}</li>
+<li>{tr("兵種Tier・火晶レベル・攻撃%／殺傷%・兵士数と比率・予測ダメージ","Troop tier, FC level, attack/lethality %, troop count and ratio, estimated damage")}</li>
+<li><b>{tr("予測ダメージは全員同じ条件で計算し直した値：","Estimated damage is recomputed under identical conditions: ")}</b>{tr("補正係数C（標準の0.63）や詳細設定の係数は、利用者が画面で変えていても統計用には既定値にそろえます。人によって違うのは、入力した自分の状態（英雄・ステータス・兵数・ペット・バフ・罠・天賦）だけです","the correction factor C (standard 0.63) and advanced coefficients are reset to their defaults for the stats even if you changed them on screen. Only your own inputs differ (heroes, stats, troops, pets, buffs, trap, talent)")}</li>
+<li>{tr("課金帯は、口コミを投稿した人の自己申告だけ（自動では集めません）","Spending tier only from people who post a review (never collected automatically)")}</li>
+<li><b>{tr("集めないもの：","Not collected: ")}</b>{tr("同盟名・ゲームID・お名前・Cookie。ブラウザ内で作った乱数IDのハッシュと、IPの塩付きハッシュ（大量送信の防止用）だけを保存します","alliance, game ID, name, cookies. Only a hash of a random in-browser ID and a salted IP hash (to stop flooding) are stored")}</li></ul></div>
+<div class="point"><div class="pt-h">{tr("現実的でない入力の除外","Excluding unrealistic inputs")}</div><ul>
+<li>{tr("攻撃%・殺傷%のどれかが 0%未満 または 3000%超","Any attack/lethality % below 0 or above 3000")}</li>
+<li>{tr("攻撃%・殺傷% 8項目の合計が50未満（ほぼ未入力）、または8項目すべて同じ数字","All eight stats sum to under 50 (basically empty), or all eight are the same number")}</li>
+<li>{tr("兵士の合計数が 1,000未満 または 300万超","Total troops under 1,000 or over 3,000,000")}</li>
+<li>{tr("兵種が合わない英雄・その世代に未実装の英雄を含むデータは保存しません","Data with a hero in the wrong class or not yet released in that generation is not stored")}</li>
+<li>{tr("除外したデータは集計に入れず、基準を見直すときの確認用にだけ残します","Excluded data stays out of all figures and is kept only for reviewing these rules")}</li></ul></div>
+<div class="point"><div class="pt-h">{tr("偏差値の出し方","How the score is computed")}</div><ul>
+<li>{tr("同じ世代を選んだ人の「1ラリーの予測ダメージ」が母集団（1ブラウザ×1世代につき最新の1件）","Population: estimated damage per rally of everyone who selected the same generation (latest record per browser per generation)")}</li>
+<li>{tr("偏差値 ＝ 50 ＋ 10 ×（log10 ダメージ − 平均）÷ 標準偏差。ダメージは人によって桁が違うため対数で計算します","Score = 50 + 10 × (log10 damage − mean) ÷ SD. A log scale is used because damage differs by orders of magnitude")}</li>
+<li>{tr("平均と標準偏差を出す前に、四分位範囲の3倍を超えて離れた値を除外","Values beyond 3×IQR are removed before computing the mean and SD")}</li>
+<li>{tr("実戦の記録ではなく、同じ係数で計算したシミュレーターの推定値どうしの比較です。口コミ投稿に書かれたダメージ（実測や補正後の値）は偏差値に入れません","It compares simulator estimates computed with identical coefficients, not battle records. Damage figures typed into review submissions are not used for the score")}</li></ul></div>
 <div class="point"><div class="pt-h">{tr("公開の基準","Publication rules")}</div><ul>
 <li>{tr("集計対象は直近90日","Last 90 days only")}</li>
 <li>{tr("世代ごとに10件未満は非公開","Fewer than 10 per generation: hidden")}</li>
@@ -784,7 +802,8 @@ def build_methodology():
 <div class="point"><div class="pt-h">{tr("除外・上書き","Filtering")}</div><ul>
 <li>{tr("ダメージの外れ値は四分位範囲（1.5×IQR）で除外","Damage outliers beyond 1.5×IQR removed")}</li>
 <li>{tr("英雄と兵種の不一致、未実装世代の英雄は受付時に弾く","Hero/class mismatch and unreleased heroes rejected")}</li>
-<li>{tr("同じブラウザ・同じ日からの再投稿は上書き","Same browser or same day: overwrite")}</li></ul></div>
+<li>{tr("同じブラウザ・同じ世代のデータは最新の1件に上書き（何度試算しても1人分）","Same browser and generation: only the latest record counts (one person, however many runs)")}</li>
+<li>{tr("口コミを投稿した人は、利用データと二重に数えません","People who post a review are not counted twice")}</li></ul></div>
 <div class="point"><div class="pt-h">{tr("偏り","Bias")}</div><ul>
 <li>{tr("このサイトの利用者＝熊狩りに熱心な層に偏ります","Skews toward this site’s users — engaged Bear Hunt players")}</li>
 <li>{tr("サーバー全体の平均ではありません","Not a server-wide average")}</li></ul></div>
@@ -856,6 +875,7 @@ def build_submit():
 <p class="lead">{lead_ja}</p>
 <ul class="kv-list" style="margin-bottom:14px">
 <li>{tr("投稿するとすぐに、同じ世代の中での位置と、あなたの課金帯の理論最適との差が分かります","Right after submitting you see your rank in your generation and the gap to your tier’s theoretical best")}</li>
+<li>{tr("採用率や偏差値などの統計は、シミュレーターを使うだけで自動で反映されます。このフォームは口コミ（ひとこと）と課金帯を添えたい人向けです","Pick rates and scores are filled in automatically when you use the simulator. This form is for adding a review and your spending tier")}</li>
 <li>{tr("投稿は世代ごとに1件。同じ世代に再投稿すると上書き、別の世代なら別の投稿になります","One submission per generation: re-submitting the same generation updates it, another generation adds a new one")}</li>
 </ul>
 <div id="submit-form"><div class="skel"></div><div class="skel" style="width:60%"></div></div>

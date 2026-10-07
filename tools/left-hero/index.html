@@ -11,7 +11,7 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   // Consent Mode v2: 既定は許可、EEA/英国/スイスのみ同意取得まで拒否(CMPがupdateで上書き)
-  gtag('consent','default',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'});
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'granted'});
   gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',region:['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH'],wait_for_update:500});
   gtag('js', new Date());
   gtag('config', 'G-Y8YMCVQDMG');
@@ -22,7 +22,6 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
 <link rel="stylesheet" href="/assets/site.css?v=114">
 <script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
-<!-- ▼ AdSense承認後: コードスニペットを貼り付け ▼ -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=85">
 <link rel="icon" type="image/png" href="/favicon.png?v=85">
 <link rel="shortcut icon" href="/favicon.ico?v=85">
@@ -34,7 +33,6 @@
 <meta property="og:url" content="https://whitesim-lab.com/tools/left-hero/">
 <meta property="og:image" content="https://whitesim-lab.com/favicon.png?v=85">
 <meta name="twitter:card" content="summary">
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4593324513914979" crossorigin="anonymous"></script>
 <link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/tools/left-hero/"><link rel="alternate" hreflang="en" href="https://whitesim-lab.com/en/tools/left-hero/"><link rel="alternate" hreflang="x-default" href="https://whitesim-lab.com/tools/left-hero/">
 <link rel="canonical" href="https://whitesim-lab.com/tools/left-hero/">
 </head>
@@ -58,7 +56,6 @@
   <div id="picker" class="hgrid" style="margin-top:12px"></div>
 </div>
 
-<div class="ad-slot"><!-- AdSense承認後 --></div>
 
 <h2>判定結果(選択中の4枠)</h2>
 <div id="result"></div>
@@ -134,9 +131,10 @@
 <div id="foot"></div>
 
 <script src="/assets/config.js?v=96"></script>
-<script src="/assets/heroes.js?v=91"></script>
+<script src="/assets/hero-img.js?v=117"></script>
+<script src="/assets/heroes.js?v=117"></script>
 <script src="/assets/bear-calc.js?v=101"></script>
-<script src="/assets/toolkit.js?v=114"></script>
+<script src="/assets/toolkit.js?v=117"></script>
 <script>
 document.getElementById('nav').innerHTML = WOS_NAV(2);
 document.getElementById('foot').innerHTML = WOS_FOOT(2);
@@ -165,7 +163,7 @@ function buildPicker(){
       var on=selected.indexOf(h.id)>=0;
       var eff = bearEff(h) ? '<span class="ok">'+WOS_skillLabel(h.joiner.label)+'</span>' : '<span class="na">'+t('熊で効果なし','No bear effect')+'</span>';
       html+='<div class="hcard" data-id="'+h.id+'" style="cursor:pointer;'+(on?'outline:2px solid var(--ember)':'')+'">'
-        +'<img src="'+WOS_ICON(h)+'" alt="'+(h.name||'')+'" style="border-color:'+C.RAR_HEX[h.rar]+'">'
+        +'<img src="'+WOS_HERO_ICON(h)+'" alt="'+(h.name||'')+'" style="border-color:'+C.RAR_HEX[h.rar]+'">'
         +'<div class="hn">'+WOS_heroName(h)+'</div><div class="hs">'+eff+'</div></div>';
     });
   });
