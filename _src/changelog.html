@@ -9,7 +9,7 @@
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
-  gtag('consent','default',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'});
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'granted'});
   gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',region:['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH'],wait_for_update:500});
   gtag('js', new Date());
   gtag('config', 'G-Y8YMCVQDMG');
@@ -31,7 +31,6 @@
 <meta property="og:url" content="https://whitesim-lab.com/changelog.html">
 <meta property="og:image" content="https://whitesim-lab.com/favicon.png?v=85">
 <meta name="twitter:card" content="summary">
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4593324513914979" crossorigin="anonymous"></script>
 <link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/changelog.html"><link rel="alternate" hreflang="en" href="https://whitesim-lab.com/en/changelog.html"><link rel="alternate" hreflang="x-default" href="https://whitesim-lab.com/changelog.html">
 <link rel="canonical" href="https://whitesim-lab.com/changelog.html">
 </head>
@@ -41,6 +40,18 @@
 <div class="crumb" id="crumb"></div>
 <div id="bodyja" style="display:none"><h1>更新履歴</h1>
 <p class="lead">ツールの追加、計算式の補正、データ更新、サイト構造の変更などを記録しています。ゲームのアップデートに合わせて、検証結果はこのページに追記していきます。</p>
+
+<div class="card">
+<h3>2026年10月7日</h3>
+<ul>
+<li>当サイトを広告なしの非営利ファンサイトとして運営する方針に変更し、広告枠・広告用のコード・提携リンクをすべて取り外しました。あわせて<a href="privacy.html">プライバシーポリシー</a>の広告に関する記載を改めました。</li>
+<li><a href="stats/index.html">世代別統計</a>の集計方法を変更。これまでは投稿フォームから送られた構成だけを集計していましたが、<a href="tools/bear-hunt/index.html">熊狩ダメージ・シミュレーター</a>で試算した内容を匿名のまま自動で集計するようにしました（結果欄の「統計に使わない」でいつでも停止・削除できます）。口コミ（ひとこと）はこれまで通り投稿フォームから送れます。</li>
+<li>世代ページに「乗せ英雄（参加者）の人気ランキング」と「その世代の偏差値（予測ダメージの分布）」を追加。シミュレーターの結果欄にも、同じ世代の中での自分の偏差値を表示します（データが10件集まった世代から）。</li>
+<li>統計用のダメージは、補正係数C（標準0.63）と詳細設定の係数を全員同じ値にそろえて計算し直した値を使います。画面で補正係数を変えていても、偏差値は同じ条件どうしの比較になります。</li>
+<li>熊狩シミュレーターの結果欄に「1ラリーのダメージの出やすさ」の分布図を追加。確率スキルが何回発動するかで、ダメージがどの範囲にどれくらいの確率で出るか（下振れ・ふつう・上振れ）が分かります。偏差値にも、世代内の分布と自分の位置を示す図を付けました。</li>
+<li>実際のゲームではあり得ない入力（攻撃%が3000%超、8項目すべて同じ数字、兵士数が極端など）は集計から除外します。基準は<a href="stats/methodology.html">集計方法</a>に記載しました。あわせて<a href="privacy.html">プライバシーポリシー</a>を更新しました。</li>
+</ul>
+</div>
 
 <div class="card">
 <h3>2026年10月5日</h3>
@@ -139,6 +150,18 @@
 <p class="lead">A record of new tools, formula calibrations, data updates and site-structure changes. Verification results are added here as the game updates.</p>
 
 <div class="card">
+<h3>October 7, 2026</h3>
+<ul>
+<li>The site is now run as a non-commercial fan site without ads: all ad slots, ad code and affiliate links have been removed, and the advertising section of the <a href="privacy.html">Privacy Policy</a> was rewritten.</li>
+<li>Changed how the <a href="stats/index.html">generation stats</a> are collected. Previously only builds sent through the submission form were counted; now what you calculate in the <a href="tools/bear-hunt/index.html">Bear Hunt Simulator</a> is aggregated automatically and anonymously (you can stop and delete it anytime with "Opt out" in the result panel). Reviews are still posted through the form.</li>
+<li>Generation pages now show the most-used joiner heroes and a score scale (distribution of estimated damage) for that generation. The simulator's result panel also shows your own score within your generation (once a generation has 10 records).</li>
+<li>Damage used for the stats is recomputed with the correction factor C (standard 0.63) and the advanced coefficients set to the same values for everyone, so scores compare like with like even if you changed C on screen.</li>
+<li>The simulator's result panel now shows a distribution chart of damage per rally: how likely each range is depending on how often chance skills trigger (unlucky / typical / lucky). The score also comes with a small chart of your position within your generation.</li>
+<li>Inputs that cannot occur in the actual game (attack above 3000%, all eight stats identical, extreme troop counts, etc.) are excluded. The rules are listed under <a href="stats/methodology.html">Methodology</a>, and the <a href="privacy.html">Privacy Policy</a> has been updated.</li>
+</ul>
+</div>
+
+<div class="card">
 <h3>October 5, 2026</h3>
 <ul>
 <li>The Bear Hunt Simulator now counts "enemy DEF -25%" (Hendrik, Ligeia, Estrella, Eleanor, and Ursar's periodic version) as x1.25 instead of about x1.14, following a player report that one DEF-down joiner beats stacking another attack joiner.</li>
@@ -235,7 +258,7 @@
 </div>
 <div id="foot"></div>
 <script src="/assets/config.js?v=96"></script>
-<script src="/assets/toolkit.js?v=114"></script>
+<script src="/assets/toolkit.js?v=117"></script>
 <script>
 (function(){
   var EN = (window.WOS_LANG==='en');

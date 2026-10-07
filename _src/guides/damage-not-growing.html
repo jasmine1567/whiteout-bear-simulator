@@ -10,7 +10,7 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   // Consent Mode v2: 既定は許可、EEA/英国/スイスのみ同意取得まで拒否(CMPがupdateで上書き)
-  gtag('consent','default',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'});
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'granted'});
   gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',region:['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH'],wait_for_update:500});
   gtag('js', new Date());
   gtag('config', 'G-Y8YMCVQDMG');
@@ -21,7 +21,6 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com https://platform.twitter.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
 <link rel="stylesheet" href="/assets/site.css?v=114">
 <script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
-<!-- ▼ AdSense承認後: コードスニペットを貼り付け ▼ -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=85">
 <link rel="icon" type="image/png" href="/favicon.png?v=85">
 <link rel="shortcut icon" href="/favicon.ico?v=85">
@@ -33,7 +32,6 @@
 <meta property="og:url" content="https://whitesim-lab.com/guides/damage-not-growing.html">
 <meta property="og:image" content="https://whitesim-lab.com/favicon.png?v=85">
 <meta name="twitter:card" content="summary">
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4593324513914979" crossorigin="anonymous"></script>
 <link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/guides/damage-not-growing.html"><link rel="alternate" hreflang="en" href="https://whitesim-lab.com/en/guides/damage-not-growing.html"><link rel="alternate" hreflang="x-default" href="https://whitesim-lab.com/guides/damage-not-growing.html">
 <link rel="canonical" href="https://whitesim-lab.com/guides/damage-not-growing.html">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"【ホワサバ】熊狩りでダメージが伸びない原因まとめと対処","description":"ホワサバ熊狩りでダメージが伸びない原因を網羅。左英雄ミス・兵士不足・比率・集結主編成・罠強化/シリル・回転率。質問に答えるだけの原因診断ツール付き。","image":"https://whitesim-lab.com/favicon.png?v=85","author":{"@type":"Organization","name":"ホワサバ ツールラボ"},"publisher":{"@type":"Organization","name":"ホワサバ ツールラボ","logo":{"@type":"ImageObject","url":"https://whitesim-lab.com/favicon.png?v=85"}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://whitesim-lab.com/guides/damage-not-growing.html"},"inLanguage":"ja"}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ホーム","item":"https://whitesim-lab.com/"},{"@type":"ListItem","position":2,"name":"攻略記事","item":"https://whitesim-lab.com/#read"},{"@type":"ListItem","position":3,"name":"【ホワサバ】熊狩りでダメージが伸びない原因まとめと対処","item":"https://whitesim-lab.com/guides/damage-not-growing.html"}]}</script>
@@ -61,7 +59,6 @@
 <h2>原因3:兵種比率が悪い</h2>
 <p>盾を入れすぎていたり、逆に弓100%にしていたりすると効率が落ちます。弓寄せの混成(10:30:60など)が無難です。</p>
 
-<div class="ad-slot"><!-- AdSense承認後 --></div>
 
 <h2>原因4:集結主の編成(主催した場合)</h2>
 <p>自分で集結を立てた場合、主催の英雄とスキルがそのままダメージの主因になります。守備寄りや無関係な英雄で立てると伸びません。与ダメ・攻撃系で固めましょう。</p>
@@ -115,7 +112,6 @@
 <p>Troop count drives damage directly. Fill barracks and join full.</p>
 <h2>3. Bad troop ratio</h2>
 <p>Too much infantry, or 100% marksman, both lose efficiency. Marksman-favored mix (e.g. 10:30:60) is safe.</p>
-<div class="ad-slot"></div>
 <h2>4. Leader formation (if you led)</h2>
 <p>Defensive/irrelevant heroes will not scale. Use DMG/ATK heroes.</p>
 <h2>5. Trap upgrade / Cyrille unused</h2>
@@ -154,7 +150,7 @@
 <nav class="relposts" aria-label="関連記事"><h2 class="relposts-h">Related articles</h2><ul><li><a href="troop-ratio.html">What's the right troop ratio?</a></li><li><a href="common-myths.html">7 common Bear Hunt myths</a></li><li><a href="bear-hunt-guide.html">How Bear Hunt damage works (full guide)</a></li><li><a href="f2p-damage.html">How to grow damage as F2P</a></li></ul></nav>
 <div id="foot"></div>
 <script src="/assets/config.js?v=96"></script>
-<script src="/assets/toolkit.js?v=114"></script>
+<script src="/assets/toolkit.js?v=117"></script>
 <script>
 document.getElementById('nav').innerHTML=WOS_NAV(1);
 document.getElementById('foot').innerHTML=WOS_FOOT(1);

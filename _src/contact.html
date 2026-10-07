@@ -10,7 +10,7 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   // Consent Mode v2: 既定は許可、EEA/英国/スイスのみ同意取得まで拒否(CMPがupdateで上書き)
-  gtag('consent','default',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'});
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'granted'});
   gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',region:['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH'],wait_for_update:500});
   gtag('js', new Date());
   gtag('config', 'G-Y8YMCVQDMG');
@@ -22,7 +22,6 @@
 <link rel="stylesheet" href="/assets/site.css?v=114">
 <script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
 
-<!-- ▼ AdSense承認後: コードスニペットを貼り付け ▼ -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=85">
 <link rel="icon" type="image/png" href="/favicon.png?v=85">
 <link rel="shortcut icon" href="/favicon.ico?v=85">
@@ -34,7 +33,6 @@
 <meta property="og:url" content="https://whitesim-lab.com/contact.html">
 <meta property="og:image" content="https://whitesim-lab.com/favicon.png?v=85">
 <meta name="twitter:card" content="summary">
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4593324513914979" crossorigin="anonymous"></script>
 <link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/contact.html"><link rel="alternate" hreflang="en" href="https://whitesim-lab.com/en/contact.html"><link rel="alternate" hreflang="x-default" href="https://whitesim-lab.com/contact.html">
 <link rel="canonical" href="https://whitesim-lab.com/contact.html">
 </head>
@@ -82,7 +80,7 @@
 </div>
 <div id="foot"></div>
 <script src="/assets/config.js?v=96"></script>
-<script src="/assets/toolkit.js?v=114"></script>
+<script src="/assets/toolkit.js?v=117"></script>
 <script>
 (function(){
   var EN = (window.WOS_LANG==='en');

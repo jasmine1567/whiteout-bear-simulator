@@ -7,7 +7,7 @@
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
-  gtag('consent','default',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'});
+  gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'granted'});
   gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',region:['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH'],wait_for_update:500});
   gtag('js', new Date());
   gtag('config', 'G-Y8YMCVQDMG');
@@ -21,7 +21,6 @@
 <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=85"><link rel="icon" type="image/png" href="/favicon.png?v=85"><link rel="shortcut icon" href="/favicon.ico?v=85"><link rel="apple-touch-icon" href="/favicon.png?v=85">
 <meta property="og:type" content="website"><meta property="og:site_name" content="ホワサバ ツールラボ">
 <meta property="og:title" content="熊狩り・対人戦 英雄一覧・データベース｜全65英雄を検索"><meta property="og:url" content="https://whitesim-lab.com/tools/hero-list/"><meta property="og:image" content="https://whitesim-lab.com/favicon.png?v=85"><meta name="twitter:card" content="summary">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4593324513914979" crossorigin="anonymous"></script>
 <link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/tools/hero-list/"><link rel="alternate" hreflang="en" href="https://whitesim-lab.com/en/tools/hero-list/"><link rel="alternate" hreflang="x-default" href="https://whitesim-lab.com/tools/hero-list/">
 <link rel="canonical" href="https://whitesim-lab.com/tools/hero-list/">
 <style>
@@ -113,6 +112,9 @@
     .gb-note{flex-basis:100%;margin-left:0}
     .hl-reset{font-size:13px}
   }
+.hero-card .hero-pic{width:56px;height:56px;border-radius:14px;object-fit:cover;flex:none;margin-right:10px;background:#f1f2f7;border:2px solid #e3e5ed}
+.hero-card.r-ssr .hero-pic{border-color:#e0a020}.hero-card.r-sr .hero-pic{border-color:#9b4fd6}.hero-card.r-r .hero-pic{border-color:#3b82d6}
+.hero-card.has-pic .hc-head{display:flex;align-items:center}
 </style>
 </head>
 <body>
@@ -1366,7 +1368,7 @@
 </section>
 <div id="foot"></div>
 </div>
-<script src="/assets/config.js?v=96"></script><script src="/assets/toolkit.js?v=114"></script>
+<script src="/assets/config.js?v=96"></script><script src="/assets/toolkit.js?v=117"></script><script src="/assets/hero-img.js?v=117"></script>
 <script>
   document.getElementById('nav').innerHTML = window.WOS_NAV(2);
   document.getElementById('foot').innerHTML = window.WOS_FOOT(2);
