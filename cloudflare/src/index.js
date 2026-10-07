@@ -372,6 +372,12 @@ export default {
           if (!agg.published) {                          /* 未公開のうちは件数だけ D1 から最新を取る（「現在 N 件」を即時反映） */
             const live = await liveCounts(env);
             if (typeof live[g] === 'number') agg.n = live[g];
+            /* 公開の件数に届いたら、朝の定時集計を待たずにその場で集計して公開する */
+            if (agg.n >= parseInt(env.MIN_PUBLISH || '10', 10)) {
+              const fresh = aggregate((await loadWindow(env))[g], g, env);
+              await env.STATS.put('stats:gen:' + g, JSON.stringify(fresh));
+              return json(fresh, 200, { ...h, 'cache-control': 'public, max-age=' + (fresh.published ? 600 : 60) });
+            }
           }
           return json(agg, 200, { ...h, 'cache-control': 'public, max-age=' + (agg.published ? 600 : 60) });
         }

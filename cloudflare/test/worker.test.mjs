@@ -182,6 +182,11 @@ console.log('--- 利用データの自動記録 ---');
   t('記録の応答に偏差値の母集団が付く', u.body.dev && u.body.dev.n===32 && Math.abs(50+10*(Math.log10(s9.dev.marks[3].damage)-u.body.dev.mu)/u.body.dev.sd-60)<0.1, JSON.stringify(u.body));
   const sm = (await call('GET','/v1/stats/summary')).body;
   t('summary の件数に利用データが入る', sm.gens[9].n===33, JSON.stringify(sm.gens[9]));
+  /* 第5世代: 定時集計の時点では0件 → その後10件たまったら、次の閲覧で即公開される */
+  for (let i=200;i<210;i++) await call('POST','/v1/usage', base(i, { gen: 5, leader:{ inf:{id:'jeronimo'}, lan:{id:'mia'}, mks:{id:'gwen'} }, joiners:['jessie','jasser'] }), '80.0.0.'+i);
+  t('集計前は KV 上は未公開', JSON.parse(kv.get('stats:gen:5')).published===false);
+  const g5 = (await call('GET','/v1/stats/5')).body;
+  t('10件に届いた世代は定時集計を待たず公開', g5.published===true && g5.n>=10 && g5.slot.mks[0].id==='gwen' && JSON.parse(kv.get('stats:gen:5')).published===true, JSON.stringify({n:g5.n,p:g5.published}));
   const envR = { ...env, USAGE_PER_IP_DAILY: '2' };
   const cr = async i => (await worker.fetch(req('POST','/v1/usage', base(100+i, { gen: 4, leader:{ inf:{id:'jeronimo'}, lan:{id:'mia'}, mks:{id:'alonso'} }, joiners:[] }), '70.0.0.1'), envR)).status;
   t('同じIPからの大量作成は 429', await cr(1)===200 && await cr(2)===200 && await cr(3)===429);
