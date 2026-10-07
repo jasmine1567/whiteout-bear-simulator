@@ -1,0 +1,4 @@
+# GitHub Pages（Jekyll）の設定。サーバー側のプログラム一式はサイトとして公開しない
+exclude:
+  - cloudflare
+  - README.md

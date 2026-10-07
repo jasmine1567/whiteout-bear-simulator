@@ -57,22 +57,19 @@
 <li><b>Event-specific bonus</b> — trap upgrade level (anti-bear attack bonus)</li>
 <li><b>Point bonus</b> — expert Cyrille's "Hunter's Heart" talent (up to +30% to your earned points)</li>
 </ul>
-<h2>A deeper look at the damage formula (community hypotheses)</h2>
-<p>As a bit of deeper "reading," here are the community-proposed ideas about the Bear Hunt damage formula. Since the official exact formula isn't published, the below is fan verification/estimation — but it's widely supported for explaining real damage trends well.</p>
+<h2>How damage grows (what the community knows)</h2>
+<p>The exact Bear Hunt formula has never been published. Here are three widely known ideas from player testing that explain real damage trends well.</p>
 
-<h3>Basic structure: Attack × Lethality ÷ Defense</h3>
-<p>Community breakdowns (e.g. Kingshot-family, considered the same engine family as WoS) express per-troop attack roughly as:</p>
-<p><code>attack per troop = base attack × (1 + attack bonus) × base lethality ÷ 100</code></p>
-<p>Multiply by troop count and divide by bear defense for damage: <code>damage ≈ effective force × attack-per-troop ÷ bear defense</code>. Because attack and lethality multiply, <b>a low value on either side caps the whole</b> — the theoretical basis for "raise attack and lethality in balance."</p>
+<h3>Attack and lethality work like a multiplication</h3>
+<p>Attack and lethality are believed to combine multiplicatively rather than additively, so <b>a high value on only one side does not lift the total</b>. That is why players say to raise both in balance.</p>
 
-<h3>Most important: effective force scales by square root</h3>
-<p>The crucial point: troop count isn't applied linearly but <b>compressed by square root</b>. The community formula expresses effective force roughly as <code>effective force = √(troops × baseline)</code>. This explains the commonly-observed "double the troops, only ~1.4× damage (√2)."</p>
-<p>Because of this crowding decay, cramming one type loses efficiency. Leading with high-damage marksman but mixing lancers beats pure marksman — every ratio debate traces back to this hypothesis. Our simulator implements the decay strength as an adjustable "crowding decay ρ" you can fine-tune to your measurements.</p>
+<h3>More troops help, but less than proportionally</h3>
+<p>Adding troops raises damage, but <b>by less than the share you added</b> — something players observe all the time. Cramming everything into one troop type slows the gain, so leading with high-damage marksmen while mixing in lancers tends to give a higher total. Every ratio debate comes back to this.</p>
 
-<h3>The "displayed stats aren't the real numbers" claim</h3>
-<p>Another famous community point: <b>the troop attack/lethality shown in the training camp aren't the actual internal values</b>. Even if "T6 marksman attack 10 / lethality 11" shows, tests report the internal calc uses a totally different scale (e.g. attack ~974). So judging "marksman is weak, only attack 10" from displayed values is wrong; comparing via a tool that estimates the internal scale is closer to reality.</p>
+<h3>On-screen numbers alone do not tell you strength</h3>
+<p>The troop attack and lethality shown in the training camp are reported not to be the values used internally. A small displayed number does not mean a weak troop, so compare troop types and heroes by actual damage.</p>
 
-<div class="callout"><b>⚠ These are "hypotheses"</b><br>The above is estimation from community verification, not a full reconstruction of the official internal formula. Our simulator is likewise a "constraint-based estimate." That's exactly why calibrating with your own measured points (adjusting factor C) to fit your environment is most accurate. Don't take hypotheses at face value — verify with your own numbers. That's the fastest route to mastering Bear Hunt.</div>
+<div class="callout"><b>⚠ These are ideas based on player testing</b><br>They are not a reproduction of the official mechanics, and our simulator is an estimate too. For the most accurate result, enter your own measured points to calibrate it to your account.</div>
 <h2>Understanding the joiner "4 slots" correctly</h2>
 <p>This is the most misunderstood part. On the joiner side, only the "first expedition skill" of the hero placed at the far left (slot 1) becomes a buff candidate for the whole rally. Hero level and stars don't matter; only skill level is read. There are 4 slots, first-come by default, but a later joiner replaces a slot only if their skill level is higher than one already taken.</p>
 <p>Another key point is how buffs combine. Same-type skills add; different types multiply. Four "+25% all-army DMG" sum to +100% (2.0x), but splitting into two "+25% DMG" and two "+25% ATK" gives 1.5x1.5 = 2.25x — about 12% more at the same skill level. Spreading DMG / ATK / Lethality / enemy-DMG-taken / proc types is the theoretical optimum.</p>

@@ -81,8 +81,8 @@ function solve(gen, tier) {
 const t0 = Date.now();
 const result = {
   generatedAt: new Date().toISOString(),
-  model: { ratio: RATIO, joiner: 'best', calcModel: CALC.MODEL, totalTroops: TOTAL, applyHeroStats: true,
-           defaults: CALC.DEFAULTS, note: '計算式は熊狩シミュレーターと同一。推定値であり実戦の記録ではない。' },
+  /* 公開ファイルなので、計算の前提（係数・比率・モデル設定）は書き出さない */
+  model: { note: '推定値であり実戦の記録ではない。' },
   tiers: GM.TIER_ORDER.map(k => ({ key: k, label: GM.TIERS[k].label, label_en: GM.TIERS[k].label_en,
            hallSlots: GM.TIERS[k].hallSlots, paid: GM.TIERS[k].paid, gear: GM.TIERS[k].gear,
            fc: GM.TIERS[k].fc, tier: GM.TIERS[k].tier })),

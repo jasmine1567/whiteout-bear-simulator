@@ -3,7 +3,7 @@
    実行後: node _solve_theory.js → python3 _build_stats.py … の順で再ビルド。 */
 const fs = require('fs');
 const S = require('./_data/skills-from-wiki.js');
-let src = fs.readFileSync('assets/heroes.js', 'utf8');
+let src = fs.readFileSync('_js/heroes.js', 'utf8');
 const fmt = v => JSON.stringify(v).replace(/"([a-zA-Z_]+)":/g, '$1: ').replace(/"/g, "'").replace(/,/g, ', ').replace(/\{/g, '{ ').replace(/\}/g, ' }');
 let n = 0;
 for (const [id, def] of Object.entries(S)) {
@@ -23,5 +23,5 @@ for (const [id, def] of Object.entries(S)) {
   src = src.replace(re, lines.join('\n'));
   n++;
 }
-fs.writeFileSync('assets/heroes.js', src);
+fs.writeFileSync('_js/heroes.js', src);
 console.log('heroes.js を更新:', n, '体');

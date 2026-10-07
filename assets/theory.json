@@ -1,66 +1,7 @@
 {
- "generatedAt": "2026-10-05T00:39:48.040Z",
+ "generatedAt": "2026-10-07T07:18:55.944Z",
  "model": {
-  "ratio": [
-   1,
-   4,
-   95
-  ],
-  "joiner": "best",
-  "calcModel": {
-   "version": "2026-10-05c",
-   "BUCKET": {},
-   "HECTOR_SPLIT": false,
-   "DEFDOWN_FORM": "linear",
-   "DEFDOWN_EFF": 1,
-   "DEFDOWN_CAP": 0.9,
-   "NDMG_RATE": 0.8,
-   "NORM": 1
-  },
-  "totalTroops": 100000,
-  "applyHeroStats": true,
-  "defaults": {
-   "betaA": "0.93",
-   "betaL": "1.00",
-   "kFactor": "0.63",
-   "p0": "0.2905",
-   "tierGrowth": "1.15",
-   "t12Bonus": "1.18",
-   "fcGrowth": "1.08",
-   "wI": "0.25",
-   "wL": "0.78",
-   "wM": "1.00",
-   "pI": "0.91",
-   "pL": "0.90",
-   "crowdDecay": "0.8",
-   "crowdRef": "40000",
-   "heroRate": "100",
-   "spAtk": "0",
-   "spLeth": "0",
-   "trapBonus": "25",
-   "tier": "",
-   "fcLevel": "",
-   "cyril": "",
-   "cyrilOverride": "",
-   "teamAtk": "",
-   "teamLeth": "",
-   "atkInf": "",
-   "lethInf": "",
-   "atkLan": "",
-   "lethLan": "",
-   "atkMks": "",
-   "lethMks": "",
-   "nInf": "20000",
-   "nLan": "60000",
-   "nMks": "120000",
-   "petAtk": "",
-   "petLeth": "",
-   "buffItem": "",
-   "buffLeth": "",
-   "petDefDown": "",
-   "buffDef": ""
-  },
-  "note": "計算式は熊狩シミュレーターと同一。推定値であり実戦の記録ではない。"
+  "note": "推定値であり実戦の記録ではない。"
  },
  "tiers": [
   {

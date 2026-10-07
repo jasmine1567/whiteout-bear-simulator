@@ -33,6 +33,7 @@ AdSense審査対策として、日本語ページと英語ページを **別々�
 編集後、次の2つを実行すると `/en/` とサイトマップが再生成されます:
 
 ```bash
+node _build_js.js           # _js/ の原本から公開用の assets/*.js（コメントなし・圧縮）を作る。_js/ を直したら必ず実行
 node _solve_theory.js       # 理論最適構成 → assets/theory.json（英雄・世代・課金帯モデルを変えたときだけ）
 python3 _build_stats.py     # 統計セクション（stats/, submit/）を生成
 python3 _build_lang.py      # _src/ から直下（日本語）と /en/（英語）を再生成
@@ -56,3 +57,12 @@ python3 _build_sitemap.py   # sitemap.xml（日英+ hreflang）を再生成
 
 `_build_lang.py` 内の `ROOT_PAGES` と `/en/` コピー対象リスト、
 `_build_sitemap.py` の `paths` に、新しいページのパスを追記してください。
+
+## スクリプトの原本は `_js/`（2026-10-07 追加）
+
+計算の中身を外から読み取りにくくするため、次の6つは **`_js/` が原本**で、`assets/` に置くのはコメントを除いて圧縮したものです。
+`bear-calc.js` `heroes.js` `gen-map.js` `usage.js` `bear-viz.js` `stats.js`
+
+- 直すときは `_js/` 側を編集し、`node _build_js.js` を実行する（`assets/` 側は直接編集しない）
+- `_js/` は「_」始まりなので公開されません。**アップロード用zipには `_js/` も必ず含めてください**
+- ページや更新履歴には、計算式・係数・集計の除外基準などの内部の細かい話は書かない方針です（模倣対策）

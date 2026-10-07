@@ -9,8 +9,8 @@ import os, re, json, html, subprocess
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 BASE_URL = "https://whitesim-lab.com"
-V = "117"            # 共有アセットの版数
-HV = "117"           # heroes.js の版数
+V = "122"            # 共有アセットの版数
+HV = "122"           # heroes.js の版数
 UPDATED = "2026-10-07"
 NOTES_DIR = os.path.join(ROOT, "_stats_notes")
 DEFAULT_TIER = "whale"   # 理論側のデフォルト表示（石油王）
@@ -373,7 +373,7 @@ def best_section(g, tr):
 {tier_picker(tr, big=True)}
 </div>
 {panes}
-<p class="note">※ {tr("理論値は熊狩ダメージ・シミュレーターと同じ計算式による推定です。兵種比率と係数は固定、参加者（乗せ）は編成ごとに最適な4枠で計算（","Estimates use the same formula as the Bear Hunt Simulator. Ratio and coefficients are fixed; joiners are the best four for each line-up (")}<a href="/stats/methodology.html">{tr("前提を見る","see methodology")}</a>{tr("）。",").")}</p>
+<p class="note">※ {tr("理論値は熊狩ダメージ・シミュレーターと同じ基準による推定です。参加者（乗せ）は編成ごとにいちばん伸びる4枠を想定しています（","Estimates use the same basis as the Bear Hunt Simulator. Joiners are assumed to be the best four for each line-up (")}<a href="/stats/methodology.html">{tr("前提を見る","see methodology")}</a>{tr("）。",").")}</p>
 </section>"""
 
 # ---------------- 結論（先に答え） ----------------
@@ -758,8 +758,8 @@ def build_methodology():
     path = "/stats/methodology.html"
     title_ja = "統計の集計方法と理論値の前提 | ホワサバ ツールラボ"
     title_en = "Methodology: How the Stats and Theoretical Builds Are Computed | Whiteout Tools Lab"
-    desc_ja = "世代別統計の集計方法（対象期間・除外基準・公開基準）と、理論最適構成の計算前提（計算式・課金帯モデル・入手経路）。"
-    lead_ja = tr("数字の作り方をすべて公開しています。", "Everything about how the numbers are made.")
+    desc_ja = "世代別統計の数字のもとになるデータ、公開の基準、おすすめ構成（理論値）の考え方と課金帯の前提。"
+    lead_ja = tr("世代別ページの数字が、何をもとに、どんな考え方で作られているかをまとめています。", "What the numbers on the generation pages are based on and how to read them.")
     m = theory["model"]
     tiers_rows = "".join(
         f'<tr><td>{tr(t["label"], t["label_en"])}</td><td>{tr("可" if TIERDEF[t["key"]]["paid"] else "不可", "yes" if TIERDEF[t["key"]]["paid"] else "no")}</td><td>{TIERDEF[t["key"]]["hallSlots"]}</td><td>{TIERDEF[t["key"]]["gear"]}</td><td>{TIERDEF[t["key"]]["fc"]}</td><td>T{TIERDEF[t["key"]]["tier"]}</td></tr>'
@@ -771,67 +771,39 @@ def build_methodology():
 <div id="updbox"></div>
 <p class="lead">{lead_ja}</p>
 
-<h2>{tr("1. 実測（シミュレーターの利用データ）","1. Live data (simulator usage)")}</h2>
-<ul class="kv-list sec-lead">
-<li>{bi("2026年10月7日から、<b>熊狩ダメージ・シミュレーターで試算した内容を匿名のまま自動で集計</b>しています（それ以前は投稿フォームから送られた分だけでした）。口コミ（ひとこと）はこれまで通り投稿フォームから送ります。","Since Oct 7, 2026, <b>what you calculate in the Bear Hunt Simulator is aggregated automatically and anonymously</b> (before that, only form submissions were counted). Reviews are still posted through the form.")}</li>
-<li>{bi("シミュレーターの結果欄にある「統計に使わない」を押すと、その端末からは以後送られず、送信済みの分も削除されます。","Press “Opt out” in the simulator’s result panel to stop sending from that device and delete what was already sent.")}</li>
-</ul>
+<h2>{tr("1. みんなのデータ（実測）","1. Community data (live)")}</h2>
 <div class="point-grid">
-<div class="point"><div class="pt-h">{tr("集めているもの","What we collect")}</div><ul>
-<li>{tr("シミュレーターで選んだ世代、集結主の盾・槍・弓の英雄と専用装備Lv、乗せ英雄（参加者）4人","Generation selected in the simulator, the three rally-leader heroes with gear levels, and the four joiner heroes")}</li>
-<li>{tr("兵種Tier・火晶レベル・攻撃%／殺傷%・兵士数と比率・予測ダメージ","Troop tier, FC level, attack/lethality %, troop count and ratio, estimated damage")}</li>
-<li><b>{tr("予測ダメージは全員同じ条件で計算し直した値：","Estimated damage is recomputed under identical conditions: ")}</b>{tr("補正係数C（標準の0.63）や詳細設定の係数は、利用者が画面で変えていても統計用には既定値にそろえます。人によって違うのは、入力した自分の状態（英雄・ステータス・兵数・ペット・バフ・罠・天賦）だけです","the correction factor C (standard 0.63) and advanced coefficients are reset to their defaults for the stats even if you changed them on screen. Only your own inputs differ (heroes, stats, troops, pets, buffs, trap, talent)")}</li>
-<li>{tr("課金帯は、口コミを投稿した人の自己申告だけ（自動では集めません）","Spending tier only from people who post a review (never collected automatically)")}</li>
-<li><b>{tr("集めないもの：","Not collected: ")}</b>{tr("同盟名・ゲームID・お名前・Cookie。ブラウザ内で作った乱数IDのハッシュと、IPの塩付きハッシュ（大量送信の防止用）だけを保存します","alliance, game ID, name, cookies. Only a hash of a random in-browser ID and a salted IP hash (to stop flooding) are stored")}</li></ul></div>
-<div class="point"><div class="pt-h">{tr("現実的でない入力の除外","Excluding unrealistic inputs")}</div><ul>
-<li>{tr("攻撃%・殺傷%のどれかが 0%未満 または 3000%超","Any attack/lethality % below 0 or above 3000")}</li>
-<li>{tr("攻撃%・殺傷% 8項目の合計が50未満（ほぼ未入力）、または8項目すべて同じ数字","All eight stats sum to under 50 (basically empty), or all eight are the same number")}</li>
-<li>{tr("兵士の合計数が 1,000未満 または 300万超","Total troops under 1,000 or over 3,000,000")}</li>
-<li>{tr("兵種が合わない英雄・その世代に未実装の英雄を含むデータは保存しません","Data with a hero in the wrong class or not yet released in that generation is not stored")}</li>
-<li>{tr("除外したデータは集計に入れず、基準を見直すときの確認用にだけ残します","Excluded data stays out of all figures and is kept only for reviewing these rules")}</li></ul></div>
-<div class="point"><div class="pt-h">{tr("偏差値の出し方","How the score is computed")}</div><ul>
-<li>{tr("同じ世代を選んだ人の「1ラリーの予測ダメージ」が母集団（1ブラウザ×1世代につき最新の1件）","Population: estimated damage per rally of everyone who selected the same generation (latest record per browser per generation)")}</li>
-<li>{tr("偏差値 ＝ 50 ＋ 10 ×（log10 ダメージ − 平均）÷ 標準偏差。ダメージは人によって桁が違うため対数で計算します","Score = 50 + 10 × (log10 damage − mean) ÷ SD. A log scale is used because damage differs by orders of magnitude")}</li>
-<li>{tr("平均と標準偏差を出す前に、四分位範囲の3倍を超えて離れた値を除外","Values beyond 3×IQR are removed before computing the mean and SD")}</li>
-<li>{tr("実戦の記録ではなく、同じ係数で計算したシミュレーターの推定値どうしの比較です。口コミ投稿に書かれたダメージ（実測や補正後の値）は偏差値に入れません","It compares simulator estimates computed with identical coefficients, not battle records. Damage figures typed into review submissions are not used for the score")}</li></ul></div>
-<div class="point"><div class="pt-h">{tr("公開の基準","Publication rules")}</div><ul>
-<li>{tr("集計対象は直近90日","Last 90 days only")}</li>
-<li>{tr("世代ごとに10件未満は非公開","Fewer than 10 per generation: hidden")}</li>
-<li>{tr("30件未満は「参考値」表示","Fewer than 30: marked indicative")}</li>
-<li>{tr("課金帯別の内訳は世代30件以上・各課金帯10件以上","Per-tier breakdown needs 30+ overall and 10+ in the tier")}</li></ul></div>
-<div class="point"><div class="pt-h">{tr("除外・上書き","Filtering")}</div><ul>
-<li>{tr("ダメージの外れ値は四分位範囲（1.5×IQR）で除外","Damage outliers beyond 1.5×IQR removed")}</li>
-<li>{tr("英雄と兵種の不一致、未実装世代の英雄は受付時に弾く","Hero/class mismatch and unreleased heroes rejected")}</li>
-<li>{tr("同じブラウザ・同じ世代のデータは最新の1件に上書き（何度試算しても1人分）","Same browser and generation: only the latest record counts (one person, however many runs)")}</li>
-<li>{tr("口コミを投稿した人は、利用データと二重に数えません","People who post a review are not counted twice")}</li></ul></div>
-<div class="point"><div class="pt-h">{tr("偏り","Bias")}</div><ul>
-<li>{tr("このサイトの利用者＝熊狩りに熱心な層に偏ります","Skews toward this site’s users — engaged Bear Hunt players")}</li>
-<li>{tr("サーバー全体の平均ではありません","Not a server-wide average")}</li></ul></div>
+<div class="point"><div class="pt-h">{tr("もとになるデータ","Where it comes from")}</div><ul>
+<li>{bi("<b>熊狩ダメージ・シミュレーターで試算された内容</b>を、匿名のまま集計しています。口コミ（ひとこと）は投稿フォームから送られたものです。","<b>What people calculate in the Bear Hunt Simulator</b>, aggregated anonymously. Reviews come from the submission form.")}</li>
+<li>{tr("集計するのは、世代、集結主と乗せ英雄の構成、入力されたステータスや兵士数、予測ダメージです。くわしくはプライバシーポリシーをご覧ください","We aggregate the generation, leader and joiner heroes, the stats and troop counts entered, and the estimated damage. See the Privacy Policy for details")}</li>
+<li><b>{tr("集めないもの：","Not collected: ")}</b>{tr("同盟名・ゲームID・お名前","alliance, game ID, name")}</li>
+<li>{tr("シミュレーターの結果欄の「統計に使わない」を押すと、その端末の分は集計から外れ、送信済みの分も削除されます","Press “Opt out” in the simulator’s result panel to leave the stats and delete what was already sent from that device")}</li></ul></div>
+<div class="point"><div class="pt-h">{tr("数字の信頼性を保つために","Keeping the numbers trustworthy")}</div><ul>
+<li>{tr("1人が何度試算しても、世代ごとに1人分として数えます","However many times one person runs it, they count once per generation")}</li>
+<li>{tr("実際のゲームではあり得ない入力や、極端に外れた値は集計から除きます","Inputs that cannot occur in the game and extreme outliers are left out")}</li>
+<li>{tr("ダメージは全員同じ条件で計算した値どうしで比べます（画面で補正をかけていても、比較には影響しません）","Damage is compared using values computed under the same conditions for everyone (calibrating on screen does not affect the comparison)")}</li></ul></div>
+<div class="point"><div class="pt-h">{tr("偏差値について","About the score")}</div><ul>
+<li>{tr("同じ世代を選んだ人の予測ダメージの中で、自分がどのあたりにいるかを示します（50が真ん中）","Shows where your estimated damage sits among people who selected the same generation (50 is the middle)")}</li>
+<li>{tr("実戦の記録ではなく、シミュレーターの推定値どうしの比較です","It compares simulator estimates, not battle records")}</li></ul></div>
+<div class="point"><div class="pt-h">{tr("公開の基準と注意","Publication and caveats")}</div><ul>
+<li>{tr("集計対象は直近90日。データが10件に満たない世代は公開しません。30件未満は「参考値」と表示します","Last 90 days only. Generations with fewer than 10 records are not shown; fewer than 30 are marked indicative")}</li>
+<li>{tr("このサイトの利用者＝熊狩りに熱心な層に偏ります。サーバー全体の平均ではありません","Skews toward this site’s users — engaged Bear Hunt players. Not a server-wide average")}</li></ul></div>
 </div>
 
-<h2>{tr("2. 理論最適構成","2. Theoretical best builds")}</h2>
+<h2>{tr("2. おすすめ構成（理論値）","2. Recommended builds (theory)")}</h2>
 <div class="point-grid">
-<div class="point"><div class="pt-h">{tr("計算のしかた","How it is computed")}</div><ul>
-<li>{tr("計算式は熊狩ダメージ・シミュレーターと同一（assets/bear-calc.js）","Same formula as the Bear Hunt Simulator (assets/bear-calc.js)")}</li>
-<li>{tr("その世代で入手できる英雄を 盾×槍×弓 で総当たり","Brute force over all obtainable INF × LAN × MKS")}</li>
-<li>{tr("英雄の遠征ステータスを加算（シミュレーターの「かんたん入力」とは前提が違います）","Hero expedition stats are added (unlike the simulator’s simple-input mode)")}</li>
-<li>{tr("同じ種類のスキルは加算、違う種類は乗算で合成します","Skills of the same type add; different types multiply")}</li>
-<li>{tr("敵の防御低下（-25%）は1.25倍として計算（2026年10月5日に変更。それ以前は約1.14倍）","Enemy DEF down (-25%) counts as x1.25 (changed Oct 5, 2026; previously about x1.14)")}</li>
-<li>{tr("英雄ごとの個別補正は行いません。攻略サイトの評価と順位が違う場合も、計算結果をそのまま掲載します","No per-hero adjustments are applied. Where the result differs from community tier lists, the computed result is shown as is")}</li>
-<li>{tr("指数は各課金帯の1位を100とした相対値。絶対ダメージは出しません","Index relative to each tier’s #1 (=100). No absolute damage shown")}</li></ul></div>
-<div class="point"><div class="pt-h">{tr("固定しているもの","Held fixed")}</div><ul>
-<li>{bi("兵種比率：" + ":".join(map(str, m["ratio"])) + "（弓に大きく寄せた比率。ページには出しません）", "Troop ratio: " + ":".join(map(str, m["ratio"])) + " (heavily marksman-weighted, not shown)")}</li>
-<li>{tr("参加者（乗り）は固定せず、編成ごとに、その世代までの英雄の第1遠征スキルから最もダメージが伸びる4枠を選んで比較します（2026年10月5日に変更。それ以前はジェシー・ジャセル・ソユン・ウェインで固定）","Joiners are not fixed: for each line-up we pick the four first-expedition skills (from heroes up to that generation) that add the most damage (changed Oct 5, 2026; previously fixed to Jessie, Jasser, Seo-yoon and Wayne)")}</li>
-<li>{tr("英雄の遠征ステータスを除いた素のステータスは、無課金 攻撃400%／殺傷320%、中課金 700%／580%、石油王 1200%／1050% の目安値（2026年10月5日に引き上げ）","Base stats excluding hero expedition stats are rough guides: F2P 400% ATK / 320% Lethality, mid 700% / 580%, whale 1200% / 1050% (raised Oct 5, 2026)")}</li>
-<li>{tr("係数：シミュレーターの上級者パラメータの初期値","Coefficients: the simulator’s default advanced parameters")}</li></ul></div>
-<div class="point" style="grid-column:1/-1"><div class="pt-h">{tr("課金帯モデル（暫定）","Spending-tier model (provisional)")}</div>
-<div style="overflow-x:auto"><table style="width:100%;font-size:12.5px;border-collapse:collapse"><thead><tr><th>{tr("課金帯","Tier")}</th><th>{tr("課金限定英雄","Paid-only heroes")}</th><th>{tr("ルーレット以外のSSR上限","Non-wheel SSR cap")}</th><th>{tr("専用装備Lv","Gear Lv")}</th><th>{tr("火晶Lv","FC Lv")}</th><th>Tier</th></tr></thead><tbody>{tiers_rows}</tbody></table></div>
-<ul style="margin-top:8px"><li>{tr("各世代の新英雄3体は入手経路が必ず3種類に分かれます：①ラッキールーレット（無課金でも入手可）②デイリー割引・氷原支配者・最強王国・英雄集結 ③英雄殿堂。第3世代以降はいずれも兵器工場ショップでも入手可（出典：アルテマ「英雄の入手先まとめ」）","Each generation’s three heroes come through three distinct routes: (1) Lucky Wheel (F2P-obtainable), (2) Daily Deals / Frostfield Ruler / Strongest Kingdom / Hero Gathering, (3) Hall of Heroes. From Gen 3 on, all three are also sold in the Foundry Shop (source: altema.jp)")}</li>
-<li>{tr("ルーレット英雄は各世代1体、弓→盾→槍の順。無課金・微課金はこれが軸","One Lucky Wheel hero per generation, cycling MKS → INF → LAN — the backbone for F2P")}</li>
-<li>{tr("ナタリア・ジェロニモは初回チャージ／VIP限定","Natalia and Jeronimo are first-purchase / VIP only")}</li>
-<li>{tr("実測が集まったら各課金帯の中央値に置き換えます","Will be replaced by measured medians once data accumulates")}</li></ul></div>
+<div class="point"><div class="pt-h">{tr("どうやって出しているか","How they are produced")}</div><ul>
+<li>{tr("その世代で入手できる英雄の、盾・槍・弓すべての組み合わせを熊狩ダメージ・シミュレーターと同じ基準で比べ、ダメージが高い順に並べています","Every INF / LAN / MKS combination obtainable in that generation is compared on the same basis as the Bear Hunt Simulator and ranked by damage")}</li>
+<li>{tr("参加者（乗せ）は、その編成でいちばん伸びる組み合わせを想定しています","Joiners are assumed to be the best set for each lineup")}</li>
+<li>{tr("指数は各課金帯の1位を100とした相対値です","The index is relative to each tier’s #1 (=100)")}</li>
+<li>{tr("攻略サイトの評価と順位が違う場合も、当サイトの検証結果をそのまま掲載しています","Where the ranking differs from other tier lists, we show our own result as is")}</li></ul></div>
+<div class="point" style="grid-column:1/-1"><div class="pt-h">{tr("課金帯の前提","Spending-tier assumptions")}</div>
+<div style="overflow-x:auto"><table style="width:100%;font-size:12.5px;border-collapse:collapse"><thead><tr><th>{tr("課金帯","Tier")}</th><th>{tr("課金限定英雄","Paid-only heroes")}</th><th>{tr("ルーレット以外のSSR上限","Non-wheel SSR cap")}</th><th>{tr("専用装備Lv","Gear Lv")}</th><th>{tr("火晶Lv","FC Lv")}</th><th>{tr("兵種","Troops")}</th></tr></thead><tbody>{tiers_rows}</tbody></table></div>
+<ul style="margin-top:8px"><li>{tr("各世代の新英雄3体は入手経路が3種類に分かれます：①ラッキールーレット（無課金でも入手可）②デイリー割引・氷原支配者・最強王国・英雄集結 ③英雄殿堂","Each generation’s three new heroes come from three routes: (1) Lucky Wheel (F2P-accessible) (2) Daily Deals / Frostfield Ruler / Strongest Kingdom / Hero Gathering (3) Hall of Heroes")}</li>
+<li>{tr("ルーレット英雄は各世代1体。無課金・微課金はこれが軸になります","One Lucky Wheel hero per generation — the backbone for F2P")}</li>
+<li>{tr("ナタリア・ジェロニモは初回チャージ／VIP限定です","Natalia and Jeronimo are first-purchase / VIP only")}</li></ul></div>
 </div>
-<p class="note">{tr("理論値はモデル上の推定であり、実戦の記録ではありません。","Theoretical values are model estimates, not measurements.")}</p>
+<p class="note">{tr("理論値は当サイトの検証にもとづく推定であり、実戦の記録ではありません。","Theoretical values are estimates based on our own testing, not battle records.")}</p>
 
 <h2>{tr("3. 世代の境界","3. Generation boundaries")}</h2>
 <div class="card"><p style="font-size:13px">{tr("投稿フォームでは世代を直接選びます。参考として、サーバー開設からの経過日数の目安を示します。","The form asks for the generation directly. For reference, approximate days since server launch:")}</p>

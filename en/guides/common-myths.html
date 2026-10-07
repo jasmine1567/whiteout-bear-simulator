@@ -49,11 +49,11 @@
 <p>The seven above are just conclusions. Understanding "why" lets you apply them. Here are the three most misunderstood.</p>
 
 <h3>Why "100% marksman" isn't best</h3>
-<p>Community tests comparing troop types "in a vacuum" (no type-specific buffs) found that with marksman as 100%, <b>lancers do about 80-90% and infantry about 20-30%</b> (per community tests like Out of Games). It looks like "just send marksman," but two brakes apply: a penalty when infantry/lancer are zero, and the "crowding diminishing returns" explained next.</p>
+<p>Community tests comparing troop types "in a vacuum" (no type-specific buffs) found that with marksman as 100%, <b>lancers do about 80-90% and infantry about 20-30%</b> (per community tests like Out of Games). It looks like "just send marksman," but two brakes apply: a penalty when infantry/lancer are zero, and the less-than-proportional gain from extra troops explained next.</p>
 
-<h3>The key community hypothesis: "troop count scales by square root"</h3>
-<p>The most important community hypothesis for Bear Hunt is that <b>troop count contributes by square root, not linearly</b>. Kingshot-family breakdowns express effective force as <code>army = √(troops × baseline)</code>, explaining that "doubling troops only ~1.4× the damage (=√2)."</p>
-<p>Because of this crowding decay, cramming everything into one type loses efficiency. Leading with high-damage marksman but mixing in lancers beats pure marksman — the theoretical reason the "marksman-heavy mix" is standard. This hypothesis is implemented in our simulator as the adjustable "crowding decay ρ."</p>
+<h3>Worth knowing: more troops help less than proportionally</h3>
+<p>A well-known Bear Hunt tendency is that <b>adding troops raises damage by less than the share you added</b>. Players often report that a big increase in troops gave a smaller gain than expected.</p>
+<p>So cramming everything into one type loses efficiency. Leading with high-damage marksmen while mixing in lancers tends to beat pure marksmen — the reason the "marksman-heavy mix" is standard.</p>
 
 <h3>The "in-game troop stats aren't the real values" claim</h3>
 <p>Another common community point: <b>the attack/lethality numbers shown in the training camp aren't the actual values used internally (they're simplified display figures)</b>. Even if "T6 marksman attack 10 / lethality 11" shows, tests report the internal calc uses a completely different scale. So comparing types by displayed values alone can mislead. Comparing via a tool that estimates the internal scale is closer to reality.</p>

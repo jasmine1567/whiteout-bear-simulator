@@ -16,7 +16,7 @@
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title id="pgtitle">更新履歴 | ホワサバ ツールラボ</title>
-<meta name="description" id="pgdesc" content="ホワサバ ツールラボの更新履歴。ツールの追加・計算補正・データ更新・サイト構造の変更の記録。">
+<meta name="description" id="pgdesc" content="ホワサバ ツールラボの更新履歴。新しいツールや記事、新世代・新英雄への対応、使い勝手の改善のお知らせ。">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://docs.google.com; object-src 'none'; base-uri 'none'">
 <link rel="stylesheet" href="/assets/site.css?v=114">
 <script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
@@ -39,218 +39,202 @@
 <div class="wrap">
 <div class="crumb" id="crumb"></div>
 <div id="bodyja" style="display:none"><h1>更新履歴</h1>
-<p class="lead">ツールの追加、計算式の補正、データ更新、サイト構造の変更などを記録しています。ゲームのアップデートに合わせて、検証結果はこのページに追記していきます。</p>
+<p class="lead">ツールや記事の追加、新しい世代・英雄への対応、使い勝手の改善など、利用者の方に関係する変更をお知らせします。</p>
 
 <div class="card">
 <h3>2026年10月7日</h3>
 <ul>
-<li>当サイトを広告なしの非営利ファンサイトとして運営する方針に変更し、広告枠・広告用のコード・提携リンクをすべて取り外しました。あわせて<a href="privacy.html">プライバシーポリシー</a>の広告に関する記載を改めました。</li>
-<li><a href="stats/index.html">世代別統計</a>の集計方法を変更。これまでは投稿フォームから送られた構成だけを集計していましたが、<a href="tools/bear-hunt/index.html">熊狩ダメージ・シミュレーター</a>で試算した内容を匿名のまま自動で集計するようにしました（結果欄の「統計に使わない」でいつでも停止・削除できます）。口コミ（ひとこと）はこれまで通り投稿フォームから送れます。</li>
-<li>世代ページに「乗せ英雄（参加者）の人気ランキング」と「その世代の偏差値（予測ダメージの分布）」を追加。シミュレーターの結果欄にも、同じ世代の中での自分の偏差値を表示します（データが10件集まった世代から）。</li>
-<li>統計用のダメージは、補正係数C（標準0.63）と詳細設定の係数を全員同じ値にそろえて計算し直した値を使います。画面で補正係数を変えていても、偏差値は同じ条件どうしの比較になります。</li>
-<li>熊狩シミュレーターの結果欄に「1ラリーのダメージの出やすさ」の分布図を追加。確率スキルが何回発動するかで、ダメージがどの範囲にどれくらいの確率で出るか（下振れ・ふつう・上振れ）が分かります。偏差値にも、世代内の分布と自分の位置を示す図を付けました。</li>
-<li>実際のゲームではあり得ない入力（攻撃%が3000%超、8項目すべて同じ数字、兵士数が極端など）は集計から除外します。基準は<a href="stats/methodology.html">集計方法</a>に記載しました。あわせて<a href="privacy.html">プライバシーポリシー</a>を更新しました。</li>
+<li>英雄のアイコン画像を追加。<a href="tools/hero-list/index.html">英雄一覧</a>、<a href="tools/bear-hunt/index.html">熊狩ダメージ・シミュレーター</a>、世代別ページ、攻略記事で英雄の顔が表示されます。</li>
+<li>熊狩シミュレーターの結果に「ダメージの出やすさ」のグラフを追加。下振れ・ふつう・上振れの目安が分かります。</li>
+<li>シミュレーターで、同じ世代の利用者の中での自分の偏差値が見られるようになりました。<a href="stats/index.html">世代別ページ</a>には、乗せ英雄の人気ランキングも追加しています（データが集まった世代から順に表示）。</li>
+<li>シミュレーターの入力内容を、匿名の統計として集計するようになりました。結果欄からいつでも停止できます。詳しくは<a href="privacy.html">プライバシーポリシー</a>をご覧ください。</li>
 </ul>
 </div>
 
 <div class="card">
 <h3>2026年10月5日</h3>
 <ul>
-<li>熊狩シミュレーターで「敵の防御-25%」（ヘンドリック・ライジーア・エステラ・エリノ、周期発動のウルタール）を約1.14倍から1.25倍に変更。乗せ（参加者）で攻撃系を重ねるより防御ダウンを1枠入れた方が伸びる、という利用者の方のご指摘を反映したものです。</li>
-<li>計算データの誤りを修正。専用装備が「集結部隊の攻撃／殺傷+15%」なのに計算に入っていなかった6体（グエン・レネ・ゴードン・ヘンドリック・ブランシュ・ルーファス）を補完しました。これらを集結主に置いたときのダメージが、専用装備レベルに応じて上がります。</li>
-<li><a href="stats/index.html">世代別ページ</a>の理論ランキングの前提を見直して再計算。①参加者（乗せ）を固定せず、編成ごとに最適な4枠で比較 ②英雄を除いた素のステータスを現実的な値に引き上げ（新しい世代の英雄が実際以上に有利に出ていました）。前提は<a href="stats/methodology.html">集計方法</a>に記載しています。</li>
-<li><a href="tools/left-hero/index.html">左英雄チェッカー</a>の重複判定をシミュレーターと同じ枠の定義に統一（「敵防御ダウン」「敵被ダメUP」を独立した枠として判定）。<a href="guides/left-hero.html">左英雄の記事</a>と<a href="guides/leader-formation.html">集結主の記事</a>にも防御ダウンの扱いを追記しています。</li>
+<li>熊狩シミュレーターの精度を改善。利用者の方からいただいたご指摘をもとに、一部の英雄スキルと専用装備の反映を見直しました。</li>
+<li><a href="stats/index.html">世代別ページ</a>のおすすめ構成を再計算しました。</li>
 </ul>
 </div>
 
 <div class="card">
 <h3>2026年10月1日</h3>
 <ul>
-<li><a href="stats/gen-17/index.html">第17世代</a>に対応。新英雄 エイダン（盾・ルーレット）・ベルサ（槍・イベント）・エリノ（弓・英雄殿堂）の集結主スキルを公式wikiの遠征スキルからモデル化し、熊狩シミュレーター・左英雄チェッカー・英雄一覧（全65英雄）・世代別ページ（第1〜17世代）に追加。ベルサの追撃は既存英雄と同じ校正ルール（半減・同種は1つ分）で、攻略サイトの推奨（槍はミア／ドミニク、弓はエリノ）と矛盾しない範囲に置いています。第17世代の解放日（サーバー1,240日目）は80日周期からの推定です。</li>
-<li>日本語ページから英語本文、英語ページから日本語本文を取り除くようビルドを変更（表示は変わりません）。英語ページの title・説明文・見出し・構造化データも静的に英語化し、世代別ページの英語版は本文ごと英語で書き出すようにしました。各ページのHTMLが軽くなり、検索エンジンにも1ページ1言語として伝わるようになります。</li>
-<li>英語版ページ内のリンクが日本語版へ飛ぶ問題と、Search Console に出ていた存在しないURL（JS文字列の誤検出）への対策を再適用。</li>
+<li>第17世代に対応。新英雄 エイダン・ベルサ・エリノを、熊狩シミュレーター・左英雄チェッカー・英雄一覧・世代別ページに追加しました。</li>
+<li>英語版ページの表示とリンクの不具合を修正。</li>
 </ul>
 </div>
 
 <div class="card">
 <h3>2026年9月14日</h3>
 <ul>
-<li>トップページを刷新。黒背景のヒーロー（見出し・主要導線・サイト規模）、主要3ツールとその他ツールのカード、世代別構成へのバンド、攻略ガイドの3カテゴリカード、運営者カードという構成にし、絵文字をやめて Material Symbols に統一。</li>
-<li>ヘッダーナビゲーションを「ツール／世代別構成／攻略ガイド／サイト情報」の4つの大カテゴリに整理し、そこから中カテゴリ・各ページへ開く階層メニューに変更。PCではドロップダウン、スマホではメニューボタンからのアコーディオンで、全ページ（9ツール・16世代ページ・12記事・運営者情報やお問い合わせなど）にヘッダーから直接たどり着けるようにしました。キーボード操作（Tab／Enter／Esc）にも対応。</li>
-<li>フッターも同じ4カテゴリのサイトマップ形式に変更。ヘッダー・フッター・各種見出しのアイコンを Google の Material Symbols（Apache-2.0）に統一し、メニューを黒背景のパネル型デザインに刷新。</li>
-<li>全ツールページの冒頭に「このツールについて」（このツールで分かること／計算・判定の考え方／使い方）を追加。日本語・英語の両方で掲載。</li>
-<li>全ツールページに制作者・公開日・最終更新日・検証環境の表示を追加。世代別ページにも初回公開日を表示。</li>
-<li>英語版の英雄一覧ページで日本語が表示される不具合と、兵士比率シミュレータの見出しの未翻訳を修正。英語ページ内のリンク（世代別ページからシミュレーターへ等）が日本語ページへ飛んでいた問題を修正し、英語ページは英語ページのまま巡回できるようにしました。</li>
+<li>トップページとメニューを刷新。ツール・世代別構成・攻略ガイドへ、どのページからでも移動しやすくなりました。</li>
+<li>各ツールページの冒頭に「このツールについて」（分かること・使い方）を追加。</li>
 </ul>
 </div>
 
 <div class="card">
 <h3>2026年9月4日</h3>
 <ul>
-<li>ヘクトーの集結主スキル「雷の突撃」を公式wikiの数値（盾兵与ダメ+200%・弓兵与ダメ+100%、攻撃ごとに85%へ減衰・10回）でモデル化し直し、コミュニティ評価（ジェロニモ＞ヘクトー＞ナタリア）に合わせて校正。世代別ページの盾枠ランキングと「集結主におすすめの編成」記事の順位を統一。同記事の槍枠の順位も世代別ページの理論ランキングに合わせて更新。</li>
+<li>ヘクトーの評価を見直し、世代別ページと「集結主におすすめの編成」記事の順位をそろえました。</li>
 </ul>
 </div>
 
 <div class="card">
 <h3>2026年9月3日</h3>
 <ul>
-<li>世代別ページを「<a href="stats/index.html">熊狩りのおすすめ英雄・最強構成 世代別まとめ</a>」として全面改修。各世代ページの先頭に「結論」と「理想の英雄構成」（課金帯を選ぶと最強の集結主3人を大きく表示）を置き、ワンタップで熊狩シミュレーターに構成をセットできるようにした。よくある質問・構造化データを追加。</li>
-<li>熊狩シミュレーターのSTEP1に、選択中の世代のおすすめ構成ページへのリンクを追加。統計の投稿フォームには結果欄の予測ダメージが自動で入るようにした。</li>
-<li>各世代ページに「口コミ」欄を追加。投稿フォームに「ひとこと」（任意・200文字）と表示名を足し、構成と一緒に新しい順で表示。URL・不適切な表現は投稿時に弾き、通報3件で自動非表示（運営者が確認）。理論最適の「石油王」は全ステータスMAX（専用装備Lv10・火晶Lv10・T12）で計算していることを明記。</li>
+<li>世代別ページを「熊狩りのおすすめ英雄・最強構成」として全面改修。課金帯を選ぶと理想の集結主3人が表示され、ワンタップでシミュレーターに構成をセットできます。</li>
+<li>各世代ページに「口コミ」欄を追加。構成と一緒にひとことを投稿できます。</li>
 </ul>
 </div>
 
 <div class="card">
 <h3>2026年9月2日</h3>
 <ul>
-<li>「<a href="stats/index.html">世代別統計</a>」を新設。利用者の投稿から集結主の熊狩り構成（盾・槍・弓）を世代ごとに集計し、課金帯別の理論最適構成と並べて公開。<a href="submit/index.html">投稿ページ</a>と、熊狩シミュレーターからの1クリック投稿を追加。</li>
-<li>熊狩ダメージ・シミュレーターの計算コアを共有モジュール（bear-calc.js）に切り出し。計算結果は従来と同一（回帰テスト2,113ケースで確認）。</li>
-<li>英雄マスタ（heroes.js）を最新のスキルデータに統一。左英雄チェッカーで、熊狩では効果のない英雄（レネ・ゴードン）を「熊で効果なし」と表示するよう修正。</li>
-<li>応援（OFUSE）導線を全ページから撤去。</li>
-<li>プライバシーポリシー・利用規約に統計データの取り扱いを追記。</li>
+<li>「世代別統計」を新設。みんなの熊狩り構成を世代ごとに見られます。</li>
+<li>左英雄チェッカーで、熊狩りでは効果のない英雄を「熊で効果なし」と表示するよう修正。</li>
 </ul>
 </div>
+
 <div class="card">
 <h3>2026年7月24日</h3>
 <ul>
-<li>攻略記事「<a href="guides/cyril-expert.html">シリル徹底研究：全スキルと育成優先度</a>」を公開。公式wikiのステータスを一覧化し、Xやコミュニティの評判を掲載。</li>
-<li>全攻略記事に「出典・参考文献」欄を追加（公式・攻略サイト・コミュニティ・当サイト検証をバッジで区別）。主要記事には第三者の実測データを折りたたみ形式で追加し、「弓100%は約2割低下」などの記述に出典を付与。</li>
-<li>トップページ・初心者FAQ・熊狩り解説記事に、公式YouTubeチャンネル「ホワサバ初心者ガイド」シリーズの動画を埋め込み（YouTube公式の埋め込み機能を利用・出典と著作権帰属を明記）。シリル記事に専門家システムの公式Xポストを追加。</li>
-<li>日本語ページと英語ページを別URLに分離（日本語＝<code>/</code>、英語＝<code>/en/</code>）。各ページに <code>hreflang</code> と自己参照 <code>canonical</code> を設定。</li>
-<li>プライバシーポリシーの「広告の配信について」を、第三者配信・Cookie・オプトアウトの記載を含めて補強。</li>
-<li>運営者情報を再構成し、検証経験・コンテンツ方針・数値の検証方法・訂正方針を明記。同盟の仲間募集は<a href="recruit.html">専用ページ</a>へ分離。</li>
-<li>各ツールページに、使い方・入力項目の意味・結果の読み方・注意事項の解説を追加。</li>
-<li>各攻略記事に、執筆者・公開日・最終更新日・検証環境の表示を追加。</li>
-<li>この更新履歴ページを新設。</li>
+<li>攻略記事「シリル徹底研究：全スキルと育成優先度」を公開。</li>
+<li>全攻略記事に出典・参考文献を追加。公式YouTubeの初心者ガイド動画も掲載しました。</li>
+<li>英語版ページを公開（/en/）。</li>
+<li>各ツールページに使い方と結果の読み方の解説を追加。</li>
 </ul>
 </div>
 
 <div class="card">
 <h3>2026年7月4日</h3>
-<ul><li>「霜竜イベント 同盟配置計算ツール」を公開。</li></ul>
+<ul>
+<li>「霜竜イベント 同盟配置計算ツール」を公開。</li>
+</ul>
 </div>
 
 <div class="card">
 <h3>2026年6月26日</h3>
-<ul><li>「兵器工場争奪戦 フィールドツール」を公開。</li><li>「英雄一覧・データベース（全62英雄）」を公開。</li></ul>
+<ul>
+<li>「兵器工場争奪戦 フィールドツール」を公開。</li>
+<li>「英雄一覧・データベース」を公開。</li>
+</ul>
 </div>
 
 <div class="card">
 <h3>2026年6月19日</h3>
-<ul><li>「王城戦エリア配置管理ツール」を公開。</li></ul>
+<ul>
+<li>「王城戦エリア配置管理ツール」を公開。</li>
+</ul>
 </div>
 
 <div class="card">
 <h3>2026年6月16日</h3>
-<ul><li>サイトを公開。「熊狩ダメージ・シミュレーター」ほか初期ツールと攻略記事を公開。</li></ul>
+<ul>
+<li>サイトを公開。「熊狩ダメージ・シミュレーター」ほか初期ツールと攻略記事を公開。</li>
+</ul>
 </div>
 </div>
 
 <div id="bodyen" style="display:none"><h1>Changelog</h1>
-<p class="lead">A record of new tools, formula calibrations, data updates and site-structure changes. Verification results are added here as the game updates.</p>
+<p class="lead">New tools and guides, support for new generations and heroes, and usability improvements that affect you as a user.</p>
 
 <div class="card">
 <h3>October 7, 2026</h3>
 <ul>
-<li>The site is now run as a non-commercial fan site without ads: all ad slots, ad code and affiliate links have been removed, and the advertising section of the <a href="privacy.html">Privacy Policy</a> was rewritten.</li>
-<li>Changed how the <a href="stats/index.html">generation stats</a> are collected. Previously only builds sent through the submission form were counted; now what you calculate in the <a href="tools/bear-hunt/index.html">Bear Hunt Simulator</a> is aggregated automatically and anonymously (you can stop and delete it anytime with "Opt out" in the result panel). Reviews are still posted through the form.</li>
-<li>Generation pages now show the most-used joiner heroes and a score scale (distribution of estimated damage) for that generation. The simulator's result panel also shows your own score within your generation (once a generation has 10 records).</li>
-<li>Damage used for the stats is recomputed with the correction factor C (standard 0.63) and the advanced coefficients set to the same values for everyone, so scores compare like with like even if you changed C on screen.</li>
-<li>The simulator's result panel now shows a distribution chart of damage per rally: how likely each range is depending on how often chance skills trigger (unlucky / typical / lucky). The score also comes with a small chart of your position within your generation.</li>
-<li>Inputs that cannot occur in the actual game (attack above 3000%, all eight stats identical, extreme troop counts, etc.) are excluded. The rules are listed under <a href="stats/methodology.html">Methodology</a>, and the <a href="privacy.html">Privacy Policy</a> has been updated.</li>
+<li>Added hero icons. Hero faces now appear in the <a href="tools/hero-list/index.html">hero database</a>, the <a href="tools/bear-hunt/index.html">Bear Hunt Simulator</a>, generation pages and guides.</li>
+<li>The simulator result now includes a chart of how likely each damage range is, with unlucky / typical / lucky figures.</li>
+<li>The simulator now shows your score among players of the same generation, and <a href="stats/index.html">generation pages</a> add a ranking of the most-used joiner heroes (shown once enough data is in).</li>
+<li>Simulator inputs are now aggregated as anonymous statistics. You can opt out anytime from the result panel; see the <a href="privacy.html">Privacy Policy</a>.</li>
 </ul>
 </div>
 
 <div class="card">
 <h3>October 5, 2026</h3>
 <ul>
-<li>The Bear Hunt Simulator now counts "enemy DEF -25%" (Hendrik, Ligeia, Estrella, Eleanor, and Ursar's periodic version) as x1.25 instead of about x1.14, following a player report that one DEF-down joiner beats stacking another attack joiner.</li>
-<li>Fixed a data error: six heroes whose exclusive gear gives "Rally Troops' Attack / Lethality +15%" (Gwen, Renee, Gordon, Hendrik, Blanchette, Rufus) were missing that bonus in the calculation. Their rally-leader damage now rises with gear level.</li>
-<li>Recomputed the theoretical rankings on the <a href="stats/index.html">generation pages</a> with revised assumptions: (1) joiners are no longer fixed, each line-up is compared with its best four; (2) base stats excluding heroes were raised to realistic values (newer-generation heroes were favoured more than they should be). See the <a href="stats/methodology.html">methodology page</a>.</li>
-<li>The <a href="tools/left-hero/index.html">Left-Hero Checker</a> now uses the same bucket definitions as the simulator ("enemy DEF-down" and "enemy DMG-taken" are their own buckets), and the <a href="guides/left-hero.html">left-hero</a> and <a href="guides/leader-formation.html">rally leader</a> guides explain DEF-down.</li>
+<li>Improved simulator accuracy: some hero skills and exclusive gear effects were revised based on user feedback.</li>
+<li>Recalculated the recommended builds on the <a href="stats/index.html">generation pages</a>.</li>
 </ul>
 </div>
 
 <div class="card">
 <h3>October 1, 2026</h3>
 <ul>
-<li>Added <a href="stats/gen-17/index.html">Generation 17</a>: Aiden (infantry, Lucky Wheel), Bertha (lancer, events) and Eleanor (marksman, Hall of Heroes). Their leader skills are modelled from the official wiki's expedition skills and added to the simulator, Left-Hero Checker, Hero Database (65 heroes) and the generation pages (Gen 1–17). Bertha's follow-ups use the same calibration as existing heroes (halved, same-type counted once) so the ranking stays consistent with strategy-site picks (Mia/Dominic for lancer, Eleanor for marksman). Gen 17's unlock day (server day 1,240) is extrapolated from the 80-day cadence.</li>
-<li>The build now strips the English text from Japanese pages and the Japanese text from English pages (no visible change). English pages also get static English titles, descriptions, headings and structured data, and the generation pages are now written out in English rather than translated in the browser. Pages are lighter and search engines see one language per page.</li>
-<li>Re-applied the fixes for English-page links jumping to the Japanese site and for the non-existent URLs Search Console picked up from JS strings.</li>
+<li>Generation 17 support: new heroes Aiden, Bertha and Eleanor added to the simulator, Left-Hero Checker, hero database and generation pages.</li>
+<li>Fixed display and link issues on the English pages.</li>
 </ul>
 </div>
 
 <div class="card">
 <h3>September 14, 2026</h3>
 <ul>
-<li>Redesigned the home page: dark hero (headline, main CTAs, site stats), cards for the three featured tools and the other tools, a generation-builds band, three guide-category cards and an operator card, with Material Symbols replacing emoji.</li>
-<li>Reorganised the header navigation into four top-level categories (Tools / Gen Builds / Guides / About) that open into sub-categories and pages — a dropdown on desktop and an accordion behind the menu button on phones — so every page (9 tools, 16 generation pages, 12 guides, about/contact etc.) is reachable from the header. Keyboard friendly (Tab / Enter / Esc).</li>
-<li>The footer now mirrors the same four categories as a site map. Header, footer and section icons now use Google's Material Symbols (Apache-2.0), with the menus redesigned as dark panels.</li>
-<li>Added an "About this tool" block (what it tells you / how it works / how to use it) at the top of every tool page, in both languages.</li>
-<li>Added creator, publish date, last-updated date and verification environment to every tool page; generation pages now show their first-published date too.</li>
-<li>Fixed the English Hero Database page showing Japanese, an untranslated heading in the Troop Ratio Simulator, and links on English pages (e.g. generation pages → simulator) that jumped to the Japanese site; English pages now stay within /en/.</li>
+<li>Redesigned the home page and menus so tools, generation builds and guides are easy to reach from any page.</li>
+<li>Added an "About this tool" section (what it tells you, how to use it) to every tool page.</li>
 </ul>
 </div>
 
 <div class="card">
 <h3>September 4, 2026</h3>
 <ul>
-<li>Re-modelled Hector's leader skill "Thunder Charge" from the official wiki (inf dmg +200% / mks dmg +100%, decaying to 85% per attack over 10 attacks) and calibrated it to the community ranking (Jeronimo > Hector > Natalia). The infantry rankings on the generation pages and the "Rally leader: recommended formations" guide now agree; the guide's lancer order was updated to match the theoretical rankings as well.</li>
+<li>Revised Hector's rating and aligned the rankings between generation pages and the rally-leader guide.</li>
 </ul>
 </div>
 
 <div class="card">
 <h3>September 3, 2026</h3>
 <ul>
-<li>Reworked the generation pages into "<a href="stats/index.html">Bear Hunt best heroes &amp; builds by generation</a>". Each page now opens with a summary and an "Ideal build" block: pick your spending tier and the best three rally-leader heroes are shown large, with a one-tap button that sets them in the Bear Hunt Simulator. Added FAQs and structured data.</li>
-<li>The simulator's STEP 1 now links to the recommended-build page for the selected generation, and the stats submission form is pre-filled with the predicted damage.</li>
-<li>Added a "Reviews" block to each generation page. The submission form now has an optional one-liner (200 chars) and display name, shown with the build newest first; links and abusive wording are rejected, and 3 reports hide a review automatically for operator review. The "Whale" tier is now explicitly computed with everything maxed (gear Lv10, FC Lv10, T12).</li>
+<li>Rebuilt the generation pages as "best Bear Hunt heroes and builds": pick a spending tier to see the ideal three leaders and send the build to the simulator in one tap.</li>
+<li>Added a reviews section to each generation page — post a short comment with your build.</li>
 </ul>
 </div>
 
 <div class="card">
 <h3>September 2, 2026</h3>
 <ul>
-<li>Launched <a href="stats/index.html">Generation stats</a>: rally-leader Bear Hunt builds (INF/LAN/MKS) aggregated per generation from user submissions, shown alongside theoretical best builds per spending tier. Added a <a href="submit/index.html">submission page</a> and one-click submission from the simulator.</li>
-<li>Extracted the simulator's calculation core into a shared module (bear-calc.js). Results are unchanged (2,113-case regression test).</li>
-<li>Unified the hero master (heroes.js) to the latest skill data. Left-Hero Checker now marks heroes with no Bear Hunt effect (Renee, Gordon).</li>
-<li>Removed the OFUSE support links from all pages.</li>
-<li>Privacy policy and terms updated for submitted statistics.</li>
+<li>Launched generation stats: see what builds players use in each generation.</li>
+<li>The Left-Hero Checker now marks heroes whose skill does nothing against the bear.</li>
 </ul>
 </div>
+
 <div class="card">
 <h3>July 24, 2026</h3>
 <ul>
-<li>Published the guide "<a href="guides/cyril-expert.html">Cyrille deep-dive: every skill &amp; upgrade priority</a>" — full stats from the official wiki plus community opinions from X.</li>
-<li>Added a "Sources &amp; references" panel to every guide (official / strategy-site / community / our research, labeled), plus collapsible third-party verification data on key guides.</li>
-<li>Embedded official beginner-guide videos from the official YouTube channel (via YouTube's official embed feature, with source and copyright attribution) on the home page, beginner FAQ and Bear Hunt guide, and the official expert-system X post on the Cyrille guide.</li>
-<li>Split Japanese and English into separate URLs (Japanese = <code>/</code>, English = <code>/en/</code>); added <code>hreflang</code> and self-referencing <code>canonical</code> to every page.</li>
-<li>Strengthened the Advertising section of the Privacy Policy to cover third-party vendors, cookies and opt-out.</li>
-<li>Reworked the operator page to state verification experience, editorial policy, how numbers are checked and the correction policy. Moved alliance recruitment to its <a href="recruit.html">own page</a>.</li>
-<li>Added explanations (how to use, input meanings, reading results, cautions) to every tool page.</li>
-<li>Added author / publish date / last updated / verification environment to every guide.</li>
-<li>Added this changelog page.</li>
+<li>Published the guide "Cyrille deep dive: all skills and upgrade priority".</li>
+<li>Added sources to every guide and embedded the official beginner-guide videos.</li>
+<li>Launched the English pages (/en/).</li>
+<li>Added how-to-use and how-to-read explanations to each tool page.</li>
 </ul>
 </div>
 
 <div class="card">
 <h3>July 4, 2026</h3>
-<ul><li>Released the "Frost Dragon Placement Calculator".</li></ul>
+<ul>
+<li>Released the Frost Dragon alliance placement calculator.</li>
+</ul>
 </div>
 
 <div class="card">
 <h3>June 26, 2026</h3>
-<ul><li>Released the "Foundry Battle field tool".</li><li>Released the "Hero Database" (all 62 heroes).</li></ul>
+<ul>
+<li>Released the Foundry Battle field tool.</li>
+<li>Released the hero database.</li>
+</ul>
 </div>
 
 <div class="card">
 <h3>June 19, 2026</h3>
-<ul><li>Released the "Castle Battle Area Planner".</li></ul>
+<ul>
+<li>Released the King's Castle area planner.</li>
+</ul>
 </div>
 
 <div class="card">
 <h3>June 16, 2026</h3>
-<ul><li>Site launched with the "Bear Hunt Damage Simulator" and the initial tools and guides.</li></ul>
+<ul>
+<li>Site launched with the Bear Hunt Damage Simulator, the first tools and guides.</li>
+</ul>
 </div>
 </div>
 
@@ -264,7 +248,7 @@
   var EN = (window.WOS_LANG==='en');
   document.getElementById('htmlroot').lang = EN?'en':'ja';
   document.getElementById('pgtitle').textContent = EN?'Changelog | Whiteout Tools Lab':'更新履歴 | ホワサバ ツールラボ';
-  document.getElementById('pgdesc').content = EN?'Changelog for Whiteout Tools Lab: new tools, calibrations, data updates and site changes.':'ホワサバ ツールラボの更新履歴。ツールの追加・計算補正・データ更新・サイト構造の変更の記録。';
+  document.getElementById('pgdesc').content = EN?'Changelog for Whiteout Tools Lab: new tools and guides, new generations and heroes, and usability improvements.':'ホワサバ ツールラボの更新履歴。新しいツールや記事、新世代・新英雄への対応、使い勝手の改善のお知らせ。';
   document.getElementById('crumb').innerHTML = EN?'<a href="index.html">Home</a> &gt; Changelog':'<a href="index.html">ホーム</a> &gt; 更新履歴';
   var srcEl=document.getElementById(EN?'bodyen':'bodyja'); if(srcEl) document.getElementById('body').innerHTML = srcEl.innerHTML;
   document.getElementById('nav').innerHTML = WOS_NAV(0);
