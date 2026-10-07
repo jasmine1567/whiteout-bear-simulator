@@ -34,7 +34,7 @@
     var key = el('totalDmg').textContent + '|' + el('dmgMin').textContent + '|' + el('dmgMax').textContent;
     if(key === lastKey) return; lastKey = key;
     var xs; try{ xs = sample(); }catch(e){ xs = null; }
-    if(!xs || xs[xs.length - 1] - xs[0] < 1){ box.innerHTML = ''; rb.classList.remove('has-viz'); return; }
+    if(!xs || xs[xs.length - 1] - xs[0] < 1){ box.innerHTML = ''; rb.classList.remove('has-viz'); W.__WOS_DIST = null; return; }
     rb.classList.add('has-viz');
     var p5 = q(xs, 0.05), p50 = q(xs, 0.5), p95 = q(xs, 0.95), lo = xs[0], hi = xs[xs.length - 1];
     var span = hi - lo, x0 = lo - span * 0.02, x1 = hi + span * 0.02, bw = (x1 - x0) / BINS;
@@ -60,6 +60,7 @@
       + '<text class="dv-tick" x="' + (VW - PAD_R) + '" y="' + (BASE + 14) + '" text-anchor="end">' + fmtS(hi) + '</text>'
       + '<text class="dv-tick mid" x="' + ((X(p5) + X(p95)) / 2).toFixed(1) + '" y="' + (BASE + 14) + '" text-anchor="middle">' + esc(t('← 90%はこの範囲 →', '← 90% land here →')) + '</text>'
       + '</svg>';
+    W.__WOS_DIST = { g: g, p5: p5, p50: p50, p95: p95 };
     var above = 0; xs.forEach(function(v){ if(v >= g) above++; });
     box.innerHTML = '<div class="dv-chart">' + svg + '<div class="dv-tip" hidden></div></div>'
       + '<div class="dv-tiles">'
@@ -114,6 +115,116 @@
     new MutationObserver(kick).observe(rb, { attributes: true, attributeFilter: ['style'] });
     ['dmgMin', 'dmgMax'].forEach(function(id){ var e = el(id); if(e) new MutationObserver(kick).observe(e, { childList: true, characterData: true, subtree: true }); });
     kick();
+  }
+  if(D.readyState !== 'loading') mount(); else D.addEventListener('DOMContentLoaded', mount);
+})();
+
+/* ==== 分析レポート ====
+   結果一式（.rcol）を入力欄の下に全幅の「レポート」として並べ直し、総評・兵種の内訳・スキル効果の図を足す。
+   予測ダメージは画面下のバー（#rpBar）で常に見え、押すとレポートへ移動する。
+   数字はすべて既存の表示（#totalDmg など）と分布図の結果から読むだけで、計算には触れない */
+(function(){
+  var W = window, D = document;
+  var t = W.t || function(a){ return a; };
+  function el(id){ return D.getElementById(id); }
+  function n(txt){ var v = parseFloat(String(txt == null ? '' : txt).replace(/[^\d.\-]/g, '')); return isFinite(v) ? v : 0; }
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]; }); }
+  function mk(tag, cls, html){ var e = D.createElement(tag); if(cls) e.className = cls; if(html != null) e.innerHTML = html; return e; }
+  var rcol, res, c1, c2, c3, sum, bar;
+
+  function layout(){
+    rcol = D.querySelector('.rcol'); res = rcol && rcol.querySelector('.result'); if(!rcol || !res) return false;
+    D.body.classList.add('rp-on'); rcol.id = 'report';
+    rcol.insertBefore(mk('div', 'rp-head', '<span class="rp-k">REPORT</span><h2>' + t('分析レポート', 'Analysis report') + '</h2><p>'
+      + t('入力した編成から、予測ダメージ・運による振れ幅・内訳・次の一手までまとめて分析します。', 'From your setup: estimated damage, luck range, breakdown and the best next step.') + '</p>'), rcol.firstChild);
+    var cols = mk('div', 'rp-cols'); c1 = mk('div'); c2 = mk('div'); c3 = mk('div'); cols.appendChild(c1); cols.appendChild(c2); cols.appendChild(c3);
+    var head = res.querySelector('.dmg-head'); head.parentNode.insertBefore(cols, head.nextSibling);
+    c1.appendChild(mk('div', 'rp-t', t('同じ世代の中での位置', 'Where you stand in your generation')));
+    c1.appendChild(mk('div', '', '<div class="rp-t rp-sec">' + t('スキル・装備の効果', 'Skill and gear effects') + '</div><div class="rp-mul" id="rpMul"></div>'));
+    var rb = el('rangeBox'); if(rb) c2.appendChild(rb);
+    c3.appendChild(mk('div', 'rp-t', t('兵種別のダメージ', 'Damage by troop type')));
+    c3.appendChild(mk('div', '', '<div class="rp-stack" id="rpStack"></div><div class="rp-legend" id="rpLegend"></div>'));
+    var bars = res.querySelector('.bars'); if(bars) c3.appendChild(bars);
+    sum = mk('div', '', ''); sum.id = 'rpSummary'; res.parentNode.insertBefore(sum, res.nextSibling);
+    var r2 = mk('div', 'rp-row2'), r3 = mk('div', 'rp-row3');
+    sum.parentNode.insertBefore(r2, sum.nextSibling); r2.parentNode.insertBefore(r3, r2.nextSibling);
+    ['adviceBox', 'overlapBox'].forEach(function(id){ var e = el(id); if(e) r2.appendChild(e); });
+    ['shareBox', 'statsBox', 'snapBox', 'presetBox'].forEach(function(id){ var e = el(id); if(e) r3.appendChild(e); });
+    bar = mk('div', '', '<span class="l">' + t('予測ダメージ', 'EST. DAMAGE') + '</span><span class="v">—</span><span class="d"></span><a href="#report">' + t('レポートを見る ↓', 'See report ↓') + '</a>');
+    bar.id = 'rpBar'; D.body.appendChild(bar);
+    bar.querySelector('a').addEventListener('click', function(e){ e.preventDefault(); rcol.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+    return true;
+  }
+  function adoptUsage(){ var u = el('usageBox'); if(u && c1 && u.parentNode !== c1) c1.insertBefore(u, c1.children[1] || null); }
+
+  function render(){
+    if(!res) return; adoptUsage();
+    var dmg = (typeof g === 'number' && isFinite(g) && g > 0) ? g : 0;
+    /* 兵種の内訳 */
+    var parts = [['inf', n(el('dInf').textContent), t('盾兵', 'Infantry')], ['lan', n(el('dLan').textContent), t('槍兵', 'Lancer')], ['mks', n(el('dMks').textContent), t('弓兵', 'Marksman')]];
+    var tot = parts[0][1] + parts[1][1] + parts[2][1];
+    var pct = function(v){ var p = tot > 0 ? v / tot * 100 : 0; return p >= 9.95 || p === 0 ? Math.round(p) : p.toFixed(1); };
+    el('rpStack').innerHTML = tot > 0 ? parts.map(function(p){ return p[1] > 0 ? '<i class="s-' + p[0] + '" style="flex:' + Math.max(p[1] / tot, 0.004) + '" title="' + p[2] + ' ' + pct(p[1]) + '%"></i>' : ''; }).join('') : '';
+    el('rpLegend').innerHTML = tot > 0 ? parts.map(function(p){ return '<span><i style="background:var(--' + p[0] + ')"></i>' + p[2] + ' <b>' + pct(p[1]) + '%</b></span>'; }).join('') : '';
+    /* スキル・装備の効果 */
+    var muls = [[t('集結主スキル', 'Leader skills'), n(el('leaderMod').textContent)], [t('参加者スキル', 'Joiner skills'), n(el('joinerMod').textContent)], [t('罠・専用装備', 'Trap & gear'), n(el('extraMod').textContent)]];
+    var mx = Math.max(2, muls[0][1], muls[1][1], muls[2][1]);
+    el('rpMul').innerHTML = dmg ? muls.map(function(m){ var w = m[1] > 1 ? Math.log(m[1]) / Math.log(mx) * 100 : 2; return '<span>' + m[0] + '</span><span class="tr"><i style="width:' + Math.max(2, Math.min(100, w)).toFixed(0) + '%"></i></span><b>×' + m[1].toFixed(2) + '</b>'; }).join('') : '<span style="grid-column:1/-1;color:#9aa0b0">—</span>';
+    /* 総評 */
+    var items = [];
+    if(dmg){
+      var dist = W.__WOS_DIST;
+      if(dist && dist.g === dmg && dist.p95 > dist.p5){
+        var lo = Math.round((dist.p5 / dist.p50 - 1) * 100), hi = Math.round((dist.p95 / dist.p50 - 1) * 100);
+        items.push(['🎲', '', t('運による振れ幅は <b>' + lo + '% 〜 +' + hi + '%</b>。ふつうは <b>' + Math.round(dist.p50).toLocaleString('ja-JP') + '</b> 前後に落ち着きます。',
+          'Luck swings the result by <b>' + lo + '% to +' + hi + '%</b>; a typical rally lands near <b>' + Math.round(dist.p50).toLocaleString('en-US') + '</b>.')]);
+      }
+      var top = parts.slice().sort(function(a, b){ return b[1] - a[1]; })[0];
+      if(tot > 0){
+        var zero = [];
+        if(!(n(el('nInf').value) > 0)) zero.push(t('盾兵', 'infantry')); if(!(n(el('nLan').value) > 0)) zero.push(t('槍兵', 'lancers'));
+        if(zero.length) items.push(['⚠️', 'warn', t('<b>' + zero.join('・') + 'が0人</b>です。少しでも入れると目減りを避けられます。', '<b>No ' + zero.join(' or ') + '</b> in the march — adding even a few avoids a loss.')]);
+        else items.push(['🏹', '', t('ダメージの <b>' + pct(top[1]) + '%</b> は' + top[2] + 'が出しています。' + top[2] + 'の攻撃・殺傷を伸ばすのが近道です。', '<b>' + pct(top[1]) + '%</b> of the damage comes from ' + top[2].toLowerCase() + ' — raising their attack and lethality pays off most.')]);
+      }
+      var adv = D.querySelector('#adviceList li');
+      if(adv && el('adviceBox').style.display !== 'none'){
+        var sp = adv.querySelectorAll('span');
+        items.push(['📈', 'good', t('いちばん伸びる一手：<b>' + esc(sp[0].textContent) + '</b>（' + esc(sp[1] ? sp[1].textContent : '') + '）', 'Best next step: <b>' + esc(sp[0].textContent) + '</b> (' + esc(sp[1] ? sp[1].textContent : '') + ')') + ' <a href="#adviceBox">' + t('ほかの候補 →', 'more →') + '</a>']);
+      }
+      var ov = el('overlapBox');
+      if(ov && ov.style.display !== 'none'){
+        var k = ov.querySelectorAll('#overlapList li').length;
+        items.push(['🧩', 'warn', t('スキルの<b>枠かぶりが ' + k + ' 件</b>あります。種類をばらすと掛け算で伸びます。', '<b>' + k + ' overlapping skill slot(s)</b> — spreading skill types multiplies better.') + ' <a href="#overlapBox">' + t('内容を見る →', 'details →') + '</a>']);
+      } else if(ov){
+        items.push(['✅', 'good', t('スキルの枠かぶりはありません。種類がうまく分かれています。', 'No overlapping skill slots — your skill types are well spread.')]);
+      }
+      var sc = D.querySelector('#usageBox .ug-score');
+      if(sc){ var tp = D.querySelector('#usageBox .ug-top'); items.push(['📊', '', t('同じ世代の利用者の中で<b>偏差値 ' + esc(sc.textContent) + '</b>（' + esc(tp ? tp.textContent : '') + '）です。', 'Your score among players of the same generation is <b>' + esc(sc.textContent) + '</b> (' + esc(tp ? tp.textContent : '') + ').')]); }
+      var kf = el('kFactor');
+      if(kf && Math.abs(n(kf.value) - n(kf.defaultValue)) < 1e-9) items.push(['🎯', '', t('実際のダメージを1回入れると、あなたの環境に合わせて補正できます。', 'Enter one real result to calibrate the estimate to your account.') + ' <a href="#observed">' + t('実測を入れる →', 'calibrate →') + '</a>']);
+    }
+    sum.innerHTML = '<h3>' + t('📝 総評', '📝 Summary') + '</h3>' + (items.length
+      ? '<ul>' + items.map(function(it){ return '<li class="' + it[1] + '"><span class="ic">' + it[0] + '</span><span>' + it[2] + '</span></li>'; }).join('') + '</ul>'
+      : '<p class="note" style="margin:0">' + t('STEP2 の必須項目を入力すると、ここに分析結果が表示されます。', 'Fill in the required fields in STEP 2 to see the analysis here.') + '</p>');
+    sum.querySelectorAll('a[href^="#"]').forEach(function(a){ a.addEventListener('click', function(e){ var tg = el(a.getAttribute('href').slice(1)); if(!tg) return; e.preventDefault(); var dt = tg.closest('details'); if(dt) dt.open = true; tg.scrollIntoView({ behavior: 'smooth', block: 'center' }); if(tg.focus) try{ tg.focus({ preventScroll: true }); }catch(_){} }); });
+    /* 画面下のバー */
+    bar.querySelector('.v').textContent = dmg ? el('totalDmg').textContent : '—';
+    var sc2 = D.querySelector('#usageBox .ug-score'); bar.querySelector('.d').textContent = dmg && sc2 ? t('偏差値 ', 'Score ') + sc2.textContent : '';
+    barState.has = !!dmg; showBar();
+  }
+  var barState = { has: false, seen: false };
+  function showBar(){ if(bar) bar.classList.toggle('show', barState.has && !barState.seen); }
+
+  function mount(){
+    if(!el('totalDmg') || !layout()) return;
+    var tm = null, kick = function(){ clearTimeout(tm); tm = setTimeout(render, 420); };
+    new MutationObserver(kick).observe(res, { childList: true, characterData: true, subtree: true });
+    ['adviceBox', 'overlapBox'].forEach(function(id){ var e = el(id); if(e) new MutationObserver(kick).observe(e, { childList: true, subtree: true, attributes: true, attributeFilter: ['style'] }); });
+    ['nInf', 'nLan', 'kFactor'].forEach(function(id){ var e = el(id); if(e) e.addEventListener('input', kick); });
+    if('IntersectionObserver' in W){
+      new IntersectionObserver(function(es){ es.forEach(function(e){ barState.seen = e.isIntersecting; showBar(); }); }, { threshold: 0 }).observe(res.querySelector('.dmg-head'));
+    }
+    setTimeout(render, 0); setTimeout(render, 900);
   }
   if(D.readyState !== 'loading') mount(); else D.addEventListener('DOMContentLoaded', mount);
 })();

@@ -27,7 +27,7 @@ window.WOS_HERO_SKILLS = {
     exped: [
       {n_ja:'野獣の守り', n_en:'Feral Protection', d_ja:'40%で全部隊の被ダメージ-10〜50%（高頻度の軽減）。※旧スキルはスタン。', d_en:'40% chance to cut all troops’ damage taken by 10–50%. (Old: stun.)'},
       {n_ja:'野生の女王', n_en:'Queen of the Wild', d_ja:'全部隊の攻撃+5〜25%（常時）。集結主としての主力。', d_en:'+5–25% Attack for all troops (always on). Main rally buff.'},
-      {n_ja:'野生の呼び声', n_en:'Call of the Wild', d_ja:'全部隊の与ダメージ+5〜25%（特に対ビースト＝熊狩りで有効）。', d_en:'+5–25% damage dealt, esp. vs beasts (great for Bear Hunt).'}
+      {n_ja:'野生の呼び声', n_en:'Call of the Wild', d_ja:'全部隊の与ダメージ+5〜25%（特に対野獣＝熊狩りで有効）。', d_en:'+5–25% damage dealt, esp. vs beasts (great for Bear Hunt).'}
     ]
   },
   molly: {
@@ -79,7 +79,7 @@ window.WOS_HERO_SKILLS = {
   },
   alonso: {
     explore: [
-      {n_ja:'トラップネット', n_en:'Trapnet', d_ja:'範囲に攻撃200〜280%＋1.5秒拘束。アリーナの主力。', d_en:'AoE Atk 200–280% + 1.5s immobilize. Arena staple.'},
+      {n_ja:'トラップネット', n_en:'Trapnet', d_ja:'範囲に攻撃200〜280%＋1.5秒拘束。闘技場の主力。', d_en:'AoE Atk 200–280% + 1.5s immobilize. Arena staple.'},
       {n_ja:'タイダルフォース', n_en:'Tidal Force', d_ja:'範囲ダメージ（攻撃50〜70%）。', d_en:'AoE damage (Atk 50–70%).'},
       {n_ja:'ハープーンブラスト', n_en:'Harpoon Blast', d_ja:'通常攻撃5〜8回ごとにスタン0.2〜0.5秒。', d_en:'Stuns 0.2–0.5s after every 5–8 basic attacks.'}
     ],
@@ -165,7 +165,7 @@ window.WOS_HERO_SKILLS = {
       {n_ja:'鷹の目', n_en:'Eagle Eyes', d_ja:'クリティカル率+7〜20%。', d_en:'+7–20% Crit Rate.'}
     ],
     exped: [
-      {n_ja:'持久訓練', n_en:'Endurance Training', d_ja:'出撃スタミナ消費-10〜20%。熊・極寒狩りで有効。', d_en:'−10–20% stamina cost. Great for Beast/Polar hunts.'},
+      {n_ja:'持久訓練', n_en:'Endurance Training', d_ja:'出撃体力消費-10〜20%。熊・極寒狩りで有効。', d_en:'−10–20% stamina cost. Great for Beast/Polar hunts.'},
       {n_ja:'俊足', n_en:'Quick Paced', d_ja:'進軍速度+20〜100%（戦闘バフは無し）。', d_en:'+20–100% march speed (no troop combat buff).'}
     ]
   },
