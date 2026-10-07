@@ -64,6 +64,8 @@ CREATE TABLE IF NOT EXISTS usage (
   client_hash TEXT    NOT NULL,           -- IP+塩 のSHA-256（レート制限用。IPそのものは保存しない）
   status      TEXT    NOT NULL DEFAULT 'ok',  -- ok / flagged（非現実的な入力。集計から除外）
   flag        TEXT,                       -- 除外理由（stat_range など）
+  mv          INTEGER NOT NULL DEFAULT 1, -- damage を計算したモデルの版数（古い版は集計時に新しい基準へ直す）
+  observed    INTEGER,                    -- 利用者が入力した実測ダメージ（任意・精度の検証用・非公開）
   PRIMARY KEY (cid_hash, gen)
 );
 CREATE INDEX IF NOT EXISTS idx_usage_win    ON usage(status, updated_at);

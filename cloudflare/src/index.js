@@ -157,7 +157,10 @@ export function validateUsage(b) {
   const damage = num(b.damage, 0, 1e15); if (damage === null) e.push('damage');
   const calib = b.calib == null ? null : num(b.calib, 0, 1e6);
   const sub = typeof b.sub === 'string' && /^[a-f0-9]{24}$/.test(b.sub) ? b.sub : null;
-  return { errors: e, cid, gen, heroes, gear, joiners, stats, tier, fc, troops, ratio, damage: damage === null ? null : Math.round(damage), calib, sub };
+  /* 実測ダメージ（任意）。精度の検証用に保存するだけで、どの応答にも含めない */
+  const obs = b.observed == null || b.observed === '' ? null : num(b.observed, 1, 1e13);
+  const mv = int(b.mv, 1, 99) || 1;
+  return { errors: e, observed: obs === null ? null : Math.round(obs), mv, cid, gen, heroes, gear, joiners, stats, tier, fc, troops, ratio, damage: damage === null ? null : Math.round(damage), calib, sub };
 }
 /* 現実性チェック。理由を返したデータは保存するが status='flagged' にして集計から外す（あとで基準を見直せるように捨てない） */
 export function realism(v, lim) {
@@ -170,6 +173,29 @@ export function realism(v, lim) {
   if (!(v.damage > 0) || v.damage > lim.damageMax) return 'damage_range';
   return null;
 }
+/* ---- 計算モデルの版数 ----
+   統計用ダメージは「全員同じ係数」で計算した値。計算方法を変えたら版数を上げ、古い版で届いた値はここで新しい基準に直す。
+   版2（2026-10-08）: 合計兵数の効き方を見直し。合計兵数 N の編成のダメージに (N / 60000)^(0.5 - 0.8) を掛ける形なので、
+   保存してある合計兵数だけで 新÷旧 の比が正確に出る（兵種の配分や英雄には依存しない） */
+export const MODEL_VER = 2;
+const SIZE_TOTAL_REF = 60000, SIZE_EXP_OLD = 0.8, SIZE_EXP_NEW = 0.5;
+export function v1toV2Factor(r) {
+  const n = r.troops || 0;
+  return n > 0 ? Math.pow(n / SIZE_TOTAL_REF, SIZE_EXP_NEW - SIZE_EXP_OLD) : 1;
+}
+/* 旧版の行を新しい基準に直す（1回の呼び出しで最大400行。残りは次の集計で続きから） */
+async function migrateModel(env) {
+  let rows;
+  try {
+    rows = (await env.DB.prepare(`SELECT cid_hash, gen, damage, troops FROM usage WHERE mv < ? LIMIT 400`).bind(MODEL_VER).all()).results || [];
+  } catch (_) { return 0; }                    /* mv 列がまだ無い（DB更新前）なら何もしない */
+  for (const r of rows) {
+    const d = Math.max(1, Math.round(r.damage * v1toV2Factor(r)));
+    await env.DB.prepare('UPDATE usage SET damage=?, mv=? WHERE cid_hash=? AND gen=? AND mv<?').bind(d, MODEL_VER, r.cid_hash, r.gen, MODEL_VER).run();
+  }
+  return rows.length;
+}
+
 /* 偏差値の母集団（ダメージの常用対数の平均・標準偏差）。両端の極端な値は四分位で除外 */
 export function devStats(damages) {
   let xs = damages.filter(d => d > 0).map(d => Math.log10(d)).sort((a, b) => a - b);
@@ -253,6 +279,7 @@ function aggregate(rows, gen, env) {
   return out;
 }
 async function loadWindow(env) {
+  await migrateModel(env);
   const since = now() - parseInt(env.WINDOW_DAYS || '90', 10) * 86400;
   /* 利用データ（自動記録・現実性チェック済みのみ）＋ 口コミ投稿（同じ人の利用データがあれば二重に数えない） */
   const { results } = await env.DB.prepare(
@@ -408,18 +435,32 @@ export default {
         const row = await env.DB.prepare('SELECT sub_id FROM usage WHERE cid_hash=? AND gen=?').bind(cidHash, v.gen).first();
         const vals = [v.heroes.inf.id, v.heroes.lan.id, v.heroes.mks.id, v.gear.inf, v.gear.lan, v.gear.mks, v.joiners.join(','), v.tier, v.fc,
           s.teamAtk, s.teamLeth, s.atkInf, s.lethInf, s.atkLan, s.lethLan, s.atkMks, s.lethMks, v.troops, v.ratio[0], v.ratio[1], v.ratio[2], v.damage, v.calib, status, flag];
-        if (row) {
-          await env.DB.prepare(`UPDATE usage SET updated_at=?, hits=hits+1, hero_inf=?, hero_lan=?, hero_mks=?, gear_inf=?, gear_lan=?, gear_mks=?, joiners=?, troop_tier=?, fc_level=?,
-              team_atk=?, team_leth=?, atk_inf=?, leth_inf=?, atk_lan=?, leth_lan=?, atk_mks=?, leth_mks=?, troops=?, ratio_inf=?, ratio_lan=?, ratio_mks=?, damage=?, calib=?, status=?, flag=?
-              WHERE cid_hash=? AND gen=?`).bind(t, ...vals, cidHash, v.gen).run();
-        } else {
+        /* 旧版のブラウザから届いた値は、保存前に新しい基準へ直す */
+        let dmgStore = v.damage, mvStore = v.mv;
+        if (v.mv < MODEL_VER) {
+          dmgStore = Math.max(1, Math.round(v.damage * v1toV2Factor({ troops: v.troops }))); mvStore = MODEL_VER;
+        }
+        vals[21] = dmgStore;
+        const write = async (withNew) => {
+          const extraSet = withNew ? ', mv=?, observed=COALESCE(?, observed)' : '', extraCols = withNew ? ', mv, observed' : '', extraQ = withNew ? ',?,?' : '';
+          const extra = withNew ? [mvStore, v.observed] : [];
+          if (row) {
+            await env.DB.prepare(`UPDATE usage SET updated_at=?, hits=hits+1, hero_inf=?, hero_lan=?, hero_mks=?, gear_inf=?, gear_lan=?, gear_mks=?, joiners=?, troop_tier=?, fc_level=?,
+                team_atk=?, team_leth=?, atk_inf=?, leth_inf=?, atk_lan=?, leth_lan=?, atk_mks=?, leth_mks=?, troops=?, ratio_inf=?, ratio_lan=?, ratio_mks=?, damage=?, calib=?, status=?, flag=?${extraSet}
+                WHERE cid_hash=? AND gen=?`).bind(t, ...vals, ...extra, cidHash, v.gen).run();
+          } else {
+            await env.DB.prepare(`INSERT INTO usage (cid_hash, gen, created_at, updated_at, hero_inf, hero_lan, hero_mks, gear_inf, gear_lan, gear_mks, joiners, troop_tier, fc_level,
+                team_atk, team_leth, atk_inf, leth_inf, atk_lan, leth_lan, atk_mks, leth_mks, troops, ratio_inf, ratio_lan, ratio_mks, damage, calib, status, flag, client_hash${extraCols})
+                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?${extraQ})`).bind(cidHash, v.gen, t, t, ...vals, clientHash, ...extra).run();
+          }
+        };
+        if (!row) {
           const dayStart = t - (t % 86400);
           const c = await env.DB.prepare('SELECT COUNT(*) AS n FROM usage WHERE client_hash=? AND created_at>=?').bind(clientHash, dayStart).first();
           if (c && c.n >= lim.perIpDaily) return json({ error: 'rate' }, 429, h);
-          await env.DB.prepare(`INSERT INTO usage (cid_hash, gen, created_at, updated_at, hero_inf, hero_lan, hero_mks, gear_inf, gear_lan, gear_mks, joiners, troop_tier, fc_level,
-              team_atk, team_leth, atk_inf, leth_inf, atk_lan, leth_lan, atk_mks, leth_mks, troops, ratio_inf, ratio_lan, ratio_mks, damage, calib, status, flag, client_hash)
-              VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`).bind(cidHash, v.gen, t, t, ...vals, clientHash).run();
         }
+        try { await write(true); }
+        catch (err) { if (/mv|observed/.test(String(err && err.message || err))) await write(false); else throw err; }   /* DB の列追加がまだなら従来の形で保存 */
         /* 同じ人の口コミ投稿があれば紐づける（集計で二重に数えない・課金帯を引き継ぐ） */
         if (v.sub && !(row && row.sub_id)) {
           const sb = await env.DB.prepare("SELECT spend_tier FROM submissions WHERE id=? AND status='ok' AND server_days>=? AND server_days<=?")

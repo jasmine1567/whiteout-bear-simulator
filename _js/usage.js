@@ -1,6 +1,7 @@
 /* ==== 熊狩シミュレーターの利用データを匿名で自動記録する（世代別統計の母集団） ====
    前提: config.js（WOS_API / t()）, シミュレーター本体のグローバル（u=編成, g=予測ダメージ, h()=英雄検索）
    - 送るもの: 世代・集結主3人・乗せ英雄4人・兵種Tier/火晶・攻撃%/殺傷%・兵数・予測ダメージ（補正係数C などの係数を全員同じ既定値にそろえて計算した値）
+   - 実測キャリブレーション欄に実測ダメージが入っていれば一緒に送る（精度の検証用。サーバーは保存するだけで、どの画面にも出さない）
    - 送らないもの: 名前・同盟・ゲームID・Cookie・広告ID。ブラウザ内で作った乱数ID（wos_cid）だけを付ける
    - 計算できる状態（必須項目が入力済み）で、利用者が実際に操作したときだけ送る。同じ内容は二度送らない
    - 「統計に使わない」を選ぶと以後送らず、送信済みの分もサーバーから削除する
@@ -12,10 +13,12 @@
   var EN = (W.WOS_LANG || 'ja') === 'en';
   var LS_CID = 'wos_cid', LS_OFF = 'wos_usage_off', LS_LAST = 'wos_usage_last';
   var DEBOUNCE_MS = 15000;
+  /* 計算モデルの版数。統計用ダメージの計算方法を変えたら上げる（サーバーが古い版の値を新しい基準に直す）。2 = 兵数の効き方を見直した版 */
+  var MODEL_VER = 2;
   var STAT_IDS = ['teamAtk','teamLeth','atkInf','lethInf','atkLan','lethLan','atkMks','lethMks'];
   /* 計算係数（補正係数C と詳細設定）。統計用のダメージは、これらを全員同じ既定値にそろえて計算し直す。
      人によって違ってよいのは「利用者が入力した自分の状態」（英雄・ステータス・兵数・ペット・バフ・罠・天賦）だけ */
-  var COEF_IDS = ['kFactor','betaA','betaL','p0','tierGrowth','t12Bonus','fcGrowth','wI','wL','wM','pI','pL','crowdDecay','crowdRef','heroRate','spAtk','spLeth'];
+  var COEF_IDS = ['kFactor','betaA','betaL','p0','tierGrowth','t12Bonus','fcGrowth','wI','wL','wM','pI','pL','crowdDecay','crowdRef','crowdTotal','crowdTotalRef','heroRate','spAtk','spLeth'];
   function ls(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
   function lsSet(k, v){ try{ if(v == null) localStorage.removeItem(k); else localStorage.setItem(k, v); }catch(e){} }
   function el(id){ return D.getElementById(id); }
@@ -60,7 +63,8 @@
       joiners: (u.joiner || []).map(function(x){ return x ? x.heroId : null; }),
       tier: numOf('tier'), fc: numOf('fcLevel'), stats: stats,
       troops: [numOf('nInf') || 0, numOf('nLan') || 0, numOf('nMks') || 0],
-      damage: dmg, calib: numOf('kFactor'), sub: sub || undefined };
+      damage: dmg, calib: numOf('kFactor'), sub: sub || undefined,
+      mv: MODEL_VER, observed: (function(){ var o = numOf('observed'); return o && o > 0 ? Math.round(o) : undefined; })() };
   }
 
   /* ---------- 送信 ---------- */

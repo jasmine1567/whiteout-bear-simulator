@@ -187,6 +187,26 @@ console.log('--- 利用データの自動記録 ---');
   t('集計前は KV 上は未公開', JSON.parse(kv.get('stats:gen:5')).published===false);
   const g5 = (await call('GET','/v1/stats/5')).body;
   t('10件に届いた世代は定時集計を待たず公開', g5.published===true && g5.n>=10 && g5.slot.mks[0].id==='gwen' && JSON.parse(kv.get('stats:gen:5')).published===true, JSON.stringify({n:g5.n,p:g5.published}));
+  /* モデルの版数と実測値 */
+  {
+    const one = (w) => db.prepare('select damage, mv, observed from usage where cid_hash=(select cid_hash from usage where gen=3 order by created_at desc limit 1) and gen=3').get();
+    const b3 = (o) => base(300, { gen: 3, leader:{ inf:{id:'jeronimo'}, lan:{id:'mia'}, mks:{id:'alonso'} }, joiners:['jessie'], troops:[2000,8000,190000], damage: 100000000, ...o });
+    await call('POST','/v1/usage', b3({}), '90.0.0.1');
+    let r3 = one();
+    const f = mod.v1toV2Factor({ troops: 200000 });
+    t('旧版から届いた値は新しい基準に直して保存（合計20万なら約0.70倍）', r3.mv===2 && Math.abs(r3.damage/100000000 - f) < 0.01 && f > 0.69 && f < 0.71, JSON.stringify(r3)+' f='+f.toFixed(3));
+    await call('POST','/v1/usage', b3({ mv: 2, damage: 70000000, observed: 65000000 }), '90.0.0.1');
+    r3 = one();
+    t('新版の値はそのまま保存・実測値も保存', r3.mv===2 && r3.damage===70000000 && r3.observed===65000000, JSON.stringify(r3));
+    await call('POST','/v1/usage', b3({ mv: 2, damage: 71000000 }), '90.0.0.1');
+    t('実測値を送らない更新では、前の実測値を消さない', one().observed===65000000);
+    db.prepare("update usage set mv=1, damage=100000000 where gen=3").run();
+    await worker.scheduled({}, env);
+    r3 = one();
+    t('保存済みの旧版の行は集計時に自動で直る', r3.mv===2 && Math.abs(r3.damage/100000000 - f) < 0.01, JSON.stringify(r3));
+    const pub = JSON.stringify([(await call('GET','/v1/stats/3')).body, (await call('GET','/v1/stats/summary')).body, (await call('GET','/v1/reviews/3')).body]);
+    t('実測値はどの公開応答にも出ない', !/observed|65000000/.test(pub));
+  }
   const envR = { ...env, USAGE_PER_IP_DAILY: '2' };
   const cr = async i => (await worker.fetch(req('POST','/v1/usage', base(100+i, { gen: 4, leader:{ inf:{id:'jeronimo'}, lan:{id:'mia'}, mks:{id:'alonso'} }, joiners:[] }), '70.0.0.1'), envR)).status;
   t('同じIPからの大量作成は 429', await cr(1)===200 && await cr(2)===200 && await cr(3)===429);

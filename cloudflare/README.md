@@ -289,3 +289,25 @@ SELECT gen, status, flag, COUNT(*) FROM usage GROUP BY gen, status, flag ORDER B
 ```
 
 基準をゆるめたあと、過去に除外した分は次に同じ人がシミュレーターを使ったときに判定し直されます。
+
+
+## v127（2026-10-08）: 兵数の効き方の見直しと、実測値の収集
+
+**必ずこの順番で**実行します（どれも1回だけ）。ファイル指定が通らない回線でも動くよう、`--command` の形にしてあります。
+
+```
+npx wrangler d1 execute whitesim-stats --remote --command "ALTER TABLE usage ADD COLUMN mv INTEGER NOT NULL DEFAULT 1"
+npx wrangler d1 execute whitesim-stats --remote --command "ALTER TABLE usage ADD COLUMN observed INTEGER"
+npx wrangler deploy
+```
+
+- `mv` … 予測ダメージを計算したモデルの版数。保存済みの行（版1）は、次の集計のときに自動で新しい基準（版2）へ直ります
+- `observed` … 利用者が「実測キャリブレーション」欄に入れた実測ダメージ。**どの画面・どのAPIにも出しません**。見るのは運営者だけです
+
+### 実測と予測のずれを見る（運営者用）
+
+```
+npx wrangler d1 execute whitesim-stats --remote --command "SELECT gen, troop_tier AS tier, fc_level AS fc, troops, damage AS predicted, observed, ROUND(observed*1.0/damage, 2) AS ratio FROM usage WHERE observed IS NOT NULL AND status='ok' AND mv=2 ORDER BY updated_at DESC LIMIT 50"
+```
+
+`ratio` が 1 より小さい人が多ければ予測が高すぎ、1 より大きい人が多ければ低すぎです。

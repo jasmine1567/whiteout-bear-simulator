@@ -66,7 +66,7 @@
       + '<text class="dv-tick" x="' + (VW - PAD_R) + '" y="' + (BASE + 14) + '" text-anchor="end">' + fmtS(hi) + '</text>'
       + '<text class="dv-tick mid" x="' + ((X(p5) + X(p95)) / 2).toFixed(1) + '" y="' + (BASE + 14) + '" text-anchor="middle">' + esc(t('← 90%はこの範囲 →', '← 90% land here →')) + '</text>'
       + '</svg>';
-    W.__WOS_DIST = { g: g, p5: p5, p50: p50, p95: p95 };
+    W.__WOS_DIST = { g: g, p5: p5, p50: p50, p95: p95, lo: lo, hi: hi, x0: x0, x1: x1, dens: dens, max: max };
     var above = 0; xs.forEach(function(v){ if(v >= g) above++; });
     box.innerHTML = '<div class="dv-chart">' + svg + '<div class="dv-tip" hidden></div></div>'
       + '<div class="dv-tiles">'
@@ -271,6 +271,149 @@
     }
     iconize(D.querySelector('.grid') || D.body);
     setTimeout(render, 0); setTimeout(render, 900);
+  }
+  if(D.readyState !== 'loading') mount(); else D.addEventListener('DOMContentLoaded', mount);
+})();
+
+
+/* ==== 共有用の画像（Xに貼りやすい 16:9・1600×900） ====
+   レポートの要点（予測ダメージ・運の振れ幅と分布・偏差値・兵種の内訳・スキルの効果・編成の顔ぶれ）を1枚にまとめる。
+   本体の buildResultCanvas() を差し替える形で使う（保存・端末共有・プレビューの流れは本体のまま） */
+(function(){
+  var W = window, D = document;
+  var t = W.t || function(a){ return a; };
+  function el(id){ return D.getElementById(id); }
+  function n(txt){ var v = parseFloat(String(txt == null ? '' : txt).replace(/[^\d.\-]/g, '')); return isFinite(v) ? v : 0; }
+  var NUM = '"Outfit","Noto Sans JP",sans-serif', TXT = '"Noto Sans JP","Hiragino Sans","Yu Gothic",sans-serif';
+  var imgs = {};
+  function pic(id){
+    if(imgs[id]) return imgs[id];
+    var src = W.WOS_heroImg && W.WOS_heroImg(id); if(!src) return null;
+    var im = new Image(); im.decoding = 'async'; im.src = src; imgs[id] = im; return im;
+  }
+  function heroName(id){ var hh = (typeof h === 'function') ? h(id) : null; return hh ? (W.WOS_heroName ? W.WOS_heroName(hh) : hh.name) : id; }
+  function preload(){ try{ (u.leader || []).concat(u.joiner || []).forEach(function(x){ if(x) pic(x.heroId); }); }catch(e){} }
+  function rr(x, X, Y, w, hh, r){ x.beginPath(); x.moveTo(X + r, Y); x.arcTo(X + w, Y, X + w, Y + hh, r); x.arcTo(X + w, Y + hh, X, Y + hh, r); x.arcTo(X, Y + hh, X, Y, r); x.arcTo(X, Y, X + w, Y, r); x.closePath(); }
+  function fit(x, text, font, size, maxW){ do{ x.font = font.replace('%', size); if(x.measureText(text).width <= maxW) break; size -= 2; }while(size > 18); return size; }
+  function fmtS(v){ if(!isFinite(v)) return '—'; if(v >= 1e9) return (v / 1e9).toFixed(2) + 'B'; if(v >= 1e6) return (v / 1e6).toFixed(v >= 1e8 ? 0 : 1) + 'M'; if(v >= 1e3) return (v / 1e3).toFixed(0) + 'K'; return String(Math.round(v)); }
+  function grad(x, x0, y0, x1, y1){ var gd = x.createLinearGradient(x0, y0, x1, y1); gd.addColorStop(0, '#ffb23f'); gd.addColorStop(1, '#ff5a36'); return gd; }
+  function avatar(x, id, cx, cy, r, ring){
+    var im = pic(id);
+    x.save(); x.beginPath(); x.arc(cx, cy, r, 0, Math.PI * 2); x.closePath();
+    if(im && im.complete && im.naturalWidth){ x.clip(); x.drawImage(im, cx - r, cy - r, r * 2, r * 2); }
+    else { x.fillStyle = '#3a3d4d'; x.fill(); x.fillStyle = '#fff'; x.font = '700 ' + Math.round(r * 0.9) + 'px ' + TXT; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(heroName(id).charAt(0), cx, cy + 2); }
+    x.restore();
+    x.beginPath(); x.arc(cx, cy, r + 3, 0, Math.PI * 2); x.lineWidth = 5; x.strokeStyle = ring ? grad(x, cx - r, cy - r, cx + r, cy + r) : 'rgba(255,255,255,.28)'; x.stroke();
+  }
+
+  function build(){
+    var CW = 1600, CH = 900, cv = D.createElement('canvas'); cv.width = CW; cv.height = CH;
+    var x = cv.getContext('2d'); x.textBaseline = 'alphabetic';
+    var dmg = (typeof g === 'number' && g > 0) ? g : 0, EN = (W.WOS_LANG || 'ja') === 'en';
+    /* 背景 */
+    var bg = x.createLinearGradient(0, 0, CW, CH); bg.addColorStop(0, '#12131a'); bg.addColorStop(1, '#1e2030'); x.fillStyle = bg; x.fillRect(0, 0, CW, CH);
+    var gl = x.createRadialGradient(260, 120, 0, 260, 120, 760); gl.addColorStop(0, 'rgba(255,122,47,.30)'); gl.addColorStop(1, 'rgba(255,122,47,0)'); x.fillStyle = gl; x.fillRect(0, 0, CW, CH);
+    var gl2 = x.createRadialGradient(1500, 880, 0, 1500, 880, 620); gl2.addColorStop(0, 'rgba(123,97,255,.20)'); gl2.addColorStop(1, 'rgba(123,97,255,0)'); x.fillStyle = gl2; x.fillRect(0, 0, CW, CH);
+    x.fillStyle = grad(x, 0, 0, CW, 0); x.fillRect(0, 0, CW, 8);
+    /* ヘッダー */
+    var L = 72;
+    rr(x, L, 48, 46, 46, 13); x.fillStyle = grad(x, L, 48, L + 46, 94); x.fill();
+    x.fillStyle = '#fff'; x.font = '800 26px ' + NUM; x.textAlign = 'center'; x.fillText('W', L + 23, 81); x.textAlign = 'left';
+    x.fillStyle = '#fff'; x.font = '800 28px ' + TXT; x.fillText(t('ホワサバ ツールラボ', 'Whiteout Tools Lab'), L + 62, 70);
+    x.fillStyle = 'rgba(255,255,255,.6)'; x.font = '500 19px ' + TXT; x.fillText(t('熊狩ダメージ・シミュレーター ｜ 分析レポート', 'Bear Hunt Damage Simulator | Analysis report'), L + 62, 96);
+    var gen = n(el('curGen') && el('curGen').value), chip = t('第' + gen + '世代', 'Gen ' + gen);
+    x.font = '800 26px ' + TXT; var cw = x.measureText(chip).width + 44; rr(x, CW - 72 - cw, 50, cw, 46, 23); x.strokeStyle = '#ff8a3d'; x.lineWidth = 2.5; x.stroke();
+    x.fillStyle = '#ffb27a'; x.textAlign = 'center'; x.fillText(chip, CW - 72 - cw / 2, 83); x.textAlign = 'left';
+    /* 予測ダメージ */
+    x.fillStyle = 'rgba(255,255,255,.66)'; x.font = '700 24px ' + TXT; x.fillText(t('予測ダメージ（集結1回の期待値）', 'ESTIMATED DAMAGE PER RALLY'), L, 170);
+    var numT = Math.round(dmg).toLocaleString(EN ? 'en-US' : 'ja-JP'), sz = fit(x, numT, '800 %px ' + NUM, 158, 880);
+    x.fillStyle = grad(x, L, 190, L + 880, 320); x.fillText(numT, L - 4, 190 + sz * 0.86);
+    /* 下振れ・ふつう・上振れ */
+    var d = W.__WOS_DIST, hasD = d && d.g === dmg && d.p95 > d.p5, ty = 360;
+    var tiles = hasD ? [[t('下振れ', 'UNLUCKY'), d.p5, t('20回に1回', '1 in 20')], [t('ふつう', 'TYPICAL'), d.p50, t('中央値', 'median')], [t('上振れ', 'LUCKY'), d.p95, t('20回に1回', '1 in 20')]] : [];
+    tiles.forEach(function(tl, i){
+      var tx = L + i * 300, mid = i === 1;
+      rr(x, tx, ty, 280, 112, 20); x.fillStyle = mid ? 'rgba(255,138,61,.20)' : 'rgba(255,255,255,.07)'; x.fill();
+      if(mid){ x.strokeStyle = 'rgba(255,138,61,.75)'; x.lineWidth = 2; x.stroke(); }
+      x.fillStyle = 'rgba(255,255,255,.72)'; x.font = '700 20px ' + TXT; x.fillText(tl[0], tx + 22, ty + 38);
+      x.fillStyle = 'rgba(255,255,255,.42)'; x.font = '500 16px ' + TXT; x.textAlign = 'right'; x.fillText(tl[2], tx + 258, ty + 37); x.textAlign = 'left';
+      x.fillStyle = '#fff'; x.font = '800 44px ' + NUM; x.fillText(fmtS(tl[1]), tx + 22, ty + 90);
+    });
+    /* 分布の山 */
+    var gx = L, gw = 880, gy0 = 502, gb = 646;
+    if(hasD && d.dens){
+      var N = d.dens.length, X = function(i){ return gx + (i + 0.5) / N * gw; }, Y = function(v){ return gb - v / d.max * (gb - gy0); };
+      var vx = function(v){ return gx + (v - d.x0) / (d.x1 - d.x0) * gw; };
+      var path = function(a, b){ x.beginPath(); var st = false, lx = 0; for(var i = 0; i < N; i++){ var px = X(i); if(px < a || px > b) continue; if(!st){ x.moveTo(px, gb); st = true; } x.lineTo(px, Y(d.dens[i])); lx = px; } if(st){ x.lineTo(lx, gb); x.closePath(); } return st; };
+      if(path(gx, gx + gw)){ x.fillStyle = 'rgba(255,138,61,.20)'; x.fill(); }
+      if(path(vx(d.p5), vx(d.p95))){ var ag = x.createLinearGradient(0, gy0, 0, gb); ag.addColorStop(0, 'rgba(255,150,70,.95)'); ag.addColorStop(1, 'rgba(255,94,58,.35)'); x.fillStyle = ag; x.fill(); }
+      x.beginPath(); for(var i = 0; i < N; i++){ if(i) x.lineTo(X(i), Y(d.dens[i])); else x.moveTo(X(i), Y(d.dens[i])); } x.strokeStyle = '#ffb27a'; x.lineWidth = 3; x.lineJoin = 'round'; x.stroke();
+      x.strokeStyle = 'rgba(255,255,255,.22)'; x.lineWidth = 2; x.beginPath(); x.moveTo(gx, gb); x.lineTo(gx + gw, gb); x.stroke();
+      var ex = Math.max(gx, Math.min(gx + gw, vx(dmg))); x.setLineDash([7, 6]); x.strokeStyle = '#fff'; x.lineWidth = 2.5; x.beginPath(); x.moveTo(ex, gy0 - 6); x.lineTo(ex, gb); x.stroke(); x.setLineDash([]);
+      x.fillStyle = 'rgba(255,255,255,.5)'; x.font = '500 17px ' + NUM; x.fillText(fmtS(d.lo), gx, gb + 26); x.textAlign = 'right'; x.fillText(fmtS(d.hi), gx + gw, gb + 26);
+      x.textAlign = 'center'; x.fillStyle = 'rgba(255,255,255,.72)'; x.font = '700 17px ' + TXT; x.fillText(t('ダメージの出やすさ（90%はオレンジの範囲）', 'How likely each result is (90% fall in the orange band)'), gx + gw / 2, gb + 26); x.textAlign = 'left';
+    } else {
+      x.fillStyle = 'rgba(255,255,255,.45)'; x.font = '500 20px ' + TXT; x.fillText(t('この編成は確率スキルによるぶれがありません。', 'No chance-based variance in this setup.'), gx, 420);
+    }
+    /* 右パネル */
+    var px = 1010, pw = 518, py = 142, ph = 528; rr(x, px, py, pw, ph, 28); x.fillStyle = 'rgba(255,255,255,.06)'; x.fill(); x.strokeStyle = 'rgba(255,255,255,.10)'; x.lineWidth = 1.5; x.stroke();
+    var ix = px + 34, iw = pw - 68, cy = py + 48;
+    var sc = D.querySelector('#usageBox .ug-score'), tp = D.querySelector('#usageBox .ug-top');
+    x.fillStyle = 'rgba(255,255,255,.66)'; x.font = '700 21px ' + TXT; x.fillText(t('同じ世代の中での位置', 'POSITION IN YOUR GENERATION'), ix, cy);
+    if(sc){
+      x.fillStyle = 'rgba(255,255,255,.8)'; x.font = '700 26px ' + TXT; x.fillText(t('偏差値', 'Score'), ix, cy + 78);
+      x.fillStyle = grad(x, ix, cy + 20, ix + 300, cy + 100); x.font = '800 96px ' + NUM; x.fillText(sc.textContent, ix + (EN ? 84 : 96), cy + 92);
+      var tw0 = x.measureText(sc.textContent).width, pt = tp ? tp.textContent : '';
+      if(pt){ x.font = '800 24px ' + TXT; var pwd = x.measureText(pt).width + 32, pxx = Math.min(ix + (EN ? 84 : 96) + tw0 + 18, px + pw - 34 - pwd); rr(x, pxx, cy + 46, pwd, 42, 21); x.fillStyle = '#fff'; x.fill(); x.fillStyle = '#e85d12'; x.textAlign = 'center'; x.fillText(pt, pxx + pwd / 2, cy + 76); x.textAlign = 'left'; }
+    } else {
+      x.fillStyle = 'rgba(255,255,255,.5)'; x.font = '500 22px ' + TXT; x.fillText(t('この世代はデータ集計中', 'Still collecting data for this generation'), ix, cy + 62);
+    }
+    /* 兵種の内訳 */
+    cy += 150; x.fillStyle = 'rgba(255,255,255,.66)'; x.font = '700 21px ' + TXT; x.fillText(t('兵種別のダメージ', 'DAMAGE BY TROOP TYPE'), ix, cy);
+    var parts = [[t('盾', 'INF'), n(el('dInf').textContent), '#8fb3d9'], [t('槍', 'LAN'), n(el('dLan').textContent), '#3ecf9a'], [t('弓', 'MKS'), n(el('dMks').textContent), '#ff9a3d']];
+    var tot = parts[0][1] + parts[1][1] + parts[2][1] || 1, bx = ix;
+    parts.forEach(function(p){ var w = Math.max(p[1] / tot * (iw - 8), p[1] > 0 ? 6 : 0); if(w > 0){ rr(x, bx, cy + 20, w, 24, 6); x.fillStyle = p[2]; x.fill(); bx += w + 4; } });
+    var lx = ix; parts.forEach(function(p){ var pc = p[1] / tot * 100, txt = p[0] + ' ' + (pc >= 9.95 || pc === 0 ? Math.round(pc) : pc.toFixed(1)) + '%';
+      x.fillStyle = p[2]; rr(x, lx, cy + 62, 16, 16, 5); x.fill(); x.fillStyle = '#fff'; x.font = '700 22px ' + TXT; x.fillText(txt, lx + 24, cy + 78); lx += x.measureText(txt).width + 52; });
+    /* スキル・装備の効果 */
+    cy += 132; x.fillStyle = 'rgba(255,255,255,.66)'; x.font = '700 21px ' + TXT; x.fillText(t('スキル・装備の効果', 'SKILL AND GEAR EFFECTS'), ix, cy);
+    var muls = [[t('集結主スキル', 'Leader skills'), n(el('leaderMod').textContent)], [t('参加者スキル', 'Joiner skills'), n(el('joinerMod').textContent)], [t('罠・専用装備', 'Trap & gear'), n(el('extraMod').textContent)]];
+    var mx = Math.max(2, muls[0][1], muls[1][1], muls[2][1]);
+    muls.forEach(function(m, i){ var yy = cy + 44 + i * 44, tx0 = ix + 168, tw = iw - 168 - 96, w = m[1] > 1 ? Math.log(m[1]) / Math.log(mx) * tw : 6;
+      x.fillStyle = 'rgba(255,255,255,.85)'; x.font = '600 20px ' + TXT; x.fillText(m[0], ix, yy);
+      rr(x, tx0, yy - 15, tw, 14, 7); x.fillStyle = 'rgba(255,255,255,.12)'; x.fill(); rr(x, tx0, yy - 15, Math.max(8, Math.min(tw, w)), 14, 7); x.fillStyle = grad(x, tx0, 0, tx0 + tw, 0); x.fill();
+      x.fillStyle = '#fff'; x.font = '800 24px ' + NUM; x.textAlign = 'right'; x.fillText('×' + m[1].toFixed(2), ix + iw, yy + 2); x.textAlign = 'left'; });
+    /* 編成の顔ぶれ */
+    var ly = 764, cx = L;
+    try{
+      var Ls = (u.leader || []).filter(Boolean), Js = (u.joiner || []).filter(Boolean);
+      x.fillStyle = 'rgba(255,255,255,.66)'; x.font = '700 20px ' + TXT; x.fillText(t('集結主', 'LEADER'), cx, ly - 60);
+      Ls.forEach(function(s2){ avatar(x, s2.heroId, cx + 40, ly, 40, true); var nm = heroName(s2.heroId); x.fillStyle = '#fff'; x.font = '700 22px ' + TXT; x.fillText(nm, cx + 94, ly + 8); cx += 94 + x.measureText(nm).width + 34; });
+      cx += 26; x.fillStyle = 'rgba(255,255,255,.18)'; x.fillRect(cx - 30, ly - 40, 2, 80);
+      x.fillStyle = 'rgba(255,255,255,.66)'; x.font = '700 20px ' + TXT; x.fillText(t('参加者', 'JOINERS'), cx, ly - 60);
+      var room = CW - 72 - cx, each = Js.length ? Math.min(210, room / Js.length) : 0;
+      Js.forEach(function(s2, i){ var ax = cx + i * each; avatar(x, s2.heroId, ax + 32, ly, 32, false); var nm = heroName(s2.heroId); x.fillStyle = 'rgba(255,255,255,.92)'; fit(x, nm, '600 %px ' + TXT, 20, each - 84); x.fillText(nm, ax + 76, ly + 7); });
+    }catch(e){}
+    /* フッター */
+    x.fillStyle = 'rgba(255,255,255,.12)'; x.fillRect(72, 826, CW - 144, 1.5);
+    x.fillStyle = '#ff9a55'; x.font = '800 28px ' + NUM; x.fillText('whitesim-lab.com', 72, 870);
+    x.fillStyle = 'rgba(255,255,255,.5)'; x.font = '500 19px ' + TXT; x.textAlign = 'right';
+    x.fillText(t('非公式ファンツールによる推定値です　#ホワサバ', 'Estimate by an unofficial fan tool   #WhiteoutSurvival'), CW - 72, 868); x.textAlign = 'left';
+    return cv;
+  }
+  /* 投稿文（本体の共有ボタンから使う） */
+  W.WOS_shareText = function(){
+    var dmg = (typeof g === 'number' && g > 0) ? g : 0, gen = n(el('curGen') && el('curGen').value);
+    var sc = D.querySelector('#usageBox .ug-score'), tp = D.querySelector('#usageBox .ug-top');
+    var ja = '熊狩りの予測ダメージは ' + fmtS(dmg) + '（第' + gen + '世代）' + (sc ? '\n偏差値 ' + sc.textContent + (tp ? '・' + tp.textContent : '') : '') + '\n#ホワサバ #ホワイトアウトサバイバル';
+    var en = 'My Bear Hunt estimate: ' + fmtS(dmg) + ' (Gen ' + gen + ')' + (sc ? '\nScore ' + sc.textContent + (tp ? ', ' + tp.textContent : '') : '') + '\n#WhiteoutSurvival #BearHunt';
+    return t(ja, en);
+  };
+  function mount(){
+    if(!el('totalDmg') || typeof W.buildResultCanvas !== 'function') return;
+    W.buildResultCanvas = build;
+    preload(); var src = el('totalDmg'); new MutationObserver(function(){ setTimeout(preload, 200); }).observe(src, { childList: true, characterData: true, subtree: true });
+    ['leaderSlots', 'joinerSlots'].forEach(function(id){ var e = el(id); if(e) new MutationObserver(function(){ setTimeout(preload, 100); }).observe(e, { childList: true, subtree: true }); });
   }
   if(D.readyState !== 'loading') mount(); else D.addEventListener('DOMContentLoaded', mount);
 })();

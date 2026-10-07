@@ -9,9 +9,9 @@ import os, re, json, html, subprocess
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 BASE_URL = "https://whitesim-lab.com"
-V = "122"            # 共有アセットの版数
+V = "127"            # 共有アセットの版数
 HV = "122"           # heroes.js の版数
-UPDATED = "2026-10-07"
+UPDATED = "2026-10-08"
 NOTES_DIR = os.path.join(ROOT, "_stats_notes")
 DEFAULT_TIER = "whale"   # 理論側のデフォルト表示（石油王）
 

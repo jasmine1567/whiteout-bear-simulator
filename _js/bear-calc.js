@@ -20,7 +20,7 @@
     betaA: '0.93', betaL: '1.00', kFactor: '0.63', p0: '0.2905',
     tierGrowth: '1.15', t12Bonus: '1.18', fcGrowth: '1.08',
     wI: '0.25', wL: '0.78', wM: '1.00', pI: '0.91', pL: '0.90',
-    crowdDecay: '0.8', crowdRef: '40000', heroRate: '100',
+    crowdDecay: '0.8', crowdRef: '40000', crowdTotal: '0.5', crowdTotalRef: '60000', heroRate: '100',
     spAtk: '0', spLeth: '0', trapBonus: '25',
     tier: '', fcLevel: '', cyril: '', cyrilOverride: '',
     teamAtk: '', teamLeth: '', atkInf: '', lethInf: '',
@@ -308,7 +308,12 @@ function P(e, n) {
       n = ne * y[e] * (1 + (t.bA * i[e].a) / 100) * (1 + (t.bL * i[e].l) / 100);
     ((x[e] = n), (R += n));
   });
-  let j = 1;
+  /* 兵数全体の効き方（2026-10-08）。合計兵数を k 倍にしたときのダメージが k^crowdTotal 倍になるよう、全体に共通の倍率を掛ける。
+     兵種どうしの配分の効き方（crowdDecay）は変えないので、同じ兵数・同じ比率で比べる英雄の順位は変わらない。
+     crowdTotal が未指定なら従来どおり（倍率1） */
+  var rhoT = b(cfg.crowdTotal), NT = a.inf + a.lan + a.mks, NTref = b(cfg.crowdTotalRef) || 60000;
+  var sizeMul = (isFinite(rhoT) && rhoT > 0 && NT > 0) ? Math.pow(NT / NTref, rhoT - rho) : 1;
+  let j = sizeMul;
   (a.inf <= 0 && (j *= b(cfg.pI) || 0.91), a.lan <= 0 && (j *= b(cfg.pL) || 0.9));
   var __ADD = {
     dmg: 1,
