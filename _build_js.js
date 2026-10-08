@@ -10,7 +10,7 @@ for (const p of [path.join(ROOT, 'cloudflare/node_modules/esbuild'), 'esbuild', 
   try { esbuild = require(p); break; } catch (e) {}
 }
 if (!esbuild) { console.error('esbuild が見つかりません。cloudflare フォルダで npm install を実行してください。'); process.exit(1); }
-const FILES = ['bear-calc.js', 'heroes.js', 'gen-map.js', 'usage.js', 'bear-viz.js', 'stats.js'];
+const FILES = ['bear-calc.js', 'heroes.js', 'gen-map.js', 'usage.js', 'bear-viz.js', 'bear-ratio.js', 'stats.js'];
 for (const f of FILES) {
   const src = fs.readFileSync(path.join(ROOT, '_js', f), 'utf8');
   const out = esbuild.transformSync(src, { minify: true, charset: 'utf8', legalComments: 'none', target: 'es2017' });

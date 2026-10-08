@@ -6,7 +6,7 @@
 (function(){
   var W = window, D = document;
   var t = W.t || function(a){ return a; };
-  var N_SAMPLES = 6000, VW = 320, VH = 118, PAD_L = 4, PAD_R = 4, TOP = 16, BASE = 96;
+  var N_SAMPLES = 6000, VW = 360, VH = 184, PAD_L = 6, PAD_R = 6, TOP = 32, BASE = 138;
   function el(id){ return D.getElementById(id); }
   function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]; }); }
   function fmt(n){ return isFinite(n) ? Math.round(n).toLocaleString('ja-JP') : '—'; }
@@ -47,36 +47,73 @@
     var max = Math.max.apply(null, dens) || 1;
     function X(v){ return PAD_L + (v - x0) / (x1 - x0) * (VW - PAD_L - PAD_R); }
     function Y(d){ return BASE - d / max * (BASE - TOP); }
+    function dAt(v){ return dens[Math.min(FINE - 1, Math.max(0, Math.floor((v - x0) / fw)))]; }
     function area(a, b){
       var d = '', first = true, lastX = 0;
       for(var i = 0; i < FINE; i++){ var mid = x0 + (i + 0.5) * fw; if(mid < a || mid > b) continue; var px = X(mid), py = Y(dens[i]); d += (first ? 'M' + px.toFixed(1) + ' ' + BASE + 'L' : 'L') + px.toFixed(1) + ' ' + py.toFixed(1); first = false; lastX = px; }
       return first ? '' : d + 'L' + lastX.toFixed(1) + ' ' + BASE + 'Z';
     }
     var line = dens.map(function(d, i){ return (i ? 'L' : 'M') + X(x0 + (i + 0.5) * fw).toFixed(1) + ' ' + Y(d).toFixed(1); }).join('');
-    var bars = '<path class="dv-a out" d="' + area(x0, x1) + '"/><path class="dv-a" d="' + area(p5, p95) + '"/><path class="dv-l" d="' + line + '"/>'
-      + '<line class="dv-cur" x1="0" x2="0" y1="' + TOP + '" y2="' + BASE + '" style="display:none"/><rect class="dv-hit" x="' + PAD_L + '" y="' + TOP + '" width="' + (VW - PAD_L - PAD_R) + '" height="' + (BASE - TOP) + '"/>';
+    var x5 = X(p5), x50 = X(p50), x95 = X(p95), BRK = TOP - 9, f1 = function(n){ return n.toFixed(1); };
+    /* 目盛り線（きりのいい数字） */
+    var raw = (x1 - x0) / 4, p10 = Math.pow(10, Math.floor(Math.log(raw) / Math.LN10)), fr = raw / p10, step = (fr < 1.5 ? 1 : fr < 3.5 ? 2 : fr < 7.5 ? 5 : 10) * p10, grid = '';
+    for(var gv = Math.ceil(x0 / step) * step; gv < x1; gv += step){ var gx = X(gv); if(gx < PAD_L + 8 || gx > VW - PAD_R - 8) continue; grid += '<line class="dv-grid" x1="' + f1(gx) + '" x2="' + f1(gx) + '" y1="' + TOP + '" y2="' + BASE + '"/><text class="dv-scale" x="' + f1(gx) + '" y="' + (VH - 3) + '" text-anchor="middle">' + fmtS(gv) + '</text>'; }
+    for(i = 1; i <= 3; i++) grid += '<line class="dv-grid h" x1="' + PAD_L + '" x2="' + (VW - PAD_R) + '" y1="' + f1(BASE - (BASE - TOP) * i / 4) + '" y2="' + f1(BASE - (BASE - TOP) * i / 4) + '"/>';
+    /* 試行結果そのものを、等間隔に抜き出して目盛りとして並べる（密なところ＝出やすいところ） */
+    var rug = '', RUG = 150;
+    for(i = 0; i < RUG; i++){ var rx = X(xs[Math.floor((i + 0.5) / RUG * xs.length)]); rug += 'M' + f1(rx) + ' ' + (BASE + 1.5) + 'v4'; }
+    function mark(x, v, cls, name, top){
+      var an = x < 26 ? 'start' : x > VW - 26 ? 'end' : 'middle', yc = Y(dAt(v));
+      return '<g class="dv-mk ' + cls + '"><line x1="' + f1(x) + '" x2="' + f1(x) + '" y1="' + f1(top == null ? yc : top) + '" y2="' + (BASE + 7) + '"/><circle cx="' + f1(x) + '" cy="' + f1(yc) + '" r="3"/>'
+        + (name ? '<text class="v" x="' + f1(x) + '" y="' + (BASE + 18) + '" text-anchor="' + an + '">' + fmtS(v) + '</text><text class="n" x="' + f1(x) + '" y="' + (BASE + 28) + '" text-anchor="' + an + '">' + esc(name) + '</text>' : '') + '</g>';
+    }
     var ev = Math.min(x1, Math.max(x0, g)), xe = X(ev), anchor = xe < 60 ? 'start' : xe > VW - 60 ? 'end' : 'middle';
+    var showMid = x50 - x5 > 40 && x95 - x50 > 40;
+    var bx = (x5 + x95) / 2;
     var svg = '<svg viewBox="0 0 ' + VW + ' ' + VH + '" role="img" aria-label="' + esc(t('集結1回のダメージの出やすさの分布', 'Distribution of damage per rally')) + '">'
-      + '<rect class="dv-band" x="' + X(p5).toFixed(1) + '" y="' + TOP + '" width="' + Math.max(1, X(p95) - X(p5)).toFixed(1) + '" height="' + (BASE - TOP) + '" rx="3"/>'
-      + bars
+      + '<defs><linearGradient id="dvG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff9a4d" stop-opacity=".95"/><stop offset="1" stop-color="#ff6a1f" stop-opacity=".18"/></linearGradient>'
+      + '<linearGradient id="dvG2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fa0c8" stop-opacity=".5"/><stop offset="1" stop-color="#8fa0c8" stop-opacity=".06"/></linearGradient></defs>'
+      + grid
+      + '<rect class="dv-band" x="' + f1(x5) + '" y="' + TOP + '" width="' + f1(Math.max(1, x95 - x5)) + '" height="' + (BASE - TOP) + '"/>'
+      + '<g class="dv-rise"><path class="dv-a out" d="' + area(x0, x1) + '"/><path class="dv-a" d="' + area(p5, p95) + '"/><path class="dv-l" d="' + line + '"/></g>'
+      + '<path class="dv-rug" d="' + rug + '"/>'
       + '<line class="dv-axis" x1="' + PAD_L + '" x2="' + (VW - PAD_R) + '" y1="' + BASE + '" y2="' + BASE + '"/>'
-      + '<line class="dv-ev" x1="' + xe.toFixed(1) + '" x2="' + xe.toFixed(1) + '" y1="' + (TOP - 3) + '" y2="' + BASE + '"/>'
-      + '<text class="dv-evt" x="' + xe.toFixed(1) + '" y="9" text-anchor="' + anchor + '">' + esc(t('期待値 ', 'Expected ')) + fmtS(g) + '</text>'
-      + '<text class="dv-tick" x="' + PAD_L + '" y="' + (BASE + 14) + '">' + fmtS(lo) + '</text>'
-      + '<text class="dv-tick" x="' + (VW - PAD_R) + '" y="' + (BASE + 14) + '" text-anchor="end">' + fmtS(hi) + '</text>'
-      + '<text class="dv-tick mid" x="' + ((X(p5) + X(p95)) / 2).toFixed(1) + '" y="' + (BASE + 14) + '" text-anchor="middle">' + esc(t('← 90%はこの範囲 →', '← 90% land here →')) + '</text>'
+      + '<g class="dv-in">'
+      + '<path class="dv-brk" d="M' + f1(x5) + ' ' + (BRK + 5) + 'V' + BRK + 'H' + f1(x95) + 'V' + (BRK + 5) + '"/>'
+      + '<text class="dv-brkt" x="' + f1(bx) + '" y="' + (BRK + 3) + '" text-anchor="middle">' + esc(t('10回中9回はこの範囲', '9 in 10 rallies land here')) + '</text>'
+      + '<line class="dv-ev" x1="' + f1(xe) + '" x2="' + f1(xe) + '" y1="' + TOP + '" y2="' + BASE + '"/><line class="dv-ev" x1="' + f1(xe) + '" x2="' + f1(xe) + '" y1="11.5" y2="' + (BRK - 3) + '"/>'
+      + '<text class="dv-evt" x="' + f1(xe) + '" y="9" text-anchor="' + anchor + '">' + esc(t('期待値 ', 'Expected ')) + fmtS(g) + '</text>'
+      + mark(x5, p5, 'lo', t('下振れ', 'Unlucky'), BRK) + mark(x95, p95, 'hi', t('上振れ', 'Lucky'), BRK) + mark(x50, p50, 'mid', showMid ? t('中央値', 'Median') : '', null)
+      + '</g><g class="dv-rolls"></g>'
+      + '<line class="dv-cur" x1="0" x2="0" y1="' + TOP + '" y2="' + BASE + '" style="display:none"/><rect class="dv-hit" x="' + PAD_L + '" y="' + TOP + '" width="' + (VW - PAD_L - PAD_R) + '" height="' + (BASE - TOP) + '"/>'
       + '</svg>';
     W.__WOS_DIST = { g: g, p5: p5, p50: p50, p95: p95, lo: lo, hi: hi, x0: x0, x1: x1, dens: dens, max: max };
     var above = 0; xs.forEach(function(v){ if(v >= g) above++; });
-    box.innerHTML = '<div class="dv-chart">' + svg + '<div class="dv-tip" hidden></div></div>'
+    box.innerHTML = '<div class="dv-chart">' + svg + '<div class="dv-tip" hidden></div>'
+      + '<div class="dv-bar"><a class="dv-roll" href="#" role="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM7.5 18c-.83 0-1.5-.67-1.5-1.5S6.67 15 7.5 15s1.5.67 1.5 1.5S8.33 18 7.5 18zm0-9C6.67 9 6 8.33 6 7.5S6.67 6 7.5 6 9 6.67 9 7.5 8.33 9 7.5 9zm4.5 4.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4.5 4.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm0-9c-.83 0-1.5-.67-1.5-1.5S15.67 6 16.5 6s1.5.67 1.5 1.5S17.33 9 16.5 9z"/></svg>' + t('集結を1回やってみる', 'Simulate one rally') + '</a>'
+      + '<span class="dv-res">' + t(N_SAMPLES.toLocaleString() + '回の試行から作成', 'Built from ' + N_SAMPLES.toLocaleString() + ' simulated rallies') + '</span></div></div>'
       + '<div class="dv-tiles">'
-      + '<div class="dv-tile"><span>' + t('下振れ<br>20回に1回', 'Unlucky<br>1 in 20') + '</span><b>' + fmt(p5) + '</b></div>'
-      + '<div class="dv-tile main"><span>' + t('ふつう<br>中央値', 'Typical<br>median') + '</span><b>' + fmt(p50) + '</b></div>'
-      + '<div class="dv-tile"><span>' + t('上振れ<br>20回に1回', 'Lucky<br>1 in 20') + '</span><b>' + fmt(p95) + '</b></div>'
+      + '<div class="dv-tile lo"><span><i></i>' + t('下振れライン', 'Unlucky line') + '</span><b>' + fmt(p5) + '</b><em>' + t('20回に1回はこれ以下', '1 in 20 falls below') + '</em></div>'
+      + '<div class="dv-tile main"><span><i></i>' + t('ふつう（中央値）', 'Typical (median)') + '</span><b>' + fmt(p50) + '</b><em>' + t('2回に1回はこれ以上', 'Half land above') + '</em></div>'
+      + '<div class="dv-tile hi"><span><i></i>' + t('上振れライン', 'Lucky line') + '</span><b>' + fmt(p95) + '</b><em>' + t('20回に1回はこれ以上', '1 in 20 goes above') + '</em></div>'
       + '</div>'
       + '<p class="dv-foot">' + t('期待値以上が出る確率は 約' + Math.round(above / xs.length * 100) + '%。', 'Chance of reaching the expected value or more: ~' + Math.round(above / xs.length * 100) + '%. ')
-      + t('確率で発動するスキルの当たり外れを、何千回ぶんも試した結果です。理論上の範囲は ', 'Based on thousands of simulated rallies with chance-based skills. Theoretical range: ')
+      + t('山の形は、いまの編成とスキルから毎回計算しています（同じ入力なら同じ形になります）。理論上の範囲は ', 'The curve is recomputed from your lineup and skills each time (same inputs give the same shape). Theoretical range: ')
       + esc((el('dmgMin').textContent || '').replace(/^\D+/, '')) + ' 〜 ' + esc((el('dmgMax').textContent || '').replace(/^\D+/, '')) + t('（全部不発〜全部発動）。', ' (none trigger – all trigger).') + '</p>';
+    /* 「1回やってみる」: 試行結果から1つ選んで、図の上に落とす */
+    var rolls = box.querySelector('.dv-rolls'), res = box.querySelector('.dv-res'), NS = 'http://www.w3.org/2000/svg', nRoll = 0;
+    box.querySelector('.dv-roll').addEventListener('click', function(e){
+      e.preventDefault();
+      var idx = Math.floor(Math.random() * xs.length), v = xs[idx], top = Math.round((1 - idx / xs.length) * 100), px = X(v);
+      [].forEach.call(rolls.querySelectorAll('.now'), function(n){ n.parentNode.removeChild(n); });
+      var old = rolls.querySelectorAll('.past'); if(old.length >= 40) rolls.removeChild(old[0]);
+      var dot = D.createElementNS(NS, 'circle'); dot.setAttribute('class', 'past'); dot.setAttribute('cx', f1(px)); dot.setAttribute('cy', f1(BASE - 4 - Math.random() * 10)); dot.setAttribute('r', '1.6'); rolls.appendChild(dot);
+      var gp = D.createElementNS(NS, 'g'); gp.setAttribute('class', 'now');
+      gp.innerHTML = '<line x1="' + f1(px) + '" x2="' + f1(px) + '" y1="' + f1(Y(dAt(v)) - 6) + '" y2="' + BASE + '"/><circle cx="' + f1(px) + '" cy="' + f1(Y(dAt(v)) - 6) + '" r="4"/>';
+      rolls.appendChild(gp); nRoll++;
+      var verdict = top <= 5 ? t('大きく上振れ', 'very lucky') : top <= 30 ? t('やや上振れ', 'a bit lucky') : top < 70 ? t('ふつう', 'typical') : top < 95 ? t('やや下振れ', 'a bit unlucky') : t('大きく下振れ', 'very unlucky');
+      res.className = 'dv-res on'; res.innerHTML = t(nRoll + '回目 ', '#' + nRoll + ' ') + '<b>' + fmt(v) + '</b> <span>' + t('上位' + Math.max(1, top) + '%・', 'top ' + Math.max(1, top) + '% · ') + verdict + '</span>';
+    });
     var tip = box.querySelector('.dv-tip'), chart = box.querySelector('.dv-chart'), svgEl = box.querySelector('svg'), cur = box.querySelector('.dv-cur');
     function show(e){
       if(!e){ tip.hidden = true; cur.style.display = 'none'; return; }
@@ -87,11 +124,11 @@
       cur.setAttribute('x1', vx.toFixed(1)); cur.setAttribute('x2', vx.toFixed(1)); cur.style.display = '';
       tip.innerHTML = '<b>' + fmtS(Math.max(0, v)) + '</b> ' + t('以上が出る確率 ', 'or more: ') + '<b>' + (pc > 99.4 ? '99%+' : pc < 0.6 ? '1%' + t('未満', '-') : Math.round(pc) + '%') + '</b>';
       tip.hidden = false;
-      var half = tip.offsetWidth / 2; tip.style.left = Math.max(half, Math.min(r.width - half, fx * r.width)) + 'px';
+      var half = tip.offsetWidth / 2; tip.style.left = (svgEl.offsetLeft + Math.max(half, Math.min(r.width - half, fx * r.width))) + 'px';
     }
-    chart.addEventListener('pointermove', show);
-    chart.addEventListener('pointerdown', show);
-    chart.addEventListener('pointerleave', function(){ show(null); });
+    svgEl.addEventListener('pointermove', show);
+    svgEl.addEventListener('pointerdown', show);
+    svgEl.addEventListener('pointerleave', function(){ show(null); });
   }
 
   function mount(){
@@ -100,22 +137,44 @@
     box = D.createElement('div'); box.id = 'distViz'; rb.appendChild(box);
     var st = D.createElement('style');
     st.textContent = '#rangeBox.has-viz .range-vals,#rangeBox.has-viz .range-track{display:none}'
-      + '#distViz .dv-chart{position:relative;margin-top:4px}'
-      + '#distViz svg{display:block;width:100%;height:auto;overflow:visible}'
-      + '#distViz .dv-band{fill:var(--frost);opacity:.08}'
-      + '#distViz .dv-a{fill:var(--frost-dim,#ff7a2f);opacity:.85}#distViz .dv-a.out{opacity:.28}'
-      + '#distViz .dv-l{fill:none;stroke:var(--frost,#e85d12);stroke-width:1.6;stroke-linejoin:round}'
-      + '#distViz .dv-hit{fill:transparent;cursor:crosshair}#distViz .dv-cur{stroke:#23283a;stroke-width:1;opacity:.55}'
-      + '#distViz .dv-axis{stroke:#d9dce6;stroke-width:1}'
-      + '#distViz .dv-ev{stroke:#23283a;stroke-width:1.5;stroke-dasharray:3 2}'
-      + '#distViz .dv-evt{font-size:9.5px;font-weight:800;fill:#23283a}'
-      + '#distViz .dv-tick{font-size:8.5px;fill:#6b7385;font-variant-numeric:tabular-nums}#distViz .dv-tick.mid{font-weight:700}'
-      + '#distViz .dv-tip{position:absolute;top:-4px;transform:translateX(-50%);background:#23283a;color:#fff;font-size:11px;padding:3px 8px;border-radius:6px;white-space:nowrap;pointer-events:none;font-variant-numeric:tabular-nums}'
+      + '#distViz .dv-chart{position:relative;margin-top:6px;padding:12px 10px 10px;border-radius:14px;background:linear-gradient(180deg,#171c30,#0f1322);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}'
+      + '#distViz svg{display:block;width:100%;height:auto;overflow:visible;touch-action:pan-y}'
+      + '#distViz .dv-grid{stroke:#fff;stroke-opacity:.07;stroke-width:1}#distViz .dv-grid.h{stroke-dasharray:2 4}'
+      + '#distViz .dv-scale{font-size:7.5px;fill:#7f89a6;font-variant-numeric:tabular-nums}'
+      + '#distViz .dv-band{fill:#ff8a3d;opacity:.07}'
+      + '#distViz .dv-a{fill:url(#dvG)}#distViz .dv-a.out{fill:url(#dvG2)}'
+      + '#distViz .dv-l{fill:none;stroke:#ffb37a;stroke-width:1.6;stroke-linejoin:round;filter:drop-shadow(0 0 3px rgba(255,138,61,.7))}'
+      + '#distViz .dv-rise{transform-origin:0 138px;animation:dvRise .7s cubic-bezier(.2,.8,.2,1) both}'
+      + '#distViz .dv-in{animation:dvIn .45s .45s both}'
+      + '@keyframes dvRise{from{transform:scaleY(0)}to{transform:none}}@keyframes dvIn{from{opacity:0}to{opacity:1}}'
+      + '@media(prefers-reduced-motion:reduce){#distViz .dv-rise,#distViz .dv-in{animation:none}}'
+      + '#distViz .dv-rug{stroke:#ffb37a;stroke-opacity:.45;stroke-width:.6}'
+      + '#distViz .dv-hit{fill:transparent;cursor:crosshair}#distViz .dv-cur{stroke:#fff;stroke-width:1;opacity:.6}'
+      + '#distViz .dv-axis{stroke:#fff;stroke-opacity:.28;stroke-width:1}'
+      + '#distViz .dv-ev{stroke:#ffd166;stroke-width:1.2;stroke-dasharray:3 2}'
+      + '#distViz .dv-evt{font-size:9.5px;font-weight:800;fill:#ffd166}'
+      + '#distViz .dv-brk{fill:none;stroke:#c9d2ea;stroke-width:1}'
+      + '#distViz .dv-brkt{font-size:8.5px;font-weight:700;fill:#e8ecf8;paint-order:stroke;stroke:#151a2d;stroke-width:5px;stroke-linejoin:round}'
+      + '#distViz .dv-mk line{stroke-width:1.2}#distViz .dv-mk circle{stroke:#11162a;stroke-width:1.2}'
+      + '#distViz .dv-mk .v{font-size:10px;font-weight:800;font-variant-numeric:tabular-nums}#distViz .dv-mk .n{font-size:7.5px;font-weight:700;opacity:.85}'
+      + '#distViz .dv-mk.lo line{stroke:#6cb6ff}#distViz .dv-mk.lo circle,#distViz .dv-mk.lo text{fill:#6cb6ff}'
+      + '#distViz .dv-mk.hi line{stroke:#4fe0c0}#distViz .dv-mk.hi circle,#distViz .dv-mk.hi text{fill:#4fe0c0}'
+      + '#distViz .dv-mk.mid line{stroke:#fff;stroke-opacity:.75;stroke-dasharray:1.5 2}#distViz .dv-mk.mid circle,#distViz .dv-mk.mid text{fill:#fff}'
+      + '#distViz .dv-rolls .past{fill:#ff5fa2;opacity:.75}#distViz .dv-rolls .now line{stroke:#ff5fa2;stroke-width:1.4}#distViz .dv-rolls .now circle{fill:#ff5fa2;stroke:#fff;stroke-width:1.2}'
+      + '#distViz .dv-rolls .now{animation:dvDrop .35s cubic-bezier(.3,1.4,.5,1) both}@keyframes dvDrop{from{transform:translateY(-26px);opacity:0}to{transform:none;opacity:1}}'
+      + '#distViz .dv-tip{position:absolute;top:4px;transform:translateX(-50%);background:#fff;color:#23283a;font-size:11px;padding:3px 8px;border-radius:6px;white-space:nowrap;pointer-events:none;font-variant-numeric:tabular-nums;box-shadow:0 2px 8px rgba(0,0,0,.3)}'
+      + '#distViz .dv-bar{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin-top:8px}'
+      + '#distViz .dv-roll{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;background:rgba(255,95,162,.14);box-shadow:inset 0 0 0 1px rgba(255,95,162,.55);color:#ff9cc6;font-size:12px;font-weight:800;text-decoration:none;white-space:nowrap}'
+      + '#distViz .dv-roll:active{transform:scale(.97)}#distViz .dv-roll svg{width:15px;height:15px;fill:currentColor;display:block}'
+      + '#distViz .dv-res{font-size:11px;color:#7f89a6;font-variant-numeric:tabular-nums}#distViz .dv-res.on{color:#e8ecf8;font-size:12px}#distViz .dv-res b{color:#ff9cc6;font-size:13.5px}#distViz .dv-res span{color:#aab3cc}'
       + '#distViz .dv-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}'
-      + '#distViz .dv-tile{background:#f6f7fb;border-radius:9px;padding:7px 3px;text-align:center;min-width:0}'
-      + '#distViz .dv-tile span{display:block;font-size:10px;color:#6b7385;line-height:1.3}'
+      + '#distViz .dv-tile{background:#f6f7fb;border-radius:9px;padding:7px 3px 6px;text-align:center;min-width:0;border-top:3px solid #2f8be6}'
+      + '#distViz .dv-tile.main{border-top-color:#23283a;background:#fff3ea}#distViz .dv-tile.hi{border-top-color:#12b596}'
+      + '#distViz .dv-tile span{display:block;font-size:10px;font-weight:700;color:#2f8be6;line-height:1.3}#distViz .dv-tile.main span{color:#23283a}#distViz .dv-tile.hi span{color:#0d9c81}'
+      + '#distViz .dv-tile span i{display:inline-block;width:7px;height:7px;border-radius:50%;background:currentColor;margin-right:4px;vertical-align:1px}'
       + '#distViz .dv-tile b{display:block;font-size:clamp(10.5px,3.1vw,12.5px);color:#23283a;font-variant-numeric:tabular-nums;margin-top:2px;white-space:nowrap;letter-spacing:-.02em}'
-      + '#distViz .dv-tile.main{background:#fff3ea}#distViz .dv-tile.main b{font-weight:800}'
+      + '#distViz .dv-tile em{display:block;font-style:normal;font-size:9px;color:#6b7385;line-height:1.3;margin-top:1px}'
+      + '#distViz .dv-tile.main b{font-weight:800}'
       + '#distViz .dv-foot{margin:8px 0 0;font-size:10.5px;line-height:1.6;color:#6b7385}';
     D.head.appendChild(st);
     var tm = null, kick = function(){ clearTimeout(tm); tm = setTimeout(render, 120); };
