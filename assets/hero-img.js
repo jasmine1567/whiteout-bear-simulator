@@ -22,6 +22,10 @@ window.WOS_heroImg = function(h){
   var BASE = EN ? '/en' : '';
   var NAMES = W.WOS_HERO_NAMES || {}, IMG = W.WOS_heroImg;
   var LIST = BASE + '/tools/hero-list/index.html';
+  var XV = '130', CYRIL_PAGE = /\/guides\/cyril-/.test(location.pathname);
+  var EXTRA = [['シリル', 'Cyrille', 'cyril-face'], ['狩人の心得', "Hunter's Heart", 'cyril-talent'],
+    ['巨熊キラー', "Ursa's Bane", 'cyril-s4', 1], ['リサイクル', 'Scavenging', 'cyril-s2', 1], ['武装特化', 'Weapon Master', 'cyril-s3', 1], ['包囲狩猟', 'Entrapment', 'cyril-s1', 1]];
+  function srcOf(id){ return id.charAt(0) === '~' ? '/assets/img/' + id.slice(1) + '.webp?v=' + XV : IMG(id); }
   function nameOf(id){ var n = NAMES[id]; return n ? (EN ? n[1] : n[0]) : id; }
 
   function css(){
@@ -41,7 +45,16 @@ window.WOS_heroImg = function(h){
       + '.hero-band a{font-size:13px;font-weight:800;color:inherit;text-decoration:none;border-bottom:1.5px solid currentColor;padding-bottom:1px}'
       + '.hero-card.hero-hit{outline:3px solid #ff7a2f;outline-offset:2px}.hero-card{scroll-margin-top:300px}'
       + '@media(max-width:560px){.hero-strip a{width:54px}.hero-strip img{width:46px;height:46px}.hero-band .hb-f img{width:38px;height:38px}}'
-      + '@media print{.hx,.hero-strip,.hero-band{display:none}}';
+      + '.hx.sq{border-radius:24%;box-shadow:0 1px 3px rgba(28,34,80,.25)}'
+      + 'table .hx.sq{width:2.3em;height:2.3em;vertical-align:-.75em;margin-right:.45em}'
+      + '.callout.greg-says{display:flex !important;align-items:flex-end;gap:12px;padding:12px 16px 0 6px;background:linear-gradient(135deg,#f3f7ff,#fdf8f2);border:1px solid #dfe6f5;border-radius:16px;overflow:hidden}'
+      + '.greg-says .gs-pic{flex:none;width:104px;height:auto;align-self:flex-end;display:block;filter:drop-shadow(0 3px 6px rgba(28,34,80,.18))}'
+      + '.greg-says .gs-body{flex:1;min-width:0;padding:2px 0 14px}'
+      + '.greg-says .gs-tag{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#3b5fa8;background:#e3ecff;border-radius:999px;padding:2px 9px;margin-bottom:5px}'
+      + '.greg-says .gs-txt{position:relative;background:#fff;border-radius:12px;padding:10px 13px;box-shadow:0 1px 4px rgba(28,34,80,.08);line-height:1.75}'
+      + '.greg-says .gs-txt:before{content:"";position:absolute;left:-7px;bottom:16px;border:7px solid transparent;border-left:0;border-right-color:#fff}'
+      + '@media(max-width:560px){.callout.greg-says{gap:8px;padding-right:10px}.greg-says .gs-pic{width:72px}}'
+      + '@media print{.hx,.hero-strip,.hero-band,.gs-pic{display:none}}';
     D.head.appendChild(st);
   }
 
@@ -66,6 +79,8 @@ window.WOS_heroImg = function(h){
   function buildMatcher(){
     var byName = {}, list = [];
     Object.keys(NAMES).forEach(function(id){ if(!IMG(id)) return; var n = nameOf(id); if(n && n.length >= 2 && !byName[n]){ byName[n] = id; list.push(n); } });
+    /* 専門家シリルと、そのスキル・天賦のアイコン（スキル名はシリルの解説ページでだけ付ける） */
+    EXTRA.forEach(function(x){ if(x[3] && !CYRIL_PAGE) return; var n = EN ? x[1] : x[0]; if(!byName[n]){ byName[n] = '~' + x[2]; list.push(n); } });
     if(!list.length) return null;
     list.sort(function(a, b){ return b.length - a.length; });
     var re = new RegExp(list.map(function(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }).join('|'), 'g');
@@ -93,7 +108,7 @@ window.WOS_heroImg = function(h){
         while((m = M.re.exec(text))){
           var id = M.byName[m[0]];
           if(!standalone(text, m.index, m[0])) continue;
-          if(!seen[id]){ seen[id] = 1; found.push(id); }
+          if(!seen[id] && id.charAt(0) !== '~'){ seen[id] = 1; found.push(id); }
           if(used[id]) continue; used[id] = 1;
           if(m.index === 0 && node.previousSibling && node.previousSibling.nodeType === 1 && node.previousSibling.classList.contains('hx')) continue;   /* すでに付いている */
           cuts.push({ i: m.index, id: id });
@@ -101,7 +116,7 @@ window.WOS_heroImg = function(h){
         if(perBlock) perBlock.set(blk, used);
         for(var k = cuts.length - 1; k >= 0; k--){
           var tail = node.splitText(cuts[k].i), img = D.createElement('img');
-          img.className = 'hx'; img.src = IMG(cuts[k].id); img.alt = ''; img.loading = 'lazy'; img.decoding = 'async'; img.width = 20; img.height = 20;
+          img.className = 'hx' + (/^~cyril-(s|t)/.test(cuts[k].id) ? ' sq' : ''); img.src = srcOf(cuts[k].id); img.alt = ''; img.loading = 'lazy'; img.decoding = 'async'; img.width = 20; img.height = 20;
           tail.parentNode.insertBefore(img, tail);
         }
       });
@@ -132,6 +147,24 @@ window.WOS_heroImg = function(h){
     cta.parentNode.insertBefore(box, cta.nextSibling);
   }
 
+  /* 5) 記事の「解説」枠（.callout。注意書きの .warn は除く）を、グレッグが解説している体裁にする */
+  function greg(){
+    D.querySelectorAll('.wrap .callout:not(.warn):not(.greg-says)').forEach(function(c){
+      if(c.closest('.no-hero-ico') || (c.textContent || '').length < 30) return;
+      var txt = D.createElement('div'); txt.className = 'gs-txt';
+      while(c.firstChild) txt.appendChild(c.firstChild);
+      var ico = txt.querySelector('.ico'); if(ico && !ico.querySelector('svg,img')) ico.parentNode.removeChild(ico);
+      /* 見出しの頭の絵文字は外す */
+      var tw = D.createTreeWalker(txt, NodeFilter.SHOW_TEXT, null), first;
+      while((first = tw.nextNode())){ if(first.nodeValue.trim()){ first.nodeValue = first.nodeValue.replace(/^\s*(?:[\u2190-\u2BFF\u3030\u303D\u3297\u3299]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|\uD83E[\uDC00-\uDFFF])[\uFE0F\u200D]*\s*/, ''); break; } }
+      var body = D.createElement('div'); body.className = 'gs-body';
+      body.innerHTML = '<span class="gs-tag no-hero-ico">' + (EN ? "GREG'S NOTE" : 'グレッグの解説') + '</span>';
+      body.appendChild(txt);
+      var img = D.createElement('img'); img.className = 'gs-pic'; img.src = '/assets/img/greg-bust.webp?v=' + XV; img.alt = ''; img.loading = 'lazy'; img.decoding = 'async'; img.width = 422; img.height = 300;
+      c.appendChild(img); c.appendChild(body); c.classList.add('greg-says');
+    });
+  }
+
   W.WOS_heroDecorate = function(roots){ if(!IMG) return; css(); decorate(roots); };
   function run(){
     if(!IMG) return;
@@ -141,6 +174,7 @@ window.WOS_heroImg = function(h){
     var roots = [].slice.call(D.querySelectorAll(isTool ? '.tool-article,.tool-about,.hl-intro' : '.wrap,.hm-in'));
     roots = roots.filter(function(r){ return !roots.some(function(o){ return o !== r && o.contains(r); }); });
     if(/^\/(changelog|privacy|terms|contact)\.html$/.test(path)) return;   /* 記録・規約のページには付けない */
+    if(isGuide) greg();
     var ids = decorate(roots);
     if(isGuide) strip(ids);
   }

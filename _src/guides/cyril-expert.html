@@ -50,11 +50,24 @@
 .prio-list li{position:relative;padding:11px 13px 11px 46px;border:1px solid #e5e7f2;border-radius:11px;margin:8px 0;background:#fff;font-size:13.5px;line-height:1.75}
 .prio-list li::before{counter-increment:pr;content:counter(pr);position:absolute;left:12px;top:12px;width:24px;height:24px;border-radius:50%;background:#ff7a2f;color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center}
 </style>
+<style>
+.cy-hero{display:flex;gap:18px;align-items:stretch;margin:18px 0 22px;border-radius:18px;overflow:hidden;background:linear-gradient(120deg,#1f6fd6,#35b6f0 55%,#6d5be6);color:#fff;box-shadow:0 8px 24px rgba(31,80,180,.22)}
+.cy-hero>img{flex:none;width:210px;height:auto;object-fit:cover;display:block}
+.cy-hero .cy-h-b{flex:1;padding:16px 16px 16px 0;display:flex;flex-direction:column;justify-content:center;min-width:0}
+.cy-hero .cy-h-n{font:800 22px/1.2 "Outfit","Noto Sans JP",sans-serif;margin:0 0 2px}
+.cy-hero .cy-h-s{font-size:12px;opacity:.9;margin:0 0 12px}
+.cy-hero ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.cy-hero li{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.16);border-radius:11px;padding:6px 8px;font-size:12px;font-weight:700;line-height:1.3}
+.cy-hero li img{flex:none;width:36px;height:36px;border-radius:9px;display:block}
+.cy-hero li small{display:block;font-weight:500;font-size:10.5px;opacity:.9}
+@media(max-width:600px){.cy-hero{flex-direction:column;gap:0}.cy-hero>img{width:100%;height:210px;object-position:50% 12%}.cy-hero .cy-h-b{padding:14px}}
+</style>
 </head><body>
 <div id="nav"></div><div class="wrap"><div class="crumb" id="crumb"></div>
 <div id="updbox"></div>
 <div id="bodyja"><h1 id="art-h1">シリル徹底研究:熊狩ダメージを<span class="acc">3割底上げ</span>する専門家の全スキルと育成優先度</h1>
 <p class="lead">熊狩り(Bear Hunt)で最初に名前が挙がる専門家「シリル」。全スキルの数値と解放条件を1ページに整理して、どのスキルから・どこまで育てるべきかを、コミュニティの評判もあわせて考えます。</p>
+<div class="cy-hero no-hero-ico"><img src="/assets/img/cyril.webp?v=130" alt="シリル" width="450" height="470"><div class="cy-h-b"><p class="cy-h-n">シリル</p><p class="cy-h-s">専門家・巨熊ハンター（熊狩り特化）</p><ul><li><img src="/assets/img/cyril-talent.webp?v=130" alt="" width="36" height="36" loading="lazy"><span>狩人の心得<small>天賦・ポイント増加</small></span></li><li><img src="/assets/img/cyril-s4.webp?v=130" alt="" width="36" height="36" loading="lazy"><span>巨熊キラー<small>スキル・出征容量</small></span></li><li><img src="/assets/img/cyril-s2.webp?v=130" alt="" width="36" height="36" loading="lazy"><span>リサイクル<small>スキル・追加報酬</small></span></li><li><img src="/assets/img/cyril-s3.webp?v=130" alt="" width="36" height="36" loading="lazy"><span>武装特化<small>スキル・追加報酬</small></span></li><li><img src="/assets/img/cyril-s1.webp?v=130" alt="" width="36" height="36" loading="lazy"><span>包囲狩猟<small>スキル・集結容量</small></span></li></ul></div></div>
 
 <h2>シリルとはどんな専門家か</h2>
 <p>シリルは「巨熊ハンター」の肩書きを持つ、熊狩行動(Bear Hunt)特化の専門家です。公式wikiでは「氷原で最も伝説的な狩人の一人」「ビーストキラー」と紹介されていて、設定上はクラリスの師匠にあたります。若いころに巨熊の襲撃を生き延びてから、20年間ずっと野獣と戦ってきた──という、いかにも熊狩り担当らしい経歴の持ち主です。</p>
@@ -142,6 +155,7 @@
 <p class="cy-src">当サイトの方針として、公式情報・コミュニティ情報・当サイト調べを区別して表記しています。数値はゲームのアップデートで変わることがあります。お気づきの点は<a href="../contact.html">お問い合わせ</a>からどうぞ。</p>
 </div><div id="bodyen" style="display:none"><h1 id="art-h1">Cyrille deep-dive: the expert who lifts your <span class="acc">Bear Hunt damage points by 30%</span></h1>
 <p class="lead">Cyrille is the first expert anyone mentions for Bear Hunt. Here's every skill's numbers and unlock conditions on one page — plus which ones to level first, with community opinions to back it up.</p>
+<div class="cy-hero no-hero-ico"><img src="/assets/img/cyril.webp?v=130" alt="Cyrille" width="450" height="470"><div class="cy-h-b"><p class="cy-h-n">Cyrille</p><p class="cy-h-s">Expert · Bear Hunter (Bear Hunt specialist)</p><ul><li><img src="/assets/img/cyril-talent.webp?v=130" alt="" width="36" height="36" loading="lazy"><span>Hunter's Heart<small>Talent · more points</small></span></li><li><img src="/assets/img/cyril-s4.webp?v=130" alt="" width="36" height="36" loading="lazy"><span>Ursa's Bane<small>Skill · march capacity</small></span></li><li><img src="/assets/img/cyril-s2.webp?v=130" alt="" width="36" height="36" loading="lazy"><span>Scavenging<small>Skill · bonus rewards</small></span></li><li><img src="/assets/img/cyril-s3.webp?v=130" alt="" width="36" height="36" loading="lazy"><span>Weapon Master<small>Skill · bonus rewards</small></span></li><li><img src="/assets/img/cyril-s1.webp?v=130" alt="" width="36" height="36" loading="lazy"><span>Entrapment<small>Skill · rally capacity</small></span></li></ul></div></div>
 
 <h2>Who is Cyrille?</h2>
 <p>Cyrille is the "Giant Bear Hunter" — a Bear Hunt specialist expert. The official wiki calls him "one of the most legendary hunters of the ice fields," a "beast killer," and (lore-wise) Klaris's mentor. He survived a giant bear attack in his youth and has fought beasts for twenty years since. Fitting résumé for the job.</p>

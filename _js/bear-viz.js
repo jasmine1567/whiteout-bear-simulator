@@ -90,8 +90,8 @@
     W.__WOS_DIST = { g: g, p5: p5, p50: p50, p95: p95, lo: lo, hi: hi, x0: x0, x1: x1, dens: dens, max: max };
     var above = 0; xs.forEach(function(v){ if(v >= g) above++; });
     box.innerHTML = '<div class="dv-chart">' + svg + '<div class="dv-tip" hidden></div>'
-      + '<div class="dv-bar"><a class="dv-roll" href="#" role="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM7.5 18c-.83 0-1.5-.67-1.5-1.5S6.67 15 7.5 15s1.5.67 1.5 1.5S8.33 18 7.5 18zm0-9C6.67 9 6 8.33 6 7.5S6.67 6 7.5 6 9 6.67 9 7.5 8.33 9 7.5 9zm4.5 4.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4.5 4.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm0-9c-.83 0-1.5-.67-1.5-1.5S15.67 6 16.5 6s1.5.67 1.5 1.5S17.33 9 16.5 9z"/></svg>' + t('集結を1回やってみる', 'Simulate one rally') + '</a>'
-      + '<span class="dv-res">' + t(N_SAMPLES.toLocaleString() + '回の試行から作成', 'Built from ' + N_SAMPLES.toLocaleString() + ' simulated rallies') + '</span></div></div>'
+      + '<div class="dv-bar"><a class="dv-roll" href="#" role="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM7.5 18c-.83 0-1.5-.67-1.5-1.5S6.67 15 7.5 15s1.5.67 1.5 1.5S8.33 18 7.5 18zm0-9C6.67 9 6 8.33 6 7.5S6.67 6 7.5 6 9 6.67 9 7.5 8.33 9 7.5 9zm4.5 4.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4.5 4.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm0-9c-.83 0-1.5-.67-1.5-1.5S15.67 6 16.5 6s1.5.67 1.5 1.5S17.33 9 16.5 9z"/></svg>' + t('集結5回をシミュレーション', 'Simulate 5 rallies') + '</a>'
+      + '<span class="dv-res">' + t(N_SAMPLES.toLocaleString() + '回の試行から作成', 'Built from ' + N_SAMPLES.toLocaleString() + ' simulated rallies') + '</span></div><div class="dv-out" hidden></div></div>'
       + '<div class="dv-tiles">'
       + '<div class="dv-tile lo"><span><i></i>' + t('下振れライン', 'Unlucky line') + '</span><b>' + fmt(p5) + '</b><em>' + t('20回に1回はこれ以下', '1 in 20 falls below') + '</em></div>'
       + '<div class="dv-tile main"><span><i></i>' + t('ふつう（中央値）', 'Typical (median)') + '</span><b>' + fmt(p50) + '</b><em>' + t('2回に1回はこれ以上', 'Half land above') + '</em></div>'
@@ -100,19 +100,36 @@
       + '<p class="dv-foot">' + t('期待値以上が出る確率は 約' + Math.round(above / xs.length * 100) + '%。', 'Chance of reaching the expected value or more: ~' + Math.round(above / xs.length * 100) + '%. ')
       + t('山の形は、いまの編成とスキルから毎回計算しています（同じ入力なら同じ形になります）。理論上の範囲は ', 'The curve is recomputed from your lineup and skills each time (same inputs give the same shape). Theoretical range: ')
       + esc((el('dmgMin').textContent || '').replace(/^\D+/, '')) + ' 〜 ' + esc((el('dmgMax').textContent || '').replace(/^\D+/, '')) + t('（全部不発〜全部発動）。', ' (none trigger – all trigger).') + '</p>';
-    /* 「1回やってみる」: 試行結果から1つ選んで、図の上に落とす */
-    var rolls = box.querySelector('.dv-rolls'), res = box.querySelector('.dv-res'), NS = 'http://www.w3.org/2000/svg', nRoll = 0;
+    /* 「集結5回をシミュレーション」: 熊狩り1回（30分）でかけられる集結は最大5回。試行結果から5つ選んで図に落とし、1〜5回目と最高・最低・平均を出す */
+    var rolls = box.querySelector('.dv-rolls'), res = box.querySelector('.dv-res'), out = box.querySelector('.dv-out'), NS = 'http://www.w3.org/2000/svg', nRun = 0, RALLIES = 5;
+    function verdictOf(top){ return top <= 5 ? [t('大きく上振れ', 'very lucky'), 'up2'] : top <= 30 ? [t('やや上振れ', 'a bit lucky'), 'up'] : top < 70 ? [t('ふつう', 'typical'), ''] : top < 95 ? [t('やや下振れ', 'a bit unlucky'), 'dn'] : [t('大きく下振れ', 'very unlucky'), 'dn2']; }
     box.querySelector('.dv-roll').addEventListener('click', function(e){
-      e.preventDefault();
-      var idx = Math.floor(Math.random() * xs.length), v = xs[idx], top = Math.round((1 - idx / xs.length) * 100), px = X(v);
-      [].forEach.call(rolls.querySelectorAll('.now'), function(n){ n.parentNode.removeChild(n); });
-      var old = rolls.querySelectorAll('.past'); if(old.length >= 40) rolls.removeChild(old[0]);
-      var dot = D.createElementNS(NS, 'circle'); dot.setAttribute('class', 'past'); dot.setAttribute('cx', f1(px)); dot.setAttribute('cy', f1(BASE - 4 - Math.random() * 10)); dot.setAttribute('r', '1.6'); rolls.appendChild(dot);
-      var gp = D.createElementNS(NS, 'g'); gp.setAttribute('class', 'now');
-      gp.innerHTML = '<line x1="' + f1(px) + '" x2="' + f1(px) + '" y1="' + f1(Y(dAt(v)) - 6) + '" y2="' + BASE + '"/><circle cx="' + f1(px) + '" cy="' + f1(Y(dAt(v)) - 6) + '" r="4"/>';
-      rolls.appendChild(gp); nRoll++;
-      var verdict = top <= 5 ? t('大きく上振れ', 'very lucky') : top <= 30 ? t('やや上振れ', 'a bit lucky') : top < 70 ? t('ふつう', 'typical') : top < 95 ? t('やや下振れ', 'a bit unlucky') : t('大きく下振れ', 'very unlucky');
-      res.className = 'dv-res on'; res.innerHTML = t(nRoll + '回目 ', '#' + nRoll + ' ') + '<b>' + fmt(v) + '</b> <span>' + t('上位' + Math.max(1, top) + '%・', 'top ' + Math.max(1, top) + '% · ') + verdict + '</span>';
+      e.preventDefault(); nRun++;
+      var picks = [], k;
+      for(k = 0; k < RALLIES; k++){ var idx = Math.floor(Math.random() * xs.length); picks.push({ v: xs[idx], top: Math.max(1, Math.round((1 - idx / xs.length) * 100)) }); }
+      /* 前回までの結果は小さな点として残す（最大60個） */
+      [].forEach.call(rolls.querySelectorAll('.now'), function(n){ var c = n.querySelector('circle'), d = D.createElementNS(NS, 'circle'); d.setAttribute('class', 'past'); d.setAttribute('cx', c.getAttribute('cx')); d.setAttribute('cy', f1(BASE - 4 - Math.random() * 10)); d.setAttribute('r', '1.5'); rolls.insertBefore(d, rolls.firstChild); n.parentNode.removeChild(n); });
+      var old = rolls.querySelectorAll('.past'); for(k = 0; k < old.length - 60; k++) rolls.removeChild(old[old.length - 1 - k]);
+      picks.forEach(function(pk, i){
+        var px = X(pk.v), py = Y(dAt(pk.v)) - 7, gp = D.createElementNS(NS, 'g'); gp.setAttribute('class', 'now'); gp.setAttribute('style', 'animation-delay:' + (i * 110) + 'ms');
+        gp.innerHTML = '<line x1="' + f1(px) + '" x2="' + f1(px) + '" y1="' + f1(py) + '" y2="' + BASE + '"/><circle cx="' + f1(px) + '" cy="' + f1(py) + '" r="5.2"/><text x="' + f1(px) + '" y="' + f1(py + 2.6) + '" text-anchor="middle">' + (i + 1) + '</text>';
+        rolls.appendChild(gp);
+      });
+      var vs = picks.map(function(pk){ return pk.v; }), mx = Math.max.apply(null, vs), mn = Math.min.apply(null, vs), sum = vs.reduce(function(a, v){ return a + v; }, 0), avg = sum / RALLIES;
+      var diff = Math.round((avg / g - 1) * 100), dtx = (diff > 0 ? '+' : '') + diff + '%';
+      res.className = 'dv-res on'; res.innerHTML = t(nRun + '回目の挑戦', 'Run #' + nRun);
+      out.hidden = false;
+      out.innerHTML = '<ol class="dv-list">' + picks.map(function(pk, i){
+          var vd = verdictOf(pk.top), w = Math.max(3, Math.min(100, (pk.v - x0) / (x1 - x0) * 100));
+          return '<li class="' + (pk.v === mx ? 'dv-best ' : '') + (pk.v === mn && mx !== mn ? 'dv-worst' : '') + '" style="animation-delay:' + (i * 110) + 'ms"><span class="no">' + (i + 1) + '</span><span class="lb">' + t((i + 1) + '回目', 'Rally ' + (i + 1)) + '</span>'
+            + '<span class="br"><span style="width:' + w.toFixed(1) + '%"></span></span><b>' + fmt(pk.v) + '</b><span class="vd ' + vd[1] + '">' + vd[0] + '</span></li>';
+        }).join('') + '</ol>'
+        + '<div class="dv-sum">'
+        + '<div class="hi"><span>' + t('上振れ（最高）', 'Best') + '</span><b>' + fmt(mx) + '</b></div>'
+        + '<div class="av"><span>' + t('5回の平均', 'Average of 5') + '</span><b>' + fmt(avg) + '</b></div>'
+        + '<div class="lo"><span>' + t('下振れ（最低）', 'Worst') + '</span><b>' + fmt(mn) + '</b></div>'
+        + '<div class="to"><span>' + t('5回の合計', 'Total of 5') + '</span><b>' + fmt(sum) + '</b></div>'
+        + '</div><p class="dv-cmp">' + t('今回の平均は期待値とくらべて <b>' + dtx + '</b>。もう一度押すと、別の5回を試せます。', 'This run averaged <b>' + dtx + '</b> vs. the expected value. Press again for another five.') + '</p>';
     });
     var tip = box.querySelector('.dv-tip'), chart = box.querySelector('.dv-chart'), svgEl = box.querySelector('svg'), cur = box.querySelector('.dv-cur');
     function show(e){
@@ -160,7 +177,24 @@
       + '#distViz .dv-mk.lo line{stroke:#6cb6ff}#distViz .dv-mk.lo circle,#distViz .dv-mk.lo text{fill:#6cb6ff}'
       + '#distViz .dv-mk.hi line{stroke:#4fe0c0}#distViz .dv-mk.hi circle,#distViz .dv-mk.hi text{fill:#4fe0c0}'
       + '#distViz .dv-mk.mid line{stroke:#fff;stroke-opacity:.75;stroke-dasharray:1.5 2}#distViz .dv-mk.mid circle,#distViz .dv-mk.mid text{fill:#fff}'
-      + '#distViz .dv-rolls .past{fill:#ff5fa2;opacity:.75}#distViz .dv-rolls .now line{stroke:#ff5fa2;stroke-width:1.4}#distViz .dv-rolls .now circle{fill:#ff5fa2;stroke:#fff;stroke-width:1.2}'
+      + '#distViz .dv-rolls .past{fill:#ff5fa2;opacity:.45}#distViz .dv-rolls .now line{stroke:#ff5fa2;stroke-width:1.2}#distViz .dv-rolls .now circle{fill:#ff5fa2;stroke:#fff;stroke-width:1.1}'
+      + '#distViz .dv-rolls .now text{font-size:7px;font-weight:800;fill:#fff;pointer-events:none}'
+      + '#distViz .dv-out{margin-top:10px;border-top:1px solid rgba(255,255,255,.1);padding-top:10px}'
+      + '#distViz .dv-list{list-style:none;margin:0;padding:0;display:grid;gap:5px}'
+      + '#distViz .dv-list li{display:grid;grid-template-columns:20px auto minmax(30px,1fr) auto 74px;align-items:center;gap:8px;font-size:12px;color:#c9d2ea;animation:dvRow .35s both}'
+      + '@keyframes dvRow{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}'
+      + '#distViz .dv-list .no{width:20px;height:20px;border-radius:50%;background:#ff5fa2;color:#fff;font-size:11px;font-weight:800;display:grid;place-items:center}'
+      + '#distViz .dv-list .lb{font-size:11px;color:#9aa5c4;white-space:nowrap}'
+      + '#distViz .dv-list .br{height:6px;border-radius:3px;background:rgba(255,255,255,.08);overflow:hidden}#distViz .dv-list .br span{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,#ff6a1f,#ffb37a)}'
+      + '#distViz .dv-list b{font-size:13.5px;color:#fff;font-variant-numeric:tabular-nums;text-align:right;letter-spacing:-.01em}'
+      + '#distViz .dv-list .vd{font-size:10.5px;font-weight:700;color:#aab3cc;white-space:nowrap}#distViz .dv-list .vd.up,#distViz .dv-list .vd.up2{color:#4fe0c0}#distViz .dv-list .vd.dn,#distViz .dv-list .vd.dn2{color:#6cb6ff}'
+      + '#distViz .dv-list li.dv-best b{color:#4fe0c0}#distViz .dv-list li.dv-worst b{color:#6cb6ff}'
+      + '#distViz .dv-sum{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px}'
+      + '#distViz .dv-sum div{background:rgba(255,255,255,.06);border-radius:9px;padding:7px 4px;text-align:center;min-width:0;border-top:2px solid #7f89a6}'
+      + '#distViz .dv-sum span{display:block;font-size:9.5px;font-weight:700;color:#aab3cc;white-space:nowrap}#distViz .dv-sum b{display:block;font-size:clamp(10.5px,2.9vw,12.5px);color:#fff;font-variant-numeric:tabular-nums;margin-top:2px;letter-spacing:-.02em;white-space:nowrap}'
+      + '#distViz .dv-sum .hi{border-top-color:#4fe0c0}#distViz .dv-sum .hi span{color:#4fe0c0}#distViz .dv-sum .lo{border-top-color:#6cb6ff}#distViz .dv-sum .lo span{color:#6cb6ff}#distViz .dv-sum .av{border-top-color:#ffd166}#distViz .dv-sum .av span{color:#ffd166}#distViz .dv-sum .to{border-top-color:#ff5fa2}#distViz .dv-sum .to span{color:#ff9cc6}'
+      + '#distViz .dv-cmp{margin:8px 0 0;font-size:11px;color:#9aa5c4}#distViz .dv-cmp b{color:#ffd166}'
+      + '@media(max-width:420px){#distViz .dv-sum{grid-template-columns:repeat(2,1fr)}#distViz .dv-list li{grid-template-columns:20px minmax(20px,1fr) auto 66px;gap:6px}#distViz .dv-list .lb{display:none}}'
       + '#distViz .dv-rolls .now{animation:dvDrop .35s cubic-bezier(.3,1.4,.5,1) both}@keyframes dvDrop{from{transform:translateY(-26px);opacity:0}to{transform:none;opacity:1}}'
       + '#distViz .dv-tip{position:absolute;top:4px;transform:translateX(-50%);background:#fff;color:#23283a;font-size:11px;padding:3px 8px;border-radius:6px;white-space:nowrap;pointer-events:none;font-variant-numeric:tabular-nums;box-shadow:0 2px 8px rgba(0,0,0,.3)}'
       + '#distViz .dv-bar{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin-top:8px}'
@@ -298,7 +332,8 @@
       var kf = el('kFactor');
       if(kf && Math.abs(n(kf.value) - n(kf.defaultValue)) < 1e-9) items.push(['my_location', '', t('実際のダメージを1回入れると、あなたの環境に合わせて補正できます。', 'Enter one real result to calibrate the estimate to your account.') + ' <a href="#observed">' + t('実測を入れる', 'calibrate') + ic('arrow_forward') + '</a>']);
     }
-    sum.innerHTML = '<h3>' + ic('edit_note') + t('総評', 'Summary') + '</h3>' + (items.length
+    sum.innerHTML = '<div class="rp-sh"><img class="rp-greg" src="/assets/img/greg-bust.webp?v=130" alt="" width="422" height="300" decoding="async"><div><h3>' + ic('edit_note') + t('総評', 'Summary') + '</h3>'
+      + '<p class="no-hero-ico">' + t('分析担当のグレッグが、今回の結果から読み取れることをまとめました。', 'Greg, our analyst, sums up what this result tells you.') + '</p></div></div>' + (items.length
       ? '<ul>' + items.map(function(it){ return '<li class="' + it[1] + '"><span class="ic">' + ic(it[0]) + '</span><span>' + it[2] + '</span></li>'; }).join('') + '</ul>'
       : '<p class="note" style="margin:0">' + t('STEP2 の必須項目を入力すると、ここに分析結果が表示されます。', 'Fill in the required fields in STEP 2 to see the analysis here.') + '</p>');
     sum.querySelectorAll('a[href^="#"]').forEach(function(a){ a.addEventListener('click', function(e){ var tg = el(a.getAttribute('href').slice(1)); if(!tg) return; e.preventDefault(); flash(tg); }); });
