@@ -409,8 +409,8 @@ details.faq .faq-a .g{font-size:10px;color:var(--muted);margin:0 5px 0 2px}
 
 /* 兵種アイコン（盾・槍・弓） */
 .hc-cls.inf,.hc-cls.lan,.hc-cls.mks,.best-tile .bt-cls .hc-cls,.hero-card .hc-cls{background-color:transparent !important;background-repeat:no-repeat;background-position:center;background-size:contain;font-size:0 !important;border-radius:0}
-.hc-cls.inf{background-image:url(/assets/img/cls-inf.webp?v=1)}.hc-cls.lan{background-image:url(/assets/img/cls-lan.webp?v=1)}.hc-cls.mks{background-image:url(/assets/img/cls-mks.webp?v=1)}
+.hc-cls.inf{background-image:url(/assets/img/cls-inf.webp?v=2)}.hc-cls.lan{background-image:url(/assets/img/cls-lan.webp?v=2)}.hc-cls.mks{background-image:url(/assets/img/cls-mks.webp?v=2)}
 .gh i{background-color:transparent !important;background-repeat:no-repeat !important;background-position:center !important;background-size:contain !important;font-size:0 !important;border-radius:0 !important;width:20px;height:20px;display:inline-block;vertical-align:middle}
-.gh.inf i{background-image:url(/assets/img/cls-inf.webp?v=1)}.gh.lan i{background-image:url(/assets/img/cls-lan.webp?v=1)}.gh.mks i{background-image:url(/assets/img/cls-mks.webp?v=1)}
+.gh.inf i{background-image:url(/assets/img/cls-inf.webp?v=2)}.gh.lan i{background-image:url(/assets/img/cls-lan.webp?v=2)}.gh.mks i{background-image:url(/assets/img/cls-mks.webp?v=2)}
 [data-hero] .cls[class*="c-"]{display:inline-block;width:15px;height:15px;font-size:0;background:center/contain no-repeat;margin:0 3px 0 0;vertical-align:-3px;flex:none}
-[data-hero] .cls.c-inf{background-image:url(/assets/img/cls-inf.webp?v=1)}[data-hero] .cls.c-lan{background-image:url(/assets/img/cls-lan.webp?v=1)}[data-hero] .cls.c-mks{background-image:url(/assets/img/cls-mks.webp?v=1)}
+[data-hero] .cls.c-inf{background-image:url(/assets/img/cls-inf.webp?v=2)}[data-hero] .cls.c-lan{background-image:url(/assets/img/cls-lan.webp?v=2)}[data-hero] .cls.c-mks{background-image:url(/assets/img/cls-mks.webp?v=2)}
