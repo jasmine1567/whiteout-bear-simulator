@@ -45,6 +45,8 @@ window.WOS_heroImg = function(h){
       + '.hero-band a{font-size:13px;font-weight:800;color:inherit;text-decoration:none;border-bottom:1.5px solid currentColor;padding-bottom:1px}'
       + '.hero-card.hero-hit{outline:3px solid #ff7a2f;outline-offset:2px}.hero-card{scroll-margin-top:300px}'
       + '@media(max-width:560px){.hero-strip a{width:54px}.hero-strip img{width:46px;height:46px}.hero-band .hb-f img{width:38px;height:38px}}'
+      + '.kv{margin:14px 0 20px;border-radius:14px;overflow:hidden;background:#e9ecf3;aspect-ratio:5/2}.kv img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 40%}@media(max-width:640px){.kv{aspect-ratio:2/1;border-radius:12px}}'
+      + '@media print{.kv{display:none}}'
       + '.hx.sq{border-radius:24%;box-shadow:0 1px 3px rgba(28,34,80,.25)}'
       + 'table .hx.sq{width:2.3em;height:2.3em;vertical-align:-.75em;margin-right:.45em}'
       + '.callout.greg-says{display:flex !important;align-items:flex-end;gap:12px;padding:12px 16px 0 6px;background:linear-gradient(135deg,#f3f7ff,#fdf8f2);border:1px solid #dfe6f5;border-radius:16px;overflow:hidden}'
@@ -165,6 +167,22 @@ window.WOS_heroImg = function(h){
     });
   }
 
+  /* 6) 記事の見出し画像（ゲームのイラストを横長に切り出したもの）。ページ→画像の対応表 */
+  var KV = { '/guides/bear-hunt-guide.html': 'bear', '/guides/beginner-faq.html': 'welcome', '/guides/common-myths.html': 'training', '/guides/damage-not-growing.html': 'doctor',
+    '/guides/f2p-damage.html': 'supplies', '/guides/how-to-use.html': 'ship', '/guides/leader-formation.html': 'charge', '/guides/left-hero.html': 'shield',
+    '/guides/light-spender.html': 'treasure', '/guides/troop-ratio.html': 'mixing',
+    '/tools/hero-list/': 'heroes', '/tools/left-hero/': 'shield', '/tools/troop-ratio/': 'mixing', '/tools/damage-doctor/': 'doctor', '/tools/king-castle/': 'castle',
+    '/tools/foundry-battle/': 'foundry', '/tools/commander-type/': 'raiders', '/stats/': 'bear', '/stats/methodology.html': 'builder', '/recruit.html': 'board', '/about.html': 'welcome' };
+  function keyVisual(path){
+    var name = KV[path] || KV[path.replace(/index\.html$/, '')]; if(!name || D.querySelector('.kv')) return;
+    var wrap = D.querySelector('.wrap') || D.querySelector('main'); if(!wrap) return;
+    var anchor = wrap.querySelector('.lead') || wrap.querySelector('h1'); if(!anchor) return;
+    if(EN){ var be = D.getElementById('bodyen'); if(be && be.querySelector('.lead,h1')) anchor = be.querySelector('.lead') || be.querySelector('h1'); }
+    var f = D.createElement('figure'); f.className = 'kv';
+    f.innerHTML = '<img src="/assets/kv/' + name + '.webp?v=1" alt="" width="1000" height="500" decoding="async">';
+    anchor.parentNode.insertBefore(f, anchor.nextSibling);
+  }
+
   W.WOS_heroDecorate = function(roots){ if(!IMG) return; css(); decorate(roots); };
   function run(){
     if(!IMG) return;
@@ -174,6 +192,7 @@ window.WOS_heroImg = function(h){
     var roots = [].slice.call(D.querySelectorAll(isTool ? '.tool-article,.tool-about,.hl-intro' : '.wrap,.hm-in'));
     roots = roots.filter(function(r){ return !roots.some(function(o){ return o !== r && o.contains(r); }); });
     if(/^\/(changelog|privacy|terms|contact)\.html$/.test(path)) return;   /* 記録・規約のページには付けない */
+    keyVisual(path);
     if(isGuide) greg();
     var ids = decorate(roots);
     if(isGuide) strip(ids);

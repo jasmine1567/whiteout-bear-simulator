@@ -42,3 +42,20 @@ def troop_icons():
         save(sq.resize((96, 96), Image.LANCZOS), name, 90)
 
 if __name__ == "__main__": main(); troop_icons()
+
+# ---- 記事の見出し画像（キービジュアル）。_img_src/kv/<名前>.jpg → assets/kv/<名前>.webp（横長 2:1）----
+KV_FOCUS = {"welcome": .27, "foundry": .46, "board": .40, "raiders": .36, "supplies": .42, "treasure": .22, "rocket": .36, "charge": .42, "heroes": .45,
+            "feast": .38, "ship": .27, "mixing": .27, "castle": .52, "doctor": .30, "bear": .33, "shield": .33, "miners": .38, "flame": .36, "builder": .33, "training": .36}
+def key_visuals():
+    src = os.path.join(SRC, "kv"); out = os.path.join(ROOT, "assets", "kv")
+    if not os.path.isdir(src): return
+    os.makedirs(out, exist_ok=True)
+    for fn in sorted(os.listdir(src)):
+        name = os.path.splitext(fn)[0]
+        im = Image.open(os.path.join(src, fn)).convert("RGB")
+        m = round(im.width * 0.022); im = im.crop((m, m, im.width - m, im.height - m))     # 白いふちを落とす
+        h = im.width // 2; cy = KV_FOCUS.get(name, .4) * im.height
+        top = int(max(0, min(im.height - h, cy - h / 2)))
+        b = im.crop((0, top, im.width, top + h)).resize((1000, 500), Image.LANCZOS)
+        b.save(os.path.join(out, name + ".webp"), "WEBP", quality=80, method=6)
+if __name__ == "__main__": key_visuals()
