@@ -47,6 +47,8 @@
   .hc-head{display:flex;align-items:baseline;gap:7px;padding-right:26px}
   .hc-name{font-size:16px;font-weight:800;color:#1d2233}.hc-en{font-size:11px;color:#9aa0b0;font-weight:600}
   .hc-badges{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 6px}.hc-badges span{font-size:11px;font-weight:800;border-radius:6px;padding:2px 7px}
+  .b-cls:before{content:"";display:inline-block;width:15px;height:15px;margin-right:4px;vertical-align:-3px;background:center/contain no-repeat}
+  .b-cls.inf:before{background-image:url(/assets/img/cls-inf.webp?v=1)} .b-cls.lan:before{background-image:url(/assets/img/cls-lan.webp?v=1)} .b-cls.mks:before{background-image:url(/assets/img/cls-mks.webp?v=1)}
   .b-cls.inf{background:#e8f0fb;color:#2563a8}.b-cls.lan{background:#eafaf0;color:#1d8a4e}.b-cls.mks{background:#fdeede;color:#c2710f}
   .b-gen{background:#f0eefb;color:#6a52b8}
   .b-rar.r-ssr{background:#fff3d6;color:#b5791a}.b-rar.r-sr{background:#efeafb;color:#7a52c0}.b-rar.r-r{background:#e9f0fb;color:#3a6fb0}
@@ -75,7 +77,7 @@
   /* === 世代セクション === */
   #heroGrid{margin:8px 0 20px}
   .gen-block{margin:0 0 24px}
-  .gen-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 13px;border-radius:12px;margin:0 0 12px;background:linear-gradient(90deg,#fff1e0,#fffdfa);border:1px solid #f1d8b4;border-left:6px solid #e8740f}
+  .gen-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 13px;border-radius:12px;margin:0 0 12px;background:#fff;border:1px solid #e3e5ed}
   .gh-no{flex:none;display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:#e8740f;color:#fff;font-weight:900;font-size:14px;font-family:Outfit,sans-serif}
   .gh-tag{font-weight:900;font-size:16px;color:#a8490a;letter-spacing:.3px}
   .gh-count{font-size:12px;font-weight:700;color:#9a8a6a}
@@ -89,10 +91,6 @@
   .rar-sub.r-sr,.gh-rar.r-sr{background:#efeafb;color:#6f47b8}
   .rar-sub.r-r,.gh-rar.r-r{background:#e6effb;color:#2f63a8}
   /* === カードのレアリティ色アクセント === */
-  .hero-card{border-left-width:5px;border-left-style:solid}
-  .hero-card.r-ssr{border-left-color:#e8a93a}
-  .hero-card.r-sr{border-left-color:#9a6fd8}
-  .hero-card.r-r{border-left-color:#5a8fd0}
   .hl-empty{padding:24px;text-align:center;color:#8a8f9c;font-size:14px}
   .hl-soon{border:1px dashed #d8c4a0;background:#fffaf1;border-radius:12px;padding:16px 18px;margin:16px 0;color:#6b5a36}.hl-soon h3{margin:0 0 6px;color:#b5791a}
   .hl-note{background:#eef4fb;border:1px solid #cfe0f2;border-radius:10px;padding:11px 14px;font-size:12.5px;color:#345;line-height:1.7;margin:14px 0}

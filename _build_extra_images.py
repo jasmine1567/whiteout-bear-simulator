@@ -26,4 +26,19 @@ def main():
     for name, bx in boxes.items():
         im = c.crop(bx).resize((112, 112), Image.LANCZOS); save(rounded(im, 22), name, 88)
 
-if __name__ == "__main__": main()
+def troop_icons():
+    """兵種アイコン（盾・槍・弓）。編成画面のスクショから切り出し、バッジの形で抜く"""
+    src = os.path.join(SRC, "troop-icons.png")
+    if not os.path.exists(src): return
+    im = Image.open(src).convert("RGB"); K = 5
+    for name, (x0, y0, x1, y1) in {"cls-inf": (4, 10, 31, 40), "cls-lan": (189, 9, 217, 39), "cls-mks": (374, 9, 402, 39)}.items():
+        c = im.crop((x0, y0, x1, y1)); w, h = c.size
+        c = c.resize((w * K, h * K), Image.LANCZOS)
+        m = Image.new("L", c.size, 0); d = ImageDraw.Draw(m); i = int(1.2 * K)
+        d.rounded_rectangle((i, i, w * K - i, int(h * K * 0.72)), int(7 * K), fill=255)          # 上側: 角丸の四角
+        d.ellipse((i, int(h * K * 0.22), w * K - i, h * K - i), fill=255)                         # 下側: 丸くすぼまる
+        c = c.convert("RGBA"); c.putalpha(m)
+        side = max(c.size); sq = Image.new("RGBA", (side, side), (0, 0, 0, 0)); sq.paste(c, ((side - c.width) // 2, (side - c.height) // 2), c)
+        save(sq.resize((96, 96), Image.LANCZOS), name, 90)
+
+if __name__ == "__main__": main(); troop_icons()

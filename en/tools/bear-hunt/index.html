@@ -120,7 +120,7 @@
   .picker{background:var(--panel);border:1px solid var(--line);border-radius:14px;max-width:780px;width:100%;padding:18px}
   .picker h3{color:var(--frost);font-size:15px;margin-bottom:4px}
   .picker .phint{font-size:11.5px;color:var(--muted);margin-bottom:12px}
-  .pgroup{margin-bottom:14px;border-left:4px solid var(--line);padding-left:10px}
+  .pgroup{margin-bottom:14px}
   .pgroup.c-inf{border-left-color:var(--inf)} .pgroup.c-lan{border-left-color:var(--lan)} .pgroup.c-mks{border-left-color:var(--mks)}
   .pgroup .ptitle{font-size:11px;letter-spacing:.2em;margin-bottom:8px;border-bottom:1px solid var(--line);padding-bottom:4px;font-weight:700}
   .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(116px,1fr));gap:8px}
@@ -142,7 +142,7 @@
   .ratio-reg input{width:64px}
   .stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px}
   @media(max-width:640px){.stat-grid{grid-template-columns:1fr}}
-  .troop-box{background:var(--panel2);border:1px solid var(--line);border-top:4px solid var(--line);border-radius:10px;padding:10px}
+  .troop-box{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px}
   .troop-box.c-inf{border-top-color:var(--inf)} .troop-box.c-lan{border-top-color:var(--lan)} .troop-box.c-mks{border-top-color:var(--mks)}
   .troop-box h3{font-size:12.5px;margin-bottom:6px}
   .troop-box h3 i{font-style:normal;font-size:10px;color:var(--muted)}
@@ -399,7 +399,7 @@ Object.assign(window.WOS_TR, {
   .hbtns button{border-radius:12px;font-size:13px;padding:10px 16px;font-weight:700;
     font-family:'Noto Sans JP',sans-serif}
   #shareTop{background:var(--grad) !important;color:#fff !important;border:none !important;
-    box-shadow:0 6px 16px rgba(255,108,52,.3)}
+    box-shadow:0 1px 2px rgba(20,24,40,.14)}
   #guideToggle,#calibBtn{background:#fff !important;color:#5b6276 !important;
     border:1px solid #e4e6ef !important;box-shadow:none}
   .toolintro{color:#7a8094;font-size:12.5px}.toolintro a{color:var(--frost)}
@@ -428,7 +428,7 @@ Object.assign(window.WOS_TR, {
   /* ---- ボタン(基本=グラデ / ghost=白) ---- */
   button:not(.nav-cbtn):not(.nav-burger):not(.tab-more){background:var(--grad) !important;color:#fff !important;border:none !important;
     border-radius:12px !important;font-weight:800;font-family:'Noto Sans JP',sans-serif;
-    box-shadow:0 8px 20px rgba(255,108,52,.28);padding:11px 18px}
+    box-shadow:0 1px 2px rgba(20,24,40,.14);padding:11px 18px}
   button:hover{filter:brightness(1.04)}
   button.ghost,.sbtns a.ghost,.pclose{background:#fff !important;color:#5b6276 !important;
     border:1px solid #e4e6ef !important;box-shadow:none !important;font-weight:700}
@@ -464,7 +464,7 @@ Object.assign(window.WOS_TR, {
 
   /* ---- 結果カード(グラデヘッダー + バー) ---- */
   .rcol .result,.result{background:#fff !important;border:1px solid #ecedf3 !important;border-radius:16px !important;
-    box-shadow:0 8px 26px rgba(255,108,52,.10) !important;overflow:hidden;padding:0 !important}
+    box-shadow:0 1px 2px rgba(20,24,40,.14) !important;overflow:hidden;padding:0 !important}
   .result > *{padding-left:18px;padding-right:18px}
   .dmg-head{position:static !important;margin:0 !important;padding:16px 18px !important;
     background:var(--grad) !important;border-bottom:none !important;border-radius:0 !important;color:#fff}
@@ -482,7 +482,7 @@ Object.assign(window.WOS_TR, {
   .mode-toggle{display:inline-flex;border:1px solid #e2e4ec;border-radius:999px;padding:3px;background:#eef0f5;margin:4px 0 8px;gap:3px}
   .mode-btn{border:0;background:transparent;padding:8px 18px;border-radius:999px;font-weight:700;font-size:13px;color:#9aa0b2;cursor:pointer;font-family:inherit;opacity:.8;transition:all .15s}
   .mode-btn:hover{color:#5a6072}
-  .mode-btn.active{background:linear-gradient(135deg,#ff9f2e,#ff5e3a);color:#fff;opacity:1;box-shadow:0 2px 8px rgba(255,94,58,.35)}
+  .mode-btn.active{background:var(--grad);color:#fff;opacity:1;box-shadow:0 2px 8px rgba(255,94,58,.35)}
   .pmode{font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;margin-left:6px;white-space:nowrap}
   .pm-s{background:#fff1e6;color:#e85d12}
   .pm-d{background:#eef0f5;color:#7a8094}
@@ -512,7 +512,7 @@ Object.assign(window.WOS_TR, {
   .ic{width:1em;height:1em;vertical-align:-.14em}
   .hbtns button svg{width:16px;height:16px;vertical-align:-.18em}
   .hbadge{display:inline-grid;place-items:center;width:58px;height:58px;border-radius:16px;flex:0 0 auto;
-    background:var(--grad);color:#fff;box-shadow:0 8px 20px rgba(255,108,52,.32)}
+    background:var(--grad);color:#fff;box-shadow:0 1px 2px rgba(20,24,40,.14)}
   .hbadge svg{width:32px;height:32px}
   .troop-box h3 .chip{width:26px;height:26px;border-radius:8px;display:inline-flex;align-items:center;
     justify-content:center;flex:0 0 auto}
@@ -562,13 +562,12 @@ Object.assign(window.WOS_TR, {
   .rp-mul b{font-family:'Outfit',sans-serif;font-variant-numeric:tabular-nums;color:#23283a}
   #rpSummary{background:#fff;border:1px solid #ecedf3;border-radius:16px;padding:18px 20px;margin-top:14px;box-shadow:0 4px 16px rgba(28,34,80,.05)}
   #rpSummary h3{font-size:15px;margin:0 0 10px}
-  #rpSummary .rp-sh{display:flex;align-items:flex-end;gap:14px;margin:-34px 0 12px;border-bottom:2px solid #eef0f5}
+  #rpSummary .rp-sh{display:flex;align-items:flex-end;gap:14px;margin:0 0 12px;border-bottom:1px solid #eef0f5}
   #rpSummary .rp-greg{flex:none;width:128px;height:auto;display:block;filter:drop-shadow(0 4px 8px rgba(28,34,80,.2))}
   #rpSummary .rp-sh>div{padding-bottom:10px;min-width:0}
   #rpSummary .rp-sh h3{margin:0 0 3px !important}
   #rpSummary .rp-sh p{margin:0;font-size:12px;color:#6b7385;line-height:1.5}
-  #rpSummary{margin-top:40px !important}
-  @media(max-width:560px){#rpSummary .rp-greg{width:96px}#rpSummary .rp-sh{gap:10px;margin-top:-30px}}
+  @media(max-width:560px){#rpSummary .rp-greg{width:96px}#rpSummary .rp-sh{gap:10px}}
   label.lb-cyril{display:flex;align-items:center;gap:6px}
   label.lb-cyril:before{content:"";flex:none;width:24px;height:24px;border-radius:6px;background:url(/assets/img/cyril-talent.webp?v=130) center/cover}
   #rpSummary ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px}
@@ -632,6 +631,10 @@ Object.assign(window.WOS_TR, {
   #rpBar .d:empty{display:none}
   #rpBar a{background:var(--grad);color:#fff;font-weight:800;font-size:13px;text-decoration:none;border-radius:999px;padding:9px 16px;white-space:nowrap}
   @media(max-width:520px){#rpBar{gap:8px;padding-left:14px}#rpBar .l{display:none}#rpBar .v{font-size:17px}#rpBar a{padding:8px 12px;font-size:12px}}
+  .troop-box h3 .chip,.slot .clsbadge{background-color:transparent !important;background-repeat:no-repeat !important;background-position:center !important;background-size:contain !important;border-radius:0 !important;box-shadow:none !important}
+  .troop-box h3 .chip svg{display:none}
+  .slot .clsbadge{font-size:0 !important;width:22px !important;height:22px !important;padding:0 !important;border:0 !important}
+  .chip.ch-inf,.slot.c-inf .clsbadge{background-image:url(/assets/img/cls-inf.webp?v=1) !important} .chip.ch-lan,.slot.c-lan .clsbadge{background-image:url(/assets/img/cls-lan.webp?v=1) !important} .chip.ch-mks,.slot.c-mks .clsbadge{background-image:url(/assets/img/cls-mks.webp?v=1) !important}
 </style>
 </head>
 <body>

@@ -25,7 +25,7 @@
   function genLabel(g){ return g === 0 ? t('常設','Perm.') : 'G' + g; }
   function heroHtml(id, withCls){
     var h = byId[id]; if(!h) return esc(id);
-    return '<span data-hero="' + esc(id) + '">' + pic(id) + (withCls ? '<span class="cls">' + clsName(h.cls) + '</span>' : '')
+    return '<span data-hero="' + esc(id) + '">' + pic(id) + (withCls ? '<span class="cls c-' + esc(h.cls) + '">' + clsName(h.cls) + '</span>' : '')
       + esc(heroName(id)) + '<span class="g">' + genLabel(h.gen) + '</span></span>';
   }
   /* 英雄アイコン画像（assets/hero-img.js に登録がある英雄だけ。無ければ何も出さない） */
@@ -38,7 +38,7 @@
     (root || D).querySelectorAll('[data-hero]').forEach(function(el){
       var h = byId[el.getAttribute('data-hero')]; if(!h) return;
       var g = el.querySelector('.g'), c = el.querySelector('.cls');
-      el.innerHTML = pic(h.id) + (c ? '<span class="cls">' + clsName(h.cls) + '</span>' : '') + esc(heroName(h.id)) + (g ? '<span class="g">' + genLabel(h.gen) + '</span>' : '');
+      el.innerHTML = pic(h.id) + (c ? '<span class="cls c-' + esc(h.cls) + '">' + clsName(h.cls) + '</span>' : '') + esc(heroName(h.id)) + (g ? '<span class="g">' + genLabel(h.gen) + '</span>' : '');
     });
   }
 
