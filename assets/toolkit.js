@@ -21,7 +21,7 @@
   /* 英雄アイコン（assets/hero-img.js）を全ページで読み込む。記事中の英雄名にアイコンが付く */
   (function(){
     if(window.WOS_heroImg || document.querySelector('script[src*="/assets/hero-img.js"]')) return;
-    var s = document.createElement('script'); s.src = '/assets/hero-img.js?v=135'; s.async = true; document.head.appendChild(s);
+    var s = document.createElement('script'); s.src = '/assets/hero-img.js?v=136'; s.async = true; document.head.appendChild(s);
   })();
   function langLink(){
     return EN
@@ -41,32 +41,32 @@
      大カテゴリ → 中カテゴリ(グループ) → 小カテゴリ(ページ)。全ページをここで網羅する。
      項目: [パス, 日本語名, 英語名, (任意)日本語説明, (任意)英語説明, (任意)アイコン名] */
   var MENU = [
-    { id:'tools', icon:'handyman', label:['ツール','Tools'], href:'index.html#tools',
+    { id:'tools', icon:'handyman', label:['ツール','Tools'], href:'./#tools',
       all:['ツール一覧を見る','See all tools'],
       groups:[
         { h:['熊狩り','Bear Hunt'], items:[
-          ['tools/bear-hunt/index.html','熊狩ダメージ・シミュレーター','Bear Hunt Damage Simulator','集結1回のダメージを推定','Estimate one rally\'s damage','pets'],
-          ['tools/left-hero/index.html','左英雄チェッカー','Left-Hero Checker','乗りで効く英雄を判定','Which joiner heroes count','person_search'],
-          ['tools/troop-ratio/index.html','兵士比率シミュレータ','Troop Ratio Simulator','盾:槍:弓の比率を比較','Compare Inf:Lan:Mks ratios','pie_chart'],
-          ['tools/damage-doctor/index.html','ダメージが伸びない原因診断','Damage Doctor','伸び悩みの原因を診断','Find why damage stalls','stethoscope']
+          ['tools/bear-hunt/','熊狩ダメージ・シミュレーター','Bear Hunt Damage Simulator','集結1回のダメージを推定','Estimate one rally\'s damage','pets'],
+          ['tools/left-hero/','左英雄チェッカー','Left-Hero Checker','乗りで効く英雄を判定','Which joiner heroes count','person_search'],
+          ['tools/troop-ratio/','兵士比率シミュレータ','Troop Ratio Simulator','盾:槍:弓の比率を比較','Compare Inf:Lan:Mks ratios','pie_chart'],
+          ['tools/damage-doctor/','ダメージが伸びない原因診断','Damage Doctor','伸び悩みの原因を診断','Find why damage stalls','stethoscope']
         ]},
         { h:['イベント','Events'], items:[
-          ['tools/king-castle/index.html','王城戦エリア配置管理','Castle Battle Planner','都市配置をマス目で管理','Plan city placement on a grid','castle'],
-          ['tools/foundry-battle/index.html','兵器工場争奪戦シミュレーター','Foundry Battle Simulator','フィールドと配置を確認','Field & placement tool','factory'],
-          ['tools/frost-dragon/index.html','霜竜イベント配置計算','Frost Dragon Placement','入れ物同盟への割り振り','Assign alliances to hosts','ac_unit']
+          ['tools/king-castle/','王城戦エリア配置管理','Castle Battle Planner','都市配置をマス目で管理','Plan city placement on a grid','castle'],
+          ['tools/foundry-battle/','兵器工場争奪戦シミュレーター','Foundry Battle Simulator','フィールドと配置を確認','Field & placement tool','factory'],
+          ['tools/frost-dragon/','霜竜イベント配置計算','Frost Dragon Placement','入れ物同盟への割り振り','Assign alliances to hosts','ac_unit']
         ]},
         { h:['英雄・診断','Heroes & quizzes'], items:[
-          ['tools/hero-list/index.html','英雄一覧・データベース','Hero Database','全英雄のスキルと専用装備','All heroes, skills & gear','database'],
-          ['tools/commander-type/index.html','指揮官タイプ診断','Commander Type Quiz','あなたの熊狩りタイプは?','What kind of commander are you?','psychology']
+          ['tools/hero-list/','英雄一覧・データベース','Hero Database','全英雄のスキルと専用装備','All heroes, skills & gear','database'],
+          ['tools/commander-type/','指揮官タイプ診断','Commander Type Quiz','あなたの熊狩りタイプは?','What kind of commander are you?','psychology']
         ]}
       ]},
-    { id:'stats', icon:'bar_chart', label:['世代別構成','Gen Builds'], href:'stats/index.html',
+    { id:'stats', icon:'bar_chart', label:['世代別構成','Gen Builds'], href:'stats/',
       all:['世代別まとめのトップへ','Open the generation hub'],
       groups:[
         { h:['世代を選ぶ','Pick a generation'], sub:['集結主のおすすめ構成・英雄評価','Rally-leader builds & hero ratings'], gens:MAXGEN },
         { h:['統計メニュー','Stats menu'], items:[
-          ['stats/index.html','世代別まとめ(トップ)','Generation hub','','','leaderboard'],
-          ['submit/index.html','自分の構成を投稿する','Submit your build','','','edit_note'],
+          ['stats/','世代別まとめ(トップ)','Generation hub','','','leaderboard'],
+          ['submit/','自分の構成を投稿する','Submit your build','','','edit_note'],
           ['stats/methodology.html','集計方法と計算の前提','Methodology','','','functions']
         ]}
       ]},
@@ -129,7 +129,7 @@
   function genLinks(){
     var d = B + '/', out = '';
     for(var g=1; g<=MAXGEN; g++){
-      var href = d + 'stats/gen-' + (g<10?'0'+g:g) + '/index.html';
+      var href = d + 'stats/gen-' + (g<10?'0'+g:g) + '/';
       var cur = normPath(href) === HERE;
       out += '<a class="nav-gen'+(cur?' is-here':'')+'" href="'+href+'"'+(cur?' aria-current="page"':'')+'><small>'+(EN?'Gen':'第')+'</small>'+g+(EN?'':'<small>世代</small>')+'</a>';
     }
@@ -170,7 +170,7 @@
     }).join('');
     var sprite = document.getElementById('ic-paw') ? '' : SPRITE;
     return sprite+'<nav class="sitenav" aria-label="'+T('サイト内ナビゲーション','Site navigation')+'"><div class="in">'
-      +'<a class="brand" href="'+d+'index.html"><span class="logo"><svg class="ic"><use href="#ic-paw"></use></svg></span>'
+      +'<a class="brand" href="'+(d||'./')+'"><span class="logo"><svg class="ic"><use href="#ic-paw"></use></svg></span>'
       +'<span class="brand-t"><span class="brand-n">'+NAV.brand+'</span><span class="brand-s">'+NAV.tagline+'</span></span></a>'
       +'<div class="nav-menu" id="wosmenu"><ul class="nav-top">'+cats+'</ul>'
       +'<div class="nav-mfoot"><a href="'+altLang()+'">'+ic('translate')+(EN?'日本語版を見る':'English version')+'</a></div></div>'
@@ -279,7 +279,7 @@
       var links = '';
       c.groups.forEach(function(gr){
         if(gr.gens){
-          var gs=''; for(var g=1; g<=MAXGEN; g++){ var gh=d+'stats/gen-'+(g<10?'0'+g:g)+'/index.html'; gs += '<a href="'+gh+'">'+(EN?'G'+g:'第'+g)+'</a>'; }
+          var gs=''; for(var g=1; g<=MAXGEN; g++){ var gh=d+'stats/gen-'+(g<10?'0'+g:g)+'/'; gs += '<a href="'+gh+'">'+(EN?'G'+g:'第'+g)+'</a>'; }
           links += '<div class="foot-gens">'+gs+'</div>'; return;
         }
         gr.items.forEach(function(it){ links += '<a href="'+d+it[0]+'">'+esc(EN?it[2]:it[1])+'</a>'; });
@@ -287,9 +287,9 @@
       return '<div class="foot-col"><div class="foot-h">'+ic(c.icon)+'<a href="'+d+c.href+'">'+esc(EN?c.label[1]:c.label[0])+'</a></div>'+links+'</div>';
     }).join('');
     return '<footer class="sitefoot"><div class="in">'
-      +'<div class="foot-brand"><a class="foot-logo" href="'+d+'index.html"><span class="logo"><svg class="ic"><use href="#ic-paw"></use></svg></span><span>'+NAV.brand+'</span></a>'
+      +'<div class="foot-brand"><a class="foot-logo" href="'+(d||'./')+'"><span class="logo"><svg class="ic"><use href="#ic-paw"></use></svg></span><span>'+NAV.brand+'</span></a>'
       +'<p class="foot-desc">'+f.desc+'</p>'
-      +'<div class="foot-links"><a href="'+d+'index.html">'+ic('home')+NAV.home+'</a><a href="'+altLang()+'">'+ic('translate')+(EN?'日本語版':'English version')+'</a>'
+      +'<div class="foot-links"><a href="'+(d||'./')+'">'+ic('home')+NAV.home+'</a><a href="'+altLang()+'">'+ic('translate')+(EN?'日本語版':'English version')+'</a>'
       +'<a href="https://x.com/tegetege_m" target="_blank" rel="noopener noreferrer">𝕏 @tegetege_m</a></div></div>'
       +'<nav class="foot-grid" aria-label="'+T('フッターナビゲーション','Footer navigation')+'">'+cols+'</nav>'
       +'<div class="foot-bottom"><p class="foot-note">'+f.note+'</p>'
@@ -484,19 +484,19 @@
       'troop-ratio.html':[
         ['st','アルテマ「熊狩行動のおすすめ英雄編成と兵士比率」(10:30:60推奨・弓100%は約2割低下の記載)','Altema: Bear Hunt formations & ratio (recommends 10:30:60; notes ~20% drop at 100% archers)','https://altema.jp/whiteoutsurvival/kumakari'],
         ['of','ホワサバ公式X:熊狩り検証記事の紹介ポスト','Official WOS Japan X: Bear Hunt verification feature','https://x.com/WOS_Japan/status/1866769908379660506'],
-        ['we','当サイト:兵士比率シミュレータ(自分の兵数で横並び比較)','This site: Troop Ratio Simulator','/tools/troop-ratio/index.html']],
+        ['we','当サイト:兵士比率シミュレータ(自分の兵数で横並び比較)','This site: Troop Ratio Simulator','/tools/troop-ratio/']],
       'left-hero.html':[
         ['st','アルテマ「熊狩行動のおすすめ英雄編成と兵士比率」(参加者は左端スロットのみ効果発揮の記載)','Altema: Bear Hunt formations (joiners: only the leftmost slot takes effect)','https://altema.jp/whiteoutsurvival/kumakari'],
         ['of','ホワサバ公式X:ユーザー発信の熊狩り攻略紹介','Official WOS Japan X: community Bear Hunt guide feature','https://x.com/WOS_Japan/status/1753357597321912642'],
-        ['we','当サイト:左英雄チェッカー(乗りで効くかを一発判定)','This site: Left-Hero Checker','/tools/left-hero/index.html']],
+        ['we','当サイト:左英雄チェッカー(乗りで効くかを一発判定)','This site: Left-Hero Checker','/tools/left-hero/']],
       'leader-formation.html':[
         ['st','アルテマ「熊狩行動のおすすめ英雄編成と兵士比率」(集結主は3枠すべて火力バフ持ちを推奨)','Altema: Bear Hunt formations (rally leader: all 3 slots with damage-buff heroes)','https://altema.jp/whiteoutsurvival/kumakari'],
         ['of','ホワサバ公式X:ユーザー発信の熊狩り攻略紹介','Official WOS Japan X: community Bear Hunt guide feature','https://x.com/WOS_Japan/status/1753357597321912642'],
-        ['we','当サイト:熊狩ダメージ・シミュレーター(編成A/B比較)','This site: Bear Hunt Damage Simulator','/tools/bear-hunt/index.html']],
+        ['we','当サイト:熊狩ダメージ・シミュレーター(編成A/B比較)','This site: Bear Hunt Damage Simulator','/tools/bear-hunt/']],
       'damage-not-growing.html':[
         ['st','アルテマ「熊狩行動でダメージが出る方法を検証してみた」(要因別の実測上昇率)','Altema: damage verification (measured gain per factor)','https://altema.jp/whiteoutsurvival/kumakarikensyou'],
         ['cm','まゆか【ホワサバ攻略】:ダメージが伸びない原因の解説動画(X)','Mayuka (JP strategy YouTuber): why damage stalls, on X','https://x.com/mayuka_wos/status/1821853719958581403'],
-        ['we','当サイト:ダメージが伸びない原因診断ツール','This site: Damage Doctor tool','/tools/damage-doctor/index.html']],
+        ['we','当サイト:ダメージが伸びない原因診断ツール','This site: Damage Doctor tool','/tools/damage-doctor/']],
       'f2p-damage.html':[
         ['st','アルテマ「熊狩行動でダメージが出る方法を検証してみた」(課金に依らない上昇要素の実測)','Altema: damage verification (measured gains from non-paid factors)','https://altema.jp/whiteoutsurvival/kumakarikensyou'],
         ['cm','かかち先生:熊狩り特化ペット育成ガイド(無課金・微課金向け/note)','Kakachi-sensei: Bear Hunt pet guide for F2P/light spenders (note, JP)','https://note.com/ocatyan_0227/n/ndf5970ff7ab9'],
@@ -517,7 +517,7 @@
         ['st','アルテマ「熊狩行動でダメージが出る方法を検証してみた」(俗説の検証に使える実測データ)','Altema: damage verification (measured data useful against myths)','https://altema.jp/whiteoutsurvival/kumakarikensyou'],
         ['st','アルテマ「熊狩行動のおすすめ英雄編成と兵士比率」','Altema: Bear Hunt formations & ratio (JP)','https://altema.jp/whiteoutsurvival/kumakari']],
       'how-to-use.html':[
-        ['we','当サイト:熊狩ダメージ・シミュレーター本体','This site: the Bear Hunt Damage Simulator','/tools/bear-hunt/index.html'],
+        ['we','当サイト:熊狩ダメージ・シミュレーター本体','This site: the Bear Hunt Damage Simulator','/tools/bear-hunt/'],
         ['st','アルテマ「熊狩行動のおすすめ英雄編成と兵士比率」(入力の参考になる編成の考え方)','Altema: formation thinking useful for inputs (JP)','https://altema.jp/whiteoutsurvival/kumakari']]
     };
     function run(){

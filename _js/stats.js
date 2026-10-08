@@ -123,7 +123,7 @@
     var rows = d.marks.map(function(m){
       return '<tr' + (m.score === 50 ? ' class="mid"' : '') + '><th>' + m.score + '</th><td>' + fmtM(m.damage) + '</td><td>' + (m.score === 50 ? t('ちょうど真ん中','Median') : m.score > 50 ? t('上位 約','Top ~') + (m.score === 60 ? 16 : 2) + '%' : t('下位 約','Bottom ~') + (m.score === 40 ? 16 : 2) + '%') + '</td></tr>';
     }).join('');
-    var simHref = (W.WOS_BASE || '') + '/tools/bear-hunt/index.html?gen=' + gen;
+    var simHref = (W.WOS_BASE || '') + '/tools/bear-hunt/?gen=' + gen;
     return '<h3 id="live-dev">' + t('第' + gen + '世代の偏差値（集結1回の予測ダメージ）','Gen ' + gen + ' score scale (estimated damage per rally)') + ' <span class="src-tag">n=' + d.n + '</span></h3>'
       + '<p class="note">' + t('シミュレーターを使った人の予測ダメージから計算しています（50が真ん中）。全員同じ条件で計算した値どうしで比べています。','Computed from simulator users’ estimated damage (50 is the middle). Everyone is compared under the same conditions.') + '</p>'
       + '<div class="dv-wrap"><table class="dv-table"><thead><tr><th>' + t('偏差値','Score') + '</th><th>' + t('ダメージの目安','Damage') + '</th><th>' + t('位置','Position') + '</th></tr></thead><tbody>' + rows + '</tbody></table>'
@@ -142,7 +142,7 @@
   }
   S.renderCompare = function(gen){
     var page = D.querySelector('[data-live-page]'); if(!page) return;
-    var simHref = (W.WOS_BASE || '') + '/tools/bear-hunt/index.html?gen=' + gen;
+    var simHref = (W.WOS_BASE || '') + '/tools/bear-hunt/?gen=' + gen;
     function notReady(n){
       showLive(false);
       var html = n == null ? '' : '<p class="live-note">' + t('みんなの実測（採用率・偏差値）は、シミュレーターの利用データが10件集まった世代から公開します。', 'Live pick rates and scores open once a generation has 10 simulator records.')
@@ -212,7 +212,7 @@
   }
   S.renderReviews = function(gen){
     var box = D.querySelector('[data-reviews="' + gen + '"]'); if(!box) return;
-    var submitHref = (W.WOS_BASE || '') + '/submit/index.html?gen=' + gen + '&review=1';
+    var submitHref = (W.WOS_BASE || '') + '/submit/?gen=' + gen + '&review=1';
     function empty(msg){ box.classList.add('rv-none'); box.innerHTML = msg ? '<p class="live-note">' + msg + '</p>' : ''; }
     if(!API){ empty(''); return; }
     getJSON('/v1/reviews/' + gen).then(function(r){
@@ -480,7 +480,7 @@
     }
     if(reviewBody) html += '<div class="swap">💬 ' + t('ひとことは口コミとして世代ページに掲載されました。','Your one-liner is now shown in the generation page\'s Reviews block.') + '</div>';
     html += '<p class="note">' + t('投稿はこのブラウザに保存され、次回は上書き更新になります。','Saved in this browser; your next submission updates this one.') + '</p>';
-    var genHref = base + '/stats/gen-' + String(d.gen).padStart(2,'0') + '/index.html';
+    var genHref = base + '/stats/gen-' + String(d.gen).padStart(2,'0') + '/';
     html += '<p><a class="btn" href="' + genHref + '">' + t('この世代の統計を見る','See stats for this generation') + '</a></p></div>';
     return html;
   }

@@ -21,7 +21,7 @@ window.WOS_heroImg = function(h){
   var EN = (W.WOS_LANG || (/^\/en(\/|$)/.test(location.pathname) ? 'en' : 'ja')) === 'en';
   var BASE = EN ? '/en' : '';
   var NAMES = W.WOS_HERO_NAMES || {}, IMG = W.WOS_heroImg;
-  var LIST = BASE + '/tools/hero-list/index.html';
+  var LIST = BASE + '/tools/hero-list/';
   var XV = '130', CYRIL_PAGE = /\/guides\/cyril-/.test(location.pathname);
   var EXTRA = [['シリル', 'Cyrille', 'cyril-face'], ['狩人の心得', "Hunter's Heart", 'cyril-talent'],
     ['巨熊キラー', "Ursa's Bane", 'cyril-s4', 1], ['リサイクル', 'Scavenging', 'cyril-s2', 1], ['武装特化', 'Weapon Master', 'cyril-s3', 1], ['包囲狩猟', 'Entrapment', 'cyril-s1', 1]];

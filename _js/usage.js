@@ -120,7 +120,7 @@
     devGen = gen;
     loadDev(gen, function(s){
       if(devGen !== gen) return;
-      var href = (W.WOS_BASE || '') + '/stats/gen-' + (gen < 10 ? '0' : '') + gen + '/index.html#live-dev';
+      var href = (W.WOS_BASE || '') + '/stats/gen-' + (gen < 10 ? '0' : '') + gen + '/#live-dev';
       if(!s || !s.published || !s.dev){
         out.innerHTML = '<span class="ug-wait">' + t('第' + gen + '世代の偏差値はデータ集計中です', 'Gen ' + gen + ' score: still collecting data')
           + (s && typeof s.n === 'number' ? t('（現在 ' + s.n + ' 件・10件から公開）', ' (' + s.n + ' so far, opens at 10)') : '') + '</span>';
