@@ -61,14 +61,14 @@
 </div>
 <div id="foot"></div>
 <script src="/assets/config.js?v=96"></script>
-<script src="/assets/toolkit.js?v=135"></script>
+<script src="/assets/toolkit.js?v=136"></script>
 <script>
 (function(){
   var EN = (window.WOS_LANG==='en');
   document.getElementById('htmlroot').lang = EN?'en':'ja';
   document.getElementById('pgtitle').textContent = EN?'Alliance recruitment | Whiteout Tools Lab':'同盟メンバー募集 | ホワサバ ツールラボ';
   document.getElementById('pgdesc').content = EN?'Recruitment page for alliance "bst" on Server 1567 in Whiteout Survival.':'1567サーバーの同盟「bst」のメンバー募集ページ。マイペースに楽しめる雰囲気、SvS・熊狩りの検証仲間を募集中。';
-  document.getElementById('crumb').innerHTML = EN?'<a href="index.html">Home</a> &gt; <a href="about.html">About</a> &gt; Recruitment':'<a href="index.html">ホーム</a> &gt; <a href="about.html">運営者情報</a> &gt; 同盟募集';
+  document.getElementById('crumb').innerHTML = EN?'<a href="./">Home</a> &gt; <a href="about.html">About</a> &gt; Recruitment':'<a href="./">ホーム</a> &gt; <a href="about.html">運営者情報</a> &gt; 同盟募集';
   var srcEl=document.getElementById(EN?'bodyen':'bodyja'); if(srcEl) document.getElementById('body').innerHTML = srcEl.innerHTML;
   document.getElementById('nav').innerHTML = WOS_NAV(0);
   document.getElementById('foot').innerHTML = WOS_FOOT(0);

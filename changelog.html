@@ -60,9 +60,9 @@
 <div class="card">
 <h3>2026年10月7日</h3>
 <ul>
-<li>英雄のアイコン画像を追加。<a href="tools/hero-list/index.html">英雄一覧</a>、<a href="tools/bear-hunt/index.html">熊狩ダメージ・シミュレーター</a>、世代別ページ、攻略記事で英雄の顔が表示されます。</li>
+<li>英雄のアイコン画像を追加。<a href="tools/hero-list/">英雄一覧</a>、<a href="tools/bear-hunt/">熊狩ダメージ・シミュレーター</a>、世代別ページ、攻略記事で英雄の顔が表示されます。</li>
 <li>熊狩シミュレーターの結果に「ダメージの出やすさ」のグラフを追加。下振れ・ふつう・上振れの目安が分かります。</li>
-<li>シミュレーターで、同じ世代の利用者の中での自分の偏差値が見られるようになりました。<a href="stats/index.html">世代別ページ</a>には、乗せ英雄の人気ランキングも追加しています（データが集まった世代から順に表示）。</li>
+<li>シミュレーターで、同じ世代の利用者の中での自分の偏差値が見られるようになりました。<a href="stats/">世代別ページ</a>には、乗せ英雄の人気ランキングも追加しています（データが集まった世代から順に表示）。</li>
 <li>シミュレーターの入力内容を、匿名の統計として集計するようになりました。結果欄からいつでも停止できます。詳しくは<a href="privacy.html">プライバシーポリシー</a>をご覧ください。</li>
 </ul>
 </div>
@@ -71,7 +71,7 @@
 <h3>2026年10月5日</h3>
 <ul>
 <li>熊狩シミュレーターの精度を改善。利用者の方からいただいたご指摘をもとに、一部の英雄スキルと専用装備の反映を見直しました。</li>
-<li><a href="stats/index.html">世代別ページ</a>のおすすめ構成を再計算しました。</li>
+<li><a href="stats/">世代別ページ</a>のおすすめ構成を再計算しました。</li>
 </ul>
 </div>
 
@@ -156,14 +156,14 @@
 </div>
 <div id="foot"></div>
 <script src="/assets/config.js?v=96"></script>
-<script src="/assets/toolkit.js?v=135"></script>
+<script src="/assets/toolkit.js?v=136"></script>
 <script>
 (function(){
   var EN = (window.WOS_LANG==='en');
   document.getElementById('htmlroot').lang = EN?'en':'ja';
   document.getElementById('pgtitle').textContent = EN?'Changelog | Whiteout Tools Lab':'更新履歴 | ホワサバ ツールラボ';
   document.getElementById('pgdesc').content = EN?'Changelog for Whiteout Tools Lab: new tools and guides, new generations and heroes, and usability improvements.':'ホワサバ ツールラボの更新履歴。新しいツールや記事、新世代・新英雄への対応、使い勝手の改善のお知らせ。';
-  document.getElementById('crumb').innerHTML = EN?'<a href="index.html">Home</a> &gt; Changelog':'<a href="index.html">ホーム</a> &gt; 更新履歴';
+  document.getElementById('crumb').innerHTML = EN?'<a href="./">Home</a> &gt; Changelog':'<a href="./">ホーム</a> &gt; 更新履歴';
   var srcEl=document.getElementById(EN?'bodyen':'bodyja'); if(srcEl) document.getElementById('body').innerHTML = srcEl.innerHTML;
   document.getElementById('nav').innerHTML = WOS_NAV(0);
   document.getElementById('foot').innerHTML = WOS_FOOT(0);

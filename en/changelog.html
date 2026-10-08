@@ -60,9 +60,9 @@
 <div class="card">
 <h3>October 7, 2026</h3>
 <ul>
-<li>Added hero icons. Hero faces now appear in the <a href="tools/hero-list/index.html">hero database</a>, the <a href="tools/bear-hunt/index.html">Bear Hunt Simulator</a>, generation pages and guides.</li>
+<li>Added hero icons. Hero faces now appear in the <a href="tools/hero-list/">hero database</a>, the <a href="tools/bear-hunt/">Bear Hunt Simulator</a>, generation pages and guides.</li>
 <li>The simulator result now includes a chart of how likely each damage range is, with unlucky / typical / lucky figures.</li>
-<li>The simulator now shows your score among players of the same generation, and <a href="stats/index.html">generation pages</a> add a ranking of the most-used joiner heroes (shown once enough data is in).</li>
+<li>The simulator now shows your score among players of the same generation, and <a href="stats/">generation pages</a> add a ranking of the most-used joiner heroes (shown once enough data is in).</li>
 <li>Simulator inputs are now aggregated as anonymous statistics. You can opt out anytime from the result panel; see the <a href="privacy.html">Privacy Policy</a>.</li>
 </ul>
 </div>
@@ -71,7 +71,7 @@
 <h3>October 5, 2026</h3>
 <ul>
 <li>Improved simulator accuracy: some hero skills and exclusive gear effects were revised based on user feedback.</li>
-<li>Recalculated the recommended builds on the <a href="stats/index.html">generation pages</a>.</li>
+<li>Recalculated the recommended builds on the <a href="stats/">generation pages</a>.</li>
 </ul>
 </div>
 
@@ -156,14 +156,14 @@
 </div>
 <div id="foot"></div>
 <script src="/assets/config.js?v=96"></script>
-<script src="/assets/toolkit.js?v=135"></script>
+<script src="/assets/toolkit.js?v=136"></script>
 <script>
 (function(){
   var EN = (window.WOS_LANG==='en');
   document.getElementById('htmlroot').lang = EN?'en':'ja';
   document.getElementById('pgtitle').textContent = EN?'Changelog | Whiteout Tools Lab':'更新履歴 | ホワサバ ツールラボ';
   document.getElementById('pgdesc').content = EN?'Changelog for Whiteout Tools Lab: new tools and guides, new generations and heroes, and usability improvements.':'ホワサバ ツールラボの更新履歴。新しいツールや記事、新世代・新英雄への対応、使い勝手の改善のお知らせ。';
-  document.getElementById('crumb').innerHTML = EN?'<a href="index.html">Home</a> &gt; Changelog':'<a href="index.html">ホーム</a> &gt; 更新履歴';
+  document.getElementById('crumb').innerHTML = EN?'<a href="./">Home</a> &gt; Changelog':'<a href="./">ホーム</a> &gt; 更新履歴';
   var srcEl=document.getElementById(EN?'bodyen':'bodyja'); if(srcEl) document.getElementById('body').innerHTML = srcEl.innerHTML;
   document.getElementById('nav').innerHTML = WOS_NAV(0);
   document.getElementById('foot').innerHTML = WOS_FOOT(0);

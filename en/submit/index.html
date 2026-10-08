@@ -17,8 +17,8 @@
 <title>Submit Your Bear Hunt Build | Whiteout Tools Lab</title>
 <meta name="description" content="集結主の熊狩り構成（盾・槍・弓の英雄）を匿名で投稿。投稿するとすぐに、同世代内の順位と課金帯別の理論最適との差が分かります。">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://api.whitesim-lab.com https://*.workers.dev https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://platform.twitter.com https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://challenges.cloudflare.com https://platform.twitter.com https://syndication.twitter.com https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
-<link rel="stylesheet" href="/assets/site.css?v=135">
-<link rel="stylesheet" href="/assets/stats.css?v=135">
+<link rel="stylesheet" href="/assets/site.css?v=136">
+<link rel="stylesheet" href="/assets/stats.css?v=136">
 <script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=85">
 <link rel="icon" type="image/png" href="/favicon.png?v=85">
@@ -38,7 +38,7 @@
 <body>
 <div id="nav"></div>
 <div class="wrap">
-<div class="crumb"><a href="/en/index.html">Home</a> &gt; <a href="/en/stats/index.html">Generation stats</a> &gt; Submit</div>
+<div class="crumb"><a href="/en/">Home</a> &gt; <a href="/en/stats/">Generation stats</a> &gt; Submit</div>
 <h1>Submit your <span class="acc">Bear Hunt build</span></h1>
 <div id="updbox"></div>
 <p class="lead">Pick your generation, tier and three heroes. Nothing identifying is sent.</p>
@@ -48,20 +48,20 @@
 <li>One submission per generation: re-submitting the same generation updates it, another generation adds a new one</li>
 </ul>
 <div id="submit-form"><div class="skel"></div><div class="skel" style="width:60%"></div></div>
-<p class="note" style="margin-top:14px">You can also submit straight from the Bear Hunt Simulator's result panel. <a href="/en/tools/bear-hunt/index.html">Open the simulator</a></p>
+<p class="note" style="margin-top:14px">You can also submit straight from the Bear Hunt Simulator's result panel. <a href="/en/tools/bear-hunt/">Open the simulator</a></p>
 <div class="relbar">
-  <a href="/en/stats/index.html">→ See generation stats</a>
+  <a href="/en/stats/">→ See generation stats</a>
   <a href="/en/stats/methodology.html">→ Methodology</a>
 </div>
 </div>
 <div id="foot"></div>
-<script src="/assets/config.js?v=135"></script>
-<script src="/assets/toolkit.js?v=135"></script>
-<script src="/assets/hero-img.js?v=135"></script>
+<script src="/assets/config.js?v=136"></script>
+<script src="/assets/toolkit.js?v=136"></script>
+<script src="/assets/hero-img.js?v=136"></script>
 <script src="/assets/heroes.js?v=122"></script>
-<script src="/assets/gen-map.js?v=135"></script>
-<script src="/assets/hero-posts.js?v=135"></script>
-<script src="/assets/stats.js?v=135"></script>
+<script src="/assets/gen-map.js?v=136"></script>
+<script src="/assets/hero-posts.js?v=136"></script>
+<script src="/assets/stats.js?v=136"></script>
 <script>
 document.getElementById('nav').innerHTML = WOS_NAV(2);
 document.getElementById('foot').innerHTML = WOS_FOOT(2);
@@ -93,7 +93,7 @@ window.addEventListener("DOMContentLoaded", function() {
   document.querySelectorAll("[data-aria-en]").forEach(function(el){ el.setAttribute("aria-label", el.getAttribute("data-aria-en")); });
   if (window.WOS_STATS && WOS_STATS.relabelHeroes) WOS_STATS.relabelHeroes();
   var crumb = document.querySelector(".crumb");
-  if (crumb) crumb.innerHTML = "<a href=\"/en/index.html\">Home</a> &gt; <a href=\"/en/stats/index.html\">Generation stats</a> &gt; Submit";
+  if (crumb) crumb.innerHTML = "<a href=\"/en/\">Home</a> &gt; <a href=\"/en/stats/\">Generation stats</a> &gt; Submit";
 });
 </script>
 

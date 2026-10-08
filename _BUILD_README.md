@@ -66,3 +66,6 @@ python3 _build_sitemap.py   # sitemap.xml（日英+ hreflang）を再生成
 - 直すときは `_js/` 側を編集し、`node _build_js.js` を実行する（`assets/` 側は直接編集しない）
 - `_js/` は「_」始まりなので公開されません。**アップロード用zipには `_js/` も必ず含めてください**
 - ページや更新履歴には、計算式・係数・集計の除外基準などの内部の細かい話は書かない方針です（模倣対策）
+
+## リンクの正規化（必ず最後に実行）
+`python3 _build_links.py` — サイト内リンクの `…/index.html` を `…/` にそろえる（canonical と一致させ、Search Console の「重複・Google が別の正規ページを選択」を防ぐ）。順番: `_build_stats.py` → `_build_lang.py` → `_build_sitemap.py` → `_build_links.py`。
