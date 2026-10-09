@@ -69,3 +69,6 @@ python3 _build_sitemap.py   # sitemap.xml（日英+ hreflang）を再生成
 
 ## リンクの正規化（必ず最後に実行）
 `python3 _build_links.py` — サイト内リンクの `…/index.html` を `…/` にそろえる（canonical と一致させ、Search Console の「重複・Google が別の正規ページを選択」を防ぐ）。順番: `_build_stats.py` → `_build_lang.py` → `_build_sitemap.py` → `_build_links.py`。
+
+## 飾りの書き込み（_build_links.py の前に実行）
+`python3 _build_static.py` — 見出し画像（.kv）、攻略ガイドの「グレッグの解説」枠、絵文字→アイコンを公開HTMLに直接書き込む。順番: `_build_stats.py` → `_build_lang.py` → `_build_sitemap.py` → `_build_static.py` → `_build_links.py`。見出し画像の対応表はこのスクリプトの KV と assets/hero-img.js の KV の両方にある。

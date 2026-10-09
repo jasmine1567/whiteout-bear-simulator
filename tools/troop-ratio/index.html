@@ -20,7 +20,7 @@
 <title>熊狩り 兵士比率シミュレータ｜10:30:60・10:10:80・1:1:8を比較 | ホワサバ ツールラボ</title>
 <meta name="description" content="ホワサバ熊狩り(Bear Hunt)の兵士比率を比較シミュレート。10:30:60・10:10:80・1:1:8など主要比率を、あなたの兵数で横並び比較。弓100%が落ちる理由も数値で確認。">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
-<link rel="stylesheet" href="/assets/site.css?v=137">
+<link rel="stylesheet" href="/assets/site.css?v=141">
 <script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
 <style>
   #bars{background:var(--night);border:1px solid var(--line);border-radius:10px;padding:8px 4px;margin-bottom:6px}
@@ -50,6 +50,7 @@
 <h1>熊狩り <span class="acc">兵士比率シミュレータ</span></h1>
 <div id="updbox"></div>
 <p class="lead">「10:30:60が良い」「いや弓100%だ」――比率の正解は<b>兵数とステータスで変わります</b>。あなたの数値で主要な比率を横並び比較し、どれが一番ダメージを出すかを判定します。</p>
+<figure class="kv"><img src="/assets/kv/mixing.webp?v=1" alt="" width="1000" height="500" decoding="async"></figure>
 <section class="tool-about" id="tool-about"><div class="i18n-ja"><div class="tab-head"><h2>このツールについて</h2><a href="#tool-article">詳しい解説・FAQを見る<span class="ms-slot" data-ms="keyboard_arrow_down"></span></a></div><div class="tab-grid"><div class="tab-col"><h3><span class="ms-slot" data-ms="lightbulb"></span>このツールで分かること</h3><p>盾:槍:弓の比率を変えたとき、熊狩りのダメージがどのくらい変わるかを、自分の兵数と兵種別ステータスで横並び比較できます。「弓100%が最強」が成り立たない理由も数値で確認できます。</p></div><div class="tab-col"><h3><span class="ms-slot" data-ms="calculate"></span>計算・判定の考え方</h3><p>熊狩ダメージ・シミュレーターと同じモデルを使い、合計兵数を固定して比率ごとの期待ダメージを相対値で計算します。兵種ごとの特性と、盾または槍が0のときの目減りを反映しているため、前衛を削りすぎた構成は不利に出ます。絶対値ではなく比率どうしの差を見るためのツールです。</p></div><div class="tab-col"><h3><span class="ms-slot" data-ms="touch_app"></span>使い方</h3><p>合計兵数と、ゲーム内「ステータス」画面にある兵種別の攻撃力ボーナス%を入力し、比較したい比率をプリセットから選ぶか自分で追加します。グラフと表でいちばん高い比率が分かるので、その比率をシミュレーターで詳しく試算してください。</p></div></div></div></section>
 
 
@@ -70,14 +71,14 @@
 </div>
 
 <h2>比率別の予測ダメージ(相対比較)</h2>
-<p style="font-size:12.5px;color:var(--muted);margin-bottom:8px">⬆ 上の数値を変えると、バーがリアルタイムで伸び縮みします。自分のステータスでどの比率が伸びるか動かして確かめてください。</p>
+<p style="font-size:12.5px;color:var(--muted);margin-bottom:8px"><svg viewBox="0 -960 960 960" aria-hidden="true" class="ei" style="width:1.15em;height:1.15em;flex:none;display:inline-block;vertical-align:-.2em;margin-right:.2em;fill:currentColor"><path d="M450-686 223-459q-9 9-21 9t-21-9q-9-9-9-21t9-21l278-278q5-5 10-7t11-2q6 0 11 2t10 7l278 278q9 9 9 21t-9 21q-9 9-21 9t-21-9L510-686v496q0 13-8.5 21.5T480-160q-13 0-21.5-8.5T450-190v-496Z"/></svg>上の数値を変えると、バーがリアルタイムで伸び縮みします。自分のステータスでどの比率が伸びるか動かして確かめてください。</p>
 <div id="bars"></div>
 <div id="verdict"></div>
 
 
 <div class="cta">
   <p>英雄スキルや専用装備まで含めた正確なダメージは、本体シミュレーターで。</p>
-  <a class="btn" href="../bear-hunt/">🐻 熊狩ダメージ・シミュレーターで詳細計算</a>
+  <a class="btn" href="../bear-hunt/"><svg viewBox="0 -960 960 960" aria-hidden="true" class="ei" style="width:1.15em;height:1.15em;flex:none;display:inline-block;vertical-align:-.2em;margin-right:.2em;fill:currentColor"><path d="M169.86-485Q132-485 106-511.14t-26-64Q80-613 106.14-639t64-26Q208-665 234-638.86t26 64Q260-537 233.86-511t-64 26ZM291-681.14q-26-26.14-26-64T291.14-809q26.14-26 64-26T419-808.86q26 26.14 26 64T418.86-681q-26.14 26-64 26T291-681.14Zm250 0q-26-26.14-26-64T541.14-809q26.14-26 64-26T669-808.86q26 26.14 26 64T668.86-681q-26.14 26-64 26T541-681.14ZM789.86-485Q752-485 726-511.14t-26-64Q700-613 726.14-639t64-26Q828-665 854-638.86t26 64Q880-537 853.86-511t-64 26ZM266-75q-42 0-69-31.53-27-31.52-27-74.47 0-42 25.5-74.5T250-318q22-22 41-46.5t36-50.5q29-44 65-82t88-38q52 0 88.5 38t65.5 83q17 26 35.5 50t40.5 46q29 30 54.5 62.5T790-181q0 42.95-27 74.47Q736-75 694-75q-54 0-107-9t-107-9q-54 0-107 9t-107 9Z"/></svg>熊狩ダメージ・シミュレーターで詳細計算</a>
 </div>
 
 <div class="relbar">
@@ -140,7 +141,7 @@
 <div id="foot"></div>
 
 <script src="/assets/config.js?v=96"></script>
-<script src="/assets/toolkit.js?v=136"></script>
+<script src="/assets/toolkit.js?v=141"></script>
 <script>
 document.getElementById('nav').innerHTML = WOS_NAV(2);
 document.getElementById('foot').innerHTML = WOS_FOOT(2);

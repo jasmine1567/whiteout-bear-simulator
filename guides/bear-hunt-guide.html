@@ -17,7 +17,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title id="pgtitle">熊狩行動のダメージの仕組みを徹底解説 | ホワサバ ツールラボ</title><meta name="description" id="pgdesc" content="ホワサバ熊狩行動のダメージの仕組みを徹底解説。兵力・集結主・参加者4枠・兵種比率・シリル・専用装備までの総合ガイド。">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com https://platform.twitter.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://docs.google.com https://platform.twitter.com https://syndication.twitter.com https://www.youtube-nocookie.com; object-src 'none'; base-uri 'none'">
-<link rel="stylesheet" href="/assets/site.css?v=137">
+<link rel="stylesheet" href="/assets/site.css?v=141">
 <style>
   /* 公式動画埋め込み(YouTube公式の埋め込み機能) */
   .wos-media{margin:14px 0;border:1px solid #e5e7f2;border-radius:12px;overflow:hidden;background:#fff}
@@ -43,6 +43,7 @@
 <div id="nav"></div><div class="wrap"><div class="crumb" id="crumb"></div>
 <div id="updbox"></div>
 <div id="bodyja"><h1 id="art-h1">熊狩行動のダメージの仕組みを徹底解説</h1>
+<figure class="kv"><img src="/assets/kv/bear.webp?v=1" alt="" width="1000" height="500" decoding="async"></figure>
 <h2>熊狩行動とはどんなイベント?</h2>
 <p>熊狩行動(Bear Hunt)は、同盟で「熊の罠」を起動し、30分間にわたって全員で集結を繰り返し、熊に与えた合計ダメージを競う同盟イベントです。熊は反撃してこないため兵士は一切死なず、純粋に「いかに高いダメージを出すか」だけが問われます。報酬は個人ダメージと同盟合計の両方に紐づくため、集結1回ごとのダメージ効率を上げることが直接報酬につながります。</p>
 <p>公式YouTubeチャンネルにも熊狩行動の解説動画が公開されています。イベントの流れをまず映像で掴みたい方はこちらをどうぞ。本記事では、この動画では触れられていない「ダメージの数字の仕組み」まで踏み込んで解説します。</p>
@@ -69,7 +70,7 @@
 <h3>画面の数字だけでは強さを比べられない</h3>
 <p>訓練所に表示される兵の攻撃・殺傷の数字は、内部で使われている値そのままではない、という指摘があります。表示の数字が小さいから弱い、とは言い切れないので、兵種や英雄の強さは実際のダメージで比べるのが確実です。</p>
 
-<div class="callout"><b>⚠ これらは「有志の検証に基づく考え方」です</b><br>公式の仕組みをそのまま再現したものではありません。当サイトのシミュレーターも推定値です。最後は自分の実測ポイントを入れて補正し、自分の環境に合わせて使うのがいちばん正確です。</div>
+<div class="callout greg-says"><img class="gs-pic" src="/assets/img/greg-bust.webp?v=130" alt="" loading="lazy" decoding="async" width="422" height="300"><div class="gs-body"><span class="gs-tag no-hero-ico">グレッグの解説</span><div class="gs-txt"><b>これらは「有志の検証に基づく考え方」です</b><br>公式の仕組みをそのまま再現したものではありません。当サイトのシミュレーターも推定値です。最後は自分の実測ポイントを入れて補正し、自分の環境に合わせて使うのがいちばん正確です。</div></div></div>
 <h2>参加者スキル「4枠」の正しい理解</h2>
 <p>もっとも誤解が多いのがここです。集結に参加する側は、編成の左端(1人目)に置いた英雄の「第1遠征スキル」だけが集結全体へのバフ候補になります。英雄のレベルや星は関係なく、見られるのはスキルレベルのみです。採用枠は4つで、基本は先着順、ただし後から参加した人のスキルレベルが採用済みのものより高い場合のみ入れ替わります。</p>
 <p>もう一つ重要なのは合成のされ方です。同じ種類のスキルは「足し算」、違う種類のスキルは「かけ算」で効きます。たとえば「全軍与ダメ+25%」を4人並べると合計+100%(2.0倍)ですが、「与ダメ+25%×2人」と「攻撃+25%×2人」に分けると1.5×1.5=2.25倍となり、同じスキルレベルでも約12%高くなります。与ダメ系・攻撃系・殺傷系・敵被ダメ系・確率系をバラけさせるのが理論上の最適です。</p>
@@ -86,10 +87,10 @@
 <p>専門家シリルの天賦「狩人の心得」は、熊狩で自分が獲得するダメージポイントを増やします(Lv1で+2%、Lv11で+30%)。戦闘力ではなく「ポイント」への直接補正なので費用対効果が非常に高く、熊狩を重視するなら優先育成対象です。罠の強化レベルは対熊攻撃ボーナス(最大+25%)として全員に乗ります。また、ジェロニモやミアのような英雄は専用装備に「集結部隊攻撃+5〜15%」等のボーナスを持ち、集結主として出す場合はこの分も上乗せされます。</p>
 <h2>結局なにから強化すればいい?</h2>
 <p>優先度は環境によって変わるため、一概には言えません。だからこそ当サイトの熊狩ダメージ・シミュレーターでは、現在のあなたの設定を基準に「攻撃+10%」「殺傷+10%」「Tierアップ」「シリル+1Lv」「英雄入れ替え」などを実際に計算し、「その1手で何%伸びるか」をランキング表示します。まずは自分のステータスを入れて試してみてください。</p>
-<div class="cta"><a class="btn" href="../tools/bear-hunt/">🐻 シミュレーターを使ってみる</a></div>
+<div class="cta"><a class="btn" href="../tools/bear-hunt/"><svg viewBox="0 -960 960 960" aria-hidden="true" class="ei" style="width:1.15em;height:1.15em;flex:none;display:inline-block;vertical-align:-.2em;margin-right:.2em;fill:currentColor"><path d="M169.86-485Q132-485 106-511.14t-26-64Q80-613 106.14-639t64-26Q208-665 234-638.86t26 64Q260-537 233.86-511t-64 26ZM291-681.14q-26-26.14-26-64T291.14-809q26.14-26 64-26T419-808.86q26 26.14 26 64T418.86-681q-26.14 26-64 26T291-681.14Zm250 0q-26-26.14-26-64T541.14-809q26.14-26 64-26T669-808.86q26 26.14 26 64T668.86-681q-26.14 26-64 26T541-681.14ZM789.86-485Q752-485 726-511.14t-26-64Q700-613 726.14-639t64-26Q828-665 854-638.86t26 64Q880-537 853.86-511t-64 26ZM266-75q-42 0-69-31.53-27-31.52-27-74.47 0-42 25.5-74.5T250-318q22-22 41-46.5t36-50.5q29-44 65-82t88-38q52 0 88.5 38t65.5 83q17 26 35.5 50t40.5 46q29 30 54.5 62.5T790-181q0 42.95-27 74.47Q736-75 694-75q-54 0-107-9t-107-9q-54 0-107 9t-107 9Z"/></svg>シミュレーターを使ってみる</a></div>
 <h2>第三者の実測検証:何がどれだけ効くのか</h2>
 <p>当サイトのモデルとは別に、攻略サイトのアルテマが実際のゲーム内で「同じ条件から1要素ずつ変えて熊狩ダメージを測る」検証を公開しています(公式Xアカウントも紹介した記事です)。要因ごとの上昇率が具体的で、強化の優先順位を考えるうえで参考になるので、要点を引用します。数字は下の折りたたみから確認してください。</p>
-<details class="wos-acc"><summary>📊 検証データを見る:要因別のダメージ上昇率(アルテマ実測)</summary><div class="wos-acc-in">
+<details class="wos-acc"><summary><svg viewBox="0 -960 960 960" aria-hidden="true" class="ei" style="width:1.15em;height:1.15em;flex:none;display:inline-block;vertical-align:-.2em;margin-right:.2em;fill:currentColor"><path d="M690-160q-12.75 0-21.37-8.63Q660-177.25 660-190v-220q0-12.75 8.63-21.38Q677.25-440 690-440h80q12.75 0 21.38 8.62Q800-422.75 800-410v220q0 12.75-8.62 21.37Q782.75-160 770-160h-80Zm-250 0q-12.75 0-21.37-8.63Q410-177.25 410-190v-580q0-12.75 8.63-21.38Q427.25-800 440-800h80q12.75 0 21.38 8.62Q550-782.75 550-770v580q0 12.75-8.62 21.37Q532.75-160 520-160h-80Zm-250 0q-12.75 0-21.37-8.63Q160-177.25 160-190v-380q0-12.75 8.63-21.38Q177.25-600 190-600h80q12.75 0 21.38 8.62Q300-582.75 300-570v380q0 12.75-8.62 21.37Q282.75-160 270-160h-80Z"/></svg>検証データを見る:要因別のダメージ上昇率(アルテマ実測)</summary><div class="wos-acc-in">
 <p>初期条件は第4世代SR英雄(Lv80・星0)で698,518ダメージ。そこから1要素ずつ変えた場合の上昇率です。</p>
 <table>
 <tr><th>変更した要素</th><th>実測の上昇率</th></tr>
@@ -104,7 +105,7 @@
 <p>各強化を組み合わせた最終結果は約+422%(8,716,271ダメージ)。「英雄の質(レアリティとスキル)が最も大きく、装備・レベルが中規模、ブースト系は上乗せ」という傾向は、当サイトのモデルおよび本文の優先順位ともよく一致しています。</p>
 <p style="font-size:11px;color:#6b7385">出典:<a href="https://altema.jp/whiteoutsurvival/kumakarikensyou" target="_blank" rel="noopener noreferrer">アルテマ「熊狩行動でダメージが出る方法を検証してみた」</a>(検証条件・詳細はリンク先参照)。数値は検証時点のもので、世代進行やアップデートで変わる可能性があります。</p>
 </div></details>
-<div class="tw-embed"><blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">⚔️イベント検証攻略記事のご紹介⚔️ 【熊狩行動でダメージが出る方法を検証してみた】…熊狩行動で様々な編制を試しダメージ値変化の状況を記事にまとめていただきました!✨ ダメージ上昇のヒントとしてご活用くださいね!</p>&mdash; ホワイトアウト・サバイバル(ホワサバ)【公式】 (@WOS_Japan) <a href="https://x.com/WOS_Japan/status/1866769908379660506">X で見る</a></blockquote></div>
+<div class="tw-embed"><blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr"><svg viewBox="0 -960 960 960" aria-hidden="true" class="ei" style="width:1.15em;height:1.15em;flex:none;display:inline-block;vertical-align:-.2em;margin-right:.2em;fill:currentColor"><path d="M769-88 645-212l-67 67q-19 19-35.5 4.5T514-167q-17-17-17-42t17-42l199-199q17-17 42-17t42 17q12 12 26.5 28.5T819-386l-67 67 123 124q9 9 9 21t-9 21l-64 65q-9 9-21 9t-21-9Zm102-627L427-271l19 20q30 30 15 57t-37 49q-9 9-21 9t-21-9l-67-67L191-88q-9 9-21 9t-21-9l-65-65q-9-9-9-21t9-21l124-124-67-67q-9-9-9-21t9-21q22-22 49-37t57 15l20 19 435-435q8-8 19.5-13t23.5-5h105q13 0 21.5 8.5T880-854v118q0 6-2 11t-7 10ZM320-568l38-38 38-38-38 38-38 38Zm-63 21L98-706q-8-8-13-19.5T80-749v-105q0-13 8.5-21.5T110-884h105q12 0 23.5 5t19.5 13l159 159q9 9 9 21t-9 21q-9 9-21 9t-21-9L215-824h-75v75l159 160q9 9 9 21t-9 21q-9 9-21 9t-21-9Zm126 233 437-435v-75h-75L308-389l75 75Zm0 0-37-38-38-37 38 37 37 38Z"/></svg>イベント検証攻略記事のご紹介<svg viewBox="0 -960 960 960" aria-hidden="true" class="ei" style="width:1.15em;height:1.15em;flex:none;display:inline-block;vertical-align:-.2em;margin-right:.2em;fill:currentColor"><path d="M769-88 645-212l-67 67q-19 19-35.5 4.5T514-167q-17-17-17-42t17-42l199-199q17-17 42-17t42 17q12 12 26.5 28.5T819-386l-67 67 123 124q9 9 9 21t-9 21l-64 65q-9 9-21 9t-21-9Zm102-627L427-271l19 20q30 30 15 57t-37 49q-9 9-21 9t-21-9l-67-67L191-88q-9 9-21 9t-21-9l-65-65q-9-9-9-21t9-21l124-124-67-67q-9-9-9-21t9-21q22-22 49-37t57 15l20 19 435-435q8-8 19.5-13t23.5-5h105q13 0 21.5 8.5T880-854v118q0 6-2 11t-7 10ZM320-568l38-38 38-38-38 38-38 38Zm-63 21L98-706q-8-8-13-19.5T80-749v-105q0-13 8.5-21.5T110-884h105q12 0 23.5 5t19.5 13l159 159q9 9 9 21t-9 21q-9 9-21 9t-21-9L215-824h-75v75l159 160q9 9 9 21t-9 21q-9 9-21 9t-21-9Zm126 233 437-435v-75h-75L308-389l75 75Zm0 0-37-38-38-37 38 37 37 38Z"/></svg>【熊狩行動でダメージが出る方法を検証してみた】…熊狩行動で様々な編制を試しダメージ値変化の状況を記事にまとめていただきました!ダメージ上昇のヒントとしてご活用くださいね!</p>&mdash; ホワイトアウト・サバイバル(ホワサバ)【公式】 (@WOS_Japan) <a href="https://x.com/WOS_Japan/status/1866769908379660506">X で見る</a></blockquote></div>
 <h2>よくある質問(FAQ)</h2>
 <dl class="faq">
 <dt>Q. 参加者の英雄レベルや装備はダメージに影響しますか?</dt>
@@ -116,7 +117,7 @@
 </dl></div>
 <div class="relbar" id="relbar"></div></div><nav class="relposts" aria-label="関連記事"><h2 class="relposts-h">Related articles</h2><ul><li><a href="troop-ratio.html">What's the right troop ratio?</a></li><li><a href="leader-formation.html">Rally leader: recommended formations & heroes</a></li><li><a href="damage-not-growing.html">Why your damage isn't growing, and fixes</a></li><li><a href="cyril-talent.html">How strong is Cyril? Talent tested in numbers</a></li></ul></nav>
 <div id="foot"></div>
-<script src="/assets/config.js?v=96"></script><script src="/assets/toolkit.js?v=136"></script>
+<script src="/assets/config.js?v=96"></script><script src="/assets/toolkit.js?v=141"></script>
 <script>(function(){var EN=(window.WOS_LANG==="en");
 document.getElementById("htmlroot").lang=EN?"en":"ja";
 document.getElementById("pgtitle").textContent=EN?"How Bear Hunt damage works \u2014 a full guide | Whiteout Tools Lab":"熊狩行動のダメージの仕組みを徹底解説 | ホワサバ ツールラボ";

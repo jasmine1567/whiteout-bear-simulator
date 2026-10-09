@@ -18,7 +18,7 @@
 <title>兵器工場争奪戦 フィールド作戦シミュレータ｜作戦計画・模擬戦 | ホワサバ ツールラボ</title>
 <meta name="description" content="ホワイトアウトサバイバル「兵器工場争奪戦」のフィールドツール。作戦シミュレータでチーム編成とフェーズ別の行動を計画し、模擬戦シミュレータで敵の動きを加えて占領ポイント・バフをリアルタイム試算。結果は共有リンクで共有可能。">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
-<link rel="stylesheet" href="/assets/site.css?v=137">
+<link rel="stylesheet" href="/assets/site.css?v=141">
 <script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
 <style>
   /* ===== 兵器工場争奪戦ツール(アイスブルー基調・スコープ .fs) ===== */
@@ -433,6 +433,7 @@
 <h1 id="h1"></h1>
 <div id="updbox"></div>
 <p class="lead" id="lead"></p>
+<figure class="kv"><img src="/assets/kv/foundry.webp?v=1" alt="" width="1000" height="500" decoding="async"></figure>
 <section class="tool-about" id="tool-about"><div class="i18n-ja"><div class="tab-head"><h2>このツールについて</h2><a href="#tool-article">詳しい解説・FAQを見る<span class="ms-slot" data-ms="keyboard_arrow_down"></span></a></div><div class="tab-grid"><div class="tab-col"><h3><span class="ms-slot" data-ms="lightbulb"></span>このツールで分かること</h3><p>兵器工場争奪戦の60分の流れを、作戦シミュレータと模擬戦シミュレータの2モードで事前に確認できます。チームごとにフェーズ単位で担当拠点を割り当て、敵の強さを変えたときに占領ポイントがどう推移するか、どの拠点を守るべきかが分かります。</p></div><div class="tab-col"><h3><span class="ms-slot" data-ms="calculate"></span>計算・判定の考え方</h3><p>実測と公開情報にもとづくイベントの基本ルール（準備時間、中央施設の開放時刻、四隅の武器工房の出現、占拠に約120秒、被占領時に蓄積ポイントの半分が散逸）をモデル化し、作戦どおりに自軍が動いたときのポイント推移を計算します。模擬戦では敵が格下／同格／格上の強さで自動的に攻防します。非公式の試算であり、細かな挙動は実際のゲームが優先されます。</p></div><div class="tab-col"><h3><span class="ms-slot" data-ms="touch_app"></span>使い方</h3><p>作戦シミュレータでチーム（最大8）とリーダー名を設定し、フェーズごとに担当拠点を割り当ててから「ゲーム開始」で時間を進めます。模擬戦シミュレータでは敵の強さを選んで結果と戦況アドバイスを確認します。右上の「共有」からURLをコピーすると、同盟メンバーの画面でも同じ作戦が開けます。</p></div></div></div></section>
 
 
@@ -532,7 +533,7 @@
 <div class="fb-toast" id="toast" role="status" aria-live="polite"></div>
 
 <script src="/assets/config.js?v=96"></script>
-<script src="/assets/toolkit.js?v=136"></script>
+<script src="/assets/toolkit.js?v=141"></script>
 <script>
   try{
     document.getElementById('nav').innerHTML = window.WOS_NAV(2);
