@@ -13,7 +13,7 @@ KV = {"guides/bear-hunt-guide.html": "bear", "guides/beginner-faq.html": "welcom
       "guides/f2p-damage.html": "supplies", "guides/how-to-use.html": "ship", "guides/leader-formation.html": "charge", "guides/left-hero.html": "shield",
       "guides/light-spender.html": "treasure", "guides/troop-ratio.html": "mixing",
       "tools/hero-list/index.html": "heroes", "tools/left-hero/index.html": "shield", "tools/troop-ratio/index.html": "mixing", "tools/damage-doctor/index.html": "doctor",
-      "tools/foundry-battle/index.html": "foundry", "tools/commander-type/index.html": "raiders", "stats/index.html": "bear", "stats/methodology.html": "builder",
+      "tools/foundry-battle/index.html": "foundry", "tools/commander-type/index.html": "raiders", "stats/index.html": "bear", "stats/methodology.html": "blackboard",
       "recruit.html": "board", "about.html": "welcome"}
 XV = "130"   # グレッグ画像の版数（assets/hero-img.js の XV と同じ）
 
@@ -54,10 +54,13 @@ def add_kv(html, name):
     return html if not m else html[:m.end()] + fig + html[m.end():]
 
 # ---- グレッグの解説枠 ----
-OPEN = re.compile(r'<div class="callout(?: (?:tip|info|point))?">')
+OPEN = re.compile(r'<div class="callout(?: (?:tip|info|point|warn))?">')
+SPK = {"tip": ("sp-molly", "ジャスミンのヒント", "MOLLY'S TIP"), "warn": ("sp-bahiti", "バシティの注意", "BAHITI'S WARNING")}
+FAQ_H = re.compile(r'(<h2\b[^>]*>)(\s*(?:<svg\b.*?</svg>)?[^<]*(?:よくある質問|FAQ|Frequently asked)[^<]*</h2>)', re.S)
+FAQ_PIC = '<img class="faq-pic" src="/assets/img/sp-think.webp?v=1" alt="" width="176" height="176" loading="lazy" decoding="async">'
 DIVS = re.compile(r"<div\b|</div>")
 LEAD_EMO = re.compile(r"^(\s*(?:<(?:b|strong)>\s*)?)(?:[←-⯿〰〽㊗㊙\U0001F000-\U0001FAFF])[️‍]*\s*")
-def add_greg(html, en):
+def add_greg(html, en, warn=True):
     out, pos = [], 0
     while True:
         m = OPEN.search(html, pos)
@@ -71,11 +74,12 @@ def add_greg(html, en):
         if len(re.sub(r"<[^>]+>", "", inner)) < 30: out.append(html[pos:end.end()]); pos = end.end(); continue
         inner = re.sub(r'^\s*<span class="ico">[^<]*</span>', "", inner); inner = LEAD_EMO.sub(r"\1", inner)
         out.append(html[pos:m.start()])
-        tip = "tip" in m.group(0)
-        out.append('<div class="%s greg-says%s"><img class="gs-pic" src="/assets/img/%s.webp?v=1" alt="" loading="lazy" decoding="async" width="176" height="176">'
+        kind = "tip" if " tip" in m.group(0) else "warn" if " warn" in m.group(0) else ""
+        if kind == "warn" and not warn: out.append(html[pos:end.end()]); pos = end.end(); continue
+        pic, ja, enl = SPK.get(kind, ("sp-greg", "グレッグの解説", "GREG'S NOTE"))
+        out.append('<div class="%s greg-says %s"><img class="gs-pic" src="/assets/img/%s.webp?v=1" alt="" loading="lazy" decoding="async" width="176" height="176">'
                    '<div class="gs-body"><span class="gs-tag no-hero-ico">%s</span><div class="gs-txt">%s</div></div></div>'
-                   % (m.group(0)[12:-2], " sp-molly" if tip else "", "sp-molly" if tip else "sp-greg",
-                      ("MOLLY'S TIP" if en else "ジャスミンのヒント") if tip else ("GREG'S NOTE" if en else "グレッグの解説"), inner))
+                   % (m.group(0)[12:-2], pic, pic, enl if en else ja, inner))
         pos = end.end()
     out.append(html[pos:]); return "".join(out)
 
@@ -87,7 +91,8 @@ for d, dirs, files in os.walk(ROOT):
         p = os.path.join(d, f); rel = os.path.relpath(p, ROOT).replace(os.sep, "/"); en = rel.startswith("en/"); key = rel[3:] if en else rel
         s = open(p, encoding="utf-8").read(); t = s
         if key in KV: t = add_kv(t, KV[key])
-        if key.startswith("guides/") and "greg-says" not in t: t = add_greg(t, en)
+        if key.startswith("guides/") and "greg-says" not in t: t = add_greg(t, en, warn=(key != "guides/common-myths.html"))   # 勘違い7選のカードはそのまま
+        if "faq-pic" not in t: t = FAQ_H.sub(lambda x: x.group(1) + FAQ_PIC + x.group(2), t)
         t = emoji_to_icons(t)
         if t != s: open(p, "w", encoding="utf-8").write(t); n += 1
 print("static decorations written to", n, "files")

@@ -47,7 +47,7 @@ if __name__ == "__main__": main(); troop_icons()
 
 # ---- 記事の見出し画像（キービジュアル）。_img_src/kv/<名前>.jpg → assets/kv/<名前>.webp（横長 2:1）----
 KV_FOCUS = {"welcome": .27, "foundry": .46, "board": .40, "raiders": .36, "supplies": .42, "treasure": .22, "rocket": .36, "charge": .42, "heroes": .45,
-            "feast": .38, "ship": .27, "mixing": .27, "castle": .52, "doctor": .30, "bear": .33, "shield": .33, "miners": .38, "flame": .36, "builder": .33, "training": .36}
+            "feast": .38, "ship": .27, "mixing": .27, "castle": .52, "doctor": .30, "bear": .33, "shield": .33, "miners": .38, "flame": .36, "builder": .33, "training": .36, "blackboard": .43}
 def key_visuals():
     src = os.path.join(SRC, "kv"); out = os.path.join(ROOT, "assets", "kv")
     if not os.path.isdir(src): return
@@ -64,7 +64,9 @@ if __name__ == "__main__": key_visuals()
 
 # ---- 解説役の顔アイコン（背景を抜いた胸像）。_img_src/sns/ の公式イラストから切り出す。要: pip install rembg onnxruntime ----
 SPEAKERS = {"sp-greg": ("greg-board-point", (380, 170, 870, 720), (520, 180, 860, 520)),
-            "sp-molly": ("molly-thinking", (180, 140, 720, 660), (262, 172, 618, 528))}
+            "sp-molly": ("molly-thinking", (180, 140, 720, 660), (262, 172, 618, 528)),
+            "sp-bahiti": ("bahiti-snow", (150, 40, 830, 640), (300, 50, 640, 390)),
+            "sp-think": ("man-speedups", (120, 20, 780, 540), (268, 40, 632, 404))}
 def speakers():
     try:
         from rembg import remove, new_session
@@ -75,6 +77,7 @@ def speakers():
         p = os.path.join(SRC, "sns", src + ".jpg")
         if not os.path.exists(p): continue
         cut = remove(Image.open(p).convert("RGB").crop(big), session=ses)
+        cut.putalpha(cut.getchannel("A").point(lambda v: 0 if v < 30 else min(255, int(v * 2.2))))      # 髪などが半透明に抜けるのを防ぐ
         box = (sq[0] - big[0], sq[1] - big[1], sq[2] - big[0], sq[3] - big[1])
         save(cut.crop(box).resize((176, 176), Image.LANCZOS), name, 90)
 if __name__ == "__main__": speakers()
