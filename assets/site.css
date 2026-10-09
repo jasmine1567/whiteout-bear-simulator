@@ -630,6 +630,6 @@ h3{color:var(--text)}
 .btn{box-shadow:none}.btn:hover{box-shadow:none;filter:brightness(1.06)}
 .callout{border-radius:10px}
 .hm-dot{width:18px;height:18px;border-radius:0;background-size:contain !important;background-position:center !important;background-repeat:no-repeat !important}
-.hm-dot.inf{background-image:url(/assets/img/cls-inf.webp?v=2);background-color:transparent}.hm-dot.lan{background-image:url(/assets/img/cls-lan.webp?v=2);background-color:transparent}.hm-dot.mks{background-image:url(/assets/img/cls-mks.webp?v=2);background-color:transparent}
+.hm-dot.inf{background-image:url(/assets/img/cls-inf.svg?v=3);background-color:transparent}.hm-dot.lan{background-image:url(/assets/img/cls-lan.svg?v=3);background-color:transparent}.hm-dot.mks{background-image:url(/assets/img/cls-mks.svg?v=3);background-color:transparent}
 .hm-bar i{background:#e85d12}
 .hm-hero-card:hover{transform:none}
