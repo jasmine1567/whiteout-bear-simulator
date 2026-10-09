@@ -422,3 +422,30 @@ details.faq .faq-a .g{font-size:10px;color:var(--muted);margin:0 5px 0 2px}
 .rk-row.trio .rk-h{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px 8px;white-space:nowrap;line-height:1.4}
 .rk-row.trio .rk-h [data-hero]{min-width:0}
 @media(max-width:560px){.rk-row.trio .rk-h .g{display:none}.rk-row.trio .rk-h{gap:4px}.rk-row.trio .rk-h .hi{display:none}.rk-row.trio .rk-h{font-size:12px}}
+
+/* ==== 整列: 英雄の並びは決まった列にそろえる ==== */
+.rk-row.quad{grid-template-columns:18px minmax(0,1fr) auto}
+.rk-row.quad .rk-h{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px 8px;white-space:nowrap}
+.rk-row.quad .rk-h [data-hero]{min-width:0}.rk-row.quad .rk-h .g{display:none}
+.tldr .tl-v{display:grid;grid-template-columns:repeat(3,minmax(0,150px));gap:4px 10px;flex:1 1 auto}
+.tldr li{flex-wrap:nowrap;align-items:center}.tldr .tl-k{min-width:168px}
+.point ul.pt-grid,.point ul.pt-pair{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.point ul.pt-grid li{display:grid;grid-template-columns:104px minmax(0,1fr);gap:4px 10px;align-items:center;margin:0}
+.point ul.pt-grid .pt-v{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px 8px}
+.point ul.pt-pair li{display:grid;grid-template-columns:minmax(0,150px) 1fr;gap:10px;align-items:center;margin:0}
+.point [data-hero]{min-width:0;overflow:hidden}
+.gen-card .gc-row{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:3px 10px;align-items:center}
+.gen-card .gc-row b{grid-row:1/span 3;align-self:start;padding-top:3px}
+.gen-card .gc-row [data-hero]{grid-column:2}
+@media(max-width:560px){
+  .rk-row.quad .rk-h{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tldr li{flex-direction:column;align-items:stretch}.tldr .tl-v{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px 6px}.tldr .tl-v .g{display:none}
+  .point ul.pt-grid li{grid-template-columns:1fr}.point ul.pt-grid .pt-v .g{display:none}
+}
+.jn-grid{grid-template-columns:1fr}
+.point ul.pt-grid li{grid-template-columns:1fr}
+.point ul.pt-grid .pt-v .hi,.point ul.pt-grid .pt-v .g{display:none}
+.gf-row:has([data-hero]){display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px 10px}
+.gf-row:has([data-hero]) b{min-width:0;grid-column:1/-1}
+.gf-row [data-hero]{min-width:0;overflow:hidden}
+@media(max-width:560px){.tldr .tl-v .hi{display:none}.gf-row .g{display:none}}

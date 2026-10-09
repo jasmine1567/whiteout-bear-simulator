@@ -102,9 +102,10 @@
     if(!j || !j.heroes || !j.heroes.length) return '';
     var sets = '';
     (j.sets || []).slice(0, 5).forEach(function(c, i){
-      var cnt = {}, order = []; c.ids.forEach(function(id){ if(!cnt[id]){ cnt[id] = 0; order.push(id); } cnt[id]++; });
-      sets += '<div class="rk-row trio"><span class="rk-n">' + (i+1) + '</span><span class="rk-h">'
-        + order.map(function(id){ return heroHtml(id) + (cnt[id] > 1 ? '<span class="jx">×' + cnt[id] + '</span>' : ''); }).join(' ')
+      /* 4人を必ず4つの枠に並べる（同じ英雄が複数いる場合もその人数ぶん並べる）。行ごとに縦位置がそろう */
+      var four = c.ids.slice().sort(function(a, b){ return c.ids.indexOf(a) - c.ids.indexOf(b); });
+      sets += '<div class="rk-row quad"><span class="rk-n">' + (i+1) + '</span><span class="rk-h">'
+        + four.map(function(id){ return heroHtml(id); }).join('')
         + '</span><span class="rk-v">' + c.pct + '%</span><span class="rk-bar live"><i style="width:' + Math.min(100, c.pct) + '%"></i></span></div>';
     });
     return '<h3 id="live-joiners">' + t('乗せ英雄（参加者）の人気ランキング','Most-used joiner heroes') + ' <span class="src-tag">n=' + j.n + '</span></h3>'

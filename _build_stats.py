@@ -9,7 +9,7 @@ import os, re, json, html, subprocess
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 BASE_URL = "https://whitesim-lab.com"
-V = "138"            # 共有アセットの版数
+V = "139"            # 共有アセットの版数
 HV = "122"           # heroes.js の版数
 UPDATED = "2026-10-08"
 NOTES_DIR = os.path.join(ROOT, "_stats_notes")
@@ -541,14 +541,14 @@ def points_section(g, tr):
     lis = []
     for t in TIERS:
         top = e["byTier"][t["key"]]["top"][0]
-        lis.append(f'<li><b>{tr(t["label"], t["label_en"])}</b>：{" ".join(hero_html(h, True) for h in top["ids"])}</li>')
-    cards.append(f'<div class="point"><div class="pt-h"><span class="ic">🎯</span>{tr("課金帯別の理論最適","Theoretical best by tier")}</div><ul>{"".join(lis)}</ul></div>')
+        lis.append(f'<li><b>{tr(t["label"], t["label_en"])}</b><span class="pt-v">{"".join(hero_html(h, True) for h in top["ids"])}</span></li>')
+    cards.append(f'<div class="point"><div class="pt-h"><span class="ic">🎯</span>{tr("課金帯別の理論最適","Theoretical best by tier")}</div><ul class="pt-grid">{"".join(lis)}</ul></div>')
     # この世代の英雄の判定
     lis = []
     for h in sorted(e["heroes"], key=lambda x: CLS.index(x["cls"])):
         (vc, vja, ven), _, _ = hero_eval(h["id"], g)
-        lis.append(f'<li>{hero_html(h["id"], True)}：<b>{tr(vja, ven)}</b></li>')
-    cards.append(f'<div class="point"><div class="pt-h"><span class="ic">🆕</span>{tr("この世代の英雄の判定","Verdict on this generation’s heroes")}</div><ul>{"".join(lis)}</ul></div>')
+        lis.append(f'<li>{hero_html(h["id"], True)}<b>{tr(vja, ven)}</b></li>')
+    cards.append(f'<div class="point"><div class="pt-h"><span class="ic">🆕</span>{tr("この世代の英雄の判定","Verdict on this generation’s heroes")}</div><ul class="pt-pair">{"".join(lis)}</ul></div>')
     # 無課金の更新機会
     rou = next((HEROES[h["id"]] for h in e["heroes"] if h["acq"] == "roulette"), None)
     if rou:
