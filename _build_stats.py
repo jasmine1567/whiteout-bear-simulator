@@ -9,7 +9,7 @@ import os, re, json, html, subprocess
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 BASE_URL = "https://whitesim-lab.com"
-V = "137"            # 共有アセットの版数
+V = "138"            # 共有アセットの版数
 HV = "122"           # heroes.js の版数
 UPDATED = "2026-10-08"
 NOTES_DIR = os.path.join(ROOT, "_stats_notes")

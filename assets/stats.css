@@ -414,3 +414,11 @@ details.faq .faq-a .g{font-size:10px;color:var(--muted);margin:0 5px 0 2px}
 .gh.inf i{background-image:url(/assets/img/cls-inf.svg?v=3)}.gh.lan i{background-image:url(/assets/img/cls-lan.svg?v=3)}.gh.mks i{background-image:url(/assets/img/cls-mks.svg?v=3)}
 [data-hero] .cls[class*="c-"]{display:inline-block;width:15px;height:15px;font-size:0;background:center/contain no-repeat;margin:0 3px 0 0;vertical-align:-3px;flex:none}
 [data-hero] .cls.c-inf{background-image:url(/assets/img/cls-inf.svg?v=3)}[data-hero] .cls.c-lan{background-image:url(/assets/img/cls-lan.svg?v=3)}[data-hero] .cls.c-mks{background-image:url(/assets/img/cls-mks.svg?v=3)}
+/* ランキング行: 数値と名前が重ならないように。3人組は3等分でそろえる */
+.rk-row,.rk-row.trio{grid-template-columns:18px minmax(0,1fr) auto}
+.rk-v{min-width:40px;white-space:nowrap;padding-left:6px}
+.rk-h{min-width:0;overflow:hidden}
+.rk-h [data-hero]{max-width:100%;overflow:hidden}
+.rk-row.trio .rk-h{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px 8px;white-space:nowrap;line-height:1.4}
+.rk-row.trio .rk-h [data-hero]{min-width:0}
+@media(max-width:560px){.rk-row.trio .rk-h .g{display:none}.rk-row.trio .rk-h{gap:4px}.rk-row.trio .rk-h .hi{display:none}.rk-row.trio .rk-h{font-size:12px}}
