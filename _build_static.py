@@ -71,9 +71,11 @@ def add_greg(html, en):
         if len(re.sub(r"<[^>]+>", "", inner)) < 30: out.append(html[pos:end.end()]); pos = end.end(); continue
         inner = re.sub(r'^\s*<span class="ico">[^<]*</span>', "", inner); inner = LEAD_EMO.sub(r"\1", inner)
         out.append(html[pos:m.start()])
-        out.append('<div class="%s greg-says"><img class="gs-pic" src="/assets/img/greg-bust.webp?v=%s" alt="" loading="lazy" decoding="async" width="422" height="300">'
+        tip = "tip" in m.group(0)
+        out.append('<div class="%s greg-says%s"><img class="gs-pic" src="/assets/img/%s.webp?v=1" alt="" loading="lazy" decoding="async" width="176" height="176">'
                    '<div class="gs-body"><span class="gs-tag no-hero-ico">%s</span><div class="gs-txt">%s</div></div></div>'
-                   % (m.group(0)[12:-2], XV, "GREG'S NOTE" if en else "グレッグの解説", inner))
+                   % (m.group(0)[12:-2], " sp-molly" if tip else "", "sp-molly" if tip else "sp-greg",
+                      ("MOLLY'S TIP" if en else "ジャスミンのヒント") if tip else ("GREG'S NOTE" if en else "グレッグの解説"), inner))
         pos = end.end()
     out.append(html[pos:]); return "".join(out)
 

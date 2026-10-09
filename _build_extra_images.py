@@ -61,3 +61,20 @@ def key_visuals():
         b = im.crop((0, top, im.width, top + h)).resize((1000, 500), Image.LANCZOS)
         b.save(os.path.join(out, name + ".webp"), "WEBP", quality=80, method=6)
 if __name__ == "__main__": key_visuals()
+
+# ---- 解説役の顔アイコン（背景を抜いた胸像）。_img_src/sns/ の公式イラストから切り出す。要: pip install rembg onnxruntime ----
+SPEAKERS = {"sp-greg": ("greg-board-point", (380, 170, 870, 720), (520, 180, 860, 520)),
+            "sp-molly": ("molly-thinking", (180, 140, 720, 660), (262, 172, 618, 528))}
+def speakers():
+    try:
+        from rembg import remove, new_session
+    except Exception:
+        print("speakers: rembg が無いのでスキップ"); return
+    ses = new_session("u2net")
+    for name, (src, big, sq) in SPEAKERS.items():
+        p = os.path.join(SRC, "sns", src + ".jpg")
+        if not os.path.exists(p): continue
+        cut = remove(Image.open(p).convert("RGB").crop(big), session=ses)
+        box = (sq[0] - big[0], sq[1] - big[1], sq[2] - big[0], sq[3] - big[1])
+        save(cut.crop(box).resize((176, 176), Image.LANCZOS), name, 90)
+if __name__ == "__main__": speakers()
