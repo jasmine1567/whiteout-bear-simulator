@@ -163,7 +163,7 @@ window.WOS_heroImg = function(h){
     '/guides/f2p-damage.html': 'supplies', '/guides/how-to-use.html': 'ship', '/guides/leader-formation.html': 'charge', '/guides/left-hero.html': 'shield',
     '/guides/light-spender.html': 'treasure', '/guides/troop-ratio.html': 'mixing',
     '/tools/hero-list/': 'heroes', '/tools/left-hero/': 'shield', '/tools/troop-ratio/': 'mixing', '/tools/damage-doctor/': 'doctor', '/tools/king-castle/': 'castle',
-    '/tools/foundry-battle/': 'foundry', '/tools/commander-type/': 'raiders', '/stats/': 'bear', '/stats/methodology.html': 'builder', '/recruit.html': 'board', '/about.html': 'welcome' };
+    '/tools/foundry-battle/': 'foundry', '/tools/commander-type/': 'raiders', '/stats/': 'bear', '/stats/methodology.html': 'blackboard', '/recruit.html': 'board', '/about.html': 'welcome' };
   function keyVisual(path){
     var name = KV[path] || KV[path.replace(/index\.html$/, '')]; if(!name || D.querySelector('.kv')) return;
     var wrap = D.querySelector('.wrap') || D.querySelector('main'); if(!wrap) return;
