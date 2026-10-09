@@ -17,7 +17,7 @@
 <title>Frost Dragon Alliance Placement Calculator | Whiteout Tools Lab</title>
 <meta name="description" content="Whiteout Survival Frost Dragon event placement calculator: enter applicant alliances' power and headcount and get an assignment that clears the entry border for every host alliance.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
-<link rel="stylesheet" href="/assets/site.css?v=137">
+<link rel="stylesheet" href="/assets/site.css?v=141">
 <script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=85">
 <link rel="icon" type="image/png" href="/favicon.png?v=85">
@@ -226,11 +226,11 @@
 <div class="fd" id="fdApp">
   <div class="fd-head">
     <div class="fd-title">
-      <span class="t">❄ <span class="i18n-en-inline">Frost Dragon Planner</span></span>
+      <span class="t"><svg viewBox="0 -960 960 960" aria-hidden="true" class="ei" style="width:1.15em;height:1.15em;flex:none;display:inline-block;vertical-align:-.2em;margin-right:.2em;fill:currentColor"><path d="M450-275 321-146q-8 8-20.5 8t-21.5-8q-9-9-9-21.5t9-21.5l171-171v-90h-90L192-282q-8 8-20.5 8.5T150-281q-9-9-9.5-21.5T150-325l125-125H109q-12 0-20.5-8.5T80-480q0-12 8.5-21t21.5-9h165L146-638q-9-9-9-21.5t9-21.5q9-9 21.5-9t21.5 9l171 171h90v-91L282-768q-8-8-8-20.5t8-21.5q9-9 21.5-9t22.5 9l124 124v-164q0-12 8.5-21t21.5-9q12 0 21 9t9 21v164l128-128q9-9 21.5-9t21.5 9q8 9 8 21.5t-9 21.5L510-601v91h91l168-168q8-8 20.5-8t21.5 8q9 9 9 21.5t-9 21.5L686-510h164q12 0 21 9t9 21q0 13-9 21.5t-21 8.5H686l127 129q9 8 9 20.5t-9 20.5q-8 10-20.5 10t-21.5-9L601-450h-91v90l171 173q9 8 9 20.5t-9 20.5q-8 10-20.5 10t-21.5-9L510-275v166q0 12-9 20.5T480-80q-13 0-21.5-8.5T450-110v-165Z"/></svg><span class="i18n-en-inline">Frost Dragon Planner</span></span>
       <span class="s"><span class="i18n-en-inline">Power totals, border check &amp; split orders</span></span>
     </div>
     <button type="button" class="fd-guide-btn" id="fdGuideBtn" aria-haspopup="dialog">
-      📖 <span class="i18n-en-inline">How to use</span>
+      <svg viewBox="0 -960 960 960" aria-hidden="true" class="ei" style="width:1.15em;height:1.15em;flex:none;display:inline-block;vertical-align:-.2em;margin-right:.2em;fill:currentColor"><path d="M248-300q53.57 0 104.28 12.5Q403-275 452-250v-427q-45-30-97.62-46.5Q301.76-740 248-740q-38 0-74.5 9.5T100-707v434q31-14 70.5-20.5T248-300Zm264 50q50-25 98-37.5T712-300q38 0 78.5 6t69.5 16v-429q-34-17-71.82-25-37.82-8-76.18-8-54 0-104.5 16.5T512-677v427Zm-44.5 77.5Q461-174 456-178q-47-29-99.85-45-52.84-16-108.15-16-36.54 0-71.77 9T106-208q-23.1 11-44.55-3Q40-225 40-251v-463q0-15 7-27.5T68-761q42-20 87.39-29.5 45.4-9.5 92.61-9.5 63 0 122.5 17T482-731q51-35 109.5-52T712-800q46.87 0 91.93 9.5Q849-781 891-761q14 7 21.5 19.5T920-714v463q0 27.89-22.5 42.45Q875-194 853-208q-34-14-69.23-22.5Q748.54-239 712-239q-54.27 0-106.14 16Q554-207 508-178q-5 4-11.5 5.5T482-171q-8 0-14.5-1.5ZM276-489Zm284-119q0-5.52 4.02-11.34 4.03-5.82 8.98-7.66 30-11 61.34-17 31.33-6 65.91-6 21.61 0 42.68 2.5T784-640q6 2 11 7.4 5 5.39 5 12.13 0 11.47-7.5 17.47-7.5 6-18.5 3-16.8-5-35.4-7.5Q720-610 700-610q-29 0-56 5.5T591-588q-14 5-22.5-.5T560-608Zm0 220q0-5.81 4.02-11.94 4.03-6.12 8.98-8.06 30-11 61.34-16.5 31.33-5.5 65.91-5.5 21.61 0 42.68 2.5T784-420q6 2 11 7.4 5 5.39 5 12.13 0 11.47-7.5 17.47-7.5 6-18.5 3-16.8-5-35.4-7.5Q720-390 700-390q-29 0-56 5t-53 16q-14 5-22.5 0t-8.5-19Zm0-110q0-5.52 4.02-11.34 4.03-5.82 8.98-7.66 30-11 61.34-17 31.33-6 65.91-6 21.61 0 42.68 2.5T784-530q6 2 11 7.4 5 5.39 5 12.13 0 11.47-7.5 17.47-7.5 6-18.5 3-16.8-5-35.4-7.5Q720-500 700-500q-29 0-56 5.5T591-478q-14 5-22.5-.5T560-498Z"/></svg><span class="i18n-en-inline">How to use</span>
     </button>
   </div>
 
@@ -272,7 +272,7 @@
     </section>
 
     <button type="button" class="fd-calc" id="fdCalc">
-      <span class="i18n-en-inline">Calculate placement ❄</span>
+      <span class="i18n-en-inline">Calculate placement <svg viewBox="0 -960 960 960" aria-hidden="true" class="ei" style="width:1.15em;height:1.15em;flex:none;display:inline-block;vertical-align:-.2em;margin-right:.2em;fill:currentColor"><path d="M450-275 321-146q-8 8-20.5 8t-21.5-8q-9-9-9-21.5t9-21.5l171-171v-90h-90L192-282q-8 8-20.5 8.5T150-281q-9-9-9.5-21.5T150-325l125-125H109q-12 0-20.5-8.5T80-480q0-12 8.5-21t21.5-9h165L146-638q-9-9-9-21.5t9-21.5q9-9 21.5-9t21.5 9l171 171h90v-91L282-768q-8-8-8-20.5t8-21.5q9-9 21.5-9t22.5 9l124 124v-164q0-12 8.5-21t21.5-9q12 0 21 9t9 21v164l128-128q9-9 21.5-9t21.5 9q8 9 8 21.5t-9 21.5L510-601v91h91l168-168q8-8 20.5-8t21.5 8q9 9 9 21.5t-9 21.5L686-510h164q12 0 21 9t9 21q0 13-9 21.5t-21 8.5H686l127 129q9 8 9 20.5t-9 20.5q-8 10-20.5 10t-21.5-9L601-450h-91v90l171 173q9 8 9 20.5t-9 20.5q-8 10-20.5 10t-21.5-9L510-275v166q0 12-9 20.5T480-80q-13 0-21.5-8.5T450-110v-165Z"/></svg></span>
     </button>
 
     <!-- 結果 -->
@@ -283,7 +283,7 @@
       <h2 style="margin-top:20px;"><span class="fd-step"><span class="i18n-en-inline">SHARE</span></span><span class="i18n-en-inline">Order text (copy &amp; paste to chat)</span></h2>
       <textarea id="fdShareText" readonly></textarea>
       <div class="fd-sharebtns">
-        <button type="button" id="fdCopy">📋 <span class="i18n-en-inline">Copy</span></button>
+        <button type="button" id="fdCopy"><svg viewBox="0 -960 960 960" aria-hidden="true" class="ei" style="width:1.15em;height:1.15em;flex:none;display:inline-block;vertical-align:-.2em;margin-right:.2em;fill:currentColor"><path d="M180-120q-26 0-43-17t-17-43v-600q0-26 17-43t43-17h202q7-35 34.5-57.5T480-920q36 0 63.5 22.5T578-840h202q26 0 43 17t17 43v600q0 26-17 43t-43 17H180Zm0-60h600v-600h-60v60q0 12.75-8.62 21.37Q702.75-690 690-690H270q-12.75 0-21.37-8.63Q240-707.25 240-720v-60h-60v600Zm328.5-611.5Q520-803 520-820t-11.5-28.5Q497-860 480-860t-28.5 11.5Q440-837 440-820t11.5 28.5Q463-780 480-780t28.5-11.5Z"/></svg><span class="i18n-en-inline">Copy</span></button>
         <button type="button" id="fdShare">↗ <span class="i18n-en-inline">Share</span></button>
       </div>
     </section>
@@ -297,7 +297,7 @@
   <div class="fd-modal-bg" data-close="1"></div>
   <div class="fd-modal-panel">
     <div class="fd-modal-head">
-      <span class="tt" id="fdGuideTitle">📖 <span class="i18n-en-inline">How to use</span></span>
+      <span class="tt" id="fdGuideTitle"><svg viewBox="0 -960 960 960" aria-hidden="true" class="ei" style="width:1.15em;height:1.15em;flex:none;display:inline-block;vertical-align:-.2em;margin-right:.2em;fill:currentColor"><path d="M248-300q53.57 0 104.28 12.5Q403-275 452-250v-427q-45-30-97.62-46.5Q301.76-740 248-740q-38 0-74.5 9.5T100-707v434q31-14 70.5-20.5T248-300Zm264 50q50-25 98-37.5T712-300q38 0 78.5 6t69.5 16v-429q-34-17-71.82-25-37.82-8-76.18-8-54 0-104.5 16.5T512-677v427Zm-44.5 77.5Q461-174 456-178q-47-29-99.85-45-52.84-16-108.15-16-36.54 0-71.77 9T106-208q-23.1 11-44.55-3Q40-225 40-251v-463q0-15 7-27.5T68-761q42-20 87.39-29.5 45.4-9.5 92.61-9.5 63 0 122.5 17T482-731q51-35 109.5-52T712-800q46.87 0 91.93 9.5Q849-781 891-761q14 7 21.5 19.5T920-714v463q0 27.89-22.5 42.45Q875-194 853-208q-34-14-69.23-22.5Q748.54-239 712-239q-54.27 0-106.14 16Q554-207 508-178q-5 4-11.5 5.5T482-171q-8 0-14.5-1.5ZM276-489Zm284-119q0-5.52 4.02-11.34 4.03-5.82 8.98-7.66 30-11 61.34-17 31.33-6 65.91-6 21.61 0 42.68 2.5T784-640q6 2 11 7.4 5 5.39 5 12.13 0 11.47-7.5 17.47-7.5 6-18.5 3-16.8-5-35.4-7.5Q720-610 700-610q-29 0-56 5.5T591-588q-14 5-22.5-.5T560-608Zm0 220q0-5.81 4.02-11.94 4.03-6.12 8.98-8.06 30-11 61.34-16.5 31.33-5.5 65.91-5.5 21.61 0 42.68 2.5T784-420q6 2 11 7.4 5 5.39 5 12.13 0 11.47-7.5 17.47-7.5 6-18.5 3-16.8-5-35.4-7.5Q720-390 700-390q-29 0-56 5t-53 16q-14 5-22.5 0t-8.5-19Zm0-110q0-5.52 4.02-11.34 4.03-5.82 8.98-7.66 30-11 61.34-17 31.33-6 65.91-6 21.61 0 42.68 2.5T784-530q6 2 11 7.4 5 5.39 5 12.13 0 11.47-7.5 17.47-7.5 6-18.5 3-16.8-5-35.4-7.5Q720-500 700-500q-29 0-56 5.5T591-478q-14 5-22.5-.5T560-498Z"/></svg><span class="i18n-en-inline">How to use</span></span>
       <button type="button" class="fd-modal-close" data-close="1" aria-label="閉じる / Close">✕</button>
     </div>
     <div class="fd-modal-body">
@@ -392,7 +392,7 @@
       </div>
 
       <div class="fd-gtip">
-        💡 <span class="i18n-en-inline"><b>When a split order appears:</b> pick members from that alliance so the moved power roughly matches the stated amount (e.g. ~1.9B). Member counts are only a guide — matching by power is what matters.</span>
+        <svg viewBox="0 -960 960 960" aria-hidden="true" class="ei" style="width:1.15em;height:1.15em;flex:none;display:inline-block;vertical-align:-.2em;margin-right:.2em;fill:currentColor"><path d="M422.5-103.5Q399-127 399-161h162q0 34-23.5 57.5T480-80q-34 0-57.5-23.5ZM348-223q-13 0-21.5-8.5T318-253q0-13 8.5-21.5T348-283h264q13 0 21.5 8.5T642-253q0 13-8.5 21.5T612-223H348Zm-25-121q-66-43-104.5-107.5T180-597q0-122 89-211t211-89q122 0 211 89t89 211q0 81-38 145.5T637-344H323Zm22-60h271q48-32 76-83t28-110q0-99-70.5-169.5T480-837q-99 0-169.5 70.5T240-597q0 59 28 110t77 83Zm135 0Z"/></svg><span class="i18n-en-inline"><b>When a split order appears:</b> pick members from that alliance so the moved power roughly matches the stated amount (e.g. ~1.9B). Member counts are only a guide — matching by power is what matters.</span>
       </div>
 
     </div>
@@ -428,7 +428,7 @@
 <div id="foot"></div>
 
 <script src="/assets/config.js?v=96"></script>
-<script src="/assets/toolkit.js?v=136"></script>
+<script src="/assets/toolkit.js?v=141"></script>
 <script>
   try{
     document.getElementById('nav').innerHTML = window.WOS_NAV(2);

@@ -18,7 +18,7 @@
 <title>Foundry Battle Simulator | Whiteout Tools Lab</title>
 <meta name="description" content="Whiteout Survival Foundry Battle field tool: plan team assignments per phase and run a mock battle against enemies to see how capture points evolve. Share the plan with your alliance.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
-<link rel="stylesheet" href="/assets/site.css?v=137">
+<link rel="stylesheet" href="/assets/site.css?v=141">
 <script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
 <style>
   /* ===== 兵器工場争奪戦ツール(アイスブルー基調・スコープ .fs) ===== */
@@ -433,6 +433,7 @@
 <h1 id="h1"></h1>
 <div id="updbox"></div>
 <p class="lead" id="lead"></p>
+<figure class="kv"><img src="/assets/kv/foundry.webp?v=1" alt="" width="1000" height="500" decoding="async"></figure>
 <section class="tool-about" id="tool-about"><div class="i18n-en"><div class="tab-head"><h2>About this tool</h2><a href="#tool-article">Full explanation & FAQ<span class="ms-slot" data-ms="keyboard_arrow_down"></span></a></div><div class="tab-grid"><div class="tab-col"><h3><span class="ms-slot" data-ms="lightbulb"></span>What this tool tells you</h3><p>Preview the 60-minute Foundry Battle in two modes: an operation planner and a mock battle. Assign facilities to each team per phase and see how occupation points move and which facilities to defend when the enemy's strength changes.</p></div><div class="tab-col"><h3><span class="ms-slot" data-ms="calculate"></span>How it works</h3><p>The event's basic rules from measurements and public info (prep time, when the central facility opens, the corner weapon workshops, ~120 s to capture, half of a facility's stored points lost when captured) are modelled, and points are computed as your teams follow the plan. In mock battle the enemy attacks and defends automatically at weaker / equal / stronger strength. It's an unofficial estimate; the live game takes precedence.</p></div><div class="tab-col"><h3><span class="ms-slot" data-ms="touch_app"></span>How to use it</h3><p>In the planner, set up to 8 teams and their leaders, assign facilities per phase and press Start to advance time. In the mock battle, choose the enemy strength and read the result and advice. Use Share (top right) to copy a URL that opens the same plan on your alliance members' screens.</p></div></div></div></section>
 
 
@@ -527,7 +528,7 @@
 <div class="fb-toast" id="toast" role="status" aria-live="polite"></div>
 
 <script src="/assets/config.js?v=96"></script>
-<script src="/assets/toolkit.js?v=136"></script>
+<script src="/assets/toolkit.js?v=141"></script>
 <script>
   try{
     document.getElementById('nav').innerHTML = window.WOS_NAV(2);

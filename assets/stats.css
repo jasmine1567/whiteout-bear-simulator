@@ -449,3 +449,10 @@ details.faq .faq-a .g{font-size:10px;color:var(--muted);margin:0 5px 0 2px}
 .gf-row:has([data-hero]) b{min-width:0;grid-column:1/-1}
 .gf-row [data-hero]{min-width:0;overflow:hidden}
 @media(max-width:560px){.tldr .tl-v .hi{display:none}.gf-row .g{display:none}}
+/* 課金帯別の理論最適: 1行に「課金帯名 ＋ 顔アイコン3つ（盾・槍・弓の順）」 */
+.point ul.pt-grid li{grid-template-columns:minmax(0,1fr) auto !important;gap:10px}
+.point ul.pt-grid .pt-v{display:flex !important;gap:6px}
+.point ul.pt-grid .pt-v [data-hero]{font-size:0;overflow:visible}
+.point ul.pt-grid .pt-v .hi{display:block !important;width:30px;height:30px;margin:0;border-radius:50%}
+.point ul.pt-grid .pt-v .cls{display:none !important}
+@media(max-width:560px){.rk-row.trio .rk-h{font-size:11.5px;letter-spacing:-.02em}.rk-row.trio .rk-h .cls{margin-right:2px !important}}
