@@ -165,7 +165,7 @@ window.WOS_heroImg = function(h){
     '/tools/hero-list/': 'heroes', '/tools/left-hero/': 'shield', '/tools/troop-ratio/': 'mixing', '/tools/damage-doctor/': 'doctor', '/tools/king-castle/': 'castle',
     '/tools/foundry-battle/': 'foundry', '/tools/commander-type/': 'raiders', '/stats/': 'bear', '/stats/methodology.html': 'blackboard', '/recruit.html': 'board', '/about.html': 'welcome' };
   function keyVisual(path){
-    var name = KV[path] || KV[path.replace(/index\.html$/, '')]; if(!name || D.querySelector('.kv')) return;
+    var name = KV[path] || KV[path.replace(/index\.html$/, '')]; if(!name || D.querySelector('figure.kv')) return;
     var wrap = D.querySelector('.wrap') || D.querySelector('main'); if(!wrap) return;
     var anchor = wrap.querySelector('.lead') || wrap.querySelector('h1'); if(!anchor) return;
     if(EN){ var be = D.getElementById('bodyen'); if(be && be.querySelector('.lead,h1')) anchor = be.querySelector('.lead') || be.querySelector('h1'); }
