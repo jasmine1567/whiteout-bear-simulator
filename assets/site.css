@@ -644,3 +644,13 @@ h3{color:var(--text)}
 .greg-says .gs-txt{position:relative;background:#fff;border-radius:12px;padding:10px 13px;box-shadow:0 1px 4px rgba(28,34,80,.08);line-height:1.75}
 .greg-says .gs-txt:before{content:"";position:absolute;left:-7px;bottom:16px;border:7px solid transparent;border-left:0;border-right-color:#fff}
 @media(max-width:560px){.callout.greg-says{gap:8px;padding-right:10px}.greg-says .gs-pic{width:72px}}
+
+/* 解説枠（v142）: 話し手は丸い顔アイコンで上にそろえる */
+.callout.greg-says{align-items:flex-start;gap:12px;padding:14px 16px;background:#f6f8fc;border:1px solid #e3e7f0;border-radius:14px;overflow:visible}
+.greg-says .gs-pic{width:64px;height:64px;align-self:flex-start;border-radius:50%;background:#dfe8fb;object-fit:cover;filter:none;box-shadow:0 0 0 2px #fff,0 1px 4px rgba(20,24,40,.18)}
+.greg-says.sp-molly .gs-pic{background:#fde6cf}
+.greg-says .gs-body{padding:0}
+.greg-says .gs-tag{margin-bottom:6px}
+.greg-says.sp-molly .gs-tag{color:#a85a12;background:#fdebd8}
+.greg-says .gs-txt:before{bottom:auto;top:12px}
+@media(max-width:560px){.callout.greg-says{gap:10px;padding:12px}.greg-says .gs-pic{width:48px;height:48px}}

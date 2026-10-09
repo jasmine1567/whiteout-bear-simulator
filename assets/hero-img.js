@@ -45,17 +45,8 @@ window.WOS_heroImg = function(h){
       + '.hero-band a{font-size:13px;font-weight:800;color:inherit;text-decoration:none;border-bottom:1.5px solid currentColor;padding-bottom:1px}'
       + '.hero-card.hero-hit{outline:3px solid #ff7a2f;outline-offset:2px}.hero-card{scroll-margin-top:300px}'
       + '@media(max-width:560px){.hero-strip a{width:54px}.hero-strip img{width:46px;height:46px}.hero-band .hb-f img{width:38px;height:38px}}'
-      + '.kv{margin:14px 0 20px;border-radius:14px;overflow:hidden;background:#e9ecf3;aspect-ratio:5/2}.kv img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 40%}@media(max-width:640px){.kv{aspect-ratio:2/1;border-radius:12px}}'
-      + '@media print{.kv{display:none}}'
       + '.hx.sq{border-radius:24%;box-shadow:0 1px 3px rgba(28,34,80,.25)}'
       + 'table .hx.sq{width:2.3em;height:2.3em;vertical-align:-.75em;margin-right:.45em}'
-      + '.callout.greg-says{display:flex !important;align-items:flex-end;gap:12px;padding:12px 16px 0 6px;background:linear-gradient(135deg,#f3f7ff,#fdf8f2);border:1px solid #dfe6f5;border-radius:16px;overflow:hidden}'
-      + '.greg-says .gs-pic{flex:none;width:104px;height:auto;align-self:flex-end;display:block;filter:drop-shadow(0 3px 6px rgba(28,34,80,.18))}'
-      + '.greg-says .gs-body{flex:1;min-width:0;padding:2px 0 14px}'
-      + '.greg-says .gs-tag{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#3b5fa8;background:#e3ecff;border-radius:999px;padding:2px 9px;margin-bottom:5px}'
-      + '.greg-says .gs-txt{position:relative;background:#fff;border-radius:12px;padding:10px 13px;box-shadow:0 1px 4px rgba(28,34,80,.08);line-height:1.75}'
-      + '.greg-says .gs-txt:before{content:"";position:absolute;left:-7px;bottom:16px;border:7px solid transparent;border-left:0;border-right-color:#fff}'
-      + '@media(max-width:560px){.callout.greg-says{gap:8px;padding-right:10px}.greg-says .gs-pic{width:72px}}'
       + '@media print{.hx,.hero-strip,.hero-band,.gs-pic{display:none}}';
     D.head.appendChild(st);
   }
@@ -160,9 +151,9 @@ window.WOS_heroImg = function(h){
       var tw = D.createTreeWalker(txt, NodeFilter.SHOW_TEXT, null), first;
       while((first = tw.nextNode())){ if(first.nodeValue.trim()){ first.nodeValue = first.nodeValue.replace(/^\s*(?:[\u2190-\u2BFF\u3030\u303D\u3297\u3299]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|\uD83E[\uDC00-\uDFFF])[\uFE0F\u200D]*\s*/, ''); break; } }
       var body = D.createElement('div'); body.className = 'gs-body';
-      body.innerHTML = '<span class="gs-tag no-hero-ico">' + (EN ? "GREG'S NOTE" : 'グレッグの解説') + '</span>';
+      body.innerHTML = '<span class="gs-tag no-hero-ico">' + (c.classList.contains('tip') ? (EN ? "MOLLY'S TIP" : 'ジャスミンのヒント') : (EN ? "GREG'S NOTE" : 'グレッグの解説')) + '</span>';
       body.appendChild(txt);
-      var img = D.createElement('img'); img.className = 'gs-pic'; img.src = '/assets/img/greg-bust.webp?v=' + XV; img.alt = ''; img.loading = 'lazy'; img.decoding = 'async'; img.width = 422; img.height = 300;
+      var img = D.createElement('img'); img.className = 'gs-pic'; var mo = c.classList.contains('tip'); img.src = '/assets/img/' + (mo ? 'sp-molly' : 'sp-greg') + '.webp?v=1'; if(mo) c.classList.add('sp-molly'); img.alt = ''; img.loading = 'lazy'; img.decoding = 'async'; img.width = 176; img.height = 176;
       c.appendChild(img); c.appendChild(body); c.classList.add('greg-says');
     });
   }
