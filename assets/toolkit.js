@@ -656,3 +656,23 @@
   function start(){ setTimeout(function(){ run(); try{ new MutationObserver(kick).observe(D.body, { childList: true, characterData: true, subtree: true }); }catch(e){} }, 0); }
   if(D.readyState !== 'loading') start(); else D.addEventListener('DOMContentLoaded', start);
 })();
+
+/* ==== ヘッダー固定 ====
+   PC: 常に表示。スマホ（幅900px以下）: 下にスクロールしている間は隠し、少しでも上に戻すと出す（画面が狭いので本文を優先）。
+   --navh に「いま見えているヘッダーの高さ」を入れる（ページ内で上に貼り付く部品が重ならないように使う） */
+(function(){
+  var D = document, R = D.documentElement, nav, last = 0, tick = false;
+  function h(){ return nav ? nav.offsetHeight : 0; }
+  function set(hidden){ nav.classList.toggle('nav-hide', hidden); R.style.setProperty('--navh', (hidden ? 0 : h()) + 'px'); }
+  function upd(){
+    tick = false; if(!nav) return;
+    var y = window.pageYOffset || 0, small = window.innerWidth <= 900, open = !!nav.querySelector('.open');
+    if(!small || open || y < 160) set(false);
+    else if(y > last + 6) set(true);
+    else if(y < last - 6) set(false);
+    last = y;
+  }
+  function on(){ if(!tick){ tick = true; (window.requestAnimationFrame || setTimeout)(upd); } }
+  function start(){ nav = D.getElementById('nav'); if(!nav) return; set(false); window.addEventListener('scroll', on, { passive: true }); window.addEventListener('resize', on); setTimeout(upd, 400); }
+  if(D.readyState !== 'loading') start(); else D.addEventListener('DOMContentLoaded', start);
+})();
