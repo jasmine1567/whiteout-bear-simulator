@@ -655,9 +655,9 @@ h3{color:var(--text)}
 .greg-says .gs-txt:before{bottom:auto;top:12px}
 @media(max-width:560px){.callout.greg-says{gap:10px;padding:12px}.greg-says .gs-pic{width:48px;height:48px}}
 
-/* 話し手の追加（v143）: 注意＝バシティ、よくある質問＝考える青年 */
-.greg-says.sp-bahiti{background:#fff7f5;border-color:#f3d6d0}
-.greg-says.sp-bahiti .gs-pic{background:#fbdcd6}.greg-says.sp-bahiti .gs-tag{color:#b3402f;background:#fde3de}
+/* 話し手の追加（v143）: 注意＝アクモス、よくある質問＝考える青年 */
+.greg-says.sp-ahmose{background:#fff7f5;border-color:#f3d6d0}
+.greg-says.sp-ahmose .gs-pic{background:#fbdcd6}.greg-says.sp-ahmose .gs-tag{color:#b3402f;background:#fde3de}
 .greg-says.sp-molly .gs-pic,.greg-says.sp-molly{}
 h2:has(>.faq-pic){display:flex;align-items:center;gap:10px}
 h2>.faq-pic{flex:none;width:44px;height:44px;border-radius:50%;background:#dcebe3;object-fit:cover;box-shadow:0 0 0 2px #fff,0 1px 4px rgba(20,24,40,.18)}
