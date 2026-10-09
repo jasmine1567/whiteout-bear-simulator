@@ -17,7 +17,7 @@
 <title>熊狩り・対人戦 英雄一覧・データベース｜全65英雄を世代・兵種・役割で検索 | ホワサバ ツールラボ</title>
 <meta name="description" content="ホワイトアウトサバイバルの全65英雄を一覧化したデータベース。世代・兵種(歩/槍/弓)・レアリティ・役割(集結主/乗り手/専用装備/成長型)で検索。各英雄のスキル・専用装備、探検/遠征スキルの仕組みも解説。熊狩り・対人戦の編成検討に。">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.google-analytics.com; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; object-src 'none'; base-uri 'none'">
-<link rel="stylesheet" href="/assets/site.css?v=143">
+<link rel="stylesheet" href="/assets/site.css?v=146">
 <script>(function(){try{var en=/^\/en(\/|$)/.test(location.pathname);document.documentElement.setAttribute("data-wos-lang",en?"en":"ja");}catch(e){document.documentElement.setAttribute("data-wos-lang","ja");}})();</script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=85"><link rel="icon" type="image/png" href="/favicon.png?v=85"><link rel="shortcut icon" href="/favicon.ico?v=85"><link rel="apple-touch-icon" href="/favicon.png?v=85">
 <meta property="og:type" content="website"><meta property="og:site_name" content="ホワサバ ツールラボ">
@@ -30,7 +30,7 @@
   .hl-stats{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
   .hl-stat{background:#fff;border:1px solid #e5e7f2;border-radius:10px;padding:7px 13px;font-size:13px;color:#1d2233;font-weight:700}
   .hl-stat b{color:#e85d12;font-size:15px;margin-right:3px}
-  .hl-controls{position:sticky;top:0;z-index:5;background:#faf7f2;border:1px solid #ecdcc0;border-radius:12px;padding:11px 13px;margin:10px 0 16px;box-shadow:0 2px 6px rgba(40,30,10,.04)}
+  .hl-controls{position:sticky;top:var(--navh,0px);transition:top .22s ease;z-index:5;background:#faf7f2;border:1px solid #ecdcc0;border-radius:12px;padding:11px 13px;margin:10px 0 16px;box-shadow:0 2px 6px rgba(40,30,10,.04)}
   .hl-top{display:flex;gap:8px;align-items:center}
   .hl-search{flex:1;min-width:0;box-sizing:border-box;padding:9px 12px;border:1px solid #d8c4a0;border-radius:9px;font-size:14px;font-family:inherit}
   .hl-toggle{display:none}
@@ -1332,7 +1332,7 @@
 </section>
 <div id="foot"></div>
 </div>
-<script src="/assets/config.js?v=96"></script><script src="/assets/toolkit.js?v=143"></script><script src="/assets/hero-img.js?v=143"></script>
+<script src="/assets/config.js?v=96"></script><script src="/assets/toolkit.js?v=146"></script><script src="/assets/hero-img.js?v=143"></script>
 <script>
   document.getElementById('nav').innerHTML = window.WOS_NAV(2);
   document.getElementById('foot').innerHTML = window.WOS_FOOT(2);

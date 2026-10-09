@@ -661,3 +661,10 @@ h3{color:var(--text)}
 .greg-says.sp-molly .gs-pic,.greg-says.sp-molly{}
 h2:has(>.faq-pic){display:flex;align-items:center;gap:10px}
 h2>.faq-pic{flex:none;width:44px;height:44px;border-radius:50%;background:#dcebe3;object-fit:cover;box-shadow:0 0 0 2px #fff,0 1px 4px rgba(20,24,40,.18)}
+
+/* ヘッダー固定（v146）: PCは常に表示。スマホは下にスクロール中だけ隠し、上に戻すとすぐ出る */
+#nav{position:sticky;top:0;z-index:40;transition:transform .22s ease}
+#nav.nav-hide{transform:translateY(-100%)}
+html{scroll-padding-top:calc(var(--navh,60px) + 10px)}
+@media(prefers-reduced-motion:reduce){#nav{transition:none}}
+@media print{#nav{position:static}}
