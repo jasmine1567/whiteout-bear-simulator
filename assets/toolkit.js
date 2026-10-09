@@ -475,7 +475,7 @@
         +'.tw-embed blockquote.twitter-tweet a{color:#e85d12;word-break:break-all}';
       document.head.appendChild(s);
     }
-    /* 記事ファイル名 → 出典リスト。k: of=公式 / st=攻略サイト / cm=コミュニティ・X / we=当サイト */
+    /* 記事ファイル名 → 出典リスト。k: of=公式 / st=攻略サイト / we=当サイト */
     var SRC={
       'bear-hunt-guide.html':[
         ['st','アルテマ「熊狩行動でダメージが出る方法を検証してみた」(公式Xでも紹介された実測検証)','Altema: Bear Hunt damage verification (featured by the official X account)','https://altema.jp/whiteoutsurvival/kumakarikensyou'],
@@ -495,15 +495,12 @@
         ['we','当サイト:熊狩ダメージ・シミュレーター(編成A/B比較)','This site: Bear Hunt Damage Simulator','/tools/bear-hunt/']],
       'damage-not-growing.html':[
         ['st','アルテマ「熊狩行動でダメージが出る方法を検証してみた」(要因別の実測上昇率)','Altema: damage verification (measured gain per factor)','https://altema.jp/whiteoutsurvival/kumakarikensyou'],
-        ['cm','まゆか【ホワサバ攻略】:ダメージが伸びない原因の解説動画(X)','Mayuka (JP strategy YouTuber): why damage stalls, on X','https://x.com/mayuka_wos/status/1821853719958581403'],
         ['we','当サイト:ダメージが伸びない原因診断ツール','This site: Damage Doctor tool','/tools/damage-doctor/']],
       'f2p-damage.html':[
         ['st','アルテマ「熊狩行動でダメージが出る方法を検証してみた」(課金に依らない上昇要素の実測)','Altema: damage verification (measured gains from non-paid factors)','https://altema.jp/whiteoutsurvival/kumakarikensyou'],
-        ['cm','かかち先生:熊狩り特化ペット育成ガイド(無課金・微課金向け/note)','Kakachi-sensei: Bear Hunt pet guide for F2P/light spenders (note, JP)','https://note.com/ocatyan_0227/n/ndf5970ff7ab9'],
         ['we','当サイト:シリル徹底研究(無課金で+30%の狩人の心得)','This site: Cyrille deep-dive (+30% talent, free to level)','cyril-expert.html']],
       'light-spender.html':[
         ['st','アルテマ「熊狩行動でダメージが出る方法を検証してみた」(強化要素別の費用対効果の目安)','Altema: damage verification (cost-effectiveness reference per upgrade)','https://altema.jp/whiteoutsurvival/kumakarikensyou'],
-        ['cm','かかち先生:熊狩り特化ペット育成ガイド(note)','Kakachi-sensei: Bear Hunt pet guide (note, JP)','https://note.com/ocatyan_0227/n/ndf5970ff7ab9'],
         ['we','当サイト:シリル徹底研究(専門家の育成優先度)','This site: Cyrille deep-dive (expert priority)','cyril-expert.html']],
       'cyril-talent.html':[
         ['of','ホワサバ公式wiki「シリル」(スキル・才能の一次情報)','Official WOS wiki: Cyrille (primary source)','https://www.whiteoutsurvival.wiki/ja/experts/%e3%82%b7%e3%83%aa%e3%83%ab/'],
@@ -511,7 +508,6 @@
         ['we','当サイト:シリル徹底研究(全スキル一覧と育成優先度)','This site: Cyrille deep-dive (all skills & priority)','cyril-expert.html']],
       'beginner-faq.html':[
         ['st','アルテマ「熊狩行動のおすすめ英雄編成と兵士比率」','Altema: Bear Hunt formations & ratio (JP)','https://altema.jp/whiteoutsurvival/kumakari'],
-        ['cm','ロコのカンタン攻略ガイド「熊狩行動の攻略法(初心者&無課金向け)」','Roko: Bear Hunt basics for beginners (JP)','https://game.mariboshi.com/ws-kuma/'],
         ['of','ホワサバ公式X:ユーザー発信の熊狩り攻略紹介','Official WOS Japan X: community guide feature','https://x.com/WOS_Japan/status/1753357597321912642']],
       'common-myths.html':[
         ['st','アルテマ「熊狩行動でダメージが出る方法を検証してみた」(俗説の検証に使える実測データ)','Altema: damage verification (measured data useful against myths)','https://altema.jp/whiteoutsurvival/kumakarikensyou'],
