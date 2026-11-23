@@ -160,7 +160,46 @@ export function validateUsage(b) {
   /* 実測ダメージ（任意）。精度の検証用に保存するだけで、どの応答にも含めない */
   const obs = b.observed == null || b.observed === '' ? null : num(b.observed, 1, 1e13);
   const mv = int(b.mv, 1, 99) || 1;
-  return { errors: e, observed: obs === null ? null : Math.round(obs), mv, cid, gen, heroes, gear, joiners, stats, tier, fc, troops, ratio, damage: damage === null ? null : Math.round(damage), calib, sub };
+  /* 利用者が自分で選んだかどうかの印（2026-11 以降の画面から届く。古い画面からは届かない＝null）
+     gc: 「現在の世代」を自分で選んだ（記録だけ） ／ lt: 集結主の英雄を選び直した ／ jt: 乗せ英雄を選び直した（lt・jt は英雄の利用度で使う） */
+  const flag01 = x => x == null ? null : (x === 1 || x === true || x === '1' ? 1 : 0);
+  const gc = flag01(b.gc), lt = flag01(b.lt), jt = flag01(b.jt);
+  return { errors: e, observed: obs === null ? null : Math.round(obs), mv, cid, gen, heroes, gear, joiners, stats, tier, fc, troops, ratio, damage: damage === null ? null : Math.round(damage), calib, sub, gc, lt, jt };
+}
+/* ---- 「現在の世代」が最初から最新世代（第17世代）になっていた時期の初期値データ ----
+   利用データの自動記録を始めた 2026-10-07 から、世代の選択を必須にした 2026-10-09（v148）までは、
+   世代を選び直さずに計算した人のデータがすべて第17世代として届いていた。
+   その時期のまま更新されていない第17世代の行は、第17世代の英雄を1人でも使っているものだけを残し、
+   それ以外は消さずに status='flagged'（flag='gen_default'）にして集計から外す。
+   - 判定は「最後に更新された時刻」で行う。v148 以降の画面は世代を自分で選ばないと送らないので、境目より後に届いた行は対象にしない
+     （同じ人が後で世代を選んで計算し直せば updated_at が進み、集計に戻る）
+   - 境目は既定で 2026-10-11 00:00（日本時間）。古い画面を開いたままだった人のぶんを見込んで、v148 の公開から1日あけてある。
+     変えたいときは wrangler.toml の GEN_DEFAULT_UNTIL（例 "2026-10-10T15:00:00Z"）
+   - gc（世代を自分で選んだ印。v150 以降の画面が付ける）は記録として保存するだけで、この判定には使わない */
+export const GEN_DEFAULT = 17;
+const GEN_DEFAULT_HEROES = HEROES.filter(h => h.gen === GEN_DEFAULT).map(h => h.id);
+export function genDefaultUntil(env = {}) {
+  const t = Date.parse(env.GEN_DEFAULT_UNTIL || '2026-10-10T15:00:00Z');
+  return Number.isFinite(t) ? Math.floor(t / 1000) : 0;
+}
+/* 保存済みの行にかける（集計のたびに実行。何度実行しても結果は同じ） */
+async function flagGenDefault(env) {
+  const until = genDefaultUntil(env);
+  if (!GEN_DEFAULT_HEROES.length || !until) return 0;
+  const cond = GEN_DEFAULT_HEROES.map(() => "hero_inf<>? AND hero_lan<>? AND hero_mks<>? AND (',' || joiners || ',') NOT LIKE ?").join(' AND ');
+  const args = GEN_DEFAULT_HEROES.flatMap(id => [id, id, id, '%,' + id + ',%']);
+  const r = await env.DB.prepare(`UPDATE usage SET status='flagged', flag='gen_default' WHERE gen=? AND status='ok' AND updated_at < ? AND ${cond}`).bind(GEN_DEFAULT, until, ...args).run();
+  return (r.meta && r.meta.changes) || 0;
+}
+/* v150 で usage に足した列。DB にまだ無ければ Worker が自分で足す（手作業の migrations/005 を実行済みなら何もしない） */
+const NEW_COLS = ['gen_chosen', 'lead_touched', 'join_touched'];
+const NEW_COLS_RE = /gen_chosen|lead_touched|join_touched/;
+async function ensureColumns(env) {
+  for (const c of NEW_COLS) {
+    try { await env.DB.prepare(`ALTER TABLE usage ADD COLUMN ${c} INTEGER`).run(); }
+    catch (err) { if (!/duplicate column/i.test(String(err && err.message || err))) return false; }
+  }
+  return true;
 }
 /* 現実性チェック。理由を返したデータは保存するが status='flagged' にして集計から外す（あとで基準を見直せるように捨てない） */
 export function realism(v, lim) {
@@ -196,10 +235,25 @@ async function migrateModel(env) {
   return rows.length;
 }
 
-/* 偏差値の母集団（ダメージの常用対数の平均・標準偏差）。両端の極端な値は四分位で除外 */
-export function devStats(damages) {
+/* ダメージの母集団: 常用対数にして、両端の極端な値（四分位範囲の3倍より外）を除いたもの（昇順）。
+   ダメージは桁で広がる（対数正規に近い）ので、外れ値は必ず対数の上で判定する。
+   対数にせず 1.5×IQR で切ると上位1割ほどが毎回落ち、中央値や上位ラインが実際より低く出る（v150 で修正） */
+export function logTrim(damages) {
   let xs = damages.filter(d => d > 0).map(d => Math.log10(d)).sort((a, b) => a - b);
   if (xs.length >= 8) { const q1 = quantile(xs, 0.25), q3 = quantile(xs, 0.75), k = 3 * (q3 - q1); xs = xs.filter(x => x >= q1 - k && x <= q3 + k); }
+  return xs;
+}
+/* 分位（線形補間）。sorted は昇順、p は 0〜1 */
+export function quantLin(sorted, p) {
+  if (!sorted.length) return null;
+  const pos = (sorted.length - 1) * Math.max(0, Math.min(1, p)), lo = Math.floor(pos), hi = Math.ceil(pos);
+  return sorted[lo] + (sorted[hi] - sorted[lo]) * (pos - lo);
+}
+const DEV_QP = [1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 99];
+/* 偏差値の母集団（ダメージの常用対数の平均・標準偏差）。
+   q は「下から p% の人のダメージ」の表（シミュレーターが「上位◯%」「上位25%ラインまであと◯%」を出すのに使う） */
+export function devStats(damages) {
+  const xs = logTrim(damages);
   if (xs.length < 5) return null;
   const mu = xs.reduce((a, x) => a + x, 0) / xs.length;
   const sd = Math.sqrt(xs.reduce((a, x) => a + (x - mu) * (x - mu), 0) / xs.length);
@@ -208,7 +262,8 @@ export function devStats(damages) {
   const hist = []; for (let lo = 20; lo < 80; lo += 5) hist.push({ lo, n: 0 });
   xs.forEach(x => { const s = 50 + 10 * (x - mu) / sd; const i = Math.max(0, Math.min(hist.length - 1, Math.floor((s - 20) / 5))); hist[i].n++; });
   return { n: xs.length, mu: Math.round(mu * 1e5) / 1e5, sd: Math.round(sd * 1e5) / 1e5, scale: 'log10',
-           marks: [30, 40, 50, 60, 70].map(s => ({ score: s, damage: at(s) })), hist };
+           marks: [30, 40, 50, 60, 70].map(s => ({ score: s, damage: at(s) })), hist,
+           q: { p: DEV_QP, d: DEV_QP.map(p => Math.round(Math.pow(10, quantLin(xs, p / 100)))) } };
 }
 
 /* ---------- 投稿直後に返す診断 ---------- */
@@ -234,10 +289,62 @@ function diagnose(v, rows) {
 
 /* ---------- 集計 ---------- */
 function quantile(sorted, q) { if (!sorted.length) return null; const i = Math.min(sorted.length - 1, Math.floor(sorted.length * q)); return sorted[i]; }
-function iqrFilter(vals) {
-  if (vals.length < 8) return vals;
-  const s = [...vals].sort((a, b) => a - b), q1 = quantile(s, 0.25), q3 = quantile(s, 0.75), k = 1.5 * (q3 - q1);
-  return s.filter(v => v >= q1 - k && v <= q3 + k);
+
+/* ---- 要素別の分布（シミュレーターの結果画面「要素別の位置」用）。利用データだけで作る ----
+   stat   … 攻撃・殺傷の効き。兵種の構成比で重みをつけた (1+攻撃%)×(1+殺傷%)。シミュレーター側も同じ式で自分の値を出して比べる
+   troops … 兵士の合計数（初期値の 2万/6万/12万 のままの行は、入力していないとみなして除く）
+   tier   … 兵種Tierと火晶レベルの組ごとの人数（キーは "Tier:火晶"）
+   gear   … 集結主3人の専用装備レベルの合計（0〜30）ごとの人数
+   stat と troops は 0,5,10,…,100% の分位の表で出す */
+const FACTOR_QP = Array.from({ length: 21 }, (_, i) => i * 5);
+export function statIndex(r) {
+  const w = [r.ratio_inf, r.ratio_lan, r.ratio_mks], a = [r.atk_inf, r.atk_lan, r.atk_mks], l = [r.leth_inf, r.leth_lan, r.leth_mks];
+  if ([r.team_atk, r.team_leth, ...w, ...a, ...l].some(x => x == null)) return null;
+  let s = 0, ws = 0;
+  for (let i = 0; i < 3; i++) { s += w[i] * (1 + (r.team_atk + a[i]) / 100) * (1 + (r.team_leth + l[i]) / 100); ws += w[i]; }
+  return ws > 0 ? s / ws : null;
+}
+const isDefaultTroops = r => r.troops === 200000 && r.ratio_inf === 10 && r.ratio_lan === 30 && r.ratio_mks === 60;
+function factorStats(rs, minPub) {
+  const us = rs.filter(r => r.u);
+  if (us.length < minPub) return null;
+  const asc = (a, b) => a - b;
+  const table = (arr, digits) => { const k = Math.pow(10, digits); return arr.length >= minPub ? { n: arr.length, q: FACTOR_QP.map(p => Math.round(quantLin(arr, p / 100) * k) / k) } : null; };
+  const stat = us.map(statIndex).filter(x => x != null && x > 0).sort(asc);
+  const troops = us.filter(r => r.troops > 0 && !isDefaultTroops(r)).map(r => r.troops).sort(asc);
+  const tier = {}; let tn = 0;
+  us.forEach(r => { if (r.troop_tier != null) { const k = r.troop_tier + ':' + (r.fc_level || 0); tier[k] = (tier[k] || 0) + 1; tn++; } });
+  const gear = new Array(31).fill(0);
+  us.forEach(r => { gear[Math.max(0, Math.min(30, (r.gear_inf || 0) + (r.gear_lan || 0) + (r.gear_mks || 0)))]++; });
+  return { n: us.length, stat: table(stat, 2), troops: table(troops, 0), tier: tn >= minPub ? { n: tn, d: tier } : null, gear: { n: us.length, d: gear } };
+}
+
+/* ---- 英雄の利用度（英雄利用度ランキング用） ----
+   h[英雄ID] = [集結主で使っている人数, 乗せで使っている人数, どちらかで使っている人数]
+   all    … 全員（初期編成のまま計算した人も含む）
+   picked … 英雄を自分で選び直した人だけ（lt / jt の印がある行。口コミ投稿の集結主は自分で選んだものとして数える）
+   use    … 画面がどちらを使うべきか。picked の人数が USAGE_PICKED_MIN（既定30）以上になった役割から picked に切り替わる
+   defaults … 初期編成と同じ編成の割合（注記用） */
+/* シミュレーターの初期編成（tools/bear-hunt の初期値）。サイト側の初期値を変えたらここも直す */
+const SIM_DEFAULT = { leader: { inf: 'jeronimo', lan: 'mia', mks: 'alonso' }, joiners: ['jessie', 'jasser', 'seoyoon', 'wayne'] };
+const defaultJoinerKey = gen => SIM_DEFAULT.joiners.filter(id => byId[id] && byId[id].gen <= gen).sort().join(',');
+const isDefaultLeader = r => CLS.every(c => r['hero_' + c] === SIM_DEFAULT.leader[c]);
+function heroUsage(rs, gen, env) {
+  const pickedMin = parseInt(env.USAGE_PICKED_MIN || '30', 10);
+  const count = (rowsL, rowsJ, rowsA) => {
+    const h = {}, add = (id, i) => { (h[id] = h[id] || [0, 0, 0])[i]++; };
+    rowsL.forEach(r => CLS.forEach(c => add(r['hero_' + c], 0)));
+    rowsJ.forEach(r => new Set(r.joiners.split(',')).forEach(id => add(id, 1)));
+    rowsA.forEach(r => new Set([r.hero_inf, r.hero_lan, r.hero_mks, ...r.joiners.split(',')]).forEach(id => add(id, 2)));
+    return { nL: rowsL.length, nJ: rowsJ.length, nA: rowsA.length, h };
+  };
+  const withJ = rs.filter(r => r.joiners);
+  const all = count(rs, withJ, withJ);
+  const picked = count(rs.filter(r => r.lt === 1), withJ.filter(r => r.jt === 1), withJ.filter(r => r.lt === 1 && r.jt === 1));
+  const dj = defaultJoinerKey(gen), share = (c, n) => n ? Math.round(c / n * 1000) / 1000 : 0;
+  return { all, picked, min: pickedMin,
+    use: { l: picked.nL >= pickedMin ? 'picked' : 'all', j: picked.nJ >= pickedMin ? 'picked' : 'all', a: picked.nA >= pickedMin ? 'picked' : 'all' },
+    defaults: { l: share(rs.filter(isDefaultLeader).length, rs.length), j: share(withJ.filter(r => r.joiners === dj).length, withJ.length) } };
 }
 function aggregate(rows, gen, env) {
   const minPub = parseInt(env.MIN_PUBLISH || '10', 10), minSplit = parseInt(env.MIN_TIER_SPLIT || '30', 10);
@@ -258,7 +365,8 @@ function aggregate(rows, gen, env) {
     const compRank = rank(comps).map(x => ({ ids: x.key.split('|'), count: x.count, pct: x.pct }));
     /* ダメージの統計は利用データ（全員同じ係数で計算した予測値）だけで作る。口コミ投稿のダメージは実測や補正後の値が混ざるので入れない */
     const dmgs = rs.filter(r => r.u).map(r => r.damage).filter(d => d != null);
-    const ds = iqrFilter(dmgs).sort((a, b) => a - b);
+    /* 中央値・上位25%・上位10% は、偏差値と同じ母集団（対数で外れ値を除いたもの）から出す */
+    const ds = logTrim(dmgs).map(x => Math.round(Math.pow(10, x)));
     const damage = ds.length >= 5 ? { n: ds.length, median: quantile(ds, 0.5), p75: quantile(ds, 0.75), p90: quantile(ds, 0.9) } : null;
     const lag = {}; CLS.forEach(c => lag[c] = Math.round(lagSum[c] / rs.length * 10) / 10);
     const ratioTop = rank(ratios).slice(0, 3);
@@ -272,6 +380,8 @@ function aggregate(rows, gen, env) {
     return { n: rs.length, slot: slotRank, comps: compRank, damage, lag, ratio: ratioTop, joiners, dev };
   };
   Object.assign(out, block(rows));
+  out.factors = factorStats(rows, minPub);
+  out.usage = heroUsage(rows, gen, env);
   if (n >= minSplit) for (const tk of GM.TIER_ORDER) {
     const rs = rows.filter(r => r.spend_tier === tk);
     out.byTier[tk] = rs.length >= minPub ? block(rs) : { n: rs.length, published: false };
@@ -280,6 +390,7 @@ function aggregate(rows, gen, env) {
 }
 async function loadWindow(env) {
   await migrateModel(env);
+  await flagGenDefault(env);                   /* 世代の選択が必須になる前に届いた、第17世代の初期値データを集計から外す */
   const since = now() - parseInt(env.WINDOW_DAYS || '90', 10) * 86400;
   /* 利用データ（自動記録・現実性チェック済みのみ）＋ 口コミ投稿（同じ人の利用データがあれば二重に数えない） */
   const { results } = await env.DB.prepare(
@@ -287,11 +398,18 @@ async function loadWindow(env) {
        FROM submissions WHERE status='ok' AND created_at >= ?
         AND id NOT IN (SELECT sub_id FROM usage WHERE status='ok' AND sub_id IS NOT NULL)`).bind(since).all();
   const byGen = {}; for (let g = 1; g <= GM.MAX; g++) byGen[g] = [];
-  results.forEach(r => { const g = GM.genFromDays(r.server_days); (byGen[g] = byGen[g] || []).push(r); });
-  const us = await env.DB.prepare(
-    `SELECT gen, spend_tier, hero_inf, hero_lan, hero_mks, ratio_inf, ratio_lan, ratio_mks, damage, joiners
-       FROM usage WHERE status='ok' AND updated_at >= ?`).bind(since).all();
-  (us.results || []).forEach(r => { r.u = 1; if (byGen[r.gen]) byGen[r.gen].push(r); });
+  /* 口コミ投稿の集結主は、投稿フォームで自分で選んだもの */
+  results.forEach(r => { r.lt = 1; const g = GM.genFromDays(r.server_days); (byGen[g] = byGen[g] || []).push(r); });
+  const cols = `gen, spend_tier, hero_inf, hero_lan, hero_mks, ratio_inf, ratio_lan, ratio_mks, damage, joiners,
+       gear_inf, gear_lan, gear_mks, troop_tier, fc_level, team_atk, team_leth, atk_inf, leth_inf, atk_lan, leth_lan, atk_mks, leth_mks, troops`;
+  const q = extra => env.DB.prepare(`SELECT ${cols}${extra} FROM usage WHERE status='ok' AND updated_at >= ?`).bind(since).all();
+  let us;
+  try { us = await q(', lead_touched, join_touched'); }
+  catch (err) {
+    if (!NEW_COLS_RE.test(String(err && err.message || err))) throw err;
+    us = await q((await ensureColumns(env)) ? ', lead_touched, join_touched' : '');
+  }
+  (us.results || []).forEach(r => { r.u = 1; r.lt = r.lead_touched === 1 ? 1 : 0; r.jt = r.join_touched === 1 ? 1 : 0; if (byGen[r.gen]) byGen[r.gen].push(r); });
   return byGen;
 }
 /* 世代ごとの件数（D1 から即時）。集計対象と同じ条件で数える */
@@ -305,15 +423,19 @@ async function liveCounts(env) {
   (b.results || []).forEach(r => { if (live[r.gen] != null) live[r.gen] += r.n; });
   return live;
 }
+/* KV に置く集計結果のキー。集計の中身（項目）を変えたら版を上げる。
+   新しいキーにはまだ何も無いので、配置した直後の最初の閲覧でその場で集計し直される（古いキーを消す作業がいらない）
+   v2（2026-11・v150）: 第17世代の初期値データの除外、ダメージ分位の修正、要素別の分布（factors）、英雄の利用度（usage）を追加 */
+const KV_GEN = 'stats:v2:gen:', KV_SUMMARY = 'stats:v2:summary';
 async function rebuildAll(env) {
   const byGen = await loadWindow(env);
   const summary = { updatedAt: now(), windowDays: parseInt(env.WINDOW_DAYS || '90', 10), gens: {} };
   for (let g = 1; g <= GM.MAX; g++) {
     const agg = aggregate(byGen[g], g, env);
-    await env.STATS.put('stats:gen:' + g, JSON.stringify(agg));
+    await env.STATS.put(KV_GEN + g, JSON.stringify(agg));
     summary.gens[g] = { n: agg.n, published: agg.published };
   }
-  await env.STATS.put('stats:summary', JSON.stringify(summary));
+  await env.STATS.put(KV_SUMMARY, JSON.stringify(summary));
   return summary;
 }
 
@@ -342,7 +464,7 @@ export default {
     const url = new URL(req.url), p = url.pathname;
     try {
       if (req.method === 'GET' && p === '/v1/stats/summary') {
-        const s = await env.STATS.get('stats:summary');
+        const s = await env.STATS.get(KV_SUMMARY);
         const sum = s ? JSON.parse(s) : await rebuildAll(env);
         /* 件数だけは D1 から即時反映（published の判定と実測の中身は日次集計のまま）。
            1回の SELECT で直近90日の行を数えるだけなので無料枠で十分収まる */
@@ -393,7 +515,7 @@ export default {
       }
       if (req.method === 'GET' && (m = p.match(/^\/v1\/stats\/(\d{1,2})$/))) {
         const g = parseInt(m[1], 10); if (g < 1 || g > GM.MAX) return json({ error: 'gen' }, 404, h);
-        const s = await env.STATS.get('stats:gen:' + g);
+        const s = await env.STATS.get(KV_GEN + g);
         if (s) {
           const agg = JSON.parse(s);
           if (!agg.published) {                          /* 未公開のうちは件数だけ D1 から最新を取る（「現在 N 件」を即時反映） */
@@ -402,14 +524,14 @@ export default {
             /* 公開の件数に届いたら、朝の定時集計を待たずにその場で集計して公開する */
             if (agg.n >= parseInt(env.MIN_PUBLISH || '10', 10)) {
               const fresh = aggregate((await loadWindow(env))[g], g, env);
-              await env.STATS.put('stats:gen:' + g, JSON.stringify(fresh));
+              await env.STATS.put(KV_GEN + g, JSON.stringify(fresh));
               return json(fresh, 200, { ...h, 'cache-control': 'public, max-age=' + (fresh.published ? 600 : 60) });
             }
           }
           return json(agg, 200, { ...h, 'cache-control': 'public, max-age=' + (agg.published ? 600 : 60) });
         }
         const byGen = await loadWindow(env); const agg = aggregate(byGen[g], g, env);
-        await env.STATS.put('stats:gen:' + g, JSON.stringify(agg));
+        await env.STATS.put(KV_GEN + g, JSON.stringify(agg));
         return json(agg, 200, h);
       }
       if (p === '/v1/usage' && (req.method === 'POST' || req.method === 'DELETE')) {
@@ -428,6 +550,7 @@ export default {
         const v = validateUsage(body); if (v.errors.length) return json({ error: 'invalid', fields: v.errors }, 400, h);
         const country = (req.cf && req.cf.country) || '';
         if (NO_LOG.has(country)) return json({ ok: true, counted: false, reason: 'region' }, 200, h);
+        /* 現実的でない入力は、保存はするが集計から外す */
         const lim = usageLimits(env), flag = realism(v, lim), status = flag ? 'flagged' : 'ok';
         const cidHash = await sha256('cid|' + v.cid + '|' + salt);
         const clientHash = await sha256((req.headers.get('CF-Connecting-IP') || '') + '|' + salt);
@@ -441,9 +564,12 @@ export default {
           dmgStore = Math.max(1, Math.round(v.damage * v1toV2Factor({ troops: v.troops }))); mvStore = MODEL_VER;
         }
         vals[21] = dmgStore;
-        const write = async (withNew) => {
-          const extraSet = withNew ? ', mv=?, observed=COALESCE(?, observed)' : '', extraCols = withNew ? ', mv, observed' : '', extraQ = withNew ? ',?,?' : '';
-          const extra = withNew ? [mvStore, v.observed] : [];
+        /* level 2: v150 の列（世代・英雄を自分で選んだ印）まで保存 ／ 1: v127 の列（mv・observed）まで ／ 0: 最初の形 */
+        const write = async (level) => {
+          const extraSet = (level >= 1 ? ', mv=?, observed=COALESCE(?, observed)' : '') + (level >= 2 ? ', gen_chosen=?, lead_touched=?, join_touched=?' : '');
+          const extraCols = (level >= 1 ? ', mv, observed' : '') + (level >= 2 ? ', gen_chosen, lead_touched, join_touched' : '');
+          const extraQ = (level >= 1 ? ',?,?' : '') + (level >= 2 ? ',?,?,?' : '');
+          const extra = (level >= 1 ? [mvStore, v.observed] : []).concat(level >= 2 ? [v.gc, v.lt, v.jt] : []);
           if (row) {
             await env.DB.prepare(`UPDATE usage SET updated_at=?, hits=hits+1, hero_inf=?, hero_lan=?, hero_mks=?, gear_inf=?, gear_lan=?, gear_mks=?, joiners=?, troop_tier=?, fc_level=?,
                 team_atk=?, team_leth=?, atk_inf=?, leth_inf=?, atk_lan=?, leth_lan=?, atk_mks=?, leth_mks=?, troops=?, ratio_inf=?, ratio_lan=?, ratio_mks=?, damage=?, calib=?, status=?, flag=?${extraSet}
@@ -459,8 +585,15 @@ export default {
           const c = await env.DB.prepare('SELECT COUNT(*) AS n FROM usage WHERE client_hash=? AND created_at>=?').bind(clientHash, dayStart).first();
           if (c && c.n >= lim.perIpDaily) return json({ error: 'rate' }, 429, h);
         }
-        try { await write(true); }
-        catch (err) { if (/mv|observed/.test(String(err && err.message || err))) await write(false); else throw err; }   /* DB の列追加がまだなら従来の形で保存 */
+        /* DB の列追加がまだなら: v150 の列は Worker が自分で足してやり直す。それも無理なら従来の形で保存する */
+        const older = async () => { try { await write(1); } catch (e2) { if (/mv|observed/.test(String(e2 && e2.message || e2))) await write(0); else throw e2; } };
+        try { await write(2); }
+        catch (err) {
+          const msg = String(err && err.message || err);
+          if (NEW_COLS_RE.test(msg)) { if (await ensureColumns(env)) { try { await write(2); } catch (_) { await older(); } } else await older(); }
+          else if (/mv|observed/.test(msg)) await write(0);
+          else throw err;
+        }
         /* 同じ人の口コミ投稿があれば紐づける（集計で二重に数えない・課金帯を引き継ぐ） */
         if (v.sub && !(row && row.sub_id)) {
           const sb = await env.DB.prepare("SELECT spend_tier FROM submissions WHERE id=? AND status='ok' AND server_days>=? AND server_days<=?")
@@ -469,7 +602,7 @@ export default {
         }
         /* その世代の偏差値の母集団（日次集計）を返す。偏差値そのものはブラウザ側で計算する */
         let dev = null, n = 0;
-        const ks = await env.STATS.get('stats:gen:' + v.gen);
+        const ks = await env.STATS.get(KV_GEN + v.gen);
         if (ks) { const agg = JSON.parse(ks); n = agg.n || 0; if (agg.published && agg.dev) dev = { n: agg.dev.n, mu: agg.dev.mu, sd: agg.dev.sd }; }
         return json({ ok: true, counted: !flag, flag: flag || undefined, gen: v.gen, n, dev }, 200, h);
       }

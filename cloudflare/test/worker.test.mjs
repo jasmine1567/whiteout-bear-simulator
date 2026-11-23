@@ -75,7 +75,7 @@ for (let i=0;i<40;i++) await call('POST','/v1/submit',{ days:1200+i, tier:['f2p'
   ratio:[1,4,95], damage: 1000000 + i*250000 + (i===39 ? 90000000 : 0) }, '10.0.0.'+i);
 for (let i=0;i<5;i++) await call('POST','/v1/submit',{ days:530+i, tier:'mid', inf:'gatot', lan:'mia', mks:'bradley' }, '10.0.1.'+i);
 await worker.scheduled({}, env);
-const s16 = JSON.parse(kv.get('stats:gen:16')), s8 = JSON.parse(kv.get('stats:gen:8')), sum = JSON.parse(kv.get('stats:summary'));
+const s16 = JSON.parse(kv.get('stats:v2:gen:16')), s8 = JSON.parse(kv.get('stats:v2:gen:8')), sum = JSON.parse(kv.get('stats:v2:summary'));
 t('summary に全世代分', Object.keys(sum.gens).length>=16, JSON.stringify({g16:sum.gens[16], g8:sum.gens[8]}));
 t('第16世代 n=42 公開', s16.n===42 && s16.published===true, 'n='+s16.n);
 r = await call('GET','/v1/stats/summary');
@@ -172,7 +172,7 @@ console.log('--- 利用データの自動記録 ---');
   const sb = await call('POST','/v1/submit',{ gen:9, tier:'mid', inf:'jeronimo', lan:'mia', mks:'bradley', cid: cid(20), comment:'G9の感想' },'60.0.0.20');
   t('口コミ投稿に cid → 利用データに課金帯と投稿IDが付く', (x => x.spend_tier==='mid' && x.sub_id===sb.body.id)(db.prepare('select spend_tier, sub_id from usage where spend_tier is not null').get()));
   await worker.scheduled({}, env);
-  const s9 = JSON.parse(kv.get('stats:gen:9'));
+  const s9 = JSON.parse(kv.get('stats:v2:gen:9'));
   t('第9世代 n=33（ok の利用データのみ・投稿は二重に数えない）', s9.n===33 && s9.published, 'n='+s9.n);
   t('集結主の人気ランキング', s9.slot.inf[0].id==='jeronimo' && s9.comps[0].ids.join()==='jeronimo,mia,bradley', JSON.stringify(s9.comps[0]));
   t('乗せ英雄の人気ランキング（英雄別・組み合わせ）', s9.joiners && s9.joiners.heroes[0].id==='jessie' && s9.joiners.heroes[0].pct===100 && s9.joiners.sets[0].ids.join()==='jasser,jessie,jessie,seoyoon', JSON.stringify(s9.joiners.sets[0]));
@@ -184,9 +184,9 @@ console.log('--- 利用データの自動記録 ---');
   t('summary の件数に利用データが入る', sm.gens[9].n===33, JSON.stringify(sm.gens[9]));
   /* 第5世代: 定時集計の時点では0件 → その後10件たまったら、次の閲覧で即公開される */
   for (let i=200;i<210;i++) await call('POST','/v1/usage', base(i, { gen: 5, leader:{ inf:{id:'jeronimo'}, lan:{id:'mia'}, mks:{id:'gwen'} }, joiners:['jessie','jasser'] }), '80.0.0.'+i);
-  t('集計前は KV 上は未公開', JSON.parse(kv.get('stats:gen:5')).published===false);
+  t('集計前は KV 上は未公開', JSON.parse(kv.get('stats:v2:gen:5')).published===false);
   const g5 = (await call('GET','/v1/stats/5')).body;
-  t('10件に届いた世代は定時集計を待たず公開', g5.published===true && g5.n>=10 && g5.slot.mks[0].id==='gwen' && JSON.parse(kv.get('stats:gen:5')).published===true, JSON.stringify({n:g5.n,p:g5.published}));
+  t('10件に届いた世代は定時集計を待たず公開', g5.published===true && g5.n>=10 && g5.slot.mks[0].id==='gwen' && JSON.parse(kv.get('stats:v2:gen:5')).published===true, JSON.stringify({n:g5.n,p:g5.published}));
   /* モデルの版数と実測値 */
   {
     const one = (w) => db.prepare('select damage, mv, observed from usage where cid_hash=(select cid_hash from usage where gen=3 order by created_at desc limit 1) and gen=3').get();
@@ -213,6 +213,126 @@ console.log('--- 利用データの自動記録 ---');
   u = await call('DELETE','/v1/usage', { cid: cid(1) });
   t('利用データの削除（統計に使わない）', u.body.removed===1 && cnt('gen=9')===36, JSON.stringify(u.body)+' '+cnt('gen=9'));
   t('usageLimits は vars で上書きできる', mod.usageLimits({ USAGE_STAT_MAX: '500' }).statMax===500 && mod.usageLimits({}).statMax===3000);
+}
+
+console.log('--- v150: 第17世代の初期値データの自動除外 ---');
+{
+  const cid = i => 'a' + i.toString(16).padStart(31,'0');
+  const g17 = (i, o={}) => ({ cid: cid(i), gen: 17, leader: { inf:{id:'jeronimo',gear:0}, lan:{id:'mia',gear:0}, mks:{id:'alonso',gear:0} },
+    joiners: ['jessie','jasser','seoyoon','wayne'], tier: 9, fc: 0,
+    stats: { teamAtk:100+i, teamLeth:90, atkInf:120, lethInf:110, atkLan:130, lethLan:115, atkMks:150, lethMks:125 },
+    troops: [20000, 60000, 120000], damage: 3000000 + i*50000, calib: 0.63, mv: 2, ...o });
+  const st = i => db.prepare("select status, flag, gen_chosen from usage where gen=17 and team_atk=?").get(100+i);
+  /* 「世代の選択が必須になる前に届いた行」にする（最後の更新を境目より前へ） */
+  const until = mod.genDefaultUntil(env);
+  const makeOld = i => db.prepare("update usage set updated_at=?, created_at=? where gen=17 and team_atk=?").run(until - 86400, until - 86400, 100+i);
+  t('境目は既定で 2026-10-10T15:00:00Z（設定で変えられる）', until === Date.UTC(2026, 9, 10, 15) / 1000
+    && mod.genDefaultUntil({ GEN_DEFAULT_UNTIL: '2026-10-09T00:00:00Z' }) === Date.UTC(2026, 9, 9) / 1000 && mod.genDefaultUntil({ GEN_DEFAULT_UNTIL: 'x' }) === 0);
+  let u = await call('POST','/v1/usage', g17(1), '17.0.0.1');
+  t('いま届いた第17世代の行は、gc が無くても数える（v148 以降の画面は世代を選ばないと送らない）', u.status===200 && u.body.counted===true && st(1).status==='ok', JSON.stringify(u.body));
+  u = await call('POST','/v1/usage', g17(2, { gc: 1 }), '17.0.0.2');
+  t('gc=1 は記録として保存される', u.body.counted===true && st(2).status==='ok' && st(2).gen_chosen===1, JSON.stringify(st(2)));
+  u = await call('POST','/v1/usage', g17(3, { leader: { inf:{id:'hector'}, lan:{id:'mia'}, mks:{id:'eleanor'} } }), '17.0.0.3');
+  u = await call('POST','/v1/usage', g17(4, { joiners: ['jessie','aiden'] }), '17.0.0.4');
+  u = await call('POST','/v1/usage', g17(5, { gen: 16, leader: { inf:{id:'jeronimo'}, lan:{id:'mia'}, mks:{id:'alonso'} } }), '17.0.0.5');
+  for (let i=10;i<22;i++) await call('POST','/v1/usage', g17(i), '17.0.1.'+i);
+  /* 1 と 2 は境目より後（そのまま）。3・4（第17世代の英雄入り）と 10〜21（初期編成のまま）を、境目より前に届いた行にする */
+  [3, 4].forEach(makeOld); for (let i=10;i<22;i++) makeOld(i);
+  db.prepare("update usage set updated_at=?, created_at=? where gen=16 and team_atk=105").run(until - 86400, until - 86400);
+  t('（準備）第17世代は ok が16件', db.prepare("select count(*) c from usage where gen=17 and status='ok'").get().c===16);
+  await worker.scheduled({}, env);
+  t('集計のとき、境目より前の初期値データ（12件）だけが外れる', db.prepare("select count(*) c from usage where gen=17 and status='flagged' and flag='gen_default'").get().c===12
+    && db.prepare("select count(*) c from usage where gen=17 and status='ok'").get().c===4, JSON.stringify(db.prepare("select status, count(*) c from usage where gen=17 group by status").all()));
+  t('境目より前でも、第17世代の英雄がいる行は残る（集結主・乗せ）', st(3).status==='ok' && st(4).status==='ok');
+  t('境目より後に届いた行は残る', st(1).status==='ok' && st(2).status==='ok');
+  t('第17世代以外は対象外（境目より前の第16世代の行も残る）', db.prepare("select status from usage where gen=16 and team_atk=105").get().status==='ok');
+  const s17 = JSON.parse(kv.get('stats:v2:gen:17'));
+  t('第17世代の集計は残った4件だけ（10件未満なので非公開）', s17.n===4 && s17.published===false, JSON.stringify({n:s17.n,p:s17.published}));
+  await worker.scheduled({}, env);
+  t('何度集計しても結果は同じ', db.prepare("select count(*) c from usage where gen=17 and status='flagged' and flag='gen_default'").get().c===12);
+  u = await call('POST','/v1/usage', g17(10, { damage: 9999999 }), '17.0.1.10');
+  t('外れた人が計算し直すと、集計に戻る', u.body.counted===true && st(10).status==='ok' && st(10).flag===null);
+  await worker.scheduled({}, env);
+  t('戻った行は、次の集計でも外れない', st(10).status==='ok' && db.prepare("select count(*) c from usage where gen=17 and status='ok'").get().c===5);
+  const sm17 = (await call('GET','/v1/stats/summary')).body;
+  t('summary の件数にも除外が反映される', sm17.gens[17].n===5, JSON.stringify(sm17.gens[17]));
+}
+
+console.log('--- v150: ダメージ分位・要素別の分布・英雄の利用度 ---');
+{
+  const cid = i => 'b' + i.toString(16).padStart(31,'0');
+  /* 第11世代に 60 件。ダメージは対数で等間隔（1千万〜10億）＋ 桁違いに小さい1件 */
+  const g11 = (i, o={}) => ({ cid: cid(i), gen: 11, gc: 1, leader: { inf:{id: i%3 ? 'hector':'jeronimo', gear: i%11}, lan:{id:'mia', gear: 0}, mks:{id: i%2 ? 'rufus':'blanchette', gear: i%5} },
+    joiners: i%4===0 ? ['jessie','jasser','seoyoon','wayne'] : ['jessie','jasser','reina','seoyoon'], tier: 9 + (i%3), fc: i%6,
+    stats: { teamAtk:200+i, teamLeth:150+i, atkInf:300, lethInf:250, atkLan:320, lethLan:260, atkMks:400+i, lethMks:300+i },
+    troops: i%5===0 ? [20000, 60000, 120000] : [2000+i*10, 8000, 150000+i*1000], damage: Math.round(1e7 * Math.pow(100, i/59)), calib: 0.63, mv: 2,
+    lt: i%3===0 && i%2===0 ? 0 : 1, jt: i%4===0 ? 0 : 1, ...o });
+  for (let i=0;i<60;i++) await call('POST','/v1/usage', g11(i), '11.0.'+(i>>4)+'.'+(i&15));
+  await call('POST','/v1/usage', g11(60, { damage: 5 }), '11.0.9.9');
+  await worker.scheduled({}, env);
+  const s = JSON.parse(kv.get('stats:v2:gen:11'));
+  t('（準備）第11世代 61件', s.n===61 && s.published, 'n='+s.n);
+  t('ダメージ分位は偏差値と同じ母集団（対数で外れ値を除く）: 上位が落ちない', s.damage.n===s.dev.n && s.damage.n===60, JSON.stringify(s.damage)+' dev.n='+s.dev.n);
+  t('中央値≈1億・上位10%≈6.3億（対数で等間隔なので）', Math.abs(Math.log10(s.damage.median)-8)<0.05 && Math.abs(Math.log10(s.damage.p90)-8.8)<0.06, JSON.stringify(s.damage));
+  t('dev.q: 21点の分位表（昇順・50%が中央値付近）', s.dev.q && s.dev.q.p.length===21 && s.dev.q.d.length===21 && s.dev.q.p[10]===50 && s.dev.q.d.every((d,i,a)=>!i||d>=a[i-1]) && Math.abs(Math.log10(s.dev.q.d[10])-8)<0.05 && Math.abs(Math.log10(s.dev.q.d[18])-8.8)<0.05, JSON.stringify(s.dev.q.d.slice(8,13)));
+  t('logTrim は対数で判定（1千万〜10億は残り、4e13 だけ落ちる）', mod.logTrim(Array.from({length:60},(_,i)=>1e7*Math.pow(100,i/59)).concat([4e13])).length===60);
+  const f = s.factors;
+  t('factors: 攻撃・殺傷の分位表（0〜100% の21点・昇順）', f && f.n===61 && f.stat.q.length===21 && f.stat.q.every((d,i,a)=>!i||d>=a[i-1]), JSON.stringify(f && f.stat && f.stat.q.slice(0,3)));
+  const r0 = { ratio_inf:1, ratio_lan:5, ratio_mks:94, team_atk:200, team_leth:150, atk_inf:300, leth_inf:250, atk_lan:320, leth_lan:260, atk_mks:400, leth_mks:300 };
+  const expect0 = (1*(1+5)*(1+4) + 5*(1+5.2)*(1+4.1) + 94*(1+6)*(1+4.5))/100;
+  t('statIndex = 構成比で重みをつけた (1+攻撃%)×(1+殺傷%)', Math.abs(mod.statIndex(r0)-expect0)<1e-9 && mod.statIndex({ ...r0, ratio_inf:null })===null, mod.statIndex(r0)+' vs '+expect0);
+  t('factors: 兵士数は初期値（2万/6万/12万）の行を除く', f.troops.n===61-13 && f.troops.q[0]>200000-50000 && !f.troops.q.includes(200000), JSON.stringify({n:f.troops.n,min:f.troops.q[0]}));
+  t('factors: Tier×火晶ごとの人数・専用装備の合計ごとの人数', f.tier.n===61 && Object.values(f.tier.d).reduce((a,b)=>a+b,0)===61 && f.tier.d['9:0']>0 && f.gear.d.length===31 && f.gear.d.reduce((a,b)=>a+b,0)===61, JSON.stringify(f.tier.d));
+  const us = s.usage;
+  t('usage.all: 全員での人数（集結主・乗せ・どちらか）', us && us.all.nL===61 && us.all.nJ===61 && us.all.nA===61 && us.all.h.mia[0]===61 && us.all.h.jessie[1]===61 && us.all.h.jessie[2]===61 && us.all.h.hector[0]===40 && us.all.h.wayne[1]===16, JSON.stringify({mia:us.all.h.mia,wayne:us.all.h.wayne,hector:us.all.h.hector}));
+  const nL = Array.from({length:61},(_,i)=>i).filter(i=>!(i%3===0&&i%2===0)).length, nJ = Array.from({length:61},(_,i)=>i).filter(i=>i%4!==0).length;
+  t('usage.picked: 英雄を選び直した人だけ（lt=1 / jt=1 の行）', us.picked.nL===nL && us.picked.nJ===nJ && us.picked.h.wayne===undefined && us.picked.h.reina[1]===nJ, JSON.stringify({nL:us.picked.nL,nJ:us.picked.nJ,nA:us.picked.nA}));
+  t('usage.use: 選び直した人が30人以上の役割は picked に切り替わる', us.min===30 && us.use.l==='picked' && us.use.j==='picked' && (us.picked.nA>=30 ? us.use.a==='picked' : us.use.a==='all'), JSON.stringify(us.use));
+  t('usage.defaults: 初期編成と同じ編成の割合（乗せ 16/61）', Math.abs(us.defaults.j-16/61)<0.001 && us.defaults.l===0, JSON.stringify(us.defaults));
+  /* 口コミ投稿の集結主は「自分で選んだ」として数える。乗せは無いので乗せの人数には入らない */
+  await call('POST','/v1/submit',{ gen:11, tier:'mid', inf:'hector', lan:'mia', mks:'rufus' },'11.1.0.1');
+  await worker.scheduled({}, env);
+  const s2 = JSON.parse(kv.get('stats:v2:gen:11'));
+  t('口コミ投稿: 集結主だけ数える（picked.nL +1・乗せは増えない）', s2.usage.picked.nL===nL+1 && s2.usage.picked.nJ===nJ && s2.usage.all.nL===62 && s2.usage.all.nJ===61, JSON.stringify({nL:s2.usage.picked.nL,nJ:s2.usage.picked.nJ}));
+  const envP = { ...env, USAGE_PICKED_MIN: '1000' };
+  await worker.scheduled({}, envP);
+  t('USAGE_PICKED_MIN に届かない間は全員の数字を使う', JSON.parse(kv.get('stats:v2:gen:11')).usage.use.l==='all');
+  await worker.scheduled({}, env);
+  const v = mod.validateUsage(g11(1, { gc: 1, lt: true, jt: 0 }));
+  const v0 = mod.validateUsage((o => { delete o.gc; delete o.lt; delete o.jt; return o; })(g11(1)));
+  t('validateUsage: gc / lt / jt（無ければ null）', v.gc===1 && v.lt===1 && v.jt===0 && v0.gc===null && v0.lt===null && v0.jt===null);
+}
+
+console.log('--- v150: 列がまだ無い DB でも動く（Worker が自分で列を足す） ---');
+{
+  const old = new DatabaseSync(':memory:');
+  old.exec(fs.readFileSync(new URL('../schema.sql', import.meta.url),'utf8').replace(/^\s*(gen_chosen|lead_touched|join_touched)\s+INTEGER,.*$/gm, ''));
+  const has = () => old.prepare("select name from pragma_table_info('usage')").all().map(r => r.name).filter(n => /gen_chosen|lead_touched|join_touched/.test(n)).length;
+  const D1o = { prepare: sql => ({ bind: (...a) => ({
+    first: async () => old.prepare(sql).get(...a) ?? null,
+    all:   async () => ({ results: old.prepare(sql).all(...a) }),
+    run:   async () => { const r = old.prepare(sql).run(...a); return { meta: { changes: r.changes } }; } }),
+    run: async () => { const r = old.prepare(sql).run(); return { meta: { changes: r.changes } }; } }) };
+  const kvo = new Map();
+  const envO = { ...env, DB: D1o, STATS: { get: async k => kvo.get(k) ?? null, put: async (k, v) => { kvo.set(k, v); } } };
+  t('（準備）古い表には新しい列が無い', has()===0);
+  const body = { cid: 'c'.repeat(32), gen: 17, gc: 1, lt: 1, jt: 0, leader: { inf:{id:'hector'}, lan:{id:'mia'}, mks:{id:'rufus'} }, joiners: ['jessie'], tier: 10, fc: 2,
+    stats: { teamAtk:300, teamLeth:250, atkInf:180, lethInf:150, atkLan:190, lethLan:160, atkMks:220, lethMks:170 }, troops: [10000, 40000, 150000], damage: 5000000, mv: 2 };
+  const ro = await worker.fetch(req('POST','/v1/usage', body, '99.0.0.1'), envO);
+  const jo = await ro.json();
+  const rowO = old.prepare('select status, gen_chosen, lead_touched, join_touched from usage').get();
+  t('保存のときに列が足され、印も保存される', ro.status===200 && jo.counted===true && has()===3 && rowO.gen_chosen===1 && rowO.lead_touched===1 && rowO.join_touched===0, JSON.stringify(rowO));
+  const old2 = new DatabaseSync(':memory:');
+  old2.exec(fs.readFileSync(new URL('../schema.sql', import.meta.url),'utf8').replace(/^\s*(gen_chosen|lead_touched|join_touched)\s+INTEGER,.*$/gm, ''));
+  const D12 = { prepare: sql => ({ bind: (...a) => ({
+    first: async () => old2.prepare(sql).get(...a) ?? null,
+    all:   async () => ({ results: old2.prepare(sql).all(...a) }),
+    run:   async () => { const r = old2.prepare(sql).run(...a); return { meta: { changes: r.changes } }; } }),
+    run: async () => { const r = old2.prepare(sql).run(); return { meta: { changes: r.changes } }; } }) };
+  const kv2 = new Map();
+  const env2 = { ...env, DB: D12, STATS: { get: async k => kv2.get(k) ?? null, put: async (k, v) => { kv2.set(k, v); } } };
+  let ok2 = true; try { await worker.scheduled({}, env2); } catch (e) { ok2 = false; console.log(String(e)); }
+  t('集計のときにも列が足される（保存より先に定時集計が走っても落ちない）', ok2 && old2.prepare("select name from pragma_table_info('usage')").all().filter(r => /gen_chosen|lead_touched|join_touched/.test(r.name)).length===3 && kv2.has('stats:v2:summary'));
 }
 
 console.log(`\n結果: ${pass} 件OK / ${fail} 件NG`);

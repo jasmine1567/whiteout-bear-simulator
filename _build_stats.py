@@ -9,7 +9,7 @@ import os, re, json, html, subprocess
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 BASE_URL = "https://whitesim-lab.com"
-V = "143"            # 共有アセットの版数
+V = "146"            # 共有アセットの版数
 HV = "122"           # heroes.js の版数
 UPDATED = "2026-10-08"
 NOTES_DIR = os.path.join(ROOT, "_stats_notes")
@@ -618,6 +618,7 @@ def build_gen(g):
 <div class="callout" style="background:#fff;border:1px solid var(--line)"><span>📝</span><div>{tr("あなたの構成も投稿すると、この世代の実測に反映されます。投稿後すぐに、同世代内の位置と理論最適との差が分かります。","Submit your build to be counted here. You'll immediately see your rank in this generation and how it compares with the theoretical best.")}
  <a class="btn" style="margin-left:10px;padding:6px 14px;font-size:12px" href="/submit/index.html?gen={g}">{tr("投稿する","Submit")}</a></div></div>
 <div class="relbar">
+  <a href="/stats/hero-usage/index.html?gen={g}">→ {tr(f"第{g}世代の英雄利用度ランキング", f"Gen {g} hero usage ranking")}</a>
   <a href="/tools/bear-hunt/index.html">→ {tr("熊狩ダメージ・シミュレーター","Bear Hunt Simulator")}</a>
   <a href="/guides/leader-formation.html">→ {tr("集結主におすすめの編成と英雄の選び方","Rally leader: recommended formations")}</a>
   <a href="/tools/hero-list/index.html">→ {tr("英雄一覧・データベース","Hero database")}</a>
@@ -737,6 +738,7 @@ def build_hub():
 <div class="faq-list">{faq_html}</div>
 
 <div class="relbar">
+  <a href="/stats/hero-usage/index.html">→ {tr("英雄利用度ランキング","Hero usage ranking")}</a>
   <a href="/tools/bear-hunt/index.html">→ {tr("熊狩ダメージ・シミュレーター","Bear Hunt Simulator")}</a>
   <a href="/guides/leader-formation.html">→ {tr("集結主におすすめの編成と英雄の選び方","Rally leader: recommended formations")}</a>
   <a href="/submit/index.html">→ {tr("構成を投稿する","Submit your build")}</a>
@@ -831,6 +833,246 @@ def build_methodology():
     crumb_en = '<a href="/en/index.html">Home</a> &gt; <a href="/en/stats/index.html">Generation stats</a> &gt; Methodology'
     return head(title_ja, desc_ja, path) + body + tail(tr, title_en, crumb_en, 'Methodology: <span class="acc">stats &amp; theory</span>', tr.m[lead_ja])
 
+# ---------------- 英雄利用度ランキング（v150） ----------------
+# 中身（順位・移り変わりの表）は assets/hero-usage.js（原本 _js/hero-usage.js）が集計APIから読み込んで描く。
+# ここは、見出し・説明・入れ物と、このページだけの見た目（HU_CSS）を出す
+HUV = "150"          # hero-usage.js の版数
+HU_PUBLISHED = "2026-11-22"
+HU_CSS = """
+.wrap.hu{max-width:1180px}
+.hu h1{margin-bottom:10px}
+.hu .lead{max-width:760px;margin-bottom:12px;line-height:1.8}
+.hu h2,.hu h3,.hu h4{border:0;padding:0;background:none;letter-spacing:0;font-family:inherit}
+.hu h2{font-size:18px;font-weight:800;margin:0;line-height:1.4;color:#23283a}
+.hu h3{display:flex;align-items:center;gap:7px;font-size:14px;font-weight:800;margin:0 0 10px;line-height:1.4;color:#23283a}
+.hu ul,.hu ol{list-style:none;margin:0;padding:0;font-size:inherit}
+.hu li{margin:0}
+.hu button{font:inherit;cursor:pointer;-webkit-appearance:none;appearance:none}
+.hu button:focus-visible,.hu a:focus-visible{outline:2px solid #23283a;outline-offset:2px}
+.hu-ic{width:1.2em;height:1.2em;fill:currentColor;flex:none}
+.hu h3 .hu-ic{width:19px;height:19px;color:#e85d12}
+.hu-meta{display:flex;flex-wrap:wrap;gap:8px;min-height:27px;margin:0 0 16px}
+.hu-meta span{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;line-height:1.6;color:#5b6276;background:#fff;border:1px solid #e3e5ed;border-radius:999px;padding:2px 11px}
+.hu-card{background:#fff;border:1px solid #ecedf3;border-radius:16px;padding:18px 20px;box-shadow:0 4px 16px rgba(28,34,80,.05);min-width:0}
+.hu-ctl{margin-bottom:16px}
+.hu-lb{font-size:11.5px;font-weight:800;color:#6b7385;letter-spacing:.04em;margin:0 0 8px}
+.hu-gens{display:grid;grid-template-columns:repeat(auto-fill,minmax(54px,1fr));gap:6px;margin-bottom:16px;min-height:48px}
+.hu-gb{display:flex;flex-direction:column;align-items:center;gap:1px;padding:6px 2px;border:1px solid #e3e5ed;border-radius:10px;background:#fff;color:#23283a;line-height:1.25}
+.hu-gb b{font:800 14px/1.3 'Outfit','Noto Sans JP',sans-serif}
+.hu-gb em{font-style:normal;font-size:10px;color:#6b7385}
+.hu-gb.on{background:#e85d12;border-color:#e85d12;color:#fff}
+.hu-gb.on em{color:rgba(255,255,255,.92)}
+.hu-gb:disabled{background:#f1f2f6;color:#8a91a5;cursor:default}
+.hu-gb:not(:disabled):not(.on):hover{border-color:#e85d12}
+.hu-opts{display:flex;flex-wrap:wrap;gap:14px 28px}
+.hu-seg,.hu-tabs{display:inline-flex;flex-wrap:wrap;background:#eef0f5;border-radius:12px;padding:4px;gap:2px}
+.hu-seg button,.hu-tabs button{border:0;background:transparent;border-radius:9px;padding:7px 16px;font-size:13px;font-weight:800;line-height:1.5;color:#3a4055}
+.hu-seg button.on,.hu-tabs button.on{background:#171c30;color:#fff}
+.hu-pills{display:inline-flex;flex-wrap:wrap;gap:6px}
+.hu-pills button{border:1px solid #e3e5ed;background:#fff;border-radius:999px;padding:7px 16px;font-size:13px;font-weight:800;line-height:1.5;color:#3a4055}
+.hu-pills button.on{border-color:#23283a;background:#f4f5f9;color:#23283a;box-shadow:inset 0 0 0 1px #23283a}
+.hu-main{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;align-items:start}
+.hu-side{display:grid;gap:16px;min-width:0}
+.hu-side .hu-card{padding:16px 18px}
+.hu-side .hu-card[hidden]{display:none}
+.hu-rh{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.hu-n{font:700 11px/1.6 'Outfit',sans-serif;color:#5b6276;background:#eef0f5;border-radius:6px;padding:0 7px}
+.hu-sub{margin:4px 0 14px;font-size:12px;color:#6b7385;line-height:1.7}
+.hu-wait{margin:18px 0;font-size:13px;color:#6b7385}
+.hu-av{display:block;width:44px;height:44px;border-radius:12px;background:#eef0f5;overflow:hidden;flex:none}
+.hu-av img{display:block;width:100%;height:100%;object-fit:cover}
+.hu-av.lg{width:52px;height:52px;border-radius:14px}
+.hu-av.sm{width:26px;height:26px;border-radius:8px}
+.hu-cl,.hu-g,.hu-def{font-style:normal;font-size:10px;font-weight:800;line-height:1.7;border-radius:5px;padding:0 6px;white-space:nowrap}
+.hu-cl.inf{background:#e9eef4;color:#4b6889}
+.hu-cl.lan{background:#e1f3ec;color:#157a5a}
+.hu-cl.mks{background:#fdeedd;color:#b85a08}
+.hu-g{background:#eef0f5;color:#5b6276}
+.hu-def{display:inline-block;background:#fff;border:1px solid #cfd4e1;color:#5b6276;font-weight:700;line-height:1.6}
+.hu-bar{display:flex;height:8px;border-radius:4px;background:#eef0f5;overflow:hidden}
+.hu-bar i{display:block;height:100%}
+.hu-bar.inf i{background:#5b7a9e}
+.hu-bar.lan i{background:#1d9e74}
+.hu-bar.mks i{background:#e8730c}
+.hu-bar i.lt{opacity:.42}
+.hu-mv{display:inline-block;min-width:34px;text-align:center;font:800 10.5px/1.4 'Outfit','Noto Sans JP',sans-serif;border-radius:6px;padding:2px 5px}
+.hu-mv.up{background:#e6f6ec;color:#15803d}
+.hu-mv.dn{background:#eef0f5;color:#5b6276}
+.hu-mv.eq{color:#8a91a5}
+.hu-mv.new{background:#fff1e8;color:#c2500f}
+.hu-pod{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:6px}
+.hu-pod li{border:1px solid #e3e5ed;border-radius:14px;padding:14px 16px;min-width:0;background:#fff}
+.hu-pod li.p1{background:linear-gradient(180deg,#171c30,#0f1322);border-color:#171c30;color:#fff}
+.hu-pod .pr{display:flex;align-items:center;gap:4px;margin-bottom:8px}
+.hu-pod .pr b{font:800 26px/1 'Outfit',sans-serif;color:#5b6276}
+.hu-pod .pr small{font-size:11px;font-weight:700;color:#6b7385;margin-right:2px}
+.hu-pod .pr .hu-ic{width:20px;height:20px;color:#ffd166}
+.hu-pod .pr .hu-mv{margin-left:auto}
+.hu-pod .ph{display:flex;align-items:center;gap:10px;margin-bottom:8px;min-width:0}
+.hu-pod .ph>div{min-width:0}
+.hu-pod .ph strong{display:block;font-size:15px;font-weight:800;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hu-pod .ph span{display:flex;gap:4px;margin-top:3px}
+.hu-pod .pp{display:flex;align-items:baseline;gap:6px}
+.hu-pod .pp b{font:800 30px/1.2 'Outfit',sans-serif;font-variant-numeric:tabular-nums}
+.hu-pod .pp small{font-size:11px;font-weight:700;color:#6b7385}
+.hu-pod .hu-bar{margin:6px 0 8px}
+.hu-pod .pd{font-size:11px;color:#6b7385}
+.hu-pod .hu-def{margin-top:6px}
+.hu-pod .p1 .pr b{color:#ffd166}
+.hu-pod .p1 .pr small,.hu-pod .p1 .pp small,.hu-pod .p1 .pd{color:#c9d1e6}
+.hu-pod .p1 .hu-bar{background:rgba(255,255,255,.14)}
+.hu-pod .p1 .hu-bar i.lt{opacity:.62}
+.hu-pod .p1 .hu-g{background:rgba(255,255,255,.14);color:#e8ecf8}
+.hu-pod .p1 .hu-def{background:transparent;border-color:rgba(255,255,255,.4);color:#e8ecf8}
+.hu-pod .p1 .hu-mv.up{background:rgba(79,224,192,.18);color:#7ff0d6}
+.hu-pod .p1 .hu-mv.dn{background:rgba(255,255,255,.12);color:#c9d1e6}
+.hu-pod .p1 .hu-mv.eq{color:#8a94b0}
+.hu-list li{display:grid;grid-template-columns:26px 40px 44px minmax(0,1.05fr) minmax(0,1.4fr) 62px;grid-template-areas:"rk mv av nm br pv";align-items:center;gap:10px;padding:9px 0;border-top:1px solid #eef0f5}
+.hu-list .rk{grid-area:rk;font:800 15px/1.3 'Outfit',sans-serif;color:#5b6276;text-align:center}
+.hu-list .hu-mv{grid-area:mv}
+.hu-list .hu-av{grid-area:av}
+.hu-list .nm{grid-area:nm;min-width:0}
+.hu-list .nm strong{display:block;font-size:14px;font-weight:800;line-height:1.3}
+.hu-list .nm span{display:flex;flex-wrap:wrap;gap:4px;margin-top:3px}
+.hu-list .br{grid-area:br;min-width:0}
+.hu-list .br small{display:block;font-size:10.5px;color:#6b7385;margin-top:3px}
+.hu-list .pv{grid-area:pv;font:800 16px/1.3 'Outfit',sans-serif;font-variant-numeric:tabular-nums;text-align:right}
+.hu-more{display:block;width:100%;margin-top:8px;border:1px solid #e3e5ed;background:#fff;border-radius:10px;padding:8px;font-size:12.5px;font-weight:800;color:#3a4055}
+.hu-leg{display:flex;flex-wrap:wrap;gap:4px 16px;margin-top:14px;padding-top:12px;border-top:1px solid #eef0f5;font-size:11px;color:#5b6276}
+.hu-leg i{display:inline-block;width:18px;height:7px;border-radius:4px;background:#5b6276;margin-right:6px;vertical-align:middle}
+.hu-leg i.l{opacity:.4}
+.hu-note{margin:8px 0 0;font-size:11px;line-height:1.7;color:#6b7385}
+#huNew li{display:flex;gap:10px;align-items:center;padding:6px 0}
+#huNew li>div{flex:1;min-width:0}
+#huNew strong{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:800;margin-bottom:4px}
+#huNew .hu-bar{height:6px}
+#huNew small{display:block;font-size:10.5px;color:#6b7385;margin-top:3px}
+#huNew small b{color:#23283a}
+#huCombo h4{font-size:11.5px;font-weight:800;color:#6b7385;margin:10px 0 4px}
+#huCombo li{display:grid;grid-template-columns:16px minmax(0,1fr) auto;gap:8px;align-items:baseline;padding:4px 0;font-size:12.5px}
+#huCombo li b{font:800 12px/1.5 'Outfit',sans-serif;color:#5b6276}
+#huCombo li span{font-weight:700;line-height:1.5}
+#huCombo li em{font:800 12.5px/1.5 'Outfit',sans-serif;font-style:normal;font-variant-numeric:tabular-nums}
+#huLinks{padding:6px 18px}
+#huLinks a{display:flex;align-items:center;gap:8px;padding:11px 0;font-size:13px;font-weight:800;line-height:1.5;color:#e85d12;text-decoration:none}
+#huLinks a+a{border-top:1px solid #eef0f5}
+#huLinks a span{flex:1}
+#huHeat{margin-top:16px}
+.hu-tabs{margin-bottom:12px}
+.hu-tabs button{padding:7px 14px;font-size:12.5px}
+.hu-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.hu-heat{border-collapse:separate;border-spacing:3px;width:100%;min-width:780px;margin:0;font-size:11px}
+.hu-heat th,.hu-heat td{border:0;padding:0;background:none}
+.hu-heat thead th{font:800 11px/1.9 'Outfit','Noto Sans JP',sans-serif;color:#5b6276;text-align:center;white-space:nowrap}
+.hu-heat thead th.cur{background:#171c30;color:#fff;border-radius:6px}
+.hu-heat th.h0{position:sticky;left:0;z-index:1;background:#fff;text-align:left;padding-right:8px}
+.hu-heat tbody th.h0 div{display:flex;align-items:center;gap:6px;min-width:150px;font-size:12px;font-weight:700;color:#23283a;white-space:nowrap}
+.hu-heat td{height:26px;min-width:32px;border-radius:5px;text-align:center;font:700 11px/26px 'Outfit',sans-serif;color:#23283a}
+.hu-heat td.na{background:#f1f2f6}
+.hu-heat td.hi{color:#fff}
+.hu-heat td.cur{box-shadow:0 0 0 2px #171c30}
+.hu-about{margin-top:16px}
+.hu-about dl{margin:12px 0 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px 28px}
+.hu-about dt{font-size:13px;font-weight:800;color:#23283a;margin-bottom:2px}
+.hu-about dd{margin:0;font-size:12.5px;line-height:1.8;color:#3a4055}
+.hu .relbar{margin-top:18px}
+@media(max-width:920px){.hu-main{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:640px){
+.hu-card{padding:16px 14px}
+.hu-pod{grid-template-columns:minmax(0,1fr)}
+.hu-pod li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"pr ph pp" "bar bar bar" "pd pd pd";align-items:center;gap:6px 10px;padding:12px 14px}
+.hu-pod .pr{grid-area:pr;margin:0;flex-direction:column;gap:2px}
+.hu-pod .pr small{display:none}
+.hu-pod .pr .hu-mv{margin:0}
+.hu-pod .ph{grid-area:ph;margin:0}
+.hu-pod .pp{grid-area:pp;flex-direction:column;align-items:flex-end;gap:0}
+.hu-pod .pp b{font-size:22px}
+.hu-pod .hu-bar{grid-area:bar;margin:0}
+.hu-pod .pd{grid-area:pd}
+.hu-pod .hu-def{grid-column:1/-1;justify-self:start;margin:0}
+.hu-av.lg{width:44px;height:44px;border-radius:12px}
+.hu-list li{grid-template-columns:20px 34px 38px minmax(0,1fr) 54px;grid-template-areas:"rk mv av nm pv" ". . br br br";gap:4px 8px}
+.hu-list .hu-av{width:38px;height:38px}
+.hu-seg button{padding:7px 12px}
+}
+"""
+
+def build_hero_usage():
+    tr = Tr()
+    path = "/stats/hero-usage/"
+    title_ja = "ホワサバ 熊狩り 英雄利用度ランキング【世代別】集結主・乗せでよく使われる英雄 | ホワサバ ツールラボ"
+    title_en = "Whiteout Survival Bear Hunt: Hero Usage Ranking by Generation (Rally Leaders & Joiners) | Whiteout Tools Lab"
+    desc_ja = ("ホワサバ（Whiteout Survival）の熊狩りで、集結主・乗せによく使われている英雄を世代別にランキング。"
+               "熊狩シミュレーターの利用データから毎日集計し、世代ごとの採用率・前の世代からの順位の動き・人気の組み合わせが分かります。")
+    desc_en = ("Which heroes players actually run in Whiteout Survival Bear Hunt, ranked by generation: pick rates for rally leaders and joiners, "
+               "moves versus the previous generation and popular combinations — aggregated daily from the Bear Hunt simulator.")
+    lead_ja = tr("熊狩シミュレーターで実際に組まれた編成を、サーバーの世代ごとに集計しました。世代をえらぶと、その世代までに登場した英雄のうち、編成に入っていることが多い順に並びます。",
+                 "Line-ups actually built in the Bear Hunt simulator, aggregated by server generation. Pick a generation to see which of the heroes released up to then appear in line-ups most often.")
+    about = [
+        ("採用率とは", "その世代の利用者のうち、その英雄を編成に入れている人の割合です。人気投票ではなく、シミュレーターで実際に組まれた編成を数えています。",
+         "What “pick rate” means", "The share of that generation’s players who have the hero in their line-up. It is not a popularity vote — it counts line-ups actually built in the simulator."),
+        ("集結主・乗せ・総合のちがい", "集結主は集結を立てる側の3枠（盾・槍・弓を1人ずつ）、乗せは集結に参加する側の4枠です。総合は、そのどちらかに入れている人の割合です。",
+         "Leader, joiner and overall", "Rally leaders are the three slots of the player starting the rally (one INF, one LAN, one MKS). Joiners are the four slots of players joining it. Overall is the share using the hero in either role."),
+        ("初期編成のあつかい", "シミュレーターを開くと、最初から決まった英雄が入っています。そのまま計算した人まで数えると、その英雄だけ高く出てしまいます。そこで、英雄を自分で選び直した人のデータが十分に集まった世代から、選び直した人だけで順位を出します。集まるまでは全員のデータで出し、当てはまる英雄に印を付けています。",
+         "How the default line-up is handled", "The simulator opens with a fixed set of heroes already selected. Counting people who never changed it would inflate just those heroes, so once a generation has enough data from players who picked their own heroes, the ranking uses only those players. Until then it uses everyone and tags the affected heroes."),
+        ("データの期間と更新", "直近90日のあいだに計算された編成を、1人につき世代ごとに1件だけ数えています。10件に満たない世代は公開していません。順位は毎朝更新されます。",
+         "Period and updates", "Line-ups calculated in the last 90 days, counted once per person per generation. Generations with fewer than 10 entries are not shown. The ranking is refreshed every morning."),
+        ("見るときの注意", "このツールの利用者のデータで、ゲーム全体の公式な統計ではありません。また「強い順」ではなく「よく使われている順」です。最適な編成は、世代別ページのおすすめ構成とあわせて確認してください。",
+         "Keep in mind", "This is data from this tool’s users, not an official game-wide statistic. It also ranks how common a hero is, not how strong. For the best line-up, check the recommended builds on the generation pages as well."),
+    ]
+    about_html = "".join(f'<div><dt>{bi(esc(q), qe)}</dt><dd>{bi(esc(a), ae)}</dd></div>' for q, a, qe, ae in about)
+    body = f"""<div class="wrap wide hu">
+<div class="crumb"><a href="/index.html">{tr("ホーム","Home")}</a> &gt; <a href="/stats/index.html">{tr("世代別 熊狩り構成","Bear Hunt builds by generation")}</a> &gt; {tr("英雄利用度ランキング","Hero usage ranking")}</div>
+<div class="eyebrow">{tr("ホワサバ（Whiteout Survival）熊狩り攻略／世代別データ","Whiteout Survival Bear Hunt guide / data by generation")}</div>
+<h1>{tr("熊狩り 英雄利用度ランキング","Bear Hunt Hero Usage Ranking")}</h1>
+<p class="lead">{lead_ja}</p>
+<div id="huApp">
+<div class="hu-meta" id="huMeta"></div>
+<section class="hu-card hu-ctl" aria-label="{tr("表示の切り替え","Filters")}" data-aria-en="Filters">
+<div class="hu-lb">{tr("世代をえらぶ","Pick a generation")}</div>
+<div class="hu-gens" id="huGens"></div>
+<div class="hu-opts">
+<div><div class="hu-lb">{tr("役割","Role")}</div><div class="hu-seg" id="huRole" role="group"></div></div>
+<div><div class="hu-lb">{tr("兵種","Troop type")}</div><div class="hu-pills" id="huCls" role="group"></div></div>
+</div>
+</section>
+<div class="hu-main">
+<section class="hu-card" id="huRank" aria-live="polite"><p class="hu-wait">{tr("読み込み中…","Loading…")}</p></section>
+<aside class="hu-side">
+<section class="hu-card" id="huNew" hidden></section>
+<section class="hu-card" id="huCombo" hidden></section>
+<nav class="hu-card" id="huLinks"></nav>
+</aside>
+</div>
+<section class="hu-card" id="huHeat"></section>
+</div>
+<noscript><p class="note">{tr("このページの順位は、JavaScript を有効にすると表示されます。","Enable JavaScript to see the ranking on this page.")}</p></noscript>
+<section class="hu-card hu-about">
+<h2>{tr("このランキングの見方","How to read this ranking")}</h2>
+<dl>{about_html}</dl>
+</section>
+<div class="relbar">
+  <a href="/stats/index.html">→ {tr("世代別 熊狩り構成のトップ","Bear Hunt builds by generation")}</a>
+  <a href="/tools/bear-hunt/index.html">→ {tr("熊狩ダメージ・シミュレーター","Bear Hunt Simulator")}</a>
+  <a href="/stats/methodology.html">→ {tr("集計方法と計算の前提","Methodology")}</a>
+</div>
+</div>
+"""
+    crumb_en = '<a href="/en/index.html">Home</a> &gt; <a href="/en/stats/index.html">Bear Hunt builds by generation</a> &gt; Hero usage ranking'
+    art = ld_article("ホワサバ 熊狩り 英雄利用度ランキング（世代別）", desc_ja, path, HU_PUBLISHED)
+    art["dateModified"] = HU_PUBLISHED
+    ld = jsonld([art, ld_crumbs([("ホーム", "/"), ("世代別 熊狩り構成", "/stats/"), ("英雄利用度ランキング", path)])])
+    hd = head(title_ja, desc_ja, path, ld)
+    font_old = "family=Noto+Sans+JP:wght@400;500;700;800&display=swap"
+    assert font_old in hd and "</head>" in hd
+    hd = hd.replace(font_old, "family=Outfit:wght@500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;800&display=swap")
+    hd = hd.replace("</head>", "<style>" + "".join(l.strip() for l in HU_CSS.strip().split("\n")) + "</style>\n</head>")
+    tl = tail(tr, title_en, crumb_en, "Bear Hunt Hero Usage Ranking", tr.m[lead_ja], desc_en=desc_en)
+    stats_tag = f'<script src="/assets/stats.js?v={V}"></script>'
+    assert stats_tag in tl
+    tl = tl.replace(stats_tag, stats_tag + f'\n<script src="/assets/hero-usage.js?v={HUV}"></script>')
+    return hd + body + tl
+
 # ---------------- 投稿ページ ----------------
 def build_submit():
     tr = Tr()
@@ -921,6 +1163,7 @@ def write(rel, s):
 
 write("stats/index.html", build_hub())
 write("stats/methodology.html", build_methodology())
+write("stats/hero-usage/index.html", build_hero_usage())
 write("submit/index.html", build_submit())
 write("stats/admin.html", build_admin())
 for g in GENS:
@@ -928,4 +1171,4 @@ for g in GENS:
 nopost = [HEROES[h]["name"] for h in HEROES if HEROES[h]["gen"] > 0 and not HEROES[h]["post"]]
 if nopost:
     print("NOTE: 公式Xの投稿IDが未登録の英雄（検索リンクで代替中）:", "、".join(nopost), "→ assets/hero-posts.js に貼ると埋め込みに変わります")
-print("DONE:", 3 + len(GENS), "pages")
+print("DONE:", 4 + len(GENS), "pages")

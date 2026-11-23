@@ -72,3 +72,26 @@ python3 _build_sitemap.py   # sitemap.xml（日英+ hreflang）を再生成
 
 ## 飾りの書き込み（_build_links.py の前に実行）
 `python3 _build_static.py` — 見出し画像（.kv）、攻略ガイドの「グレッグの解説」枠、絵文字→アイコンを公開HTMLに直接書き込む。順番: `_build_stats.py` → `_build_lang.py` → `_build_sitemap.py` → `_build_static.py` → `_build_links.py`。見出し画像の対応表はこのスクリプトの KV と assets/hero-img.js の KV の両方にある。
+
+## v150（2026-11-22）で増えたもの
+
+| 原本 | 公開されるファイル | 役割 |
+|---|---|---|
+| `_js/bear-pos.js` | `assets/bear-pos.js` | 熊狩シミュレーターの「世代内ポジション分析」（ランク・分布図・次の目標・要素別の位置・編成の採用率） |
+| `_js/hero-usage.js` | `assets/hero-usage.js` | 英雄利用度ランキング（`/stats/hero-usage/`）の中身 |
+| `_build_stats.py` の `build_hero_usage()` | `stats/hero-usage/index.html`（＋ `/en/`） | ランキングページの見出し・説明・見た目（`HU_CSS`） |
+
+- どちらの JS も、ほかと同じく `node _build_js.js` で作ります。
+- `_js/usage.js` は、偏差値まわりの表示を `bear-pos.js`（`WOS_POS`）に任せます。`bear-pos.js` が読み込めなかったときは、以前の簡易表示に戻ります。
+- シミュレーターのページに `assets/*.js` を足したり版数（`?v=`）を変えたりするときは、`_src/tools/bear-hunt/index.html` の末尾の `<script>` を直します。
+
+### 注意: いまは「全部を作り直す」と関係ないページも変わります
+
+`_src/` の原本の一部（トップ・about・攻略ガイド・ほかのツールなど）が、公開中のページより少し古い状態です
+（`site.css?v=143` のような版数や、一部の文面）。そのため上のコマンドを全部実行すると、今回の変更と関係ない
+50ほどのページも書き換わります。v150 では、**作業用の写しで全部を作り直し、変更したいファイルだけを取り出して**反映しました。
+
+次に `_src/` のページを直すときは、先にそのページの原本を公開中の内容にそろえてから直すと安全です
+（そろっているかどうかは、作り直した結果と公開中のファイルを比べれば分かります）。
+`_src/tools/bear-hunt/index.html`・`_src/changelog.html`・`_src/privacy.html` は、v150 でそろえてあります。
+`stats/`・`submit/`（`_build_stats.py` の生成物）と `assets/*.js` は、作り直しても公開中と同じ内容になります。

@@ -2,10 +2,13 @@
    前提: config.js（WOS_API / t()）, シミュレーター本体のグローバル（u=編成, g=予測ダメージ, h()=英雄検索）
    - 送るもの: 世代・集結主3人・乗せ英雄4人・兵種Tier/火晶・攻撃%/殺傷%・兵数・予測ダメージ（補正係数C などの係数を全員同じ既定値にそろえて計算した値）
    - 実測キャリブレーション欄に実測ダメージが入っていれば一緒に送る（精度の検証用。サーバーは保存するだけで、どの画面にも出さない）
+   - 「自分で選んだか」の印も送る（v150）: gc=世代を自分で選んだ ／ lt=集結主の英雄を選び直した ／ jt=乗せ英雄を選び直した。
+     初期値のまま計算しただけのデータを、世代別の統計や英雄利用度ランキングから分けて扱うため
    - 送らないもの: 名前・同盟・ゲームID・Cookie・広告ID。ブラウザ内で作った乱数ID（wos_cid）だけを付ける
    - 計算できる状態（必須項目が入力済み）で、利用者が実際に操作したときだけ送る。同じ内容は二度送らない
    - 「統計に使わない」を選ぶと以後送らず、送信済みの分もサーバーから削除する
-   - 現実的かどうかの判定はサーバー側（cloudflare/src/index.js の realism）。ここでは判定しない */
+   - 現実的かどうかの判定はサーバー側（cloudflare/src/index.js の realism）。ここでは判定しない
+   - 偏差値まわりの表示は bear-pos.js（WOS_POS）に任せる。bear-pos.js が無いときは、ここの簡易表示に戻る */
 (function(){
   var W = window, D = document;
   var API = (W.WOS_API || '').replace(/\/$/, '');
@@ -50,7 +53,7 @@
   function build(){
     if(typeof g !== 'number' || !isFinite(g) || !(g > 0)) return null;      /* 必須項目が未入力＝計算されていない */
     if(typeof u === 'undefined' || typeof h !== 'function') return null;
-    var gen = numOf('curGen'); if(!gen) return null;
+    var gen = numOf('curGen'); if(!gen || !genChosen()) return null;        /* 世代を自分で選ぶまでは送らない（下の「世代の選択」） */
     var leader = {};
     (u.leader || []).forEach(function(x){ if(!x) return; var hh = h(x.heroId); if(hh) leader[hh.cls] = { id: x.heroId, gear: x.gear || 0 }; });
     if(!leader.inf || !leader.lan || !leader.mks) return null;
@@ -59,12 +62,39 @@
     var dmg = stdDamage(); if(!dmg) return null;
     var sub = null;
     try{ var sv = JSON.parse(ls('wos_stats_submission:' + gen) || 'null'); if(sv && sv.id) sub = sv.id; }catch(e){}
-    return { gen: gen, leader: leader,
+    var tf = touchFlags(gen);
+    return { gen: gen, gc: 1, lt: tf.lt, jt: tf.jt, leader: leader,
       joiners: (u.joiner || []).map(function(x){ return x ? x.heroId : null; }),
       tier: numOf('tier'), fc: numOf('fcLevel'), stats: stats,
       troops: [numOf('nInf') || 0, numOf('nLan') || 0, numOf('nMks') || 0],
       damage: dmg, calib: numOf('kFactor'), sub: sub || undefined,
       mv: MODEL_VER, observed: (function(){ var o = numOf('observed'); return o && o > 0 ? Math.round(o) : undefined; })() };
+  }
+
+  /* ---------- 英雄を自分で選び直したか（v150） ----------
+     画面を開いた直後は、誰でも同じ初期編成（集結主 ジェロニモ・ミア・アロンソ ／ 乗せ ジェシー・ジャセル・ソユン・ウェイン）が入っている。
+     そのまま計算した人まで「この英雄を使っている人」に数えると、初期編成の英雄だけ利用率が高く出てしまう。
+     そこで「選び直した」と分かるときだけ印を付けて送る（サーバーは印のある人だけで英雄の利用度を出せる）:
+       - 英雄の選択画面で選んだ ／ 保存した編成を呼び出した
+       - 初期編成と違う編成になっている（世代別ページの「この構成で試算する」で入っただけの集結主は、選び直しには数えない）
+     画面を開き直すと初期編成に戻るので、印は保存せず、その回の操作だけで判定する */
+  var DEF_LEAD = { inf: 'jeronimo', lan: 'mia', mks: 'alonso' }, DEF_JOIN = ['jessie', 'jasser', 'seoyoon', 'wayne'];
+  var picked = { l: false, j: false }, prefilled = false;
+  try{ prefilled = /[?&](inf|lan|mks)=/.test(location.search); }catch(e){}
+  function pickerKind(){ try{ return (typeof v !== 'undefined' && v && v.kind) || null; }catch(e){ return null; } }   /* v = 本体の「いま選択中の枠」 */
+  D.addEventListener('click', function(ev){
+    if(ev.isTrusted === false || !ev.target || !ev.target.closest) return;
+    if(ev.target.closest('#pickerBody .pitem')){ var kd = pickerKind(); if(kd === 'leader') picked.l = true; else if(kd === 'joiner') picked.j = true; }
+    else if(ev.target.closest('#presetList .pload')){ picked.l = picked.j = true; }
+  }, true);
+  function touchFlags(gen){
+    var cur = {};
+    (u.leader || []).forEach(function(x){ if(!x) return; var hh = h(x.heroId); if(hh) cur[hh.cls] = x.heroId; });
+    var leadDiff = cur.inf !== DEF_LEAD.inf || cur.lan !== DEF_LEAD.lan || cur.mks !== DEF_LEAD.mks;
+    /* 乗せの初期編成は、その世代でまだ使えない英雄が外れた形で比べる（世代を選ぶと自動で外れるため） */
+    var jc = (u.joiner || []).filter(Boolean).map(function(x){ return x.heroId; }).sort().join(',');
+    var jd = DEF_JOIN.filter(function(id){ var hh = h(id); return hh && hh.gen <= gen; }).sort().join(',');
+    return { lt: (picked.l || (leadDiff && !prefilled)) ? 1 : 0, jt: (picked.j || jc !== jd) ? 1 : 0 };
   }
 
   /* ---------- 送信 ---------- */
@@ -103,37 +133,60 @@
   }
 
   /* ---------- 表示: 偏差値と「統計に使わない」 ---------- */
-  var box = null, devCache = {}, devGen = null;
+  var box = null, devCache = {}, devWait = {}, devGen = null;
+  function put(e, html){ if(e.__h !== html){ e.__h = html; e.innerHTML = html; } }      /* 同じ内容なら書き直さない */
   function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]; }); }
   /* 標準正規分布の上側確率（偏差値 → 上位何%） */
   function upper(z){ var k = 1 / (1 + 0.2316419 * Math.abs(z)); var p = 0.3989423 * Math.exp(-z * z / 2) * k * (0.3193815 + k * (-0.3565638 + k * (1.781478 + k * (-1.821256 + k * 1.330274)))); return z >= 0 ? p : 1 - p; }
+  /* その世代の集計を読む。読み込み中に何度呼ばれても通信は1回だけ */
   function loadDev(gen, cb){
     if(!API){ cb(null); return; }
     if(devCache[gen]){ cb(devCache[gen]); return; }
-    fetch(API + '/v1/stats/' + gen, { mode: 'cors', credentials: 'omit' }).then(function(r){ return r.ok ? r.json() : null; })
-      .then(function(s){ if(s){ devCache[gen] = s; } cb(s); }).catch(function(){ cb(null); });
+    if(devWait[gen]){ devWait[gen].push(cb); return; }
+    devWait[gen] = [cb];
+    fetch(API + '/v1/stats/' + gen, { mode: 'cors', credentials: 'omit' }).then(function(r){ return r.ok ? r.json() : null; }).catch(function(){ return null; })
+      .then(function(s){
+        if(s) devCache[gen] = s;
+        var q = devWait[gen] || []; devWait[gen] = null;
+        q.forEach(function(f){ try{ f(s); }catch(e){} });
+      });
   }
   function renderDev(){
     var out = box && box.querySelector('.ug-dev'); if(!out) return;
+    var POS = W.WOS_POS || null, hide = function(){ try{ if(POS && POS.update) POS.update(null); }catch(e){} };
     var gen = numOf('curGen'), dmg = (typeof g === 'number' && isFinite(g) && g > 0) ? (stdDamage() || null) : null;
-    if(!gen || !dmg || !API){ out.innerHTML = ''; return; }
+    if(dmg && API && (!gen || !genChosen())){
+      put(out, '<a class="ug-wait ug-pick" href="#curGen">' + t('サーバーの世代を選ぶと、同じ世代の中での偏差値が出ます', 'Pick your server generation to see your score within it') + '</a>');
+      hide(); return;
+    }
+    if(!gen || !dmg || !API){ put(out, ''); hide(); return; }
     devGen = gen;
     loadDev(gen, function(s){
       if(devGen !== gen) return;
       var href = (W.WOS_BASE || '') + '/stats/gen-' + (gen < 10 ? '0' : '') + gen + '/#live-dev';
       if(!s || !s.published || !s.dev){
-        out.innerHTML = '<span class="ug-wait">' + t('第' + gen + '世代の偏差値はデータ集計中です', 'Gen ' + gen + ' score: still collecting data')
-          + (s && typeof s.n === 'number' ? t('（現在 ' + s.n + ' 件・10件から公開）', ' (' + s.n + ' so far, opens at 10)') : '') + '</span>';
-        return;
+        put(out, '<span class="ug-wait">' + t('第' + gen + '世代の偏差値はデータ集計中です', 'Gen ' + gen + ' score: still collecting data')
+          + (s && typeof s.n === 'number' ? t('（現在 ' + s.n + ' 件・10件から公開）', ' (' + s.n + ' so far, opens at 10)') : '') + '</span>');
+        hide(); return;
+      }
+      /* くわしい表示（ランク・分布・次の目標など）は bear-pos.js に任せる。読み込めていないときは下の簡易表示 */
+      if(POS && POS.compact && POS.update){
+        try{
+          var ctx = { gen: gen, dmg: dmg, shown: g, s: s, href: href };
+          put(out, POS.compact(ctx)); POS.update(ctx);
+          return;
+        }catch(e){ hide(); }
       }
       var z = (Math.log(dmg) / Math.LN10 - s.dev.mu) / s.dev.sd, score = 50 + 10 * z, top = upper(z) * 100;
       var topTxt = top < 1 ? t('上位1%以内', 'top 1%') : top > 99 ? t('下位1%以内', 'bottom 1%') : t('上位 約' + Math.round(top) + '%', 'top ~' + Math.round(top) + '%');
-      out.innerHTML = '<span class="ug-lbl">' + t('第' + gen + '世代の中での偏差値', 'Score within Gen ' + gen) + '</span>'
+      put(out, '<span class="ug-lbl">' + t('第' + gen + '世代の中での偏差値', 'Score within Gen ' + gen) + '</span>'
         + '<b class="ug-score">' + score.toFixed(1) + '</b><span class="ug-top">' + esc(topTxt) + '</span>'
         + meter(s.dev, score)
-        + '<a class="ug-more" href="' + href + '">' + t('n=' + s.dev.n + '・分布を見る →', 'n=' + s.dev.n + ' · see distribution →') + '</a>';
+        + '<a class="ug-more" href="' + href + '">' + t('n=' + s.dev.n + '・分布を見る →', 'n=' + s.dev.n + ' · see distribution →') + '</a>');
     });
   }
+  /* bear-pos.js から呼ぶ: 表示の更新（編成や装備だけを変えたときにも採用率などを出し直すため） */
+  W.WOS_USAGE.refresh = function(){ if(box) renderDev(); };
   /* 偏差値の位置を絵で見せる: その世代の分布（5刻み）の上に自分の位置を▼で示す */
   function meter(d, score){
     if(!d.hist || !d.hist.length) return '';
@@ -197,5 +250,97 @@
     new MutationObserver(renderDev).observe(src, { childList: true, characterData: true, subtree: true });
     var cg = el('curGen'); if(cg) cg.addEventListener('change', function(){ setTimeout(renderDev, 0); });
   }
+
+  /* ---------- 世代の選択（v148） ----------
+     以前は「現在の世代」が最初から最新世代になっていたため、選び直さずに計算した人のデータが最新世代として記録されていた。
+     いまは先頭に「— 世代を選択 —」を置き、自分で選ぶまでは未選択のままにする（計算は動く。統計には送らない）。
+     「自分で選んだ」とみなすのは: 選択欄を操作した ／ 世代ページのリンク（?gen=…&inf=…）でその世代が入った ／ 選ばれている値が最新世代より小さい */
+  var LS_GEN = 'bh_gen_chosen';
+  function maxGen(){
+    var sel = el('curGen'), mx = 0;
+    if(sel) [].forEach.call(sel.options, function(o){ var v = parseInt(o.value, 10); if(v > mx) mx = v; });
+    return mx;
+  }
+  function genChosen(){
+    var gen = numOf('curGen');
+    return !!gen && (ls(LS_GEN) === '1' || gen < maxGen());
+  }
+  function genNeedUI(){
+    var sel = el('curGen'); if(!sel) return;
+    var ok = genChosen(), note = D.getElementById('genNeed');
+    sel.classList.toggle('gen-need', !ok);
+    if(!note){ note = D.createElement('div'); note.id = 'genNeed'; note.className = 'gen-need-t'; sel.parentNode.appendChild(note); }
+    note.textContent = ok ? '' : t('サーバーの世代を選んでください（世代別の統計・偏差値に使います）', 'Choose your server generation (used for per-generation stats and scores)');
+    note.style.display = ok ? 'none' : '';
+  }
+  function genInit(){
+    var sel = el('curGen'); if(!sel || sel.querySelector('option[value=""]')) return;
+    var opt = D.createElement('option'); opt.value = ''; opt.textContent = t('— 世代を選択 —', '— Select generation —');
+    sel.insertBefore(opt, sel.firstChild);
+    /* 世代ページのリンク（?gen=10&inf=…）から来て、本体がその世代を選択欄に入れたときだけ「選んだ」とみなす。
+       ?gen= だけが付いたURL（選択欄には反映されない）で、最新世代のまま「選んだ」ことにならないようにする（v150） */
+    try{ var mg = /[?&]gen=(\d+)/.exec(location.search); if(mg && String(numOf('curGen')) === mg[1]) lsSet(LS_GEN, '1'); }catch(e){}
+    if(!genChosen()) sel.value = '';
+    sel.addEventListener('change', function(){ if(numOf('curGen')) lsSet(LS_GEN, '1'); genNeedUI(); });
+    var st = D.createElement('style');
+    st.textContent = '#curGen.gen-need{border-color:#e85d12 !important;box-shadow:0 0 0 3px rgba(232,93,18,.16)}'
+      + '.gen-need-t{margin-top:5px;font-size:11.5px;font-weight:700;color:#c2500f;line-height:1.5}';
+    D.head.appendChild(st);
+    genNeedUI(); setInterval(genNeedUI, 1500);
+    genHelp(sel);
+  }
+  /* 「世代がわからない方はこちら」: いちばん新しい英雄から世代を調べる一覧（v149） */
+  function genHelp(sel){
+    var link = D.createElement('a'); link.href = '#'; link.id = 'genHelp'; link.setAttribute('role', 'button');
+    link.textContent = t('世代がわからない方はこちら', 'Not sure which generation?');
+    sel.parentNode.appendChild(link);
+    var row = sel.closest('.row') || sel.parentNode, panel = null;
+    var st = D.createElement('style');
+    st.textContent = '#genHelp{display:inline-block;margin-top:6px;font-size:12px;font-weight:700;color:#5b6276;text-decoration:underline;text-underline-offset:3px}'
+      + '#genFind{margin:4px 0 14px;padding:14px 16px;border:1px solid #e3e5ed;border-radius:12px;background:#fff}'
+      + '#genFind h4{margin:0 0 4px;font-size:14px;color:#23283a}#genFind p{margin:0 0 10px;font-size:12.5px;color:#5b6276;line-height:1.7}'
+      + '#genFind .gf-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:6px;max-height:420px;overflow:auto;overscroll-behavior:contain;padding-right:2px}'
+      + '#genFind .gf-i{display:grid;grid-template-columns:44px;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);align-items:center;gap:6px;padding:7px 8px;border:1px solid #e3e5ed;border-radius:10px;background:#fafbfe;text-decoration:none;color:#23283a}'
+      + '#genFind .gf-i:hover,#genFind .gf-i:focus-visible{border-color:#e85d12;background:#fff7f1}'
+      + '#genFind .gf-g{font:800 14px "Outfit",sans-serif;color:#e85d12}'
+      + '#genFind .gf-h{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0;font-size:10.5px;font-weight:700;line-height:1.2;text-align:center}'
+      + '#genFind .gf-h img{width:38px;height:38px;border-radius:10px;object-fit:cover;background:#eef0f5}'
+      + '#genFind .gf-h span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}'
+      + '#genFind .gf-x{float:right;font-size:12px;font-weight:700;color:#5b6276;text-decoration:none}'
+      + '@media(max-width:560px){#genFind .gf-list{grid-template-columns:1fr;max-height:360px}}';
+    D.head.appendChild(st);
+    function nameOf(hh){ return W.WOS_heroName ? W.WOS_heroName(hh) : hh.name; }
+    function build(){
+      var heroes = W.WOS_HEROES || [], byGen = {}, mx = maxGen();
+      heroes.forEach(function(hh){ if(hh.gen >= 1 && hh.gen <= mx) (byGen[hh.gen] = byGen[hh.gen] || []).push(hh); });
+      var order = { inf: 0, lan: 1, mks: 2 }, html = '';
+      for(var gn = mx; gn >= 1; gn--){
+        var list = (byGen[gn] || []).slice().sort(function(a, b){ return (order[a.cls] || 0) - (order[b.cls] || 0); });
+        if(!list.length) continue;
+        html += '<a class="gf-i" href="#" role="button" data-gen="' + gn + '"><span class="gf-g">G' + gn + '</span>'
+          + list.map(function(hh){ var src = W.WOS_heroImg && W.WOS_heroImg(hh);
+              return '<span class="gf-h">' + (src ? '<img src="' + src + '" alt="" loading="lazy" width="38" height="38">' : '') + '<span>' + nameOf(hh) + '</span></span>'; }).join('')
+          + '</a>';
+      }
+      panel = D.createElement('div'); panel.id = 'genFind';
+      panel.innerHTML = '<a class="gf-x" href="#" role="button">' + t('閉じる', 'Close') + '</a><h4>' + t('いちばん新しい英雄から世代を調べる', 'Find your generation from your newest heroes') + '</h4><p>'
+        + t('ゲーム内の「英雄」画面や英雄殿堂で、<b>自分のサーバーにいるいちばん新しい英雄</b>を確認し、その英雄がいる行を選んでください。新しい世代から順に並んでいます。',
+            'In the game, check the <b>newest heroes available on your server</b> (Heroes screen or Hall of Heroes) and tap the row that shows them. Newest generation first.')
+        + '</p><div class="gf-list">' + html + '</div>';
+      row.parentNode.insertBefore(panel, row.nextSibling);
+      panel.addEventListener('click', function(e){
+        var a = e.target.closest('a'); if(!a) return;
+        e.preventDefault();
+        if(a.classList.contains('gf-i')){ sel.value = a.getAttribute('data-gen'); lsSet(LS_GEN, '1'); sel.dispatchEvent(new Event('change', { bubbles: true })); }
+        panel.hidden = true;
+      });
+    }
+    link.addEventListener('click', function(e){
+      e.preventDefault();
+      if(!panel) build(); else panel.hidden = !panel.hidden;
+      if(!panel.hidden) panel.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    });
+  }
+  if(D.readyState !== 'loading') genInit(); else D.addEventListener('DOMContentLoaded', genInit);
   if(D.readyState !== 'loading') mount(); else D.addEventListener('DOMContentLoaded', mount);
 })();

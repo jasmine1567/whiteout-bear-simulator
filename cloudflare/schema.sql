@@ -66,6 +66,9 @@ CREATE TABLE IF NOT EXISTS usage (
   flag        TEXT,                       -- 除外理由（stat_range など）
   mv          INTEGER NOT NULL DEFAULT 1, -- damage を計算したモデルの版数（古い版は集計時に新しい基準へ直す）
   observed    INTEGER,                    -- 利用者が入力した実測ダメージ（任意・精度の検証用・非公開）
+  gen_chosen   INTEGER,                   -- 「現在の世代」を自分で選んだ印（v150 以降の画面は 1、それより前の画面は NULL）。記録だけで、集計の判定には使わない
+  lead_touched INTEGER,                   -- 集結主の英雄を自分で選び直したら 1、初期編成のままなら 0（古い画面は NULL）
+  join_touched INTEGER,                   -- 乗せ英雄を自分で選び直したら 1、初期編成のままなら 0（古い画面は NULL）
   PRIMARY KEY (cid_hash, gen)
 );
 CREATE INDEX IF NOT EXISTS idx_usage_win    ON usage(status, updated_at);

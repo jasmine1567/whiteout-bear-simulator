@@ -311,3 +311,53 @@ npx wrangler d1 execute whitesim-stats --remote --command "SELECT gen, troop_tie
 ```
 
 `ratio` が 1 より小さい人が多ければ予測が高すぎ、1 より大きい人が多ければ低すぎです。
+
+## v150（2026-11-22）: 第17世代の初期値データの自動除外・世代内ポジション分析・英雄利用度ランキング
+
+やることは **1つだけ** です（データベースの列は、プログラムが必要なときに自分で追加します）。
+
+```
+npx wrangler deploy
+```
+
+配置した直後の最初の閲覧で、新しい内容の集計がその場で作り直されます（古い集計を消す作業はいりません）。
+サイト側（GitHub へのアップロード）とは、どちらを先にしてもかまいません。サイトだけ先に上げた場合、新しい画面は古い集計のままでも動き、Worker を配置した時点で表示が増えます。
+
+### 何が変わるか
+
+| 項目 | 内容 |
+|---|---|
+| 第17世代の自動除外 | 「現在の世代」が最初から第17世代になっていた頃（2026-10-07〜10-09）に、世代を選び直さずに計算されたデータを集計から外します。対象は「日本時間 2026-10-11 0:00 より前に届いたまま更新されていない第17世代の行」のうち、第17世代の英雄（エイダン・ベルサ・エリノ）を1人も使っていないものです。それより後に届いた行は、世代を自分で選んだ人のデータなので、そのまま数えます。集計のたびに自動でかかります |
+| 中央値・上位25%・上位10% | 実際より低く出ていたのを直しました（偏差値と同じ母集団から出します） |
+| 新しい集計項目 | `dev.q`（ダメージの分位）、`factors`（専用装備・ステータス・兵種Tier・兵士数の分布）、`usage`（英雄ごとの利用人数）。結果画面の「世代内ポジション分析」と「英雄利用度ランキング」が使います |
+| 新しい列 | `usage` テーブルに `gen_chosen` / `lead_touched` / `join_touched`（世代・集結主・乗せを自分で選んだかの印）。**自動で追加されます**。`lead_touched` / `join_touched` は英雄の利用度で使い、`gen_chosen` は記録だけです |
+
+### 除外された行は消えていません
+
+外した行は `status='flagged'`・`flag='gen_default'` になっているだけです。件数を見るには:
+
+```
+npx wrangler d1 execute whitesim-stats --remote --command "SELECT flag, COUNT(*) AS n FROM usage WHERE gen=17 GROUP BY flag"
+```
+
+同じ人がもう一度シミュレーターで第17世代を選んで計算すれば、その人の行は自動で集計に戻ります。
+境目の日時を変えたいときは `wrangler.toml` の `GEN_DEFAULT_UNTIL` を書き換えて配置し直します。
+もし除外をやめたくなったら、次の1行で元に戻せます（そのうえで `src/index.js` の `flagGenDefault(env)` の呼び出しを外して配置し直します）:
+
+```
+npx wrangler d1 execute whitesim-stats --remote --command "UPDATE usage SET status='ok', flag=NULL WHERE flag='gen_default'"
+```
+
+### 英雄利用度の「選び直した人だけ」に切り替わる人数
+
+`wrangler.toml` の `USAGE_PICKED_MIN`（既定 30）で決まります。世代・役割（集結主／乗せ／総合）ごとに、英雄を自分で選び直した人がこの人数以上になったところから、その人たちだけで順位を出します。それまでは全員のデータで出し、画面に「初期編成に含まれる」の印が付きます。
+
+### 列の追加が自動でうまくいかなかったとき（ふつうは不要）
+
+```
+npx wrangler d1 execute whitesim-stats --remote --command "ALTER TABLE usage ADD COLUMN gen_chosen INTEGER"
+npx wrangler d1 execute whitesim-stats --remote --command "ALTER TABLE usage ADD COLUMN lead_touched INTEGER"
+npx wrangler d1 execute whitesim-stats --remote --command "ALTER TABLE usage ADD COLUMN join_touched INTEGER"
+```
+
+「duplicate column name」と出たら、その列はもう追加済みです（そのままで大丈夫です）。

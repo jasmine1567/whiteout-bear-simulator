@@ -10,12 +10,12 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://whitesim-lab.com/en/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://whitesim-lab.com/"/>
   </url>
-  <url><loc>https://whitesim-lab.com/tools/bear-hunt/</loc><lastmod>2026-10-05</lastmod>
+  <url><loc>https://whitesim-lab.com/tools/bear-hunt/</loc><lastmod>2026-11-22</lastmod>
     <xhtml:link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/tools/bear-hunt/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://whitesim-lab.com/en/tools/bear-hunt/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://whitesim-lab.com/tools/bear-hunt/"/>
   </url>
-  <url><loc>https://whitesim-lab.com/en/tools/bear-hunt/</loc><lastmod>2026-10-05</lastmod>
+  <url><loc>https://whitesim-lab.com/en/tools/bear-hunt/</loc><lastmod>2026-11-22</lastmod>
     <xhtml:link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/tools/bear-hunt/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://whitesim-lab.com/en/tools/bear-hunt/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://whitesim-lab.com/tools/bear-hunt/"/>
@@ -240,12 +240,12 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://whitesim-lab.com/en/recruit.html"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://whitesim-lab.com/recruit.html"/>
   </url>
-  <url><loc>https://whitesim-lab.com/changelog.html</loc><lastmod>2026-10-05</lastmod>
+  <url><loc>https://whitesim-lab.com/changelog.html</loc><lastmod>2026-11-22</lastmod>
     <xhtml:link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/changelog.html"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://whitesim-lab.com/en/changelog.html"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://whitesim-lab.com/changelog.html"/>
   </url>
-  <url><loc>https://whitesim-lab.com/en/changelog.html</loc><lastmod>2026-10-05</lastmod>
+  <url><loc>https://whitesim-lab.com/en/changelog.html</loc><lastmod>2026-11-22</lastmod>
     <xhtml:link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/changelog.html"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://whitesim-lab.com/en/changelog.html"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://whitesim-lab.com/changelog.html"/>
@@ -299,6 +299,16 @@
     <xhtml:link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/stats/methodology.html"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://whitesim-lab.com/en/stats/methodology.html"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://whitesim-lab.com/stats/methodology.html"/>
+  </url>
+  <url><loc>https://whitesim-lab.com/stats/hero-usage/</loc><lastmod>2026-11-22</lastmod>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/stats/hero-usage/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://whitesim-lab.com/en/stats/hero-usage/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://whitesim-lab.com/stats/hero-usage/"/>
+  </url>
+  <url><loc>https://whitesim-lab.com/en/stats/hero-usage/</loc><lastmod>2026-11-22</lastmod>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/stats/hero-usage/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://whitesim-lab.com/en/stats/hero-usage/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://whitesim-lab.com/stats/hero-usage/"/>
   </url>
   <url><loc>https://whitesim-lab.com/submit/</loc><lastmod>2026-10-05</lastmod>
     <xhtml:link rel="alternate" hreflang="ja" href="https://whitesim-lab.com/submit/"/>
